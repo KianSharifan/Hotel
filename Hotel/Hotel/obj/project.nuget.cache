@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "hmMuCozTvZY=",
+  "dgSpecHash": "KPgbvY/QeNI=",
   "success": true,
   "projectFilePath": "/Users/kiansharifan/Documents/Hotel/Hotel/Hotel/Hotel.csproj",
   "expectedPackageFiles": [
-    "/Users/kiansharifan/.nuget/packages/microsoft.aspnetcore.openapi/9.0.3/microsoft.aspnetcore.openapi.9.0.3.nupkg.sha512",
+    "/Users/kiansharifan/.nuget/packages/microsoft.aspnetcore.openapi/9.0.16/microsoft.aspnetcore.openapi.9.0.16.nupkg.sha512",
     "/Users/kiansharifan/.nuget/packages/microsoft.openapi/1.6.17/microsoft.openapi.1.6.17.nupkg.sha512"
   ],
   "logs": []

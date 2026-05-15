@@ -1,6 +1,10 @@
-@Hotel_HostAddress = http://localhost:5263
+@root_url = http://localhost:5263
 
-GET {{Hotel_HostAddress}}/weatherforecast/
+#GET {{Hotel_HostAddress}}/weatherforecast/
+#Accept: application/json
+#
+#GET https://examples.http-client.intellij.net/get
+#    ?generated-in=JetBrains Rider
+GET {{root_url}}/api/hotel/
 Accept: application/json
-
 ###
