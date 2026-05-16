@@ -1,15 +1,23 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import Home from "./pages/home"
+import Rooms from "./pages/rooms"
+import Navbar from "./components/navbar"
+
 function App() {
-
   return (
+    <BrowserRouter>
 
-    <div className="h-screen flex items-center justify-center bg-black">
+      <Navbar />
 
-      <h1 className="text-6xl font-bold text-white">
-        Hotel Project
-      </h1>
+      <Routes>
 
-    </div>
+        <Route path="/" element={<Home />} />
 
+        <Route path="/rooms" element={<Rooms />} />
+
+      </Routes>
+
+    </BrowserRouter>
   )
 }
 
