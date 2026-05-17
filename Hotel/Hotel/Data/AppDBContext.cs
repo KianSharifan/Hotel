@@ -52,6 +52,7 @@ public class AppDBContext : DbContext
     public DbSet<MaintenanceRequest> MaintenanceRequests { get; set; }
 
     public DbSet<OrderItem> OrderItems { get; set; }
+    
 }
 
 // The constraints should be added later.
