@@ -6,9 +6,9 @@ public class Invoice
     public int GuestId { get; set; }
     public int ReservationId { get; set; }
     public DateTime IssueDate { get; set; }
-    public float SubTotal { get; set; }
-    public float Discount { get; set; }
-    public float Tax { get; set; }
-    public float Total { get; set; }
+    public Double SubTotal { get; set; }
+    public Double Discount { get; set; }
+    public Double Tax { get; set; }
+    public Double Total { get; set; }
     public string? Status { get; set; }
 }

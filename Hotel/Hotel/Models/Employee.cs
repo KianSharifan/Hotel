@@ -6,6 +6,6 @@ public class Employee
     public int PositionId { get; set; }
     public int DepartmentId { get; set; }
     public DateTime HireDate { get; set; }
-    public float Salary { get; set; }
+    public Double Salary { get; set; }
     public DateTime BirthDate { get; set; }
 }

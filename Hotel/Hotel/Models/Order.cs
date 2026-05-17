@@ -8,5 +8,5 @@ public class Order
     public string? OrderType { get; set; }
     public string? Status { get; set; }
     public TimeOnly CreatedAt {get; set;}
-    public float TotalPrice {get; set;}
+    public Double TotalPrice {get; set;}
 }

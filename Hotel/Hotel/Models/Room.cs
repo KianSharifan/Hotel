@@ -8,6 +8,6 @@ public class Room
     public int Floor { get; set; }
     public int RoomTypeId { get; set; }
     public string? Status { get; set; }
-    public float PricePerNight { get; set; }
+    public Double PricePerNight { get; set; }
     public string? Notes { get; set; }
 }

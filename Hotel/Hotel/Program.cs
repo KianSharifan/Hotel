@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Hotel.Data;
+using Hotel.Models;
 using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,11 +11,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 // builder.Services.AddSwaggerGen();
 builder.Services.AddOpenApi();
-builder.Services.AddDbContext<AppDBContext>(options => 
+builder.Services.AddDbContext<AppDBContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+            // .UseSnakeCaseNamingConvention());
 
 
 var app = builder.Build();
+
+// here should be seeding
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
