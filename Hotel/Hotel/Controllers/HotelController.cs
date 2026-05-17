@@ -17,5 +17,4 @@ public class HotelController : Controller
     // {
     //     return Ok(hotels);
     // }
-  
 }

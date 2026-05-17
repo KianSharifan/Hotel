@@ -6,6 +6,7 @@ public class AppDBContext : DbContext
     public AppDBContext(DbContextOptions<AppDBContext> options)
         : base(options)
     {
+        
     }
 
     public DbSet<Models.Hotel> Hotels { get; set; }
@@ -51,6 +52,39 @@ public class AppDBContext : DbContext
     public DbSet<MaintenanceRequest> MaintenanceRequests { get; set; }
 
     public DbSet<OrderItem> OrderItems { get; set; }
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        //default values should be added later *************************************************************************
+        modelBuilder.Entity<Hotel>().HasData(
+            new Hotel
+            {
+            }
+        );
+        modelBuilder.Entity<RoomType>().HasData(
+            new RoomType
+            {
+            },
+            new RoomType
+            {
+            }
+        );
+        modelBuilder.Entity<Role>().HasData(
+        );
+        modelBuilder.Entity<Department>().HasData(
+        );
+        modelBuilder.Entity<MenuCategory>().HasData(
+        );
+        modelBuilder.Entity<MenuItem>().HasData(
+        );
+        modelBuilder.Entity<Restaurant>().HasData(
+        );
+        modelBuilder.Entity<Service>().HasData(
+        );
+        modelBuilder.Entity<Table>().HasData(
+        );
+    } 
 }
 
 // The constraints should be added later.
