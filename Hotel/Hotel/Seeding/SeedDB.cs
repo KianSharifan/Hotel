@@ -17,7 +17,7 @@ public class SeedDB
                 new Models.Hotel
                 {
                     Id = 1,
-                    Name = "Veloria",
+                    Name = "Noir",
                     Address = "220 Central Park South,NY 10019",
                     Phone = "212-308-9100",
                     CheckInTime = new TimeOnly(3, 0),
@@ -204,23 +204,21 @@ public class SeedDB
             context.MenuCategories.AddRange(menuCategories);
             var menuItems = new List<MenuItem>
             { 
-                // BREAKFAST (1)
+            // BREAKFAST (1)
     new MenuItem { Id = 1, MenuCategoryId = 1, Name = "Classic Omelette", Description = "Three‑egg omelette with cheese and herbs.", Price = 8.99 },
     new MenuItem { Id = 2, MenuCategoryId = 1, Name = "Pancake Stack", Description = "Fluffy pancakes with maple syrup.", Price = 7.49 },
     new MenuItem { Id = 3, MenuCategoryId = 1, Name = "French Toast", Description = "Golden toast with cinnamon and powdered sugar.", Price = 7.99 },
     new MenuItem { Id = 4, MenuCategoryId = 1, Name = "English Breakfast", Description = "Eggs, sausage, beans, toast, and tomatoes.", Price = 11.99 },
     new MenuItem { Id = 5, MenuCategoryId = 1, Name = "Fruit Bowl", Description = "Fresh seasonal fruits.", Price = 5.49 },
     new MenuItem { Id = 6, MenuCategoryId = 1, Name = "Avocado Toast", Description = "Sourdough topped with smashed avocado.", Price = 6.99 },
-
-                // APPETIZERS (2)
+            // APPETIZERS (2)
     new MenuItem { Id = 7, MenuCategoryId = 2, Name = "Caesar Salad", Description = "Romaine lettuce with parmesan and croutons.", Price = 6.99 },
     new MenuItem { Id = 8, MenuCategoryId = 2, Name = "Garlic Bread", Description = "Toasted baguette with garlic butter.", Price = 4.49 },
     new MenuItem { Id = 9, MenuCategoryId = 2, Name = "Tomato Soup", Description = "Creamy tomato soup with basil.", Price = 5.99 },
     new MenuItem { Id = 10, MenuCategoryId = 2, Name = "Mozzarella Sticks", Description = "Crispy fried mozzarella with marinara.", Price = 6.49 },
     new MenuItem { Id = 11, MenuCategoryId = 2, Name = "Chicken Wings", Description = "Spicy or BBQ wings served with dip.", Price = 8.99 },
     new MenuItem { Id = 12, MenuCategoryId = 2, Name = "Greek Salad", Description = "Feta cheese, olives, cucumber, and tomatoes.", Price = 7.49 },
-
-                // MAIN COURSES (3)
+            // MAIN COURSES (3)
     new MenuItem { Id = 13, MenuCategoryId = 3, Name = "Grilled Chicken Plate", Description = "Chicken breast with vegetables.", Price = 14.99 },
     new MenuItem { Id = 14, MenuCategoryId = 3, Name = "Beef Steak", Description = "Sirloin steak cooked to preference.", Price = 19.99 },
     new MenuItem { Id = 15, MenuCategoryId = 3, Name = "Salmon Fillet", Description = "Grilled salmon with lemon butter.", Price = 17.49 },
@@ -233,15 +231,13 @@ public class SeedDB
     new MenuItem { Id = 50, MenuCategoryId = 3, Name = "Lamb Chops", Description = "Grilled lamb with herbs.", Price = 21.99 },
     new MenuItem { Id = 51, MenuCategoryId = 3, Name = "Fish & Chips", Description = "Crispy fried fish with fries.", Price = 13.99 },
     new MenuItem { Id = 52, MenuCategoryId = 3, Name = "Beef Lasagna", Description = "Layered pasta with beef and cheese.", Price = 12.49 },
-
-                // DESSERTS (4)
+            // DESSERTS (4)
     new MenuItem { Id = 21, MenuCategoryId = 4, Name = "Chocolate Lava Cake", Description = "Molten chocolate center.", Price = 6.49 },
     new MenuItem { Id = 22, MenuCategoryId = 4, Name = "Cheesecake Slice", Description = "Classic creamy cheesecake.", Price = 5.99 },
     new MenuItem { Id = 23, MenuCategoryId = 4, Name = "Ice Cream Bowl", Description = "Three scoops of your choice.", Price = 4.99 },
     new MenuItem { Id = 24, MenuCategoryId = 4, Name = "Apple Pie", Description = "Warm apple pie with cinnamon.", Price = 5.49 },
     new MenuItem { Id = 25, MenuCategoryId = 4, Name = "Tiramisu", Description = "Coffee‑flavored Italian dessert.", Price = 6.99 },
     new MenuItem { Id = 26, MenuCategoryId = 4, Name = "Brownie Sundae", Description = "Brownie topped with ice cream.", Price = 6.49 },
-
             // BEVERAGES (5)
     new MenuItem { Id = 27, MenuCategoryId = 5, Name = "Fresh Orange Juice", Description = "Freshly squeezed.", Price = 3.99 },
     new MenuItem { Id = 28, MenuCategoryId = 5, Name = "Cappuccino", Description = "Espresso with steamed milk.", Price = 3.49 },
@@ -250,20 +246,17 @@ public class SeedDB
     new MenuItem { Id = 31, MenuCategoryId = 5, Name = "Cola", Description = "Chilled soft drink.", Price = 1.99 },
     new MenuItem { Id = 32, MenuCategoryId = 5, Name = "Mineral Water", Description = "Still or sparkling.", Price = 1.49 },
     new MenuItem { Id = 33, MenuCategoryId = 5, Name = "Hot Chocolate", Description = "Rich cocoa drink.", Price = 3.29 },
-
             // KIDS MENU (6)
     new MenuItem { Id = 34, MenuCategoryId = 6, Name = "Kids Chicken Nuggets", Description = "Served with fries.", Price = 5.49 },
     new MenuItem { Id = 35, MenuCategoryId = 6, Name = "Mini Pasta Bowl", Description = "Small pasta with tomato sauce.", Price = 4.99 },
     new MenuItem { Id = 36, MenuCategoryId = 6, Name = "Kids Burger", Description = "Small beef burger with cheese.", Price = 5.99 },
     new MenuItem { Id = 37, MenuCategoryId = 6, Name = "Kids Pizza Slice", Description = "Cheese pizza slice.", Price = 4.49 },
-
             // PIZZAS (7)
     new MenuItem { Id = 38, MenuCategoryId = 7, Name = "Margherita Pizza", Description = "Tomato, mozzarella, basil.", Price = 9.99 },
     new MenuItem { Id = 39, MenuCategoryId = 7, Name = "Pepperoni Pizza", Description = "Pepperoni and cheese.", Price = 11.49 },
     new MenuItem { Id = 40, MenuCategoryId = 7, Name = "BBQ Chicken Pizza", Description = "BBQ sauce, chicken, onions.", Price = 12.49 },
     new MenuItem { Id = 41, MenuCategoryId = 7, Name = "Veggie Pizza", Description = "Peppers, onions, olives.", Price = 10.99 },
     new MenuItem { Id = 42, MenuCategoryId = 7, Name = "Four Cheese Pizza", Description = "Mozzarella, cheddar, parmesan, gorgonzola.", Price = 12.99 },
-
             // BURGERS (8)
     new MenuItem { Id = 43, MenuCategoryId = 8, Name = "Classic Beef Burger", Description = "Beef patty with cheese.", Price = 10.99 },
     new MenuItem { Id = 44, MenuCategoryId = 8, Name = "Chicken Burger", Description = "Crispy chicken fillet.", Price = 9.49 },
@@ -415,19 +408,16 @@ public class SeedDB
                 new Table { Id = 3, RestaurantId = 1, Status = "Available", Reserved = false },
                 new Table { Id = 4, RestaurantId = 1, Status = "Available", Reserved = false },
                 new Table { Id = 5, RestaurantId = 1, Status = "Available", Reserved = false },
-
                 new Table { Id = 6, RestaurantId = 1, Status = "Available", Reserved = false },
                 new Table { Id = 7, RestaurantId = 1, Status = "Available", Reserved = false },
                 new Table { Id = 8, RestaurantId = 1, Status = "Available", Reserved = false },
                 new Table { Id = 9, RestaurantId = 1, Status = "Available", Reserved = false },
                 new Table { Id = 10, RestaurantId = 1, Status = "Available", Reserved = false },
-
                 new Table { Id = 11, RestaurantId = 1, Status = "Available", Reserved = false },
                 new Table { Id = 12, RestaurantId = 1, Status = "Available", Reserved = false },
                 new Table { Id = 13, RestaurantId = 1, Status = "Available", Reserved = false },
                 new Table { Id = 14, RestaurantId = 1, Status = "Available", Reserved = false },
                 new Table { Id = 15, RestaurantId = 1, Status = "Available", Reserved = false },
-
                 new Table { Id = 16, RestaurantId = 1, Status = "Available", Reserved = false },
                 new Table { Id = 17, RestaurantId = 1, Status = "Available", Reserved = false },
                 new Table { Id = 18, RestaurantId = 1, Status = "Available", Reserved = false },
@@ -472,6 +462,5 @@ public class SeedDB
             context.Rooms.AddRange(rooms);
             context.SaveChanges();
         }
-        
     }
 }

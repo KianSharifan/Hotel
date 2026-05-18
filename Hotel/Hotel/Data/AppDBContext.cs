@@ -56,3 +56,12 @@ public class AppDBContext : DbContext
 }
 
 // The constraints should be added later.
+
+// modelBuilder.Entity<User>(entity =>
+// {
+//     entity.HasKey(u => u.Id); // تعیین کلید اصلی
+//     
+//     entity.Property(u => u.Username)
+//         .IsRequired()       // اجباری کردن فیلد (NOT NULL)
+//         .HasMaxLength(50);  // محدود کردن تعداد کاراکتر (VARCHAR(50))
+// });
