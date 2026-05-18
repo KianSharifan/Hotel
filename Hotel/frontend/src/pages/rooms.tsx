@@ -1,9 +1,262 @@
 function Rooms() {
-    return(
-        <div>
-            <h1>rooms page</h1>
+
+  const rooms = [
+
+    {
+      id: 1,
+      title: "Presidential Suite",
+      image:
+        "https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=1974",
+      description:
+        "Experience unmatched luxury with panoramic ocean views, private lounge access, and world-class comfort."
+    },
+
+    {
+      id: 2,
+      title: "Ocean Deluxe Room",
+      image:
+        "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=1974",
+      description:
+        "Elegant interiors combined with modern architecture and breathtaking seaside atmosphere."
+    },
+
+    {
+      id: 3,
+      title: "Royal Family Suite",
+      image:
+        "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1974",
+      description:
+        "Spacious premium suite designed for unforgettable family vacations and luxury experiences."
+    }
+
+  ]
+
+  return (
+
+    <div className="bg-black text-white min-h-screen">
+
+      {/* HERO SECTION */}
+      <section
+        className="
+        h-[70vh]
+        bg-cover
+        bg-center
+        bg-fixed
+        relative
+        flex
+        items-center
+        justify-center
+        "
+        style={{
+          backgroundImage:
+            "url('https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070')"
+        }}
+      >
+
+        {/* DARK OVERLAY */}
+        <div className="absolute inset-0 bg-black/60"></div>
+
+        {/* HERO CONTENT */}
+        <div className="relative z-10 text-center px-6">
+
+          <p
+            className="
+            uppercase
+            tracking-[10px]
+            text-gray-300
+            mb-6
+            animate-pulse
+            "
+          >
+            Luxury Collection
+          </p>
+
+          <h1
+            className="
+            text-6xl
+            md:text-8xl
+            font-bold
+            mb-8
+            opacity-0
+            animate-[fadeIn_1.5s_ease_forwards]
+            "
+          >
+            Our Rooms & Suites
+          </h1>
+
+          <p
+            className="
+            text-xl
+            text-gray-200
+            max-w-3xl
+            mx-auto
+            opacity-0
+            animate-[fadeIn_2s_ease_forwards]
+            "
+          >
+            Discover extraordinary luxury,
+            breathtaking interiors,
+            and unforgettable hospitality.
+          </p>
+
         </div>
-    )
+
+      </section>
+
+      {/* ROOMS */}
+      <div className="py-28 px-8 md:px-20 space-y-32">
+
+        {rooms.map((room, index) => (
+
+          <div
+            key={room.id}
+
+            className={`
+              flex
+              flex-col
+              md:flex-row
+              items-center
+              gap-14
+              group
+              transition-all
+              duration-700
+              hover:scale-[1.01]
+              ${index % 2 !== 0 ? "md:flex-row-reverse" : ""}
+            `}
+          >
+
+            {/* IMAGE */}
+            <div
+              className="
+              flex-1
+              overflow-hidden
+              rounded-3xl
+              "
+            >
+
+              <img
+                src={room.image}
+
+                className="
+                w-full
+                h-[550px]
+                object-cover
+                rounded-3xl
+
+                transition-all
+                duration-700
+
+                group-hover:scale-110
+                group-hover:brightness-75
+                "
+              />
+
+            </div>
+
+            {/* TEXT */}
+            <div
+              className="
+              flex-1
+
+              transform
+              transition-all
+              duration-700
+
+              group-hover:translate-y-[-10px]
+              "
+            >
+
+              <p
+                className="
+                uppercase
+                tracking-[8px]
+                text-gray-400
+                mb-5
+                "
+              >
+                Premium Experience
+              </p>
+
+              <h2
+                className="
+                text-5xl
+                md:text-6xl
+                font-bold
+                mb-8
+                "
+              >
+                {room.title}
+              </h2>
+
+              <p
+                className="
+                text-gray-300
+                text-xl
+                leading-relaxed
+                mb-10
+                "
+              >
+                {room.description}
+              </p>
+
+              {/* BUTTONS */}
+              <div className="flex gap-6">
+
+                <button
+                  className="
+                  bg-white
+                  text-black
+
+                  px-8
+                  py-4
+
+                  rounded-2xl
+                  text-lg
+
+                  transition-all
+                  duration-500
+
+                  hover:bg-gray-300
+                  hover:scale-105
+                  "
+                >
+                  Explore
+                </button>
+
+                <button
+                  className="
+                  border
+                  border-white
+
+                  px-8
+                  py-4
+
+                  rounded-2xl
+                  text-lg
+
+                  transition-all
+                  duration-500
+
+                  hover:bg-white
+                  hover:text-black
+                  hover:scale-105
+                  "
+                >
+                  Book Now
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        ))}
+
+      </div>
+
+    </div>
+  )
 }
 
 export default Rooms
