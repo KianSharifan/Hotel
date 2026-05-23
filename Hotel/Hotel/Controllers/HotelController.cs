@@ -1,6 +1,8 @@
 using Hotel.Models;
 using Hotel.Data;
 using Microsoft.AspNetCore.Mvc;
+using BCrypt.Net;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hotel.Controllers;
 
@@ -17,7 +19,28 @@ public class HotelController : Controller
     [HttpGet]
     public async Task<IActionResult> GetHotels()
     {
-        var hotels = _context.Hotels.ToList();
+        try
+        {
+            var mc = new MaintenanceRequest()
+            {
+                Id = 1,
+                Description = "",
+                CreatedDate = DateTime.UtcNow,
+                ModifiedDate = DateTime.UtcNow,
+                Priority = "",
+                ReportedEmployeeId = 1,
+                RoomId = 1,
+                Status = ""
+            };
+            _context.MaintenanceRequests.Add(mc);
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+        var hotels = await _context.Hotels.ToListAsync();
         return Ok(hotels);
     }
 }

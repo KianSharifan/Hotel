@@ -1,4 +1,5 @@
 namespace Hotel.Models;
+using Data;
 
 public class Reservation
 {

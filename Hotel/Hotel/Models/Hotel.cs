@@ -9,7 +9,19 @@ public class Hotel
     public string? Country { get; set; }
     public string? Phone { get; set; }
     public string? Email { get; set; }
-    public Double StarRating { get; set; }
+
+    private double starRating;
+    public double StarRating
+    {
+        get => starRating;
+        set
+        {
+            if (value > 5 || value < 0)
+                throw new Exception();
+            starRating = value;
+        }
+    }
+
     public TimeOnly CheckInTime { get; set; }
     public TimeOnly CheckOutTime { get; set; }
 }

@@ -6,7 +6,30 @@ public class GuestServiceUsage
     public int GuestId { get; set; }
     public int ServiceId { get; set; }
     public int ReservationId { get; set; }
-    public int Quantity { get; set; }
-    public Double Price { get; set; }
+
+    private uint quantity;
+    public uint Quantity
+    {
+        get => quantity;
+        set
+        {
+            if (value <= 0)
+                throw new Exception();
+            quantity = value;
+        }
+    }
+
+    private double price;
+    public double Price
+    {
+        get => price;
+        set
+        {
+            if (value <= 0)
+                throw new Exception();
+            price = value;
+        }
+    }
+
     public DateTime UseDate { get; set; }
 }
