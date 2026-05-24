@@ -1,6 +1,8 @@
 import hotelImage from "../assets/hero.png"
+import { useNavigate } from "react-router-dom"
 
 function Hero() {
+    const navigate = useNavigate()
 
   return (
 
@@ -80,6 +82,7 @@ function Hero() {
             hover:text-black
             transition
             "
+            onClick={() => navigate("/reservation")}
           >
             Book Now
           </button>

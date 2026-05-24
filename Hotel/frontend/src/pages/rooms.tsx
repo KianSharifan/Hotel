@@ -1,35 +1,9 @@
+import rooms from "../data/rooms"
+import { useNavigate } from "react-router-dom"
+
 function Rooms() {
 
-  const rooms = [
-
-    {
-      id: 1,
-      title: "Presidential Suite",
-      image:
-        "https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=1974",
-      description:
-        "Experience unmatched luxury with panoramic ocean views, private lounge access, and world-class comfort."
-    },
-
-    {
-      id: 2,
-      title: "Ocean Deluxe Room",
-      image:
-        "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=1974",
-      description:
-        "Elegant interiors combined with modern architecture and breathtaking seaside atmosphere."
-    },
-
-    {
-      id: 3,
-      title: "Royal Family Suite",
-      image:
-        "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1974",
-      description:
-        "Spacious premium suite designed for unforgettable family vacations and luxury experiences."
-    }
-
-  ]
+  const navigate = useNavigate();
 
   return (
 
@@ -183,7 +157,7 @@ function Rooms() {
                 mb-8
                 "
               >
-                {room.title}
+                {room.name}
               </h2>
 
               <p
@@ -222,6 +196,9 @@ function Rooms() {
                 </button>
 
                 <button
+
+                  onClick={() => navigate("/reservation")}
+
                   className="
                   border
                   border-white

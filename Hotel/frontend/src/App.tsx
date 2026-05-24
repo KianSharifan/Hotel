@@ -6,6 +6,8 @@ import Restaurant from "./pages/Restaurant"
 import Spa from "./pages/Spa"
 import Golf from "./pages/Golf"
 import Pool from "./pages/Pool"
+import Reservation from "./pages/Reservation"
+import BookingResults from "./pages/BookingResults"
 
 
 
@@ -25,6 +27,8 @@ function App() {
         <Route path="/amenities/spa" element={<Spa />} />
         <Route path="/amenities/pool" element={<Pool />} />
         <Route path="/amenities/golf" element={<Golf />} />
+        <Route path="/reservation" element={<Reservation />} />
+        <Route path="/reservation/booking-results" element={<BookingResults />} />
 
       </Routes>
 
