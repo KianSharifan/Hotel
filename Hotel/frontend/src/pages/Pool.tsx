@@ -1,14 +1,14 @@
-function Spa() {
+function Pool() {
 
   return (
 
     <div className="pt-40 text-center text-5xl font-bold">
 
-      Spa Page
+      Pool Page
 
     </div>
 
   )
 }
 
-export default Spa
+export default Pool

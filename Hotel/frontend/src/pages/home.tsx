@@ -1,4 +1,4 @@
-import Navbar from "../components/Navbar"
+import Navbar from "../components/navbar"
 import Hero from "../components/Hero"
 import FeaturedRooms from "../components/FeaturedRooms"
 import Amenities from "../components/Amenities"

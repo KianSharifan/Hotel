@@ -35,7 +35,7 @@ function Rooms() {
 
     <div className="bg-black text-white min-h-screen">
 
-      {/* HERO SECTION */}
+      {/*hero*/}
       <section
         className="
         h-[70vh]
@@ -53,10 +53,8 @@ function Rooms() {
         }}
       >
 
-        {/* DARK OVERLAY */}
-        <div className="absolute inset-0 bg-black/60"></div>
 
-        {/* HERO CONTENT */}
+        <div className="absolute inset-0 bg-black/60"></div>
         <div className="relative z-10 text-center px-6">
 
           <p
@@ -103,7 +101,7 @@ function Rooms() {
 
       </section>
 
-      {/* ROOMS */}
+      {/* rooms */}
       <div className="py-28 px-8 md:px-20 space-y-32">
 
         {rooms.map((room, index) => (
@@ -125,7 +123,7 @@ function Rooms() {
             `}
           >
 
-            {/* IMAGE */}
+            {/* img */}
             <div
               className="
               flex-1
@@ -153,7 +151,7 @@ function Rooms() {
 
             </div>
 
-            {/* TEXT */}
+            {/* text */}
             <div
               className="
               flex-1
@@ -199,7 +197,7 @@ function Rooms() {
                 {room.description}
               </p>
 
-              {/* BUTTONS */}
+              {/* buttons */}
               <div className="flex gap-6">
 
                 <button

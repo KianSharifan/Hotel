@@ -1,14 +1,14 @@
-function Spa() {
+function Golf() {
 
   return (
 
     <div className="pt-40 text-center text-5xl font-bold">
 
-      Spa Page
+      Golf Page
 
     </div>
 
   )
 }
 
-export default Spa
+export default Golf

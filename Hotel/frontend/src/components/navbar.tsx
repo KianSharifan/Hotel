@@ -1,27 +1,4 @@
-// import { Link } from "react-router-dom"
-
-// function Navbar() {
-//     return(
-//         <nav className="absolute top-0 left-0 w-full z-50 flex justify-between 
-//                         items-center px-16 py-8 text-white">
-
-//             <h1 className="text-4xl font-bold tracking-widest">NOIRE PALACE</h1>
-
-//             <div className="bg-black text-white p-4 flex gap-6">
-//                 <Link to="/">Home</Link>
-//                 <Link to="/rooms">Rooms</Link>
-//                 <Link to="/restaurant">Restaurant</Link>
-//                 <Link to="/events">Events</Link>
-//                 <Link to="/spa">Spa</Link>
-//                 <Link to="/reservation">Reservation</Link>
-//             </div>
-
-//         </nav>
-//     )
-// }
-
-// export default Navbar;
-
+import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 
 function Navbar() {
@@ -49,10 +26,8 @@ function Navbar() {
       "
     >
 
-      {/* LEFT SIDE */}
       <div className="flex items-center gap-14">
 
-        {/* LOGO */}
         <h1
           className="
           text-3xl
@@ -62,17 +37,16 @@ function Navbar() {
           "
           onClick={() => navigate("/")}
         >
-          VELORIA
+          NOIRE PALACE
         </h1>
 
-        {/* NAVBAR */}
         <nav className="flex gap-10 text-lg">
 
           <button
             onClick={() => navigate("/")}
 
             className="
-            hover:text-gray-300
+            hover:text-gray-500
             transition
             "
           >
@@ -83,7 +57,7 @@ function Navbar() {
             onClick={() => navigate("/rooms")}
 
             className="
-            hover:text-gray-300
+            hover:text-gray-500
             transition
             "
           >
@@ -94,7 +68,7 @@ function Navbar() {
             onClick={() => navigate("/restaurant")}
 
             className="
-            hover:text-gray-300
+            hover:text-gray-500
             transition
             "
           >
@@ -102,10 +76,10 @@ function Navbar() {
           </button>
 
           <button
-            onClick={() => navigate("/spa")}
+            onClick={() => navigate("/amenities/spa")}
 
             className="
-            hover:text-gray-300
+            hover:text-gray-500
             transition
             "
           >
@@ -130,7 +104,7 @@ function Navbar() {
         </p>
 
         <p>
-          contact@veloria.com
+          contact@noire.com
         </p>
 
       </div>
