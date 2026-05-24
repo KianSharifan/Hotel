@@ -5,6 +5,6 @@
 #
 #GET https://examples.http-client.intellij.net/get
 #    ?generated-in=JetBrains Rider
-GET {{root_url}}/api/hotel/
+GET {{root_url}}
 Accept: application/json
 ###

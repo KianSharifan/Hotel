@@ -8,5 +8,15 @@ public class Order
     public string? OrderType { get; set; }
     public string? Status { get; set; }
     public TimeOnly CreatedAt {get; set;}
-    public float TotalPrice {get; set;}
+    private double totalPrice;
+    public double TotalPrice
+    {
+        get => totalPrice;
+        set
+        {
+            if (value < 0)
+                throw new Exception();
+            totalPrice = value;
+        }
+    }
 }
