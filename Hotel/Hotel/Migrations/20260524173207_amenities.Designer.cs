@@ -3,6 +3,7 @@ using System;
 using Hotel.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Hotel.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20260524173207_amenities")]
+    partial class amenities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,24 +24,6 @@ namespace Hotel.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("Hotel.Models.Amenity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Amenities");
-                });
 
             modelBuilder.Entity("Hotel.Models.Department", b =>
                 {
@@ -627,21 +612,6 @@ namespace Hotel.Migrations
                     b.ToTable("Rooms");
                 });
 
-            modelBuilder.Entity("Hotel.Models.RoomAmenities", b =>
-                {
-                    b.Property<int>("RoomId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("AmenityId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("RoomId", "AmenityId");
-
-                    b.HasIndex("AmenityId");
-
-                    b.ToTable("RoomAmenities");
-                });
-
             modelBuilder.Entity("Hotel.Models.RoomType", b =>
                 {
                     b.Property<int>("RoomTypeId")
@@ -940,21 +910,6 @@ namespace Hotel.Migrations
                     b.HasOne("Hotel.Models.Room", null)
                         .WithMany()
                         .HasForeignKey("RoomTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Hotel.Models.RoomAmenities", b =>
-                {
-                    b.HasOne("Hotel.Models.Amenity", null)
-                        .WithMany()
-                        .HasForeignKey("AmenityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Hotel.Models.Room", null)
-                        .WithMany()
-                        .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

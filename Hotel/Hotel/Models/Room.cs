@@ -20,6 +20,8 @@ public class Room
             pricePerNight = value;
         }
     }
+    
+    public string? ImageUrl {get; set;}
 
     public string? Notes { get; set; }
 }

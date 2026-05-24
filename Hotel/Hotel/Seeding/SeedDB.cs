@@ -427,41 +427,95 @@ public class SeedDB
                 new Table { Id = 20, RestaurantId = 1, Status = "Available", Reserved = false, Capacity = 8 }
             };
             context.RestaurantTables.AddRange(tables);
-            var rooms = new List<Room>
-            {
-                new Room { RoomId = 1, HotelId = 1, RoomNumber = 101, Floor = 1, RoomTypeId = 1, Status = "Available", PricePerNight = 89.99, Notes = null },
-                new Room { RoomId = 2, HotelId = 1, RoomNumber = 102, Floor = 1, RoomTypeId = 1, Status = "Available", PricePerNight = 89.99, Notes = null },
-                new Room { RoomId = 3, HotelId = 1, RoomNumber = 103, Floor = 1, RoomTypeId = 1, Status = "Available", PricePerNight = 89.99, Notes = null },
-                new Room { RoomId = 4, HotelId = 1, RoomNumber = 104, Floor = 1, RoomTypeId = 1, Status = "Available", PricePerNight = 89.99, Notes = null },
-                new Room { RoomId = 5, HotelId = 1, RoomNumber = 105, Floor = 1, RoomTypeId = 1, Status = "Available", PricePerNight = 89.99, Notes = null },
-                new Room { RoomId = 6, HotelId = 1, RoomNumber = 201, Floor = 2, RoomTypeId = 1, Status = "Available", PricePerNight = 92.99, Notes = null },
-                new Room { RoomId = 7, HotelId = 1, RoomNumber = 202, Floor = 2, RoomTypeId = 1, Status = "Available", PricePerNight = 92.99, Notes = null },
-                new Room { RoomId = 8, HotelId = 1, RoomNumber = 203, Floor = 2, RoomTypeId = 1, Status = "Available", PricePerNight = 92.99, Notes = null },
-                new Room { RoomId = 9, HotelId = 1, RoomNumber = 204, Floor = 2, RoomTypeId = 1, Status = "Available", PricePerNight = 92.99, Notes = null },
-                new Room { RoomId = 10, HotelId = 1, RoomNumber = 205, Floor = 2, RoomTypeId = 1, Status = "Available", PricePerNight = 92.99, Notes = null },
-                new Room { RoomId = 11, HotelId = 1, RoomNumber = 301, Floor = 3, RoomTypeId = 2, Status = "Available", PricePerNight = 119.99, Notes = null },
-                new Room { RoomId = 12, HotelId = 1, RoomNumber = 302, Floor = 3, RoomTypeId = 2, Status = "Available", PricePerNight = 119.99, Notes = null },
-                new Room { RoomId = 13, HotelId = 1, RoomNumber = 303, Floor = 3, RoomTypeId = 2, Status = "Available", PricePerNight = 119.99, Notes = null },
-                new Room { RoomId = 14, HotelId = 1, RoomNumber = 304, Floor = 3, RoomTypeId = 2, Status = "Available", PricePerNight = 119.99, Notes = null },
-                new Room { RoomId = 15, HotelId = 1, RoomNumber = 401, Floor = 4, RoomTypeId = 2, Status = "Available", PricePerNight = 129.99, Notes = null },
-                new Room { RoomId = 16, HotelId = 1, RoomNumber = 402, Floor = 4, RoomTypeId = 2, Status = "Available", PricePerNight = 129.99, Notes = null },
-                new Room { RoomId = 17, HotelId = 1, RoomNumber = 403, Floor = 4, RoomTypeId = 2, Status = "Available", PricePerNight = 129.99, Notes = null },
-                new Room { RoomId = 18, HotelId = 1, RoomNumber = 404, Floor = 4, RoomTypeId = 2, Status = "Available", PricePerNight = 129.99, Notes = null },
-                new Room { RoomId = 19, HotelId = 1, RoomNumber = 501, Floor = 5, RoomTypeId = 3, Status = "Available", PricePerNight = 149.99, Notes = null },
-                new Room { RoomId = 20, HotelId = 1, RoomNumber = 502, Floor = 5, RoomTypeId = 3, Status = "Available", PricePerNight = 149.99, Notes = null },
-                new Room { RoomId = 21, HotelId = 1, RoomNumber = 503, Floor = 5, RoomTypeId = 3, Status = "Available", PricePerNight = 149.99, Notes = null },
-                new Room { RoomId = 22, HotelId = 1, RoomNumber = 601, Floor = 6, RoomTypeId = 3, Status = "Available", PricePerNight = 159.99, Notes = null },
-                new Room { RoomId = 23, HotelId = 1, RoomNumber = 602, Floor = 6, RoomTypeId = 3, Status = "Available", PricePerNight = 159.99, Notes = null },
-                new Room { RoomId = 24, HotelId = 1, RoomNumber = 603, Floor = 6, RoomTypeId = 3, Status = "Available", PricePerNight = 159.99, Notes = null },
-                new Room { RoomId = 25, HotelId = 1, RoomNumber = 701, Floor = 7, RoomTypeId = 4, Status = "Available", PricePerNight = 189.99, Notes = null },
-                new Room { RoomId = 26, HotelId = 1, RoomNumber = 702, Floor = 7, RoomTypeId = 4, Status = "Available", PricePerNight = 189.99, Notes = null },
-                new Room { RoomId = 27, HotelId = 1, RoomNumber = 703, Floor = 7, RoomTypeId = 4, Status = "Available", PricePerNight = 189.99, Notes = null },
-                new Room { RoomId = 28, HotelId = 1, RoomNumber = 704, Floor = 7, RoomTypeId = 4, Status = "Available", PricePerNight = 189.99, Notes = null },
-                new Room { RoomId = 29, HotelId = 1, RoomNumber = 801, Floor = 8, RoomTypeId = 5, Status = "Available", PricePerNight = 249.99, Notes = null },
-                new Room { RoomId = 30, HotelId = 1, RoomNumber = 802, Floor = 8, RoomTypeId = 5, Status = "Available", PricePerNight = 249.99, Notes = null },
-                new Room { RoomId = 31, HotelId = 1, RoomNumber = 901, Floor = 9, RoomTypeId = 6, Status = "Available", PricePerNight = 499.99, Notes = null }
-            };
+var rooms = new List<Room>
+{
+    new Room { RoomId = 1, HotelId = 1, RoomNumber = 101, Floor = 1, RoomTypeId = 1, Status = "Available", PricePerNight = 89.99, ImageUrl = null, Notes = null },
+    new Room { RoomId = 2, HotelId = 1, RoomNumber = 102, Floor = 1, RoomTypeId = 1, Status = "Available", PricePerNight = 89.99, ImageUrl = null, Notes = null },
+    new Room { RoomId = 3, HotelId = 1, RoomNumber = 103, Floor = 1, RoomTypeId = 1, Status = "Available", PricePerNight = 89.99, ImageUrl = null, Notes = null },
+    new Room { RoomId = 4, HotelId = 1, RoomNumber = 104, Floor = 1, RoomTypeId = 1, Status = "Available", PricePerNight = 89.99, ImageUrl = null, Notes = null },
+    new Room { RoomId = 5, HotelId = 1, RoomNumber = 105, Floor = 1, RoomTypeId = 1, Status = "Available", PricePerNight = 89.99, ImageUrl = null, Notes = null },
+    new Room { RoomId = 6, HotelId = 1, RoomNumber = 201, Floor = 2, RoomTypeId = 1, Status = "Available", PricePerNight = 92.99, ImageUrl = null, Notes = null },
+    new Room { RoomId = 7, HotelId = 1, RoomNumber = 202, Floor = 2, RoomTypeId = 1, Status = "Available", PricePerNight = 92.99, ImageUrl = null, Notes = null },
+    new Room { RoomId = 8, HotelId = 1, RoomNumber = 203, Floor = 2, RoomTypeId = 1, Status = "Available", PricePerNight = 92.99, ImageUrl = null, Notes = null },
+    new Room { RoomId = 9, HotelId = 1, RoomNumber = 204, Floor = 2, RoomTypeId = 1, Status = "Available", PricePerNight = 92.99, ImageUrl = null, Notes = null },
+    new Room { RoomId = 10, HotelId = 1, RoomNumber = 205, Floor = 2, RoomTypeId = 1, Status = "Available", PricePerNight = 92.99, ImageUrl = null, Notes = null },
+    new Room { RoomId = 11, HotelId = 1, RoomNumber = 301, Floor = 3, RoomTypeId = 2, Status = "Available", PricePerNight = 119.99, ImageUrl = null, Notes = null },
+    new Room { RoomId = 12, HotelId = 1, RoomNumber = 302, Floor = 3, RoomTypeId = 2, Status = "Available", PricePerNight = 119.99, ImageUrl = null, Notes = null },
+    new Room { RoomId = 13, HotelId = 1, RoomNumber = 303, Floor = 3, RoomTypeId = 2, Status = "Available", PricePerNight = 119.99, ImageUrl = null, Notes = null },
+    new Room { RoomId = 14, HotelId = 1, RoomNumber = 304, Floor = 3, RoomTypeId = 2, Status = "Available", PricePerNight = 119.99, ImageUrl = null, Notes = null },
+    new Room { RoomId = 15, HotelId = 1, RoomNumber = 401, Floor = 4, RoomTypeId = 2, Status = "Available", PricePerNight = 129.99, ImageUrl = null, Notes = null },
+    new Room { RoomId = 16, HotelId = 1, RoomNumber = 402, Floor = 4, RoomTypeId = 2, Status = "Available", PricePerNight = 129.99, ImageUrl = null, Notes = null },
+    new Room { RoomId = 17, HotelId = 1, RoomNumber = 403, Floor = 4, RoomTypeId = 2, Status = "Available", PricePerNight = 129.99, ImageUrl = null, Notes = null },
+    new Room { RoomId = 18, HotelId = 1, RoomNumber = 404, Floor = 4, RoomTypeId = 2, Status = "Available", PricePerNight = 129.99, ImageUrl = null, Notes = null },
+    new Room { RoomId = 19, HotelId = 1, RoomNumber = 501, Floor = 5, RoomTypeId = 3, Status = "Available", PricePerNight = 149.99, ImageUrl = null, Notes = null },
+    new Room { RoomId = 20, HotelId = 1, RoomNumber = 502, Floor = 5, RoomTypeId = 3, Status = "Available", PricePerNight = 149.99, ImageUrl = null, Notes = null },
+    new Room { RoomId = 21, HotelId = 1, RoomNumber = 503, Floor = 5, RoomTypeId = 3, Status = "Available", PricePerNight = 149.99, ImageUrl = null, Notes = null },
+    new Room { RoomId = 22, HotelId = 1, RoomNumber = 601, Floor = 6, RoomTypeId = 3, Status = "Available", PricePerNight = 159.99, ImageUrl = null, Notes = null },
+    new Room { RoomId = 23, HotelId = 1, RoomNumber = 602, Floor = 6, RoomTypeId = 3, Status = "Available", PricePerNight = 159.99, ImageUrl = null, Notes = null },
+    new Room { RoomId = 24, HotelId = 1, RoomNumber = 603, Floor = 6, RoomTypeId = 3, Status = "Available", PricePerNight = 159.99, ImageUrl = null, Notes = null },
+    new Room { RoomId = 25, HotelId = 1, RoomNumber = 701, Floor = 7, RoomTypeId = 4, Status = "Available", PricePerNight = 189.99, ImageUrl = null, Notes = null },
+    new Room { RoomId = 26, HotelId = 1, RoomNumber = 702, Floor = 7, RoomTypeId = 4, Status = "Available", PricePerNight = 189.99, ImageUrl = null, Notes = null },
+    new Room { RoomId = 27, HotelId = 1, RoomNumber = 703, Floor = 7, RoomTypeId = 4, Status = "Available", PricePerNight = 189.99, ImageUrl = null, Notes = null },
+    new Room { RoomId = 28, HotelId = 1, RoomNumber = 704, Floor = 7, RoomTypeId = 4, Status = "Available", PricePerNight = 189.99, ImageUrl = null, Notes = null },
+    new Room { RoomId = 29, HotelId = 1, RoomNumber = 801, Floor = 8, RoomTypeId = 5, Status = "Available", PricePerNight = 249.99, ImageUrl = null, Notes = null },
+    new Room { RoomId = 30, HotelId = 1, RoomNumber = 802, Floor = 8, RoomTypeId = 5, Status = "Available", PricePerNight = 249.99, ImageUrl = null, Notes = null },
+    new Room { RoomId = 31, HotelId = 1, RoomNumber = 901, Floor = 9, RoomTypeId = 6, Status = "Available", PricePerNight = 499.99, ImageUrl = null, Notes = null }
+};
             context.Rooms.AddRange(rooms);
+            var amenities = new List<Amenity>
+            {
+                new Amenity { Id = 1, Name = "Free Wi-Fi" },
+                new Amenity { Id = 2, Name = "Air Conditioning" },
+                new Amenity { Id = 3, Name = "Mini Bar" },
+                new Amenity { Id = 4, Name = "Flat Screen TV" },
+                new Amenity { Id = 5, Name = "Jacuzzi" },
+                new Amenity { Id = 6, Name = "Balcony with View" }
+            };
+            context.Amenities.AddRange(amenities);
+            context.SaveChanges();
+            var roomAmenities = new List<RoomAmenities>
+            {
+                // --- Standard Rooms (Floor 1: Rooms 1 to 5) ---
+                // Room 101 gets Wi-Fi and TV
+                new RoomAmenities { RoomId = 1, AmenityId = 1 },
+                new RoomAmenities { RoomId = 1, AmenityId = 4 },
+                // Room 102 gets Wi-Fi and AC
+                new RoomAmenities { RoomId = 2, AmenityId = 1 },
+                new RoomAmenities { RoomId = 2, AmenityId = 2 },
+                // Room 103 gets Wi-Fi and TV
+                new RoomAmenities { RoomId = 3, AmenityId = 1 },
+                new RoomAmenities { RoomId = 3, AmenityId = 4 },
+
+                // --- Mid-Tier Rooms (Floor 3 & 4: Rooms 11 & 15) ---
+                // Room 301 (Floor 3) gets Wi-Fi, AC, TV, and Mini Bar
+                new RoomAmenities { RoomId = 11, AmenityId = 1 },
+                new RoomAmenities { RoomId = 11, AmenityId = 2 },
+                new RoomAmenities { RoomId = 11, AmenityId = 4 },
+                new RoomAmenities { RoomId = 11, AmenityId = 3 },
+    
+                // Room 401 (Floor 4) gets Wi-Fi, AC, TV, and Balcony
+                new RoomAmenities { RoomId = 15, AmenityId = 1 },
+                new RoomAmenities { RoomId = 15, AmenityId = 2 },
+                new RoomAmenities { RoomId = 15, AmenityId = 4 },
+                new RoomAmenities { RoomId = 15, AmenityId = 6 },
+
+                // --- Suites & Luxury Rooms (Floors 8 & 9: Rooms 29 & 31) ---
+                // Room 801 (Floor 8 - Deluxe) gets everything except Jacuzzi
+                new RoomAmenities { RoomId = 29, AmenityId = 1 },
+                new RoomAmenities { RoomId = 29, AmenityId = 2 },
+                new RoomAmenities { RoomId = 29, AmenityId = 3 },
+                new RoomAmenities { RoomId = 29, AmenityId = 4 },
+                new RoomAmenities { RoomId = 29, AmenityId = 6 },
+
+                // Room 901 (Floor 9 - Penthouse Penthouse Suite) gets absolutely everything
+                new RoomAmenities { RoomId = 31, AmenityId = 1 },
+                new RoomAmenities { RoomId = 31, AmenityId = 2 },
+                new RoomAmenities { RoomId = 31, AmenityId = 3 },
+                new RoomAmenities { RoomId = 31, AmenityId = 4 },
+                new RoomAmenities { RoomId = 31, AmenityId = 5 },
+                new RoomAmenities { RoomId = 31, AmenityId = 6 }
+            };
+            context.RoomAmenities.AddRange(roomAmenities);
             context.SaveChanges();
         }
     }
