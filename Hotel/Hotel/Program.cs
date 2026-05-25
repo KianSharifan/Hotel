@@ -4,6 +4,10 @@ using Hotel.Data;
 using Hotel.Seeding;
 using Hotel.Models;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +20,37 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDBContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+var jwtSettings = builder.Configuration.GetSection("Jwt");
+
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme =
+            JwtBearerDefaults.AuthenticationScheme;
+
+        options.DefaultChallengeScheme =
+            JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters =
+            new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+
+                ValidIssuer = jwtSettings["Issuer"],
+                ValidAudience = jwtSettings["Audience"],
+
+                IssuerSigningKey =
+                    new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(jwtSettings["Key"]))
+            };
+    });
+
+builder.Services.AddAuthorization();
+builder.Services.AddScoped<JwtService>();
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -33,8 +68,9 @@ if (app.Environment.IsDevelopment())
     // app.UseSwaggerUI();
     app.MapOpenApi();
 }
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
-
 app.UseHttpsRedirection();
 
 app.Run();
