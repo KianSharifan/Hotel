@@ -18,4 +18,17 @@ public class RoomType
     }
 
     public string? Description { get; set; }
+    public string? URL { get; set; }
+    private double price;
+
+    public double Price
+    {
+        get => price;
+        set
+        {
+            if (value < 0)
+                throw new Exception();
+            price = value;
+        }
+    }
 }
