@@ -475,39 +475,29 @@ var rooms = new List<Room>
             context.SaveChanges();
             var roomAmenities = new List<RoomAmenities>
             {
-                // --- Standard Rooms (Floor 1: Rooms 1 to 5) ---
-                // Room 101 gets Wi-Fi and TV
                 new RoomAmenities { RoomId = 1, AmenityId = 1 },
                 new RoomAmenities { RoomId = 1, AmenityId = 4 },
-                // Room 102 gets Wi-Fi and AC
                 new RoomAmenities { RoomId = 2, AmenityId = 1 },
                 new RoomAmenities { RoomId = 2, AmenityId = 2 },
-                // Room 103 gets Wi-Fi and TV
                 new RoomAmenities { RoomId = 3, AmenityId = 1 },
                 new RoomAmenities { RoomId = 3, AmenityId = 4 },
 
-                // --- Mid-Tier Rooms (Floor 3 & 4: Rooms 11 & 15) ---
-                // Room 301 (Floor 3) gets Wi-Fi, AC, TV, and Mini Bar
                 new RoomAmenities { RoomId = 11, AmenityId = 1 },
                 new RoomAmenities { RoomId = 11, AmenityId = 2 },
                 new RoomAmenities { RoomId = 11, AmenityId = 4 },
                 new RoomAmenities { RoomId = 11, AmenityId = 3 },
     
-                // Room 401 (Floor 4) gets Wi-Fi, AC, TV, and Balcony
                 new RoomAmenities { RoomId = 15, AmenityId = 1 },
                 new RoomAmenities { RoomId = 15, AmenityId = 2 },
                 new RoomAmenities { RoomId = 15, AmenityId = 4 },
                 new RoomAmenities { RoomId = 15, AmenityId = 6 },
 
-                // --- Suites & Luxury Rooms (Floors 8 & 9: Rooms 29 & 31) ---
-                // Room 801 (Floor 8 - Deluxe) gets everything except Jacuzzi
                 new RoomAmenities { RoomId = 29, AmenityId = 1 },
                 new RoomAmenities { RoomId = 29, AmenityId = 2 },
                 new RoomAmenities { RoomId = 29, AmenityId = 3 },
                 new RoomAmenities { RoomId = 29, AmenityId = 4 },
                 new RoomAmenities { RoomId = 29, AmenityId = 6 },
 
-                // Room 901 (Floor 9 - Penthouse Penthouse Suite) gets absolutely everything
                 new RoomAmenities { RoomId = 31, AmenityId = 1 },
                 new RoomAmenities { RoomId = 31, AmenityId = 2 },
                 new RoomAmenities { RoomId = 31, AmenityId = 3 },

@@ -2,12 +2,14 @@ using Hotel.Models;
 using Hotel.Data;
 using Microsoft.AspNetCore.Mvc;
 using BCrypt.Net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace Hotel.Controllers;
 
-
-[Route("")]
+[Authorize]
+[Route("Home")]
 [ApiController]
 public class HotelController : Controller
 {
