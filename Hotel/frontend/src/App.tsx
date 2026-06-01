@@ -8,6 +8,7 @@ import Golf from "./pages/Golf"
 import Pool from "./pages/Pool"
 import Reservation from "./pages/Reservation"
 import BookingResults from "./pages/BookingResults"
+import RestaurantReservation from "./pages/RestaurantReserve"
 
 
 
@@ -21,7 +22,6 @@ function App() {
       <Routes>
 
         <Route path="/" element={<Home />} />
-
         <Route path="/rooms" element={<Rooms />} />
         <Route path="/restaurant" element={<Restaurant />} />
         <Route path="/amenities/spa" element={<Spa />} />
@@ -29,6 +29,7 @@ function App() {
         <Route path="/amenities/golf" element={<Golf />} />
         <Route path="/reservation" element={<Reservation />} />
         <Route path="/reservation/booking-results" element={<BookingResults />} />
+        <Route path="/restaurant/restaurantReservation" element={<RestaurantReservation />} />
 
       </Routes>
 

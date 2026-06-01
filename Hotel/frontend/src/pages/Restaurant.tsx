@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 function Restaurant() {
-
+  const navigate= useNavigate()
   const expRef = useRef<HTMLDivElement | null>(null)
   const [expVisible, setExpVisible] = useState(false)
 
@@ -84,7 +85,9 @@ function Restaurant() {
             Luxury fine dining experience
           </p>
 
-          <button className="bg-white text-black px-8 py-4 rounded-xl">
+          <button
+            onClick={()=>navigate("/restaurant/restaurantReservation")}
+            className="bg-white text-black px-8 py-4 rounded-xl">
             Reserve Table
           </button>
 

@@ -1,5 +1,6 @@
 import hotelImage from "../assets/hero.png"
 import { useNavigate } from "react-router-dom"
+import { motion } from "motion/react"
 
 function Hero() {
     const navigate = useNavigate()
@@ -31,7 +32,20 @@ function Hero() {
       <div className="absolute inset-0 bg-black/50"></div>
 
       {/* Content */}
-      <div className="relative z-10 text-center text-white max-w-4xl px-6">
+      <motion.div className="relative z-10 text-center text-white max-w-4xl px-6"
+        initial={{
+            opacity: 0,
+            y: 80
+          }}
+
+          animate={{
+            opacity: 1,
+            y: 0
+          }}
+
+          transition={{
+            duration: 1.2
+          }}>
 
         <p className="uppercase tracking-[10px] mb-6 text-lg">
 
@@ -56,6 +70,7 @@ function Hero() {
         <div className="flex justify-center gap-6">
 
           <button
+            onClick={() => navigate("/rooms")}
             className="
             bg-white
             text-black
@@ -89,7 +104,7 @@ function Hero() {
 
         </div>
 
-      </div>
+      </motion.div>
 
     </section>
   )

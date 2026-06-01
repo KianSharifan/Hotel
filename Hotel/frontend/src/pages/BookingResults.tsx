@@ -3,6 +3,8 @@ import { useState, useEffect } from "react"
 
 import { useSearchParams } from "react-router-dom"
 
+import { amenityIcons } from "../data/amenityIcons"
+
 function BookingResults() {
 
   const [searchParams] = useSearchParams()
@@ -15,13 +17,15 @@ function BookingResults() {
       room.maxGuests >= guests
     )
 
-const [loaded, setLoaded] = useState(false)
+    const [loaded, setLoaded] = useState(false)
 
-useEffect(() => {
+    useEffect(() => {
 
-  setLoaded(true)
+      setLoaded(true)
 
-}, [])
+    }, [])
+
+    
 
 
 
@@ -136,26 +140,53 @@ useEffect(() => {
               {/* AMENITIES */}
               <div className="flex flex-wrap gap-3 mb-8">
 
-                {room.amenities.map((amenity) => (
+                {room.amenities.map((amenity) => {
 
-                  <div
-                    key={amenity}
+                  const Icon =
+                    amenityIcons[amenity]
 
-                    className="
-                      border
-                      border-gray-300
-                      px-4
-                      py-2
-                      rounded-full
-                      text-sm
-                    "
-                  >
+                  return (
 
-                    {amenity}
+                    <div
+                      key={amenity}
 
-                  </div>
+                      className="
+                        flex
+                        items-center
+                        gap-2
 
-                ))}
+                        border
+                        border-gray-300
+
+                        px-4
+                        py-2
+
+                        rounded-full
+                        text-sm
+
+                        bg-white/50
+                        backdrop-blur-sm
+                      "
+                    >
+
+                      {Icon &&
+                        <Icon
+                          size={18}
+                          className="text-[#d4af37]"
+                        />
+                      }
+
+                      <span>
+
+                        {amenity}
+
+                      </span>
+
+                    </div>
+
+                  )
+
+                })}
 
               </div>
 
