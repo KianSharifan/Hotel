@@ -4,9 +4,11 @@ public class Room
 {
     public int RoomId { get; set; }
     public int HotelId { get; set; }
+    public Models.Hotel Hotel { get; set; }
     public uint RoomNumber { get; set; }
     public int Floor { get; set; }
     public int RoomTypeId { get; set; }
+    public RoomType RoomType { get; set; }
     public string? Status { get; set; }
 
     private double pricePerNight;
@@ -21,7 +23,5 @@ public class Room
         }
     }
     
-    public string? ImageUrl {get; set;}
-
     public string? Notes { get; set; }
 }

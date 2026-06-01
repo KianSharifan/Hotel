@@ -4,6 +4,7 @@ public class Restaurant
 {
     public int Id { get; set; }
     public int HotelId { get; set; }
+    public Hotel Hotel { get; set; }
     public string? Name { get; set; }
     public string? Address { get; set; }
     public TimeOnly OpeningTime { get; set; }

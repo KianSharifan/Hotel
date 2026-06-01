@@ -2,13 +2,14 @@ using Hotel.Models;
 using Hotel.Data;
 using Microsoft.AspNetCore.Mvc;
 using BCrypt.Net;
+using Hotel.Mappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 
 namespace Hotel.Controllers;
 
-[Authorize]
+// [Authorize]
 [Route("Home")]
 [ApiController]
 public class HotelController : Controller
@@ -23,18 +24,19 @@ public class HotelController : Controller
     {
         try
         {
-            var mc = new MaintenanceRequest()
+            var hotel = new Models.Hotel()
             {
-                Id = 1,
-                Description = "",
-                CreatedDate = DateTime.UtcNow,
-                ModifiedDate = DateTime.UtcNow,
-                Priority = "",
-                ReportedEmployeeId = 1,
-                RoomId = 1,
-                Status = ""
+                Name = "Htel",
+                Address = "addess",
+                City = "ity",
+                Country = "country",
+                Phone = "091245678",
+                Email = "emal@h.c",
+                CheckInTime = TimeOnly.MaxValue,
+                CheckOutTime = TimeOnly.MaxValue,
+                StarRating = 2.3
             };
-            _context.MaintenanceRequests.Add(mc);
+            _context.Hotels.Add(hotel);
             await _context.SaveChangesAsync();
         }
         catch (Exception e)

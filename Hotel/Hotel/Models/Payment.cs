@@ -1,3 +1,5 @@
+using System.Transactions;
+
 namespace Hotel.Models;
 
 public class Payment
@@ -5,7 +7,9 @@ public class Payment
     public int Id { get; set; }
     // each one of this two will determine that the money was for food or for room
     public int? InvoiceId { get; set; }
+    public Invoice? Invoice { get; set; }
     public int? OrderId { get; set; }
+    public Order?  Order { get; set; }
 
     private double _amount;
     public double Amount

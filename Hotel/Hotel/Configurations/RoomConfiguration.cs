@@ -9,7 +9,7 @@ public class RoomConfiguration : IEntityTypeConfiguration<Room>
     {
         builder.HasKey(r => r.RoomId);
         
-        builder.HasOne<Room>()
+        builder.HasOne<RoomType>()
             .WithMany()
             .HasForeignKey(r => r.RoomTypeId)
             .OnDelete(DeleteBehavior.Cascade);

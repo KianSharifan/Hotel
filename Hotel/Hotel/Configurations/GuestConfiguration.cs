@@ -15,5 +15,10 @@ public class GuestConfiguration : IEntityTypeConfiguration<Guest>
         
         builder.Property(x => x.Nationality)
             .HasMaxLength(30);
+        
+        builder.HasOne<User>()
+            .WithOne()
+            .HasForeignKey<Guest>(x => x.GuestId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

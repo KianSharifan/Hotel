@@ -429,37 +429,37 @@ public class SeedDB
             context.RestaurantTables.AddRange(tables);
 var rooms = new List<Room>
 {
-    new Room { RoomId = 1, HotelId = 1, RoomNumber = 101, Floor = 1, RoomTypeId = 1, Status = "Available", PricePerNight = 89.99, ImageUrl = null, Notes = null },
-    new Room { RoomId = 2, HotelId = 1, RoomNumber = 102, Floor = 1, RoomTypeId = 1, Status = "Available", PricePerNight = 89.99, ImageUrl = null, Notes = null },
-    new Room { RoomId = 3, HotelId = 1, RoomNumber = 103, Floor = 1, RoomTypeId = 1, Status = "Available", PricePerNight = 89.99, ImageUrl = null, Notes = null },
-    new Room { RoomId = 4, HotelId = 1, RoomNumber = 104, Floor = 1, RoomTypeId = 1, Status = "Available", PricePerNight = 89.99, ImageUrl = null, Notes = null },
-    new Room { RoomId = 5, HotelId = 1, RoomNumber = 105, Floor = 1, RoomTypeId = 1, Status = "Available", PricePerNight = 89.99, ImageUrl = null, Notes = null },
-    new Room { RoomId = 6, HotelId = 1, RoomNumber = 201, Floor = 2, RoomTypeId = 1, Status = "Available", PricePerNight = 92.99, ImageUrl = null, Notes = null },
-    new Room { RoomId = 7, HotelId = 1, RoomNumber = 202, Floor = 2, RoomTypeId = 1, Status = "Available", PricePerNight = 92.99, ImageUrl = null, Notes = null },
-    new Room { RoomId = 8, HotelId = 1, RoomNumber = 203, Floor = 2, RoomTypeId = 1, Status = "Available", PricePerNight = 92.99, ImageUrl = null, Notes = null },
-    new Room { RoomId = 9, HotelId = 1, RoomNumber = 204, Floor = 2, RoomTypeId = 1, Status = "Available", PricePerNight = 92.99, ImageUrl = null, Notes = null },
-    new Room { RoomId = 10, HotelId = 1, RoomNumber = 205, Floor = 2, RoomTypeId = 1, Status = "Available", PricePerNight = 92.99, ImageUrl = null, Notes = null },
-    new Room { RoomId = 11, HotelId = 1, RoomNumber = 301, Floor = 3, RoomTypeId = 2, Status = "Available", PricePerNight = 119.99, ImageUrl = null, Notes = null },
-    new Room { RoomId = 12, HotelId = 1, RoomNumber = 302, Floor = 3, RoomTypeId = 2, Status = "Available", PricePerNight = 119.99, ImageUrl = null, Notes = null },
-    new Room { RoomId = 13, HotelId = 1, RoomNumber = 303, Floor = 3, RoomTypeId = 2, Status = "Available", PricePerNight = 119.99, ImageUrl = null, Notes = null },
-    new Room { RoomId = 14, HotelId = 1, RoomNumber = 304, Floor = 3, RoomTypeId = 2, Status = "Available", PricePerNight = 119.99, ImageUrl = null, Notes = null },
-    new Room { RoomId = 15, HotelId = 1, RoomNumber = 401, Floor = 4, RoomTypeId = 2, Status = "Available", PricePerNight = 129.99, ImageUrl = null, Notes = null },
-    new Room { RoomId = 16, HotelId = 1, RoomNumber = 402, Floor = 4, RoomTypeId = 2, Status = "Available", PricePerNight = 129.99, ImageUrl = null, Notes = null },
-    new Room { RoomId = 17, HotelId = 1, RoomNumber = 403, Floor = 4, RoomTypeId = 2, Status = "Available", PricePerNight = 129.99, ImageUrl = null, Notes = null },
-    new Room { RoomId = 18, HotelId = 1, RoomNumber = 404, Floor = 4, RoomTypeId = 2, Status = "Available", PricePerNight = 129.99, ImageUrl = null, Notes = null },
-    new Room { RoomId = 19, HotelId = 1, RoomNumber = 501, Floor = 5, RoomTypeId = 3, Status = "Available", PricePerNight = 149.99, ImageUrl = null, Notes = null },
-    new Room { RoomId = 20, HotelId = 1, RoomNumber = 502, Floor = 5, RoomTypeId = 3, Status = "Available", PricePerNight = 149.99, ImageUrl = null, Notes = null },
-    new Room { RoomId = 21, HotelId = 1, RoomNumber = 503, Floor = 5, RoomTypeId = 3, Status = "Available", PricePerNight = 149.99, ImageUrl = null, Notes = null },
-    new Room { RoomId = 22, HotelId = 1, RoomNumber = 601, Floor = 6, RoomTypeId = 3, Status = "Available", PricePerNight = 159.99, ImageUrl = null, Notes = null },
-    new Room { RoomId = 23, HotelId = 1, RoomNumber = 602, Floor = 6, RoomTypeId = 3, Status = "Available", PricePerNight = 159.99, ImageUrl = null, Notes = null },
-    new Room { RoomId = 24, HotelId = 1, RoomNumber = 603, Floor = 6, RoomTypeId = 3, Status = "Available", PricePerNight = 159.99, ImageUrl = null, Notes = null },
-    new Room { RoomId = 25, HotelId = 1, RoomNumber = 701, Floor = 7, RoomTypeId = 4, Status = "Available", PricePerNight = 189.99, ImageUrl = null, Notes = null },
-    new Room { RoomId = 26, HotelId = 1, RoomNumber = 702, Floor = 7, RoomTypeId = 4, Status = "Available", PricePerNight = 189.99, ImageUrl = null, Notes = null },
-    new Room { RoomId = 27, HotelId = 1, RoomNumber = 703, Floor = 7, RoomTypeId = 4, Status = "Available", PricePerNight = 189.99, ImageUrl = null, Notes = null },
-    new Room { RoomId = 28, HotelId = 1, RoomNumber = 704, Floor = 7, RoomTypeId = 4, Status = "Available", PricePerNight = 189.99, ImageUrl = null, Notes = null },
-    new Room { RoomId = 29, HotelId = 1, RoomNumber = 801, Floor = 8, RoomTypeId = 5, Status = "Available", PricePerNight = 249.99, ImageUrl = null, Notes = null },
-    new Room { RoomId = 30, HotelId = 1, RoomNumber = 802, Floor = 8, RoomTypeId = 5, Status = "Available", PricePerNight = 249.99, ImageUrl = null, Notes = null },
-    new Room { RoomId = 31, HotelId = 1, RoomNumber = 901, Floor = 9, RoomTypeId = 6, Status = "Available", PricePerNight = 499.99, ImageUrl = null, Notes = null }
+ new Room { RoomId = 1, HotelId = 1, RoomNumber = 101, Floor = 1, RoomTypeId = 1, Status = "Available", PricePerNight = 89.99, Notes = null },
+new Room { RoomId = 2, HotelId = 1, RoomNumber = 102, Floor = 1, RoomTypeId = 1, Status = "Available", PricePerNight = 89.99, Notes = null },
+new Room { RoomId = 3, HotelId = 1, RoomNumber = 103, Floor = 1, RoomTypeId = 1, Status = "Available", PricePerNight = 89.99, Notes = null },
+new Room { RoomId = 4, HotelId = 1, RoomNumber = 104, Floor = 1, RoomTypeId = 1, Status = "Available", PricePerNight = 89.99, Notes = null },
+new Room { RoomId = 5, HotelId = 1, RoomNumber = 105, Floor = 1, RoomTypeId = 1, Status = "Available", PricePerNight = 89.99, Notes = null },
+new Room { RoomId = 6, HotelId = 1, RoomNumber = 201, Floor = 2, RoomTypeId = 1, Status = "Available", PricePerNight = 92.99, Notes = null },
+new Room { RoomId = 7, HotelId = 1, RoomNumber = 202, Floor = 2, RoomTypeId = 1, Status = "Available", PricePerNight = 92.99, Notes = null },
+new Room { RoomId = 8, HotelId = 1, RoomNumber = 203, Floor = 2, RoomTypeId = 1, Status = "Available", PricePerNight = 92.99, Notes = null },
+new Room { RoomId = 9, HotelId = 1, RoomNumber = 204, Floor = 2, RoomTypeId = 1, Status = "Available", PricePerNight = 92.99, Notes = null },
+new Room { RoomId = 10, HotelId = 1, RoomNumber = 205, Floor = 2, RoomTypeId = 1, Status = "Available", PricePerNight = 92.99, Notes = null },
+new Room { RoomId = 11, HotelId = 1, RoomNumber = 301, Floor = 3, RoomTypeId = 2, Status = "Available", PricePerNight = 119.99, Notes = null },
+new Room { RoomId = 12, HotelId = 1, RoomNumber = 302, Floor = 3, RoomTypeId = 2, Status = "Available", PricePerNight = 119.99, Notes = null },
+new Room { RoomId = 13, HotelId = 1, RoomNumber = 303, Floor = 3, RoomTypeId = 2, Status = "Available", PricePerNight = 119.99, Notes = null },
+new Room { RoomId = 14, HotelId = 1, RoomNumber = 304, Floor = 3, RoomTypeId = 2, Status = "Available", PricePerNight = 119.99, Notes = null },
+new Room { RoomId = 15, HotelId = 1, RoomNumber = 401, Floor = 4, RoomTypeId = 2, Status = "Available", PricePerNight = 129.99, Notes = null },
+new Room { RoomId = 16, HotelId = 1, RoomNumber = 402, Floor = 4, RoomTypeId = 2, Status = "Available", PricePerNight = 129.99, Notes = null },
+new Room { RoomId = 17, HotelId = 1, RoomNumber = 403, Floor = 4, RoomTypeId = 2, Status = "Available", PricePerNight = 129.99, Notes = null },
+new Room { RoomId = 18, HotelId = 1, RoomNumber = 404, Floor = 4, RoomTypeId = 2, Status = "Available", PricePerNight = 129.99, Notes = null },
+new Room { RoomId = 19, HotelId = 1, RoomNumber = 501, Floor = 5, RoomTypeId = 3, Status = "Available", PricePerNight = 149.99, Notes = null },
+new Room { RoomId = 20, HotelId = 1, RoomNumber = 502, Floor = 5, RoomTypeId = 3, Status = "Available", PricePerNight = 149.99, Notes = null },
+new Room { RoomId = 21, HotelId = 1, RoomNumber = 503, Floor = 5, RoomTypeId = 3, Status = "Available", PricePerNight = 149.99, Notes = null },
+new Room { RoomId = 22, HotelId = 1, RoomNumber = 601, Floor = 6, RoomTypeId = 3, Status = "Available", PricePerNight = 159.99, Notes = null },
+new Room { RoomId = 23, HotelId = 1, RoomNumber = 602, Floor = 6, RoomTypeId = 3, Status = "Available", PricePerNight = 159.99, Notes = null },
+new Room { RoomId = 24, HotelId = 1, RoomNumber = 603, Floor = 6, RoomTypeId = 3, Status = "Available", PricePerNight = 159.99, Notes = null },
+new Room { RoomId = 25, HotelId = 1, RoomNumber = 701, Floor = 7, RoomTypeId = 4, Status = "Available", PricePerNight = 189.99, Notes = null },
+new Room { RoomId = 26, HotelId = 1, RoomNumber = 702, Floor = 7, RoomTypeId = 4, Status = "Available", PricePerNight = 189.99, Notes = null },
+new Room { RoomId = 27, HotelId = 1, RoomNumber = 703, Floor = 7, RoomTypeId = 4, Status = "Available", PricePerNight = 189.99, Notes = null },
+new Room { RoomId = 28, HotelId = 1, RoomNumber = 704, Floor = 7, RoomTypeId = 4, Status = "Available", PricePerNight = 189.99, Notes = null },
+new Room { RoomId = 29, HotelId = 1, RoomNumber = 801, Floor = 8, RoomTypeId = 5, Status = "Available", PricePerNight = 249.99, Notes = null },
+new Room { RoomId = 30, HotelId = 1, RoomNumber = 802, Floor = 8, RoomTypeId = 5, Status = "Available", PricePerNight = 249.99, Notes = null },
+new Room { RoomId = 31, HotelId = 1, RoomNumber = 901, Floor = 9, RoomTypeId = 6, Status = "Available", PricePerNight = 499.99, Notes = null } 
 };
             context.Rooms.AddRange(rooms);
             var amenities = new List<Amenity>
@@ -506,6 +506,37 @@ var rooms = new List<Room>
                 new RoomAmenities { RoomId = 31, AmenityId = 6 }
             };
             context.RoomAmenities.AddRange(roomAmenities);
+            var shifts = new List<Shift>
+{
+    new Shift { Id = 1, Day = "Monday", StartTime = new TimeOnly(0, 0), EndTime = new TimeOnly(8, 0) },
+    new Shift { Id = 2, Day = "Monday", StartTime = new TimeOnly(8, 0), EndTime = new TimeOnly(16, 0) },
+    new Shift { Id = 3, Day = "Monday", StartTime = new TimeOnly(16, 0), EndTime = new TimeOnly(23, 59) },
+
+    new Shift { Id = 4, Day = "Tuesday", StartTime = new TimeOnly(0, 0), EndTime = new TimeOnly(8, 0) },
+    new Shift { Id = 5, Day = "Tuesday", StartTime = new TimeOnly(8, 0), EndTime = new TimeOnly(16, 0) },
+    new Shift { Id = 6, Day = "Tuesday", StartTime = new TimeOnly(16, 0), EndTime = new TimeOnly(23, 59) },
+
+    new Shift { Id = 7, Day = "Wednesday", StartTime = new TimeOnly(0, 0), EndTime = new TimeOnly(8, 0) },
+    new Shift { Id = 8, Day = "Wednesday", StartTime = new TimeOnly(8, 0), EndTime = new TimeOnly(16, 0) },
+    new Shift { Id = 9, Day = "Wednesday", StartTime = new TimeOnly(16, 0), EndTime = new TimeOnly(23, 59) },
+
+    new Shift { Id = 10, Day = "Thursday", StartTime = new TimeOnly(0, 0), EndTime = new TimeOnly(8, 0) },
+    new Shift { Id = 11, Day = "Thursday", StartTime = new TimeOnly(8, 0), EndTime = new TimeOnly(16, 0) },
+    new Shift { Id = 12, Day = "Thursday", StartTime = new TimeOnly(16, 0), EndTime = new TimeOnly(23, 59) },
+
+    new Shift { Id = 13, Day = "Friday", StartTime = new TimeOnly(0, 0), EndTime = new TimeOnly(8, 0) },
+    new Shift { Id = 14, Day = "Friday", StartTime = new TimeOnly(8, 0), EndTime = new TimeOnly(16, 0) },
+    new Shift { Id = 15, Day = "Friday", StartTime = new TimeOnly(16, 0), EndTime = new TimeOnly(23, 59) },
+
+    new Shift { Id = 16, Day = "Saturday", StartTime = new TimeOnly(0, 0), EndTime = new TimeOnly(8, 0) },
+    new Shift { Id = 17, Day = "Saturday", StartTime = new TimeOnly(8, 0), EndTime = new TimeOnly(16, 0) },
+    new Shift { Id = 18, Day = "Saturday", StartTime = new TimeOnly(16, 0), EndTime = new TimeOnly(23, 59) },
+
+    new Shift { Id = 19, Day = "Sunday", StartTime = new TimeOnly(0, 0), EndTime = new TimeOnly(8, 0) },
+    new Shift { Id = 20, Day = "Sunday", StartTime = new TimeOnly(8, 0), EndTime = new TimeOnly(16, 0) },
+    new Shift { Id = 21, Day = "Sunday", StartTime = new TimeOnly(16, 0), EndTime = new TimeOnly(23, 59) }
+};
+            context.Shifts.AddRange(shifts);
             context.SaveChanges();
         }
     }

@@ -17,13 +17,13 @@ public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
             .HasMaxLength(150);
         
         builder.HasOne<Order>()
-            .WithMany()
-            .HasForeignKey(p => p.OrderId)
+            .WithOne()
+            .HasForeignKey<Payment>(p => p.OrderId)
             .OnDelete(DeleteBehavior.Cascade);
         
         builder.HasOne<Invoice>()
-            .WithMany()
-            .HasForeignKey(p => p.InvoiceId)
+            .WithOne()
+            .HasForeignKey<Payment>(p => p.InvoiceId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }
