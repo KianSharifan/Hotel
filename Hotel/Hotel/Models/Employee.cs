@@ -9,6 +9,7 @@ public class Employee
     public Department Department { get; set; }
     public DateTime HireDate { get; set; }
 
+    public User User { get; set; }
     private double salary;
     public double Salary
     {

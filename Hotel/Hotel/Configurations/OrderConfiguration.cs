@@ -10,12 +10,12 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
     {
     builder.HasKey(o => o.Id);
 
-    builder.HasOne<Guest>()
+    builder.HasOne(x => x.Guest)
         .WithMany()
         .HasForeignKey(o => o.GuestId)
         .OnDelete(DeleteBehavior.SetNull);
     
-    builder.HasOne<Table>()
+    builder.HasOne(x => x.Table)
         .WithMany()
         .HasForeignKey(o => o.TableId)
         .OnDelete(DeleteBehavior.SetNull);

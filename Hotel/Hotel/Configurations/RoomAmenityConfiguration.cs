@@ -10,12 +10,12 @@ public class RoomAmenityConfiguration : IEntityTypeConfiguration<RoomAmenities>
     {
         builder.HasKey(a => new{a.RoomId , a.AmenityId});
         
-        builder.HasOne<Room>()
+        builder.HasOne(r => r.Room)
             .WithMany()
             .HasForeignKey(r => r.RoomId)
             .OnDelete(DeleteBehavior.Cascade);
         
-        builder.HasOne<Amenity>()
+        builder.HasOne(a => a.Amenity)
             .WithMany()
             .HasForeignKey(r => r.AmenityId)
             .OnDelete(DeleteBehavior.Cascade);

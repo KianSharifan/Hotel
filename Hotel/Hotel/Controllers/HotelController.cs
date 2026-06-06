@@ -2,9 +2,12 @@ using Hotel.Models;
 using Hotel.Data;
 using Microsoft.AspNetCore.Mvc;
 using BCrypt.Net;
+using Hotel.DTOs;
 using Hotel.Mappers;
+using Hotel.Migrations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Hotel.Services;
 
 
 namespace Hotel.Controllers;
@@ -22,29 +25,24 @@ public class HotelController : Controller
     [HttpGet]
     public async Task<IActionResult> GetHotels()
     {
+        RoomServices roomServices = new RoomServices(_context);
+        List<RoomType> output = new List<RoomType>();
+
         try
         {
-            var hotel = new Models.Hotel()
-            {
-                Name = "Htel",
-                Address = "addess",
-                City = "ity",
-                Country = "country",
-                Phone = "091245678",
-                Email = "emal@h.c",
-                CheckInTime = TimeOnly.MaxValue,
-                CheckOutTime = TimeOnly.MaxValue,
-                StarRating = 2.3
-            };
-            _context.Hotels.Add(hotel);
-            await _context.SaveChangesAsync();
+            output = roomServices.AvailableRooms(new RoomSearchDTO()
+                {
+                    NumberOfAdults = 2, NumberOfKids = 1, CheckOut = DateOnly.MinValue,
+                    CheckIn = new DateOnly(2026, 3, 12)
+                }
+            );
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
             throw;
         }
-        var hotels = await _context.Hotels.ToListAsync();
-        return Ok(hotels);
+        
+        return Ok(output);
     }
 }

@@ -6,7 +6,7 @@ namespace Hotel.Seeding;
 
 public class SeedDB
 {
-    public static void SeedDataBase(IApplicationBuilder app)
+    public static async Task SeedDataBase(IApplicationBuilder app)
     {
         using var scope = app.ApplicationServices.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<AppDBContext>();
@@ -202,7 +202,7 @@ public class SeedDB
                 },
             };
             context.MenuCategories.AddRange(menuCategories);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             var menuItems = new List<MenuItem>
             { 
             // BREAKFAST (1)
@@ -402,7 +402,7 @@ public class SeedDB
     }
 };
             context.Services.AddRange(services);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             var tables = new List<Table>
             {
                 new Table { Id = 1, RestaurantId = 1, Status = "Available", Reserved = false, Capacity = 2 },
@@ -472,7 +472,7 @@ new Room { RoomId = 31, HotelId = 1, RoomNumber = 901, Floor = 9, RoomTypeId = 6
                 new Amenity { Id = 6, Name = "Balcony with View" }
             };
             context.Amenities.AddRange(amenities);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             var roomAmenities = new List<RoomAmenities>
             {
                 new RoomAmenities { RoomId = 1, AmenityId = 1 },
@@ -537,7 +537,7 @@ new Room { RoomId = 31, HotelId = 1, RoomNumber = 901, Floor = 9, RoomTypeId = 6
     new Shift { Id = 21, Day = "Sunday", StartTime = new TimeOnly(16, 0), EndTime = new TimeOnly(23, 59) }
 };
             context.Shifts.AddRange(shifts);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
     }
 }

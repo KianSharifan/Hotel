@@ -10,12 +10,12 @@ public class ShiftAssignmentConfiguration : IEntityTypeConfiguration<ShiftAssign
     {
         builder.HasKey(x => new {x.ShiftId, x.EmployeeId});
         
-        builder.HasOne<Employee>()
+        builder.HasOne(x => x.Employee)
             .WithMany()
             .HasForeignKey(x => x.EmployeeId)
             .OnDelete(DeleteBehavior.Cascade);
         
-        builder.HasOne<Shift>()
+        builder.HasOne(x => x.Shift)
             .WithMany()
             .HasForeignKey(x => x.ShiftId)
             .OnDelete(DeleteBehavior.Cascade);

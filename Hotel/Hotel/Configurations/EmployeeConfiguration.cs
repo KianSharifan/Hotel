@@ -10,17 +10,17 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
     {
         builder.HasKey(e => e.Id);
         
-        builder.HasOne<Position>()
+        builder.HasOne(e => e.Position)
             .WithOne()
             .HasForeignKey<Employee>(p => p.PositionId)
             .OnDelete(DeleteBehavior.Restrict);
         
-        builder.HasOne<Department>()
+        builder.HasOne(e => e.Department)
             .WithOne()
             .HasForeignKey<Employee>(p => p.DepartmentId)
             .OnDelete(DeleteBehavior.Cascade);
         
-        builder.HasOne<User>()
+        builder.HasOne(e => e.User)
             .WithOne()
             .HasForeignKey<Employee>(x => x.Id)
             .OnDelete(DeleteBehavior.Cascade);

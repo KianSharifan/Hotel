@@ -16,12 +16,12 @@ public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
         builder.Property(p => p.PaymentMethod)
             .HasMaxLength(150);
         
-        builder.HasOne<Order>()
+        builder.HasOne(x => x.Order)
             .WithOne()
             .HasForeignKey<Payment>(p => p.OrderId)
             .OnDelete(DeleteBehavior.Cascade);
         
-        builder.HasOne<Invoice>()
+        builder.HasOne(x => x.Invoice)
             .WithOne()
             .HasForeignKey<Payment>(p => p.InvoiceId)
             .OnDelete(DeleteBehavior.Cascade);

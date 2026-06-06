@@ -10,12 +10,12 @@ public class InvoiceConfiguration : IEntityTypeConfiguration<Invoice>
     {
         builder.HasKey(x => x.Id);
 
-        builder.HasOne<Guest>()
+        builder.HasOne(x => x.Guest)
             .WithOne()
             .HasForeignKey<Invoice>(x => x.GuestId)
             .OnDelete(DeleteBehavior.Cascade);
         
-        builder.HasOne<Reservation>()
+        builder.HasOne(x => x.Reservation)
             .WithOne()
             .HasForeignKey<Invoice>(x => x.ReservationId)
             .OnDelete(DeleteBehavior.Cascade);

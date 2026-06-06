@@ -10,12 +10,12 @@ public class MaintenanceRequestConfiguration : IEntityTypeConfiguration<Maintena
     {
         builder.HasKey(m => m.Id);
 
-        builder.HasOne<Room>()
+        builder.HasOne(x => x.Room)
             .WithMany()
             .HasForeignKey(m => m.RoomId)
             .OnDelete(DeleteBehavior.Cascade);
         
-        builder.HasOne<Employee>()
+        builder.HasOne(x => x.ReportedEmployee)
             .WithMany()
             .HasForeignKey(m => m.ReportedEmployeeId)
             .OnDelete(DeleteBehavior.SetNull);

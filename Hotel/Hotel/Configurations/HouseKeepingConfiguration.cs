@@ -10,12 +10,12 @@ public class HouseKeepingConfiguration : IEntityTypeConfiguration<HouseKeeping>
     {
         builder.HasKey(x => x.Id);
         
-        builder.HasOne<Room>()
+        builder.HasOne(x => x.Room)
             .WithMany()
             .HasForeignKey(x => x.RoomId)
             .OnDelete(DeleteBehavior.Cascade);
         
-        builder.HasOne<Employee>()
+        builder.HasOne(x => x.Employee)
             .WithMany()
             .HasForeignKey(x => x.EmployeeId)
             .OnDelete(DeleteBehavior.Cascade);

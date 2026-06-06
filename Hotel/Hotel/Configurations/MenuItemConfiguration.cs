@@ -10,9 +10,9 @@ public class MenuItemConfiguration : IEntityTypeConfiguration<MenuItem>
     {
         builder.HasKey(m => m.Id);
 
-        builder.HasOne<MenuCategory>()
-            .WithOne()
-            .HasForeignKey<MenuItem>(m => m.MenuCategoryId)
+        builder.HasOne(m => m.MenuCategory)
+            .WithMany() 
+            .HasForeignKey(m => m.MenuCategoryId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.Property(m => m.Name)

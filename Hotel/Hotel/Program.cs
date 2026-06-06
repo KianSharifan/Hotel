@@ -59,7 +59,7 @@ using (var scope = app.Services.CreateScope())
     db.Database.Migrate();
 }
 
-SeedDB.SeedDataBase(app);
+await SeedDB.SeedDataBase(app);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
