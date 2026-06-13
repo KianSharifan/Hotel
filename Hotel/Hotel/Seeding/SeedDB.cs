@@ -35,6 +35,9 @@ public class SeedDB
                     RoomTypeId = 1,
                     Name = "Standard Room",
                     MaxGuests = 2,
+                    NumberDoubleBed = 1,
+                    NumberSingleBed = 0,
+                    NumberSofaBed = 0,
                     Description = "A comfortable room with a queen bed, work desk, and modern bathroom."
                 },
                 new RoomType
@@ -42,6 +45,9 @@ public class SeedDB
                     RoomTypeId = 2,
                     Name = "Deluxe Room",
                     MaxGuests = 3,
+                    NumberDoubleBed = 1,
+                    NumberSingleBed = 1,
+                    NumberSofaBed = 0,
                     Description = "A spacious room featuring a king bed, seating area, and premium décor."
                 },
                 new RoomType
@@ -49,6 +55,9 @@ public class SeedDB
                     RoomTypeId = 3,
                     Name = "Superior Room",
                     MaxGuests = 2,
+                    NumberDoubleBed = 0,
+                    NumberSingleBed = 2,
+                    NumberSofaBed = 0,
                     Description = "An upgraded room offering enhanced bedding, better views, and refined finishes."
                 },
                 new RoomType
@@ -56,13 +65,19 @@ public class SeedDB
                     RoomTypeId = 4,
                     Name = "Junior Suite",
                     MaxGuests = 3,
-                    Description = "A semi‑suite with a lounge area, elegant furnishings, and an expanded bathroom."
+                    NumberDoubleBed = 1,
+                    NumberSingleBed = 0,
+                    NumberSofaBed = 1,
+                    Description = "A semi-suite with a lounge area, elegant furnishings, and an expanded bathroom."
                 },
                 new RoomType
                 {
                     RoomTypeId = 5,
                     Name = "Executive Suite",
                     MaxGuests = 3,
+                    NumberDoubleBed = 1,
+                    NumberSingleBed = 0,
+                    NumberSofaBed = 1,
                     Description = "A luxury suite with a separate living room, workspace, and upgraded amenities."
                 },
                 new RoomType
@@ -70,8 +85,10 @@ public class SeedDB
                     RoomTypeId = 6,
                     Name = "Presidential Suite",
                     MaxGuests = 4,
-                    Description =
-                        "The hotel's signature suite with multiple rooms, premium décor, and exclusive services."
+                    NumberDoubleBed = 2,
+                    NumberSingleBed = 0,
+                    NumberSofaBed = 1,
+                    Description = "The hotel's signature suite with multiple rooms, premium décor, and exclusive services."
                 }
             };
             context.RoomTypes.AddRange(roomTypes);
@@ -399,7 +416,22 @@ public class SeedDB
         Name = "Event Hall Booking",
         Description = "Rental of the hotel's event hall for meetings or celebrations.",
         Price = 1200.00
+    },
+    new Service
+    {
+        Id = 18,
+        Name = "Breakfast",
+        Price = 30,
+        Description = "A full journey in a table full of tastes as much as you want to."
+    },
+    new Service
+    {
+        Id = 19,
+        Name = "AllMeals",
+        Price = 50,
+        Description = "You can use both Breakfast and Lunch tables as much as you want to."
     }
+    
 };
             context.Services.AddRange(services);
             await context.SaveChangesAsync();
