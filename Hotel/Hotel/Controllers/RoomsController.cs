@@ -19,6 +19,7 @@ public class RoomsController : Controller
     [HttpGet]
     public async Task<IActionResult> GetRoomTypes()
     {
-        return Ok(GetRoomTypes());
+        RoomServices roomServices = new RoomServices(_context);
+        return Ok(roomServices.AllRoomTypes());
     }
 }

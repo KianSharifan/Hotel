@@ -14,7 +14,7 @@ public class RoomServices
         _context = context;
     }
 
-    public List<RoomType> GetRoomTypes()
+    public List<RoomType> AllRoomTypes()
     {
         return _context.RoomTypes.ToList();
     }
