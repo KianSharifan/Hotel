@@ -16,9 +16,22 @@
 /dataSources.local.xml
 
 # Build output
-bin/
-obj/
+**/bin/
+**/obj/
 
 # macOS
 .DS_Store
 .idea/
+
+*.user
+*.suo
+# Logs
+*.log
+# Environment secrets
+.env
+# .NET generated files
+*.dll
+*.pdb
+
+# Node
+**/node_modules/

@@ -11,15 +11,15 @@ namespace Hotel.Controllers;
 public class RoomsController : Controller
 {
     private readonly AppDBContext  _context;
-
-    public RoomsController(AppDBContext context)
+    private readonly RoomServices _roomServices;
+    public RoomsController(AppDBContext context, RoomServices roomServices)
     {
         _context = context;
+        _roomServices = roomServices;
     }
     [HttpGet]
     public async Task<IActionResult> GetRoomTypes()
     {
-        RoomServices roomServices = new RoomServices(_context);
-        return Ok(await roomServices.AllRoomTypes());
+        return Ok(await _roomServices.AllRoomTypes());
     }
 }
