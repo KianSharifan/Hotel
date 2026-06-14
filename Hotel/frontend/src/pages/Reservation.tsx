@@ -8,14 +8,16 @@ function Reservation() {
 
   const [checkIn, setCheckIn] = useState("")
   const [checkOut, setCheckOut] = useState("")
-  const [guests, setGuests] = useState(1)
-  const [roomCount, setRoomCount] = useState(1)
+  const [Aguests, setAguests] = useState(1)
+  const [Cguests, setCguests] = useState(1)
+  const totalGuests = Aguests+Cguests
+  // const [roomCount, setRoomCount] = useState(1)
 
   function handleSearch() {
 
     navigate(
 
-      `/reservation/booking-results?guests=${guests}&rooms=${roomCount}`
+      `/reservation/booking-results?guests=${totalGuests}`
 
     )
 
@@ -119,7 +121,7 @@ function Reservation() {
         {/* CHECK IN */}
         <div>
 
-          <label className="block mb-3 font-semibold">
+          <label className="block mb-3 font-semibold text-left pl-5">
 
             Check In
 
@@ -152,7 +154,7 @@ function Reservation() {
         {/* CHECK OUT */}
         <div>
 
-          <label className="block mb-3 font-semibold">
+          <label className="text-2px block mb-3 font-semibold text-left pl-5">
 
             Check Out
 
@@ -185,17 +187,55 @@ function Reservation() {
         {/* GUESTS */}
         <div>
 
-          <label className="block mb-3 font-semibold">
+          <label className="block mb-3 font-semibold text-left pl-5">
 
-            Guests
+            Adult Guests
 
           </label>
 
           <select
-            value={guests}
+            value={Aguests}
 
             onChange={(e) =>
-              setGuests(Number(e.target.value))
+              setAguests(Number(e.target.value))
+            }
+
+            className="
+              w-full
+              border
+              border-gray-300
+              rounded-xl
+              px-4
+              py-4
+            "
+          >
+
+            <option value={1}>1 Guest</option>
+            <option value={2}>2 Guests</option>
+            <option value={3}>3 Guests</option>
+            <option value={4}>4 Guests</option>
+            <option value={5}>5 Guests</option>
+            <option value={6}>6 Guests</option>
+
+          </select>
+
+        </div>
+
+
+
+        <div>
+
+          <label className="block mb-3 font-semibold text-left pl-5">
+
+            Children Guests
+
+          </label>
+
+          <select
+            value={Cguests}
+
+            onChange={(e) =>
+              setCguests(Number(e.target.value))
             }
 
             className="
@@ -221,7 +261,7 @@ function Reservation() {
 
 
         {/* ROOMS */}
-        <div>
+        {/* <div>
 
           <label className="block mb-3 font-semibold">
 
@@ -252,14 +292,15 @@ function Reservation() {
 
           </select>
 
-        </div>
+        </div> */}
 
 
         {/* BUTTON */}
         <div className="flex items-end">
 
           <button
-            onClick={handleSearch}
+            // onClick={handleSearch}
+            onClick={() => navigate("/reservation/guests")}
 
             className="
               w-full

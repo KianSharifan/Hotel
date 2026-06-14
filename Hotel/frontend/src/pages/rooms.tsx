@@ -195,7 +195,7 @@ function Rooms() {
                   Explore
                 </button>
 
-                <button
+                {/* <button
 
                   onClick={() => navigate("/reservation")}
 
@@ -218,7 +218,7 @@ function Rooms() {
                   "
                 >
                   Book Now
-                </button>
+                </button> */}
 
               </div>
 

@@ -36,14 +36,19 @@ import Footer from "../components/Footer"
 import IntroScreen from "../components/IntroScreen"
 
 function Home() {
-  const [introDone, setIntroDone] = useState(false)
+  const [introDone, setIntroDone] = useState(
+    () => sessionStorage.getItem("introSeen") === "true"
+  )
+
+  const handleIntroDone = () => {
+    sessionStorage.setItem("introSeen", "true")
+    setIntroDone(true)
+  }
 
   return (
     <div>
-      {/* Intro sits fixed on top — the real page is always underneath */}
-      {!introDone && <IntroScreen onDone={() => setIntroDone(true)} />}
+      {!introDone && <IntroScreen onDone={handleIntroDone} />}
 
-      {/* Real page is always rendered, just beneath the intro overlay */}
       <Navbar />
       <Hero />
       <FeaturedRooms />
