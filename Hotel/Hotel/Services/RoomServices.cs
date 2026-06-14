@@ -1,5 +1,6 @@
 using Hotel.Data;
 using Hotel.DTOs;
+using Hotel.Migrations;
 using Hotel.Models;
 
 namespace Hotel.Services;
@@ -11,6 +12,11 @@ public class RoomServices
     public RoomServices(AppDBContext context)
     {
         _context = context;
+    }
+
+    public List<RoomType> GetRoomTypes()
+    {
+        return _context.RoomTypes.ToList();
     }
 
     public List<RoomType> AvailableRooms(RoomSearchDTO input)
