@@ -30,7 +30,7 @@ public class HotelController : Controller
 
         try
         {
-            output = roomServices.AvailableRooms(new RoomSearchDTO()
+            output = await roomServices.AvailableRooms(new RoomSearchDTO()
                 {
                     NumberOfAdults = 2, NumberOfKids = 1, CheckOut = DateOnly.MinValue,
                     CheckIn = new DateOnly(2026, 3, 12)

@@ -20,6 +20,6 @@ public class RoomsController : Controller
     public async Task<IActionResult> GetRoomTypes()
     {
         RoomServices roomServices = new RoomServices(_context);
-        return Ok(roomServices.AllRoomTypes());
+        return Ok(await roomServices.AllRoomTypes());
     }
 }

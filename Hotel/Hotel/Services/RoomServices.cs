@@ -1,7 +1,7 @@
 using Hotel.Data;
 using Hotel.DTOs;
-using Hotel.Migrations;
 using Hotel.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hotel.Services;
 
@@ -14,15 +14,15 @@ public class RoomServices
         _context = context;
     }
 
-    public List<RoomType> AllRoomTypes()
+    public async Task<List<RoomType>> AllRoomTypes()
     {
-        return _context.RoomTypes.ToList();
+        return await _context.RoomTypes.ToListAsync();
     }
 
-    public List<RoomType> AvailableRooms(RoomSearchDTO input)
+    public async Task<List<RoomType>> AvailableRooms(RoomSearchDTO input)
     {
         int totalGuests = input.NumberOfAdults + input.NumberOfKids;
-        return _context.Rooms
+        return await _context.Rooms
             .Where(room => room.Status == "Available")
             .Where(room => room.RoomType.MaxGuests >= totalGuests)
             .Where(room => !_context.Reservations.Any(r => 
@@ -31,33 +31,34 @@ public class RoomServices
                 r.CheckOutDate > input.CheckIn))
             .Select(room => room.RoomType)
             .Distinct()
-            .ToList();
+            .ToListAsync();
     }
 
-    public Room? FindAvailableRoom(RoomReservationDTO input)
+    public async Task<Room?> FindAvailableRoom(RoomReservationDTO input)
     {
-        return _context.Rooms
+        return await _context.Rooms
             .Where(room => room.Status == "Available" && room.RoomType == input.RoomType)
             .Where(room => !_context.Reservations.Any(r =>
                 r.RoomId == room.RoomId &&
                 r.CheckInDate < input.CheckOut &&
                 r.CheckOutDate > input.CheckIn))
-            .FirstOrDefault();
+            .FirstOrDefaultAsync();
     }
 
-    public int Reserve(RoomReservationDTO input)
+    public async Task<int> Reserve(RoomReservationDTO input)
     {
         int output = 0;
-        if (FindAvailableRoom(input) == null)
+        var room = await FindAvailableRoom(input);
+        if (room == null)
             return output;
-        output = FindAvailableRoom(input).RoomId;
+        output = room.RoomId;
         Reservation reservation = new Reservation()
         {
             CheckInDate = input.CheckIn,
             CheckOutDate = input.CheckOut,
             GuestId = input.GuestId,
             NumberOfGuests = input.NAdults + input.NKids,
-            RoomId = FindAvailableRoom(input).RoomId,
+            RoomId = room.RoomId,
             Status = "Not Checked In",
             SpecialRequest = input.SpecialRequest
         };
