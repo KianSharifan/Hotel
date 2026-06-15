@@ -53,6 +53,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<RoomServices>();
+builder.Services.AddScoped<RestaurantServices>();
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
