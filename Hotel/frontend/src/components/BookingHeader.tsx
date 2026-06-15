@@ -18,7 +18,6 @@ export default function BookingHeader() {
   const [warningFor, setWarningFor] = useState<number | null>(null)
 
   const currentStep = STEPS.findIndex((s) => location.pathname === s.path) + 1
-
   const totalGuests = booking.adults + booking.children
 
   const stepSummary = (num: number) => {
@@ -46,12 +45,10 @@ export default function BookingHeader() {
   }
 
   function isLocked(stepNum: number) {
-    // Steps ahead of what's been reached are disabled
     return stepNum > booking.step
   }
 
   function isLockedBack(stepNum: number) {
-    // Steps 1 & 2 lock after room is chosen
     return booking.selectedRoom !== null && stepNum < 3
   }
 
@@ -79,66 +76,36 @@ export default function BookingHeader() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[9999] flex items-center justify-center"
-            style={{ background: "rgba(0,0,0,0.75)", backdropFilter: "blur(6px)" }}
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/75 backdrop-blur-md"
           >
             <motion.div
               initial={{ scale: 0.85, opacity: 0, y: 30 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.85, opacity: 0, y: 30 }}
               transition={{ type: "spring", stiffness: 300, damping: 25 }}
-              style={{
-                background: "linear-gradient(135deg, #111 0%, #1a1a1a 100%)",
-                border: "1px solid rgba(200,168,75,0.3)",
-                borderRadius: "24px",
-                padding: "48px",
-                maxWidth: "440px",
-                width: "90%",
-                textAlign: "center",
-                fontFamily: "'Cormorant Garamond', serif",
-              }}
+              className="bg-gradient-to-br from-[#111] to-[#1a1a1a] border border-[#c8a84b]/30 rounded-3xl p-12 max-w-[440px] w-[90%] text-center font-serif-lux"
             >
-              <div style={{
-                width: "56px", height: "56px", borderRadius: "50%",
-                background: "rgba(200,168,75,0.1)", border: "1px solid rgba(200,168,75,0.3)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                margin: "0 auto 24px",
-              }}>
-                <AlertTriangle size={24} color="#c8a84b" />
+              <div className="w-14 h-14 rounded-full bg-[#c8a84b]/10 border border-[#c8a84b]/30 flex items-center justify-center mx-auto mb-6">
+                <AlertTriangle size={24} className="text-[#c8a84b]" />
               </div>
-              <h2 style={{ fontSize: "1.8rem", fontWeight: 300, color: "#fff", marginBottom: "12px", fontStyle: "italic" }}>
+              <h2 className="text-3xl font-light italic text-white mb-3">
                 Modify Selection?
               </h2>
-              <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "1rem", lineHeight: 1.6, marginBottom: "32px", fontFamily: "sans-serif", fontWeight: 300 }}>
+              <p className="text-white/50 text-base leading-relaxed mb-8 font-sans font-light">
                 Changing your guests or dates will reset your room selection and all progress. This cannot be undone.
               </p>
-              <div style={{ display: "flex", gap: "12px" }}>
+              <div className="flex gap-3">
                 <button
                   onClick={() => setWarningFor(null)}
-                  style={{
-                    flex: 1, padding: "14px", borderRadius: "12px",
-                    border: "1px solid rgba(255,255,255,0.15)", background: "transparent",
-                    color: "rgba(255,255,255,0.6)", cursor: "pointer", fontSize: "0.9rem",
-                    fontFamily: "sans-serif", transition: "all 0.3s",
-                  }}
-                  onMouseEnter={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.4)")}
-                  onMouseLeave={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)")}
+                  className="flex-1 py-3.5 rounded-xl border border-white/15 bg-transparent text-white/60 cursor-pointer text-sm font-sans transition-all hover:border-white/40"
                 >
                   Keep Selection
                 </button>
                 <button
                   onClick={confirmReset}
-                  style={{
-                    flex: 1, padding: "14px", borderRadius: "12px",
-                    background: "linear-gradient(135deg, #c8a84b, #a07830)",
-                    border: "none", color: "#000", cursor: "pointer",
-                    fontSize: "0.9rem", fontWeight: 600, fontFamily: "sans-serif",
-                    transition: "all 0.3s",
-                  }}
-                  onMouseEnter={e => (e.currentTarget.style.opacity = "0.85")}
-                  onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
+                  className="flex-1 py-3.5 rounded-xl bg-gradient-to-br from-[#c8a84b] to-[#a07830] border-none text-black cursor-pointer text-sm font-semibold font-sans transition-all hover:opacity-85"
                 >
-                  Reset & Modify
+                  Reset &amp; Modify
                 </button>
               </div>
             </motion.div>
@@ -147,28 +114,18 @@ export default function BookingHeader() {
       </AnimatePresence>
 
       {/* Header */}
-      <header style={{
-        position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000,
-        background: "rgba(6,6,6,0.92)",
-        backdropFilter: "blur(20px)",
-        borderBottom: "1px solid rgba(200,168,75,0.15)",
-        fontFamily: "'Cormorant Garamond', serif",
-      }}>
+      <header className="fixed top-0 left-0 right-0 z-[1000] bg-[#060606]/92 backdrop-blur-xl border-b border-[#c8a84b]/15 font-serif-lux">
         {/* Top bar: logo + cancel */}
-        <div style={{
-          display: "flex", alignItems: "center", justifyContent: "space-between",
-          padding: "16px 48px 0",
-          maxWidth: "1400px", margin: "0 auto",
-        }}>
+        <div className="flex items-center justify-between px-12 pt-4 max-w-[1400px] mx-auto">
           <motion.div
-            style={{ cursor: "pointer", display: "flex", alignItems: "baseline", gap: "10px" }}
+            className="cursor-pointer flex items-baseline gap-2.5"
             onClick={() => navigate("/")}
             whileHover={{ opacity: 0.75 }}
           >
-            <span style={{ fontSize: "1.4rem", fontStyle: "italic", fontWeight: 300, color: "#c8a84b", letterSpacing: "0.05em" }}>
+            <span className="text-2xl italic font-light text-[#c8a84b] tracking-wide">
               Noire Palace
             </span>
-            <span style={{ fontSize: "0.6rem", color: "rgba(200,168,75,0.4)", letterSpacing: "0.3em", textTransform: "uppercase" }}>
+            <span className="text-[0.6rem] text-[#c8a84b]/40 tracking-[0.3em] uppercase">
               Reservation
             </span>
           </motion.div>
@@ -177,22 +134,7 @@ export default function BookingHeader() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => { resetBooking(); navigate("/") }}
-            style={{
-              display: "flex", alignItems: "center", gap: "8px",
-              background: "transparent", border: "1px solid rgba(255,255,255,0.12)",
-              borderRadius: "8px", padding: "8px 18px", cursor: "pointer",
-              color: "rgba(255,255,255,0.45)", fontSize: "0.7rem",
-              letterSpacing: "0.2em", textTransform: "uppercase",
-              fontFamily: "sans-serif", transition: "all 0.3s",
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.borderColor = "rgba(220,80,80,0.4)"
-              e.currentTarget.style.color = "rgba(220,80,80,0.8)"
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)"
-              e.currentTarget.style.color = "rgba(255,255,255,0.45)"
-            }}
+            className="flex items-center gap-2 bg-transparent border border-white/12 rounded-lg px-4.5 py-2 cursor-pointer text-white/45 text-xs tracking-[0.2em] uppercase font-sans transition-all hover:border-red-400/40 hover:text-red-400/80"
           >
             <X size={12} />
             Cancel Reservation
@@ -200,11 +142,7 @@ export default function BookingHeader() {
         </div>
 
         {/* Steps */}
-        <div style={{
-          display: "flex", alignItems: "stretch",
-          maxWidth: "1400px", margin: "0 auto",
-          padding: "0 48px",
-        }}>
+        <div className="flex items-stretch max-w-[1400px] mx-auto px-12">
           {STEPS.map((step, idx) => {
             const locked = isLocked(step.num)
             const lockedBack = isLockedBack(step.num)
@@ -214,88 +152,61 @@ export default function BookingHeader() {
             const Icon = step.icon
 
             return (
-              <div key={step.num} style={{ display: "flex", flex: 1, alignItems: "center" }}>
+              <div key={step.num} className="flex flex-1 items-center">
                 <motion.button
                   onClick={() => handleStepClick(step.num, step.path)}
                   whileHover={!locked ? { y: -1 } : {}}
                   whileTap={!locked ? { scale: 0.98 } : {}}
-                  style={{
-                    flex: 1,
-                    display: "flex", flexDirection: "column", alignItems: "flex-start",
-                    padding: "18px 20px 14px",
-                    background: "transparent", border: "none", cursor: locked ? "not-allowed" : "pointer",
-                    position: "relative", transition: "all 0.3s",
-                    opacity: locked ? 0.3 : lockedBack ? 0.5 : 1,
-                  }}
+                  className={`flex-1 flex flex-col items-start px-5 pt-4.5 pb-3.5 bg-transparent border-none relative transition-all duration-300 ${
+                    locked ? "cursor-not-allowed opacity-30" : lockedBack ? "cursor-pointer opacity-50" : "cursor-pointer opacity-100"
+                  }`}
                 >
                   {/* Active underline */}
                   <motion.div
-                    style={{
-                      position: "absolute", bottom: 0, left: 0, right: 0, height: "2px",
-                      background: "linear-gradient(90deg, #c8a84b, #f5e09a, #c8a84b)",
-                      transformOrigin: "left",
-                    }}
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#c8a84b] via-[#f5e09a] to-[#c8a84b] origin-left"
                     initial={false}
                     animate={{ scaleX: isActive ? 1 : 0, opacity: isActive ? 1 : 0 }}
                     transition={{ duration: 0.4, ease: "easeOut" }}
                   />
 
                   {/* Step number + icon row */}
-                  <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "4px" }}>
-                    <div style={{
-                      width: "26px", height: "26px", borderRadius: "50%",
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      background: isDone
-                        ? "linear-gradient(135deg, #c8a84b, #a07830)"
+                  <div className="flex items-center gap-2.5 mb-1">
+                    <div className={`w-6.5 h-6.5 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-400 ${
+                      isDone
+                        ? "bg-gradient-to-br from-[#c8a84b] to-[#a07830] border-none"
                         : isActive
-                          ? "rgba(200,168,75,0.15)"
-                          : "rgba(255,255,255,0.05)",
-                      border: isDone
-                        ? "none"
-                        : isActive
-                          ? "1px solid rgba(200,168,75,0.6)"
-                          : "1px solid rgba(255,255,255,0.1)",
-                      flexShrink: 0,
-                      transition: "all 0.4s",
-                    }}>
+                          ? "bg-[#c8a84b]/15 border border-[#c8a84b]/60"
+                          : "bg-white/5 border border-white/10"
+                    }`}>
                       {isDone
-                        ? <span style={{ fontSize: "0.65rem", color: "#000", fontWeight: 700 }}>✓</span>
-                        : <Icon size={12} color={isActive ? "#c8a84b" : "rgba(255,255,255,0.3)"} />
+                        ? <span className="text-[0.65rem] text-black font-bold">✓</span>
+                        : <Icon size={12} className={isActive ? "text-[#c8a84b]" : "text-white/30"} />
                       }
                     </div>
-                    <span style={{
-                      fontSize: "0.6rem", textTransform: "uppercase", letterSpacing: "0.25em",
-                      color: isActive ? "#c8a84b" : "rgba(255,255,255,0.35)",
-                      fontFamily: "sans-serif", fontWeight: 500,
-                      transition: "color 0.3s",
-                    }}>
+                    <span className={`text-[0.6rem] uppercase tracking-[0.25em] font-sans font-medium transition-colors duration-300 ${
+                      isActive ? "text-[#c8a84b]" : "text-white/35"
+                    }`}>
                       {step.label}
                     </span>
                     {lockedBack && (
-                      <span style={{ fontSize: "0.5rem", color: "rgba(200,168,75,0.5)", marginLeft: "4px" }}>🔒</span>
+                      <span className="text-[0.5rem] text-[#c8a84b]/50 ml-1">🔒</span>
                     )}
                   </div>
 
                   {/* Summary value */}
-                  <div style={{ paddingLeft: "36px" }}>
+                  <div className="pl-9">
                     {summary ? (
                       <motion.span
                         initial={{ opacity: 0, y: 4 }}
                         animate={{ opacity: 1, y: 0 }}
-                        style={{
-                          fontSize: "0.85rem", fontStyle: "italic", fontWeight: 300,
-                          color: isActive ? "#fff" : "rgba(255,255,255,0.55)",
-                          whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
-                          display: "block", maxWidth: "180px",
-                        }}
+                        className={`text-sm italic font-light whitespace-nowrap overflow-hidden text-ellipsis block max-w-[180px] ${
+                          isActive ? "text-white" : "text-white/55"
+                        }`}
                       >
                         {summary}
                       </motion.span>
                     ) : (
-                      <span style={{
-                        fontSize: "0.75rem", color: "rgba(255,255,255,0.2)",
-                        fontFamily: "sans-serif", fontStyle: "normal",
-                      }}>
+                      <span className="text-xs text-white/20 font-sans not-italic">
                         {locked ? "Complete previous step" : "Not selected"}
                       </span>
                     )}
@@ -304,18 +215,12 @@ export default function BookingHeader() {
 
                 {/* Divider */}
                 {idx < STEPS.length - 1 && (
-                  <div style={{
-                    width: "1px", height: "36px",
-                    background: "rgba(200,168,75,0.15)",
-                    flexShrink: 0,
-                  }} />
+                  <div className="w-px h-9 bg-[#c8a84b]/15 flex-shrink-0" />
                 )}
               </div>
             )
           })}
         </div>
-
-        <style>{`@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap');`}</style>
       </header>
     </>
   )

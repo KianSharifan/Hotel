@@ -23,101 +23,78 @@ export default function BookingRooms() {
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: "#080808", paddingTop: "120px" }}>
+    <div className="min-h-screen bg-[#080808] pt-[120px]">
       <BookingHeader />
 
-      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "60px 24px 120px", position: "relative", zIndex: 1 }}>
+      <div className="max-w-[1100px] mx-auto px-6 pt-16 pb-32 relative z-10">
 
         {/* Title */}
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}
-          style={{ textAlign: "center", marginBottom: "64px" }}>
-          <p style={{ fontSize: "0.65rem", letterSpacing: "0.45em", textTransform: "uppercase", color: "rgba(200,168,75,0.6)", fontFamily: "sans-serif", marginBottom: "16px" }}>Step 3 of 4</p>
-          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(2.5rem, 6vw, 4rem)", fontWeight: 300, fontStyle: "italic", color: "#fff", lineHeight: 1.1, marginBottom: "16px" }}>
+          className="text-center mb-16">
+          <p className="text-[0.65rem] tracking-[0.45em] uppercase text-[#c8a84b]/60 font-sans mb-4">Step 3 of 4</p>
+          <h1 className="font-serif-lux text-5xl md:text-6xl font-light italic text-white leading-tight mb-4">
             Choose Your Suite
           </h1>
-          <div style={{ width: "60px", height: "1px", background: "linear-gradient(90deg, transparent, #c8a84b, transparent)", margin: "0 auto 16px" }} />
-          <p style={{ fontFamily: "sans-serif", fontSize: "0.8rem", color: "rgba(255,255,255,0.35)", letterSpacing: "0.1em" }}>
+          <div className="w-[60px] h-px bg-gradient-to-r from-transparent via-[#c8a84b] to-transparent mx-auto mb-4" />
+          <p className="font-sans text-sm text-white/35 tracking-wide">
             {filteredRooms.length} suite{filteredRooms.length !== 1 ? "s" : ""} available for {totalGuests} guest{totalGuests !== 1 ? "s" : ""} · {nights()} night{nights() !== 1 ? "s" : ""}
           </p>
         </motion.div>
 
         {/* Room cards */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
+        <div className="flex flex-col gap-8">
           {filteredRooms.map((room, index) => (
             <motion.div
               key={room.id}
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.12, duration: 0.7, ease: "easeOut" }}
-              style={{
-                display: "grid", gridTemplateColumns: "420px 1fr",
-                background: "rgba(255,255,255,0.02)",
-                border: "1px solid rgba(200,168,75,0.1)",
-                borderRadius: "24px", overflow: "hidden",
-                transition: "border-color 0.4s, box-shadow 0.4s",
-              }}
               whileHover={{
                 borderColor: "rgba(200,168,75,0.28)",
                 boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
               }}
+              className="grid grid-cols-1 md:grid-cols-[420px_1fr] bg-white/[0.02] border border-[#c8a84b]/10 rounded-3xl overflow-hidden transition-[border-color,box-shadow] duration-400"
             >
               {/* Image */}
-              <div style={{ position: "relative", overflow: "hidden", height: "340px" }}>
+              <div className="relative overflow-hidden h-[340px]">
                 <motion.img
                   src={room.image}
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.7 }}
-                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                  className="w-full h-full object-cover block"
                 />
-                <div style={{
-                  position: "absolute", inset: 0,
-                  background: "linear-gradient(90deg, transparent 60%, rgba(8,8,8,0.4) 100%)",
-                }} />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[#080808]/40" style={{ backgroundImage: "linear-gradient(90deg, transparent 60%, rgba(8,8,8,0.4) 100%)" }} />
               </div>
 
               {/* Content */}
-              <div style={{ padding: "40px 44px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+              <div className="p-10 flex flex-col justify-between">
                 <div>
-                  <h2 style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: "2rem", fontWeight: 300, fontStyle: "italic",
-                    color: "#fff", marginBottom: "12px",
-                  }}>{room.name}</h2>
+                  <h2 className="font-serif-lux text-3xl font-light italic text-white mb-3">{room.name}</h2>
 
-                  <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.4)", lineHeight: 1.7, fontFamily: "sans-serif", fontWeight: 300, marginBottom: "24px" }}>
+                  <p className="text-sm text-white/40 leading-relaxed font-sans font-light mb-6">
                     {room.description}
                   </p>
 
                   {/* Stats */}
-                  <div style={{ display: "flex", gap: "12px", marginBottom: "20px", flexWrap: "wrap" }}>
+                  <div className="flex gap-3 mb-5 flex-wrap">
                     {[
                       { label: `${room.maxGuests} Guests` },
                       { label: `${room.beds} Beds` },
                       { label: room.size },
                     ].map(tag => (
-                      <span key={tag.label} style={{
-                        padding: "6px 16px", borderRadius: "20px",
-                        border: "1px solid rgba(200,168,75,0.2)",
-                        fontSize: "0.72rem", color: "rgba(200,168,75,0.75)",
-                        fontFamily: "sans-serif", letterSpacing: "0.05em",
-                      }}>{tag.label}</span>
+                      <span key={tag.label} className="px-4 py-1.5 rounded-full border border-[#c8a84b]/20 text-xs text-[#c8a84b]/75 font-sans tracking-wide">
+                        {tag.label}
+                      </span>
                     ))}
                   </div>
 
                   {/* Amenities */}
-                  <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginBottom: "32px" }}>
+                  <div className="flex gap-2.5 flex-wrap mb-8">
                     {room.amenities.slice(0, 5).map((amenity: string) => {
                       const Icon = amenityIcons[amenity]
                       return (
-                        <div key={amenity} style={{
-                          display: "flex", alignItems: "center", gap: "6px",
-                          padding: "5px 12px", borderRadius: "20px",
-                          background: "rgba(255,255,255,0.04)",
-                          border: "1px solid rgba(255,255,255,0.07)",
-                          fontSize: "0.7rem", color: "rgba(255,255,255,0.45)",
-                          fontFamily: "sans-serif",
-                        }}>
-                          {Icon && <Icon size={12} color="rgba(200,168,75,0.6)" />}
+                        <div key={amenity} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.07] text-xs text-white/45 font-sans">
+                          {Icon && <Icon size={12} className="text-[#c8a84b]/60" />}
                           {amenity}
                         </div>
                       )
@@ -126,18 +103,18 @@ export default function BookingRooms() {
                 </div>
 
                 {/* Price + CTA */}
-                <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
+                <div className="flex items-end justify-between">
                   <div>
-                    <p style={{ fontSize: "0.6rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.25)", fontFamily: "sans-serif", marginBottom: "6px" }}>
+                    <p className="text-[0.6rem] tracking-[0.2em] uppercase text-white/25 font-sans mb-1.5">
                       Per Night
                     </p>
-                    <div style={{ display: "flex", alignItems: "baseline", gap: "6px" }}>
-                      <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "2.8rem", fontWeight: 300, color: "#c8a84b", lineHeight: 1 }}>
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="font-serif-lux text-4xl font-light text-[#c8a84b] leading-none">
                         ${room.price.toLocaleString()}
                       </span>
                     </div>
                     {nights() > 1 && (
-                      <p style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.25)", fontFamily: "sans-serif", marginTop: "4px" }}>
+                      <p className="text-xs text-white/25 font-sans mt-1">
                         ${(room.price * nights()).toLocaleString()} for {nights()} nights
                       </p>
                     )}
@@ -147,18 +124,7 @@ export default function BookingRooms() {
                     onClick={() => handleSelect(room)}
                     whileHover={{ scale: 1.04 }}
                     whileTap={{ scale: 0.96 }}
-                    style={{
-                      padding: "16px 36px",
-                      background: "linear-gradient(135deg, #c8a84b 0%, #a07830 100%)",
-                      border: "none", borderRadius: "12px",
-                      color: "#000", fontFamily: "'Cormorant Garamond', serif",
-                      fontSize: "1rem", fontStyle: "italic",
-                      cursor: "pointer", letterSpacing: "0.05em",
-                      boxShadow: "0 8px 24px rgba(200,168,75,0.2)",
-                      transition: "box-shadow 0.3s",
-                    }}
-                    onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 12px 36px rgba(200,168,75,0.4)")}
-                    onMouseLeave={e => (e.currentTarget.style.boxShadow = "0 8px 24px rgba(200,168,75,0.2)")}
+                    className="px-9 py-4 bg-gradient-to-br from-[#c8a84b] to-[#a07830] border-none rounded-xl text-black font-serif-lux text-base italic cursor-pointer tracking-wide shadow-[0_8px_24px_rgba(200,168,75,0.2)] transition-shadow duration-300 hover:shadow-[0_12px_36px_rgba(200,168,75,0.4)]"
                   >
                     Select Suite →
                   </motion.button>
@@ -169,11 +135,9 @@ export default function BookingRooms() {
         </div>
 
         {/* Reset */}
-        <div style={{ textAlign: "center", marginTop: "48px" }}>
+        <div className="text-center mt-12">
           <button onClick={() => { resetBooking(); navigate("/") }}
-            style={{ background: "none", border: "none", cursor: "pointer", color: "rgba(255,255,255,0.2)", fontSize: "0.7rem", letterSpacing: "0.2em", textTransform: "uppercase", fontFamily: "sans-serif", transition: "color 0.3s" }}
-            onMouseEnter={e => (e.currentTarget.style.color = "rgba(220,80,80,0.6)")}
-            onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.2)")}>
+            className="bg-none border-none cursor-pointer text-white/20 text-xs tracking-[0.2em] uppercase font-sans transition-colors duration-300 hover:text-red-400/60">
             Cancel Reservation
           </button>
         </div>

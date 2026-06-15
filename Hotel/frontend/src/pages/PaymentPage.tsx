@@ -14,26 +14,15 @@ function LuxInput({ label, placeholder, value, onChange, type = "text", maxLengt
   label: string; placeholder: string; value: string
   onChange: (v: string) => void; type?: string; maxLength?: number
 }) {
-  const [focused, setFocused] = useState(false)
   return (
     <div>
-      <label style={{ display: "block", fontSize: "0.6rem", letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(200,168,75,0.6)", fontFamily: "sans-serif", marginBottom: "10px" }}>
+      <label className="block text-[0.6rem] tracking-[0.3em] uppercase text-[#c8a84b]/60 font-sans mb-2.5">
         {label}
       </label>
       <input
         type={type} placeholder={placeholder} value={value} maxLength={maxLength}
         onChange={e => onChange(e.target.value)}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        style={{
-          width: "100%", padding: "16px 20px",
-          background: "rgba(255,255,255,0.03)",
-          border: `1px solid ${focused ? "rgba(200,168,75,0.5)" : "rgba(255,255,255,0.08)"}`,
-          borderRadius: "12px", color: "#fff",
-          fontFamily: "'Cormorant Garamond', serif", fontSize: "1.05rem",
-          outline: "none", transition: "border-color 0.3s",
-          boxSizing: "border-box",
-        }}
+        className="w-full px-5 py-4 bg-white/[0.03] border border-white/[0.08] focus:border-[#c8a84b]/50 rounded-xl text-white font-serif-lux text-base outline-none transition-colors duration-300 box-border"
       />
     </div>
   )
@@ -78,37 +67,37 @@ export default function PaymentPage() {
   }
 
   if (confirmed) return (
-    <div style={{ minHeight: "100vh", background: "#080808", display: "flex", alignItems: "center", justifyContent: "center" }}>
+    <div className="min-h-screen bg-[#080808] flex items-center justify-center">
       <motion.div
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: "spring", stiffness: 200, damping: 20 }}
-        style={{ textAlign: "center", maxWidth: "500px", padding: "0 24px" }}
+        className="text-center max-w-[500px] px-6"
       >
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ delay: 0.2, type: "spring", stiffness: 300 }}
-          style={{ marginBottom: "32px" }}
+          className="mb-8"
         >
-          <CheckCircle size={72} color="#c8a84b" style={{ margin: "0 auto" }} />
+          <CheckCircle size={72} className="text-[#c8a84b] mx-auto" />
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
-          <p style={{ fontSize: "0.65rem", letterSpacing: "0.45em", textTransform: "uppercase", color: "rgba(200,168,75,0.6)", fontFamily: "sans-serif", marginBottom: "16px" }}>
+          <p className="text-[0.65rem] tracking-[0.45em] uppercase text-[#c8a84b]/60 font-sans mb-4">
             Reservation Confirmed
           </p>
-          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "3rem", fontWeight: 300, fontStyle: "italic", color: "#fff", marginBottom: "16px" }}>
+          <h1 className="font-serif-lux text-5xl font-light italic text-white mb-4">
             Welcome to Noire Palace
           </h1>
-          <div style={{ width: "60px", height: "1px", background: "linear-gradient(90deg, transparent, #c8a84b, transparent)", margin: "0 auto 24px" }} />
-          <p style={{ fontFamily: "sans-serif", fontSize: "0.85rem", color: "rgba(255,255,255,0.4)", lineHeight: 1.8, marginBottom: "8px" }}>
+          <div className="w-[60px] h-px bg-gradient-to-r from-transparent via-[#c8a84b] to-transparent mx-auto mb-6" />
+          <p className="font-sans text-sm text-white/40 leading-loose mb-2">
             {booking.selectedRoom?.name}
           </p>
-          <p style={{ fontFamily: "sans-serif", fontSize: "0.8rem", color: "rgba(255,255,255,0.3)", lineHeight: 1.8, marginBottom: "40px" }}>
+          <p className="font-sans text-sm text-white/30 leading-loose mb-10">
             {fmt(booking.checkIn)} → {fmt(booking.checkOut)} · {nights} nights
           </p>
-          <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.8rem", color: "#c8a84b", marginBottom: "48px" }}>
+          <p className="font-serif-lux text-3xl text-[#c8a84b] mb-12">
             ${grandTotal.toLocaleString()} charged
           </p>
 
@@ -116,13 +105,7 @@ export default function PaymentPage() {
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => { resetBooking(); navigate("/") }}
-            style={{
-              padding: "18px 48px",
-              background: "linear-gradient(135deg, #c8a84b, #a07830)",
-              border: "none", borderRadius: "14px",
-              color: "#000", fontFamily: "'Cormorant Garamond', serif",
-              fontSize: "1.1rem", fontStyle: "italic", cursor: "pointer",
-            }}
+            className="px-12 py-4.5 bg-gradient-to-br from-[#c8a84b] to-[#a07830] border-none rounded-2xl text-black font-serif-lux text-lg italic cursor-pointer"
           >
             Return Home
           </motion.button>
@@ -132,39 +115,39 @@ export default function PaymentPage() {
   )
 
   return (
-    <div style={{ minHeight: "100vh", background: "#080808", paddingTop: "120px" }}>
+    <div className="min-h-screen bg-[#080808] pt-[120px]">
       <BookingHeader />
 
-      <div style={{ maxWidth: "960px", margin: "0 auto", padding: "60px 24px 120px", position: "relative", zIndex: 1 }}>
+      <div className="max-w-[960px] mx-auto px-6 pt-16 pb-32 relative z-10">
 
         {/* Title */}
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}
-          style={{ textAlign: "center", marginBottom: "56px" }}>
-          <p style={{ fontSize: "0.65rem", letterSpacing: "0.45em", textTransform: "uppercase", color: "rgba(200,168,75,0.6)", fontFamily: "sans-serif", marginBottom: "16px" }}>Step 4 of 4</p>
-          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(2.5rem, 6vw, 4rem)", fontWeight: 300, fontStyle: "italic", color: "#fff", lineHeight: 1.1, marginBottom: "16px" }}>
+          className="text-center mb-14">
+          <p className="text-[0.65rem] tracking-[0.45em] uppercase text-[#c8a84b]/60 font-sans mb-4">Step 4 of 4</p>
+          <h1 className="font-serif-lux text-5xl md:text-6xl font-light italic text-white leading-tight mb-4">
             Complete Your Reservation
           </h1>
-          <div style={{ width: "60px", height: "1px", background: "linear-gradient(90deg, transparent, #c8a84b, transparent)", margin: "0 auto" }} />
+          <div className="w-[60px] h-px bg-gradient-to-r from-transparent via-[#c8a84b] to-transparent mx-auto" />
         </motion.div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 380px", gap: "32px", alignItems: "start" }}>
+        <div className="grid grid-cols-1 md:grid-cols-[1fr_380px] gap-8 items-start">
 
           {/* Payment form */}
           <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.7 }}
-            style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(200,168,75,0.1)", borderRadius: "24px", padding: "44px" }}>
+            className="bg-white/[0.02] border border-[#c8a84b]/10 rounded-3xl p-11">
 
-            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "32px" }}>
-              <CreditCard size={18} color="#c8a84b" />
-              <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.3rem", fontStyle: "italic", color: "#fff" }}>
+            <div className="flex items-center gap-2.5 mb-8">
+              <CreditCard size={18} className="text-[#c8a84b]" />
+              <span className="font-serif-lux text-xl italic text-white">
                 Payment Details
               </span>
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+            <div className="flex flex-col gap-5">
               <LuxInput label="Cardholder Name" placeholder="As it appears on card" value={cardName} onChange={setCardName} />
               <LuxInput label="Card Number" placeholder="0000 0000 0000 0000" value={cardNumber}
                 onChange={v => setCardNumber(formatCard(v))} maxLength={19} />
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+              <div className="grid grid-cols-2 gap-4">
                 <LuxInput label="Expiry Date" placeholder="MM/YY" value={expiry}
                   onChange={v => setExpiry(formatExpiry(v))} maxLength={5} />
                 <LuxInput label="CVV" placeholder="•••" value={cvv}
@@ -172,9 +155,9 @@ export default function PaymentPage() {
               </div>
             </div>
 
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "24px", padding: "14px 18px", background: "rgba(255,255,255,0.02)", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.05)" }}>
-              <Lock size={12} color="rgba(200,168,75,0.5)" />
-              <span style={{ fontSize: "0.68rem", color: "rgba(255,255,255,0.25)", fontFamily: "sans-serif", letterSpacing: "0.08em" }}>
+            <div className="flex items-center gap-2 mt-6 px-4.5 py-3.5 bg-white/[0.02] rounded-[10px] border border-white/[0.05]">
+              <Lock size={12} className="text-[#c8a84b]/50" />
+              <span className="text-[0.68rem] text-white/25 font-sans tracking-wide">
                 Secured with 256-bit SSL encryption
               </span>
             </div>
@@ -182,43 +165,43 @@ export default function PaymentPage() {
 
           {/* Summary */}
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4, duration: 0.7 }}>
-            <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(200,168,75,0.1)", borderRadius: "24px", padding: "36px", marginBottom: "16px" }}>
-              <p style={{ fontSize: "0.6rem", letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(200,168,75,0.5)", fontFamily: "sans-serif", marginBottom: "20px" }}>
+            <div className="bg-white/[0.02] border border-[#c8a84b]/10 rounded-3xl p-9 mb-4">
+              <p className="text-[0.6rem] tracking-[0.3em] uppercase text-[#c8a84b]/50 font-sans mb-5">
                 Booking Summary
               </p>
 
-              <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.4rem", fontStyle: "italic", color: "#fff", marginBottom: "20px" }}>
+              <h3 className="font-serif-lux text-2xl italic text-white mb-5">
                 {booking.selectedRoom?.name}
               </h3>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: "12px", paddingBottom: "20px", borderBottom: "1px solid rgba(255,255,255,0.07)", marginBottom: "20px" }}>
+              <div className="flex flex-col gap-3 pb-5 border-b border-white/[0.07] mb-5">
                 {[
                   { label: "Check-in", value: fmt(booking.checkIn) },
                   { label: "Check-out", value: fmt(booking.checkOut) },
                   { label: "Guests", value: `${booking.adults + booking.children} guests` },
                   { label: "Duration", value: `${nights} nights` },
                 ].map(row => (
-                  <div key={row.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.35)", fontFamily: "sans-serif" }}>{row.label}</span>
-                    <span style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.65)", fontFamily: "sans-serif" }}>{row.value}</span>
+                  <div key={row.label} className="flex justify-between items-center">
+                    <span className="text-xs text-white/35 font-sans">{row.label}</span>
+                    <span className="text-sm text-white/65 font-sans">{row.value}</span>
                   </div>
                 ))}
               </div>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "20px" }}>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <span style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.35)", fontFamily: "sans-serif" }}>Subtotal</span>
-                  <span style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.55)", fontFamily: "sans-serif" }}>${total.toLocaleString()}</span>
+              <div className="flex flex-col gap-2.5 mb-5">
+                <div className="flex justify-between">
+                  <span className="text-xs text-white/35 font-sans">Subtotal</span>
+                  <span className="text-sm text-white/55 font-sans">${total.toLocaleString()}</span>
                 </div>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <span style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.35)", fontFamily: "sans-serif" }}>Taxes & fees (12%)</span>
-                  <span style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.55)", fontFamily: "sans-serif" }}>${taxes.toLocaleString()}</span>
+                <div className="flex justify-between">
+                  <span className="text-xs text-white/35 font-sans">Taxes &amp; fees (12%)</span>
+                  <span className="text-sm text-white/55 font-sans">${taxes.toLocaleString()}</span>
                 </div>
               </div>
 
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", paddingTop: "16px", borderTop: "1px solid rgba(200,168,75,0.15)" }}>
-                <span style={{ fontSize: "0.7rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.4)", fontFamily: "sans-serif" }}>Total</span>
-                <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "2rem", fontWeight: 300, color: "#c8a84b" }}>
+              <div className="flex justify-between items-baseline pt-4 border-t border-[#c8a84b]/15">
+                <span className="text-[0.7rem] tracking-[0.2em] uppercase text-white/40 font-sans">Total</span>
+                <span className="font-serif-lux text-3xl font-light text-[#c8a84b]">
                   ${grandTotal.toLocaleString()}
                 </span>
               </div>
@@ -230,27 +213,21 @@ export default function PaymentPage() {
               disabled={!canPay || loading}
               whileHover={canPay && !loading ? { scale: 1.02 } : {}}
               whileTap={canPay && !loading ? { scale: 0.97 } : {}}
-              style={{
-                width: "100%", padding: "20px",
-                background: canPay ? "linear-gradient(135deg, #c8a84b 0%, #a07830 100%)" : "rgba(255,255,255,0.05)",
-                border: "none", borderRadius: "14px",
-                color: canPay ? "#000" : "rgba(255,255,255,0.2)",
-                fontFamily: "'Cormorant Garamond', serif",
-                fontSize: "1.1rem", fontStyle: "italic",
-                cursor: canPay && !loading ? "pointer" : "not-allowed",
-                transition: "all 0.4s",
-                display: "flex", alignItems: "center", justifyContent: "center", gap: "10px",
-              }}
+              className={`w-full p-5 rounded-2xl font-serif-lux text-lg italic transition-all duration-400 border-none flex items-center justify-center gap-2.5 ${
+                canPay
+                  ? "bg-gradient-to-br from-[#c8a84b] to-[#a07830] text-black cursor-pointer"
+                  : "bg-white/5 text-white/20 cursor-not-allowed"
+              } ${loading ? "cursor-not-allowed" : ""}`}
             >
               <AnimatePresence mode="wait">
                 {loading ? (
                   <motion.div key="loading"
                     initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                    style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                    className="flex items-center gap-2.5">
                     <motion.div
                       animate={{ rotate: 360 }}
                       transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                      style={{ width: "16px", height: "16px", border: "2px solid rgba(0,0,0,0.3)", borderTopColor: "#000", borderRadius: "50%" }}
+                      className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full"
                     />
                     Processing...
                   </motion.div>
@@ -265,11 +242,9 @@ export default function PaymentPage() {
         </div>
 
         {/* Cancel */}
-        <div style={{ textAlign: "center", marginTop: "40px" }}>
+        <div className="text-center mt-10">
           <button onClick={() => { resetBooking(); navigate("/") }}
-            style={{ background: "none", border: "none", cursor: "pointer", color: "rgba(255,255,255,0.2)", fontSize: "0.7rem", letterSpacing: "0.2em", textTransform: "uppercase", fontFamily: "sans-serif", transition: "color 0.3s" }}
-            onMouseEnter={e => (e.currentTarget.style.color = "rgba(220,80,80,0.6)")}
-            onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.2)")}>
+            className="bg-none border-none cursor-pointer text-white/20 text-xs tracking-[0.2em] uppercase font-sans transition-colors duration-300 hover:text-red-400/60">
             Cancel Reservation
           </button>
         </div>

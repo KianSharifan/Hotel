@@ -16,53 +16,33 @@ function Counter({
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease: "easeOut" }}
-      style={{
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-        padding: "36px 44px",
-        background: "rgba(255,255,255,0.02)",
-        border: "1px solid rgba(200,168,75,0.12)",
-        borderRadius: "20px",
-        backdropFilter: "blur(10px)",
-        transition: "border-color 0.3s",
-      }}
       whileHover={{ borderColor: "rgba(200,168,75,0.28)" }}
+      className="flex items-center justify-between p-9 bg-white/[0.02] border border-[#c8a84b]/12 rounded-2xl backdrop-blur-md transition-colors duration-300"
     >
       <div>
-        <p style={{
-          fontFamily: "'Cormorant Garamond', serif",
-          fontSize: "1.7rem", fontWeight: 300, fontStyle: "italic",
-          color: "#fff", marginBottom: "4px",
-        }}>{label}</p>
-        <p style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.3)", letterSpacing: "0.15em", fontFamily: "sans-serif", textTransform: "uppercase" }}>
+        <p className="font-serif-lux text-2xl font-light italic text-white mb-1">{label}</p>
+        <p className="text-xs text-white/30 tracking-[0.15em] font-sans uppercase">
           {sublabel}
         </p>
       </div>
 
-      <div style={{ display: "flex", alignItems: "center", gap: "28px" }}>
+      <div className="flex items-center gap-7">
         <motion.button
           whileTap={{ scale: 0.88 }}
           onClick={() => onChange(Math.max(min, value - 1))}
           disabled={value <= min}
-          style={{
-            width: "44px", height: "44px", borderRadius: "50%",
-            border: "1px solid rgba(200,168,75,0.3)",
-            background: "transparent", cursor: value <= min ? "not-allowed" : "pointer",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            opacity: value <= min ? 0.25 : 1, transition: "all 0.2s",
-          }}
+          className={`w-11 h-11 rounded-full border border-[#c8a84b]/30 bg-transparent flex items-center justify-center transition-all duration-200 ${
+            value <= min ? "cursor-not-allowed opacity-25" : "cursor-pointer opacity-100"
+          }`}
         >
-          <Minus size={16} color="#c8a84b" />
+          <Minus size={16} className="text-[#c8a84b]" />
         </motion.button>
 
         <motion.span
           key={value}
           initial={{ scale: 1.3, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontSize: "3rem", fontWeight: 300, color: "#c8a84b",
-            minWidth: "48px", textAlign: "center", lineHeight: 1,
-          }}
+          className="font-serif-lux text-5xl font-light text-[#c8a84b] min-w-[48px] text-center leading-none"
         >
           {value}
         </motion.span>
@@ -71,15 +51,11 @@ function Counter({
           whileTap={{ scale: 0.88 }}
           onClick={() => onChange(Math.min(max, value + 1))}
           disabled={value >= max}
-          style={{
-            width: "44px", height: "44px", borderRadius: "50%",
-            border: "1px solid rgba(200,168,75,0.3)",
-            background: "rgba(200,168,75,0.08)", cursor: value >= max ? "not-allowed" : "pointer",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            opacity: value >= max ? 0.25 : 1, transition: "all 0.2s",
-          }}
+          className={`w-11 h-11 rounded-full border border-[#c8a84b]/30 bg-[#c8a84b]/8 flex items-center justify-center transition-all duration-200 ${
+            value >= max ? "cursor-not-allowed opacity-25" : "cursor-pointer opacity-100"
+          }`}
         >
-          <Plus size={16} color="#c8a84b" />
+          <Plus size={16} className="text-[#c8a84b]" />
         </motion.button>
       </div>
     </motion.div>
@@ -100,44 +76,31 @@ export default function GuestsPage() {
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: "#080808", paddingTop: "120px" }}>
+    <div className="min-h-screen bg-[#080808] pt-[120px]">
       <BookingHeader />
 
       {/* Background glow */}
-      <div style={{
-        position: "fixed", top: "40%", left: "50%", transform: "translate(-50%,-50%)",
-        width: "600px", height: "600px", borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(200,168,75,0.04) 0%, transparent 70%)",
-        pointerEvents: "none",
-      }} />
+      <div className="fixed top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(200,168,75,0.04)_0%,transparent_70%)] pointer-events-none" />
 
-      <div style={{
-        maxWidth: "640px", margin: "0 auto", padding: "80px 24px 120px",
-        position: "relative", zIndex: 1,
-      }}>
+      <div className="max-w-[640px] mx-auto px-6 pt-20 pb-32 relative z-10">
         {/* Title */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          style={{ textAlign: "center", marginBottom: "64px" }}
+          className="text-center mb-16"
         >
-          <p style={{
-            fontSize: "0.65rem", letterSpacing: "0.45em", textTransform: "uppercase",
-            color: "rgba(200,168,75,0.6)", fontFamily: "sans-serif", marginBottom: "16px",
-          }}>Step 1 of 4</p>
-          <h1 style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontSize: "clamp(2.5rem, 6vw, 4rem)", fontWeight: 300, fontStyle: "italic",
-            color: "#fff", lineHeight: 1.1, marginBottom: "16px",
-          }}>
+          <p className="text-[0.65rem] tracking-[0.45em] uppercase text-[#c8a84b]/60 font-sans mb-4">
+            Step 1 of 4
+          </p>
+          <h1 className="font-serif-lux text-5xl md:text-6xl font-light italic text-white leading-tight mb-4">
             Who's Joining You?
           </h1>
-          <div style={{ width: "60px", height: "1px", background: "linear-gradient(90deg, transparent, #c8a84b, transparent)", margin: "0 auto" }} />
+          <div className="w-[60px] h-px bg-gradient-to-r from-transparent via-[#c8a84b] to-transparent mx-auto" />
         </motion.div>
 
         {/* Counters */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px", marginBottom: "48px" }}>
+        <div className="flex flex-col gap-4 mb-12">
           <Counter
             label="Adults"
             sublabel="Ages 13 and above"
@@ -157,18 +120,9 @@ export default function GuestsPage() {
         {/* Total summary */}
         <motion.div
           animate={{ opacity: canContinue ? 1 : 0.3 }}
-          style={{
-            textAlign: "center", marginBottom: "40px",
-            padding: "20px",
-            background: "rgba(200,168,75,0.05)",
-            border: "1px solid rgba(200,168,75,0.1)",
-            borderRadius: "14px",
-          }}
+          className="text-center mb-10 p-5 bg-[#c8a84b]/5 border border-[#c8a84b]/10 rounded-2xl"
         >
-          <span style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontSize: "1rem", color: "rgba(255,255,255,0.5)", fontStyle: "italic",
-          }}>
+          <span className="font-serif-lux text-base text-white/50 italic">
             {adults + children} {adults + children === 1 ? "guest" : "guests"} total
           </span>
         </motion.div>
@@ -179,34 +133,20 @@ export default function GuestsPage() {
           disabled={!canContinue}
           whileHover={canContinue ? { scale: 1.02 } : {}}
           whileTap={canContinue ? { scale: 0.97 } : {}}
-          style={{
-            width: "100%", padding: "20px",
-            background: canContinue
-              ? "linear-gradient(135deg, #c8a84b 0%, #a07830 100%)"
-              : "rgba(255,255,255,0.05)",
-            border: "none", borderRadius: "14px",
-            color: canContinue ? "#000" : "rgba(255,255,255,0.2)",
-            fontFamily: "'Cormorant Garamond', serif",
-            fontSize: "1.1rem", fontStyle: "italic", fontWeight: 400,
-            letterSpacing: "0.08em", cursor: canContinue ? "pointer" : "not-allowed",
-            transition: "all 0.4s",
-          }}
+          className={`w-full p-5 rounded-2xl font-serif-lux text-lg italic tracking-wide transition-all duration-400 ${
+            canContinue
+              ? "bg-gradient-to-br from-[#c8a84b] to-[#a07830] text-black cursor-pointer border-none"
+              : "bg-white/5 text-white/20 cursor-not-allowed border-none"
+          }`}
         >
           {canContinue ? "Continue to Dates →" : "Select at least 1 adult"}
         </motion.button>
 
         {/* Reset */}
-        <div style={{ textAlign: "center", marginTop: "32px" }}>
+        <div className="text-center mt-8">
           <button
             onClick={() => { resetBooking(); navigate("/") }}
-            style={{
-              background: "none", border: "none", cursor: "pointer",
-              color: "rgba(255,255,255,0.2)", fontSize: "0.7rem",
-              letterSpacing: "0.2em", textTransform: "uppercase",
-              fontFamily: "sans-serif", transition: "color 0.3s",
-            }}
-            onMouseEnter={e => (e.currentTarget.style.color = "rgba(220,80,80,0.6)")}
-            onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.2)")}
+            className="bg-none border-none cursor-pointer text-white/20 text-xs tracking-[0.2em] uppercase font-sans transition-colors duration-300 hover:text-red-400/60"
           >
             Cancel Reservation
           </button>
