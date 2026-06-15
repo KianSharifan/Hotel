@@ -10,14 +10,14 @@ public class ReservationConfiguration : IEntityTypeConfiguration<Reservation>
     {
         builder.HasKey(r => r.Id);
         
-        builder.HasOne<Guest>()
+        builder.HasOne(x => x.Guest)
             .WithMany()
             .HasForeignKey(r => r.GuestId)
             .OnDelete(DeleteBehavior.Cascade);
         
-        builder.HasOne<Room>()
-            .WithMany()
-            .HasForeignKey(r => r.RoomId)
+        builder.HasOne(x => x.Room)
+            .WithOne()
+            .HasForeignKey<Reservation>(r => r.RoomId)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.Property(r => r.Status)

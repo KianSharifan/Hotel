@@ -10,14 +10,19 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
     {
         builder.HasKey(e => e.Id);
         
-        builder.HasOne<Position>()
-            .WithMany()
-            .HasForeignKey(p => p.PositionId)
+        builder.HasOne(e => e.Position)
+            .WithOne()
+            .HasForeignKey<Employee>(p => p.PositionId)
             .OnDelete(DeleteBehavior.Restrict);
         
-        builder.HasOne<Department>()
-            .WithMany()
-            .HasForeignKey(p => p.DepartmentId)
+        builder.HasOne(e => e.Department)
+            .WithOne()
+            .HasForeignKey<Employee>(p => p.DepartmentId)
+            .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.HasOne(e => e.User)
+            .WithOne()
+            .HasForeignKey<Employee>(x => x.Id)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

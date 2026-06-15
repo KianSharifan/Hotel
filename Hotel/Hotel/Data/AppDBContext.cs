@@ -31,6 +31,10 @@ public class AppDBContext : DbContext
     public DbSet<HouseKeeping> HouseKeepings { get; set; }
     public DbSet<MaintenanceRequest> MaintenanceRequests { get; set; }
     public DbSet<OrderItem> OrderItems { get; set; }
+    public DbSet<Amenity> Amenities { get; set; }
+    public DbSet<RoomAmenities>  RoomAmenities { get; set; }
+    public DbSet<Shift> Shifts { get; set; }
+    public DbSet<ShiftAssignment>  ShiftAssignments { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

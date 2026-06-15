@@ -22,6 +22,24 @@ namespace Hotel.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Hotel.Models.Amenity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Amenities");
+                });
+
             modelBuilder.Entity("Hotel.Models.Department", b =>
                 {
                     b.Property<int>("Id")
@@ -43,10 +61,7 @@ namespace Hotel.Migrations
             modelBuilder.Entity("Hotel.Models.Employee", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("timestamp with time zone");
@@ -65,9 +80,11 @@ namespace Hotel.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId");
+                    b.HasIndex("DepartmentId")
+                        .IsUnique();
 
-                    b.HasIndex("PositionId");
+                    b.HasIndex("PositionId")
+                        .IsUnique();
 
                     b.ToTable("Employees");
                 });
@@ -75,10 +92,7 @@ namespace Hotel.Migrations
             modelBuilder.Entity("Hotel.Models.Guest", b =>
                 {
                     b.Property<int>("GuestId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("GuestId"));
 
                     b.Property<string>("Nationality")
                         .HasMaxLength(30)
@@ -257,9 +271,11 @@ namespace Hotel.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GuestId");
+                    b.HasIndex("GuestId")
+                        .IsUnique();
 
-                    b.HasIndex("ReservationId");
+                    b.HasIndex("ReservationId")
+                        .IsUnique();
 
                     b.ToTable("Invoices");
                 });
@@ -448,9 +464,11 @@ namespace Hotel.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("InvoiceId");
+                    b.HasIndex("InvoiceId")
+                        .IsUnique();
 
-                    b.HasIndex("OrderId");
+                    b.HasIndex("OrderId")
+                        .IsUnique();
 
                     b.ToTable("Payments");
                 });
@@ -487,11 +505,11 @@ namespace Hotel.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CheckInDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("CheckInDate")
+                        .HasColumnType("date");
 
-                    b.Property<DateTime>("CheckOutDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("CheckOutDate")
+                        .HasColumnType("date");
 
                     b.Property<int>("GuestId")
                         .HasColumnType("integer");
@@ -514,7 +532,8 @@ namespace Hotel.Migrations
 
                     b.HasIndex("GuestId");
 
-                    b.HasIndex("RoomId");
+                    b.HasIndex("RoomId")
+                        .IsUnique();
 
                     b.ToTable("Reservations");
                 });
@@ -606,6 +625,21 @@ namespace Hotel.Migrations
                     b.ToTable("Rooms");
                 });
 
+            modelBuilder.Entity("Hotel.Models.RoomAmenities", b =>
+                {
+                    b.Property<int>("RoomId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("AmenityId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("RoomId", "AmenityId");
+
+                    b.HasIndex("AmenityId");
+
+                    b.ToTable("RoomAmenities");
+                });
+
             modelBuilder.Entity("Hotel.Models.RoomType", b =>
                 {
                     b.Property<int>("RoomTypeId")
@@ -625,6 +659,22 @@ namespace Hotel.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
+
+                    b.Property<int>("NumberDoubleBed")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("NumberSingleBed")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("NumberSofaBed")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("URL")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.HasKey("RoomTypeId");
 
@@ -653,6 +703,45 @@ namespace Hotel.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Services");
+                });
+
+            modelBuilder.Entity("Hotel.Models.Shift", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Day")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("character varying(15)");
+
+                    b.Property<TimeOnly>("EndTime")
+                        .HasColumnType("time without time zone");
+
+                    b.Property<TimeOnly>("StartTime")
+                        .HasColumnType("time without time zone");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Shifts");
+                });
+
+            modelBuilder.Entity("Hotel.Models.ShiftAssignment", b =>
+                {
+                    b.Property<int>("ShiftId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ShiftId", "EmployeeId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("ShiftAssignments");
                 });
 
             modelBuilder.Entity("Hotel.Models.Table", b =>
@@ -746,184 +835,289 @@ namespace Hotel.Migrations
 
             modelBuilder.Entity("Hotel.Models.Employee", b =>
                 {
-                    b.HasOne("Hotel.Models.Department", null)
-                        .WithMany()
-                        .HasForeignKey("DepartmentId")
+                    b.HasOne("Hotel.Models.Department", "Department")
+                        .WithOne()
+                        .HasForeignKey("Hotel.Models.Employee", "DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Hotel.Models.Position", null)
-                        .WithMany()
-                        .HasForeignKey("PositionId")
+                    b.HasOne("Hotel.Models.User", "User")
+                        .WithOne()
+                        .HasForeignKey("Hotel.Models.Employee", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Hotel.Models.Position", "Position")
+                        .WithOne()
+                        .HasForeignKey("Hotel.Models.Employee", "PositionId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Position");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Hotel.Models.Guest", b =>
+                {
+                    b.HasOne("Hotel.Models.User", "User")
+                        .WithOne()
+                        .HasForeignKey("Hotel.Models.Guest", "GuestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Hotel.Models.GuestServiceUsage", b =>
                 {
-                    b.HasOne("Hotel.Models.Guest", null)
+                    b.HasOne("Hotel.Models.Guest", "Guest")
                         .WithMany()
                         .HasForeignKey("GuestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Hotel.Models.Reservation", null)
+                    b.HasOne("Hotel.Models.Reservation", "Reservation")
                         .WithMany()
                         .HasForeignKey("ReservationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Hotel.Models.Service", null)
+                    b.HasOne("Hotel.Models.Service", "Service")
                         .WithMany()
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Guest");
+
+                    b.Navigation("Reservation");
+
+                    b.Navigation("Service");
                 });
 
             modelBuilder.Entity("Hotel.Models.HouseKeeping", b =>
                 {
-                    b.HasOne("Hotel.Models.Employee", null)
+                    b.HasOne("Hotel.Models.Employee", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Hotel.Models.Room", null)
+                    b.HasOne("Hotel.Models.Room", "Room")
                         .WithMany()
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("Hotel.Models.Invoice", b =>
                 {
-                    b.HasOne("Hotel.Models.Guest", null)
-                        .WithMany()
-                        .HasForeignKey("GuestId")
+                    b.HasOne("Hotel.Models.Guest", "Guest")
+                        .WithOne()
+                        .HasForeignKey("Hotel.Models.Invoice", "GuestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Hotel.Models.Reservation", null)
-                        .WithMany()
-                        .HasForeignKey("ReservationId")
+                    b.HasOne("Hotel.Models.Reservation", "Reservation")
+                        .WithOne()
+                        .HasForeignKey("Hotel.Models.Invoice", "ReservationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Guest");
+
+                    b.Navigation("Reservation");
                 });
 
             modelBuilder.Entity("Hotel.Models.MaintenanceRequest", b =>
                 {
-                    b.HasOne("Hotel.Models.Employee", null)
+                    b.HasOne("Hotel.Models.Employee", "ReportedEmployee")
                         .WithMany()
                         .HasForeignKey("ReportedEmployeeId")
                         .OnDelete(DeleteBehavior.SetNull)
                         .IsRequired();
 
-                    b.HasOne("Hotel.Models.Room", null)
+                    b.HasOne("Hotel.Models.Room", "Room")
                         .WithMany()
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ReportedEmployee");
+
+                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("Hotel.Models.MenuItem", b =>
                 {
-                    b.HasOne("Hotel.Models.MenuCategory", null)
+                    b.HasOne("Hotel.Models.MenuCategory", "MenuCategory")
                         .WithMany()
                         .HasForeignKey("MenuCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("MenuCategory");
                 });
 
             modelBuilder.Entity("Hotel.Models.Order", b =>
                 {
-                    b.HasOne("Hotel.Models.Guest", null)
+                    b.HasOne("Hotel.Models.Guest", "Guest")
                         .WithMany()
                         .HasForeignKey("GuestId")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("Hotel.Models.Table", null)
+                    b.HasOne("Hotel.Models.Table", "Table")
                         .WithMany()
                         .HasForeignKey("TableId")
                         .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Guest");
+
+                    b.Navigation("Table");
                 });
 
             modelBuilder.Entity("Hotel.Models.OrderItem", b =>
                 {
-                    b.HasOne("Hotel.Models.Order", null)
+                    b.HasOne("Hotel.Models.Order", "Order")
                         .WithMany()
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("Hotel.Models.Payment", b =>
                 {
-                    b.HasOne("Hotel.Models.Invoice", null)
-                        .WithMany()
-                        .HasForeignKey("InvoiceId")
+                    b.HasOne("Hotel.Models.Invoice", "Invoice")
+                        .WithOne()
+                        .HasForeignKey("Hotel.Models.Payment", "InvoiceId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Hotel.Models.Order", null)
-                        .WithMany()
-                        .HasForeignKey("OrderId")
+                    b.HasOne("Hotel.Models.Order", "Order")
+                        .WithOne()
+                        .HasForeignKey("Hotel.Models.Payment", "OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Invoice");
+
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("Hotel.Models.Reservation", b =>
                 {
-                    b.HasOne("Hotel.Models.Guest", null)
+                    b.HasOne("Hotel.Models.Guest", "Guest")
                         .WithMany()
                         .HasForeignKey("GuestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Hotel.Models.Room", null)
-                        .WithMany()
-                        .HasForeignKey("RoomId")
+                    b.HasOne("Hotel.Models.Room", "Room")
+                        .WithOne()
+                        .HasForeignKey("Hotel.Models.Reservation", "RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Guest");
+
+                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("Hotel.Models.Restaurant", b =>
                 {
-                    b.HasOne("Hotel.Models.Hotel", null)
+                    b.HasOne("Hotel.Models.Hotel", "Hotel")
                         .WithMany()
                         .HasForeignKey("HotelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Hotel");
                 });
 
             modelBuilder.Entity("Hotel.Models.Room", b =>
                 {
-                    b.HasOne("Hotel.Models.Hotel", null)
+                    b.HasOne("Hotel.Models.Hotel", "Hotel")
                         .WithMany()
                         .HasForeignKey("HotelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Hotel.Models.Room", null)
+                    b.HasOne("Hotel.Models.RoomType", "RoomType")
                         .WithMany()
                         .HasForeignKey("RoomTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Hotel");
+
+                    b.Navigation("RoomType");
+                });
+
+            modelBuilder.Entity("Hotel.Models.RoomAmenities", b =>
+                {
+                    b.HasOne("Hotel.Models.Amenity", "Amenity")
+                        .WithMany()
+                        .HasForeignKey("AmenityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Hotel.Models.Room", "Room")
+                        .WithMany()
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Amenity");
+
+                    b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("Hotel.Models.ShiftAssignment", b =>
+                {
+                    b.HasOne("Hotel.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Hotel.Models.Shift", "Shift")
+                        .WithMany()
+                        .HasForeignKey("ShiftId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Shift");
                 });
 
             modelBuilder.Entity("Hotel.Models.Table", b =>
                 {
-                    b.HasOne("Hotel.Models.Restaurant", null)
+                    b.HasOne("Hotel.Models.Restaurant", "Restaurant")
                         .WithMany()
                         .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Restaurant");
                 });
 
             modelBuilder.Entity("Hotel.Models.User", b =>
                 {
-                    b.HasOne("Hotel.Models.Role", null)
+                    b.HasOne("Hotel.Models.Role", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Role");
                 });
 #pragma warning restore 612, 618
         }

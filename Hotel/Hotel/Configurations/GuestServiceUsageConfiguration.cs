@@ -10,17 +10,17 @@ public class GuestServiceUsageConfiguration : IEntityTypeConfiguration<GuestServ
     {
         builder.HasKey(x => x.Id);
         
-        builder.HasOne<Guest>()
+        builder.HasOne(x => x.Guest)
             .WithMany()
             .HasForeignKey(x => x.GuestId)
             .OnDelete(DeleteBehavior.Cascade);
         
-        builder.HasOne<Service>()
+        builder.HasOne(x => x.Service)
             .WithMany()
             .HasForeignKey(x => x.ServiceId)
             .OnDelete(DeleteBehavior.Cascade);
         
-        builder.HasOne<Reservation>()
+        builder.HasOne(x => x.Reservation)
             .WithMany()
             .HasForeignKey(x => x.ReservationId)
             .OnDelete(DeleteBehavior.Cascade);

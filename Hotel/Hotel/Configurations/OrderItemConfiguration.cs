@@ -9,7 +9,7 @@ public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
     {
         builder.HasKey(oi => oi.Id);
         
-        builder.HasOne<Order>()
+        builder.HasOne(x => x.Order)
             .WithMany()
             .HasForeignKey(oi => oi.OrderId)
             .OnDelete(DeleteBehavior.Cascade);

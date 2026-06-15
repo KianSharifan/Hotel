@@ -10,7 +10,7 @@ public class RestaurantConfiguratio : IEntityTypeConfiguration<Restaurant>
     {
         builder.HasKey(r => r.Id);
         
-        builder.HasOne<Models.Hotel>()
+        builder.HasOne(r => r.Hotel)
             .WithMany()
             .HasForeignKey(r => r.HotelId)
             .OnDelete(DeleteBehavior.Cascade);

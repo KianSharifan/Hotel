@@ -13,5 +13,8 @@ public class RoomTypeConfiguration : IEntityTypeConfiguration<RoomType>
             .IsRequired();
         builder.Property(rt => rt.Description)
             .HasMaxLength(600);
+        
+        builder.Property(rt => rt.URL)
+            .HasMaxLength(500);
     }
 }

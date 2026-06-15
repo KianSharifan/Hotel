@@ -4,9 +4,12 @@ public class Employee
 {
     public int Id { get; set; }
     public int PositionId { get; set; }
+    public Position Position { get; set; }
     public int DepartmentId { get; set; }
+    public Department Department { get; set; }
     public DateTime HireDate { get; set; }
 
+    public User User { get; set; }
     private double salary;
     public double Salary
     {
@@ -18,6 +21,6 @@ public class Employee
             salary = value;
         }
     }
-
+    
     public DateTime BirthDate { get; set; }
 }
