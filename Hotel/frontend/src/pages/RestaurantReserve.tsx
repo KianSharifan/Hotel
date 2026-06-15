@@ -8,6 +8,7 @@ function RestaurantReservation() {
   const [date, setDate] = useState("")
   const [guests, setGuests] = useState(1)
   const [time, setTime] = useState("")
+  const [email, setEmail] = useState("")
   const [success, setSuccess] = useState(false)
 
   const availableTimes = [
@@ -23,13 +24,23 @@ function RestaurantReservation() {
     "22:00"
   ]
 
-  function handleReservation() {
+  function isValidEmail(email: string): boolean {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  }
 
-    if (!date || !time) {
-      alert("Please complete all fields")
-      return
+  function handleReservation() {
+    if (!date || !time || !email) {
+      alert("Please complete all fields");
+      return;
     }
-    setSuccess(true)
+
+    if (!isValidEmail(email)) {
+      alert("Invalid email format");
+      return;
+    }
+
+    setSuccess(true);
   }
 
   return (
@@ -135,6 +146,7 @@ function RestaurantReservation() {
             </div>
 
 
+
             {/* GUESTS */}
 
             <div>
@@ -171,6 +183,29 @@ function RestaurantReservation() {
 
               </select>
 
+            </div>
+
+            <div className="md:col-span-2 flex justify-center">
+              <div className="w-full md:w-1/2">
+              <label className="block mb-3 text-lg">Email</label>
+              <input type="email"
+              value={email}
+              required
+              onChange={(e)=>setEmail(e.target.value)}
+                className="
+                  w-full
+                  bg-stone-700
+                  border
+                  border-gray-700
+                  rounded-xl
+                  px-5
+                  py-4
+                "/>
+              {email && !isValidEmail(email) && (
+                <p className="text-red-400 mt-2">Invalid email format</p>
+              )}
+              
+              </div>
             </div>
 
           </div>
