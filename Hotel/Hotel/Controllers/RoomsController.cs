@@ -17,6 +17,7 @@ public class RoomsController : Controller
         _context = context;
         _roomServices = roomServices;
     }
+    
     [HttpGet]
     public async Task<IActionResult> GetRoomTypes()
     {

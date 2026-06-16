@@ -19,7 +19,7 @@ public class RoomServices
         return await _context.RoomTypes.ToListAsync();
     }
 
-    public async Task<List<RoomType>> AvailableRooms(RoomSearchDTO input)
+    public async Task<List<RoomType>> AvailableRoomTypes(RoomSearchDTO input)
     {
         int totalGuests = input.NumberOfAdults + input.NumberOfKids;
         return await _context.Rooms

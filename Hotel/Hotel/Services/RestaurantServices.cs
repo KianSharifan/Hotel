@@ -22,4 +22,10 @@ public class RestaurantServices
     {
         return await _context.MenuItems.ToListAsync();
     }
+
+    public async Task<List<Models.MenuItem>> CategoryItems(string category)
+    {
+        List<Models.MenuItem>  menuItems = await _context.MenuItems.Where(m => m.MenuCategory.Name == category).ToListAsync();
+        return menuItems;
+    }
 }

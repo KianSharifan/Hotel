@@ -11,3 +11,7 @@ Accept: application/json
 
 GET {{root_url}}/Rooms
 Accept: application/json
+###
+
+GET {{root_url}}/Restaurant/Menu/Pizzas/MenuItems
+Accept: application/json

@@ -1,4 +1,6 @@
 using Hotel.Data;
+using Hotel.DTOs;
+using Hotel.Mappers;
 using Microsoft.AspNetCore.Mvc;
 using Hotel.Services;
 
@@ -17,7 +19,15 @@ public class RestaurantController : Controller
         _context = context;
         _restaurantServices = restaurantServices;
     }
+
     [HttpGet]
+    public IActionResult Restaurant()
+    {
+        RestaurantDTO dto = _context.Restaurants.First().ToRestaurantDTO();
+        return Ok(dto);
+    }
+    
+    [HttpGet("Menu")]
     public async Task<IActionResult> Menu()
     {
         var menuCategories = await _restaurantServices.GetAllMenuCategories();
@@ -28,5 +38,18 @@ public class RestaurantController : Controller
             menuCategories
         };
         return Ok(result);
+    }
+
+    [HttpGet("Menu/Categories")]
+    public async Task<IActionResult> Categories()
+    {
+        List<Models.MenuCategory>  menuCategories = await _restaurantServices.GetAllMenuCategories();
+        return Ok(menuCategories);
+    }
+
+    [HttpGet("Menu/{menuCategory}/MenuItems")]
+    public async Task<IActionResult> MenuCategoryItems(string menuCategory)
+    {
+        return Ok(await _restaurantServices.CategoryItems(menuCategory));
     }
 }
