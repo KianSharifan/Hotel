@@ -1,4 +1,5 @@
 using Hotel.Data;
+using Hotel.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Hotel.Services;
 using Hotel.Models;
@@ -18,9 +19,27 @@ public class RoomsController : Controller
         _roomServices = roomServices;
     }
     
-    [HttpGet]
-    public async Task<IActionResult> GetRoomTypes()
-    {
-        return Ok(await _roomServices.AllRoomTypes());
-    }
-}
+    //should have authentication
+     [HttpGet("{id}")]
+     public IActionResult GetRoomTypes(int id)
+     {
+         try
+         {
+             return Ok(_context.RoomAmenities.Where(r => r.RoomId == id));
+         }
+         catch (Exception e)
+         {
+             return BadRequest(e.Message);
+         }
+     }
+     
+     //should have authentication
+     // [HttpPost("{id}")]
+     // public IActionResult CreateRoomType(int id, RoomTypeDTO roomTypeDto)
+     // {
+     //     var roomType = new RoomType()
+     //     {
+     //         
+     //     }
+     // }
+ }

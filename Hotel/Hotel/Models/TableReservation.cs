@@ -2,6 +2,7 @@ namespace Hotel.Models;
 
 public class TableReservation
 {
+    public int Id { get; set; }
     public int TableId { get; set; }
     public Table Table { get; set; }
     public string Email { get; set; }
