@@ -26,10 +26,10 @@ public class RoomServices
         return output;
     }
 
-    public async Task<List<RoomType>> AvailableRoomTypes(RoomSearchDTO input)
+    public async Task<List<RoomTypeDTO>> AvailableRoomTypes(RoomSearchDTO input)
     {
         int totalGuests = input.NumberOfAdults + input.NumberOfKids;
-        return await _context.Rooms
+        var roomTypes = await _context.Rooms
             .Where(room => room.Status == "Available")
             .Where(room => room.RoomType.MaxGuests >= totalGuests)
             .Where(room => !_context.Reservations.Any(r => 
@@ -39,9 +39,16 @@ public class RoomServices
             .Select(room => room.RoomType)
             .Distinct()
             .ToListAsync();
+
+        List<RoomTypeDTO> output = new List<RoomTypeDTO>();
+        foreach (var r in roomTypes)
+        {
+            output.Add(r.ToDTO());
+        }
+        return output;
     }
 
-    public async Task<Room?> FindAvailableRoom(RoomReservationDTO input)
+    private async Task<Room?> FindAvailableRoom(RoomReservationDTO input)
     {
         return await _context.Rooms
             .Where(room => room.Status == "Available" && room.RoomType == input.RoomType)

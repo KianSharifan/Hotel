@@ -50,7 +50,7 @@ public class RoomsController : Controller
 
      //should have authentication
      [HttpPut("{id}")]
-     public async Task<IActionResult> UpdateRoom(int id, RoomDTO dto)
+     public async Task<IActionResult> UpdateRoom(int id, [FromBody]RoomDTO dto)
      {
          try
          {
@@ -119,6 +119,22 @@ public class RoomsController : Controller
              _context.Rooms.Add(r);
              await _context.SaveChangesAsync();
              return Ok();
+         }
+         catch (Exception e)
+         {
+             return BadRequest(e.Message);
+         }
+     }
+
+     [HttpGet("Reservation")]
+     public async Task<IActionResult> Reservation(RoomReservationDTO input)
+     {
+         try
+         {
+             int output = await _roomServices.Reserve(input);
+             if (output == 0)
+                 return BadRequest("Reservation could not be done no other room with this roomType Available");
+             return Ok(output);
          }
          catch (Exception e)
          {

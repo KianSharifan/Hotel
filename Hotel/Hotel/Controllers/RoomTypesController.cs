@@ -33,6 +33,13 @@ public class RoomTypesController : Controller
         }
     }
 
+    [HttpGet("AvailableRoomTypes")]
+    public async Task<IActionResult> GetAvailableRoomTypes([FromBody]RoomSearchDTO roomSearch)
+    {
+        var output = await _roomServices.AvailableRoomTypes(roomSearch);
+        return Ok(output);
+    }
+    
     [HttpGet("Admin")]
     public IActionResult GetAllRoomTypes()
     {
