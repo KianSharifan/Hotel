@@ -1,17 +1,14 @@
 @root_url = http://localhost:5263
 
-#GET {{Hotel_HostAddress}}/weatherforecast/
-#Accept: application/json
-#
-#GET https://examples.http-client.intellij.net/get
-#    ?generated-in=JetBrains Rider
 GET {{root_url}}/Home
 Accept: application/json
 ###
 
-GET {{root_url}}/Rooms
+GET {{root_url}}/API/Rooms
 Accept: application/json
 ###
 
 GET {{root_url}}/Restaurant/Menu/Pizzas/MenuItems
 Accept: application/json
+###
+

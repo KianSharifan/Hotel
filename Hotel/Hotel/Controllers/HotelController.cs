@@ -13,7 +13,7 @@ using Hotel.Services;
 namespace Hotel.Controllers;
 
 // [Authorize]
-[Route("Home")]
+[Route("API/Home")]
 [ApiController]
 public class HotelController : Controller
 {

@@ -6,7 +6,7 @@ using Hotel.Models;
 namespace Hotel.Controllers;
 
 
-[Route("Rooms")]
+[Route("API/Rooms")]
 [ApiController]
 public class RoomsController : Controller
 {

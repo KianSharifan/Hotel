@@ -8,7 +8,6 @@ public class AppDBContext : DbContext
         : base(options)
     {
     }
-
     public DbSet<Hotel> Hotels { get; set; }
     public DbSet<Department> Departments { get; set; }
     public DbSet<Position> Positions { get; set; }
@@ -35,6 +34,7 @@ public class AppDBContext : DbContext
     public DbSet<RoomAmenities>  RoomAmenities { get; set; }
     public DbSet<Shift> Shifts { get; set; }
     public DbSet<ShiftAssignment>  ShiftAssignments { get; set; }
+    public DbSet<TableReservation> TableReservations { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

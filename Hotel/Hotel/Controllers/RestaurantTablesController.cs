@@ -1,13 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Hotel.Data;
 using Hotel.DTOs;
+using Hotel.Mappers;
 using Hotel.Models;
 using Hotel.Services;
 
 namespace Hotel.Controllers;
 
 
-[Route("Restaurant/Tables")]
+[Route("API/Restaurant/Tables")]
 [ApiController]
 public class RestaurantTablesController : Controller
 {
@@ -20,13 +21,41 @@ public class RestaurantTablesController : Controller
         _restaurantServices = restaurantServices;
     }
     
-    [HttpGet]
-    public IActionResult GetAllAvailableTables()
+    //should have authentication
+    [HttpPost]
+    public async Task<IActionResult> Reservation(TableStatusDTO reservation)
     {
-        var tables = _context.RestaurantTables
-            .Where(t => t.Status == "Available")
-            .ToList();
-        return Ok(tables);
+        if (reservation.Time != null && reservation.Email != null)
+        {
+            var availableTables = _context.RestaurantTables.Where(t => t.Capacity >= reservation.Capacity)
+                .Where(t => t.Status == "Available")
+                .OrderBy(t => t.Capacity -  reservation.Capacity)
+                .ToList();
+
+            foreach (var table in availableTables)
+            {
+                if (!_context.TableReservations.Any(s => s.TableId == table.Id
+                                                         && s.Time.Date == reservation.Time.Value.Date
+                                                         && s.Time.Hour * 60 + s.Time.Minute - 120 <
+                                                         reservation.Time.Value.Hour * 60 + reservation.Time.Value.Minute
+                                                         && reservation.Time.Value.Hour * 60 +
+                                                         reservation.Time.Value.Minute <
+                                                         s.Time.Hour * 60 + s.Time.Minute + 120))
+                {
+                    var reserve = new TableReservation()
+                    {
+                        TableId = table.Id,
+                        Time = reservation.Time.Value,
+                        Description = reservation.Status,
+                        Email = reservation.Email
+                    };
+                    _context.TableReservations.Add(reserve);
+                    await _context.SaveChangesAsync();
+                    return Ok("Reservation Successful");
+                }
+            }
+        }
+        return BadRequest("No available tables");
     }
     
     //should have authorization
@@ -42,30 +71,35 @@ public class RestaurantTablesController : Controller
     
     //should have authorization [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
-    public IActionResult Update(int id,TableStatusDTO  input)
+    public async Task<IActionResult> Update(int id,[FromBody]TableStatusDTO input)
     {
-        var table = _context.RestaurantTables.Find(id);
+        string output = await _restaurantServices.TableUpdate(id, input);
+        if (output == "Not Found")
+            return NotFound();
+        if(output == "Bad Request")
+            return BadRequest();
+        return Ok();
+    }
+    
+    //should have authentication
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteTable(int id)
+    {
+        var table = await _context.RestaurantTables.FindAsync(id);
         if (table == null)
             return NotFound();
-        if (input.Status == "Reserved")
-        {
-            if (table.Status != "Available")
-                return BadRequest("This table can not be reserved");
-            table.Status = "Reserved By " + input.Email;
-            table.Reserved = true;
-        }
-        if (input.Status == "Available")
-        {
-            table.Status = "Available";
-            table.Reserved = false;
-        }
-
-        if (input.Status == "Maintenance")
-        {
-            table.Status = "Maintenance";
-            table.Reserved = false;
-        }
-        _context.SaveChanges();
+        _context.RestaurantTables.Remove(table);
+        await _context.SaveChangesAsync();
+        return Ok();
+    }
+    
+    //should have authentication
+    [HttpPost("{id}")]
+    public async Task<IActionResult> CreateTable([FromBody]TableDTO input)
+    {
+        var table = input.ToTable();
+        _context.RestaurantTables.Add(table);
+        await _context.SaveChangesAsync();
         return Ok();
     }
 }

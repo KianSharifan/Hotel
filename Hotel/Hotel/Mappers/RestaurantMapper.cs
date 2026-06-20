@@ -28,4 +28,24 @@ public static class RestaurantMapper
         };
         return restaurantDto;
     }
+
+    public static Table ToTable(this TableDTO dto)
+    {
+        Table table = new Table()
+        {
+            Capacity = dto.Capacity,
+            Status = "Available",
+            RestaurantId = 1
+        };
+        return table;
+    }
+
+    public static TableDTO ToTableDTO(this Table table)
+    {
+        TableDTO tableDTO = new TableDTO()
+        {
+            Capacity = table.Capacity,
+        };
+        return tableDTO;
+    }
 }
