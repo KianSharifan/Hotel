@@ -208,7 +208,7 @@ function Menu() {
 
   useEffect(() => {
 
-    fetch("http://localhost:5263/Restaurant")
+    fetch("http://localhost:5263/API/Restaurant/Menu")
 
       .then(response => response.json())
 
