@@ -34,10 +34,10 @@ public class RestaurantServices
     //this should have authentication
     public async Task<string> TableUpdate(int id, TableStatusDTO input)
     {
-        var table = _context.RestaurantTables.Find(id);
+        var table = await _context.RestaurantTables.FindAsync(id);
         if (table == null)
             return "Not Found";
-        if (input.Status == "Reservation")
+        if (input.SpecialReq == "Reservation")
         {
             if (table.Status != "Available")
                 return "Bad Request";
@@ -62,13 +62,13 @@ public class RestaurantServices
             }
             return "Bad Request";
         }
-        if (input.Status == "Available")
+        if (input.SpecialReq == "Available")
         {
             table.Status = "Available";
             if (input.Capacity != null)
                 table.Capacity = input.Capacity.Value;
         }
-        if (input.Status == "Maintenance")
+        if (input.SpecialReq == "Maintenance")
         {
             table.Status = "Maintenance";
             if (input.Capacity != null)

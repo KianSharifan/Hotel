@@ -3,6 +3,7 @@ using Hotel.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Hotel.Services;
 using Hotel.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hotel.Controllers;
 
@@ -21,11 +22,57 @@ public class RoomsController : Controller
     
     //should have authentication
      [HttpGet("{id}")]
-     public IActionResult GetRoomTypes(int id)
+     public async Task<IActionResult> GetRoom(int id)
      {
          try
          {
-             return Ok(_context.RoomAmenities.Where(r => r.RoomId == id));
+             return Ok(await _context.Rooms.FindAsync(id));
+         }
+         catch (Exception e)
+         {
+             return BadRequest(e.Message);
+         }
+     }
+     
+     // should have authentication
+     [HttpGet]
+     public IActionResult GetRooms()
+     {
+         try
+         {
+             return Ok(_context.Rooms);
+         }
+         catch (Exception e)
+         {
+             return BadRequest(e.Message);
+         }
+     }
+
+     //should have authentication
+     [HttpPut("{id}")]
+     public async Task<IActionResult> UpdateRoom(int id, RoomDTO dto)
+     {
+         try
+         {
+             var room = await _context.Rooms.FindAsync(id);
+             if (room == null)
+                 return NotFound();
+             if(dto.Status != null)
+                 room.Status = dto.Status;
+             if(dto.Floor != null)
+                 room.Floor = dto.Floor.Value;
+             if(dto.HotelId != null)
+                 room.HotelId = dto.HotelId.Value;
+             if(dto.RoomNumber != null)
+                 room.RoomNumber = dto.RoomNumber.Value;
+             if(dto.RoomTypeId != null)
+                 room.RoomTypeId = dto.RoomTypeId.Value;
+             if(dto.Note != null)
+                 room.Notes = dto.Note;
+             if(dto.PricePerNight != null)
+                 room.PricePerNight = dto.PricePerNight.Value;
+             await _context.SaveChangesAsync();
+             return Ok();
          }
          catch (Exception e)
          {
@@ -34,12 +81,48 @@ public class RoomsController : Controller
      }
      
      //should have authentication
-     // [HttpPost("{id}")]
-     // public IActionResult CreateRoomType(int id, RoomTypeDTO roomTypeDto)
-     // {
-     //     var roomType = new RoomType()
-     //     {
-     //         
-     //     }
-     // }
+     [HttpDelete("{roomNumber}")]
+     public async Task<IActionResult> DeleteRoom(int roomNumber)
+     {
+         try
+         {
+             var room = await _context.Rooms.FirstOrDefaultAsync(r => r.RoomNumber == roomNumber);
+             if (room == null)
+                 return NotFound();
+             _context.Rooms.Remove(room);
+             await _context.SaveChangesAsync();
+             return Ok();
+         }
+         catch (Exception e)
+         {
+             return BadRequest(e.Message);
+         }
+     }
+
+     //should have authentication
+     [HttpPost]
+     public async Task<IActionResult> PostRoom([FromBody] RoomDTO room)
+     {
+         try
+         {
+             var r = new Room();
+             if (room.RoomTypeId != null && room.Id != null && room.HotelId != null && room.Floor != null && room.PricePerNight != null && room.RoomNumber != null)
+             {
+                 r.RoomId = room.Id.Value;
+                 r.HotelId = room.HotelId.Value;
+                 r.Floor = room.Floor.Value;
+                 r.PricePerNight = room.PricePerNight.Value;
+                 r.Notes =  room.Note;
+                 r.Status = room.Status;
+                 r.RoomNumber = room.RoomNumber.Value;
+             }
+             _context.Rooms.Add(r);
+             await _context.SaveChangesAsync();
+             return Ok();
+         }
+         catch (Exception e)
+         {
+             return BadRequest(e.Message);
+         }
+     }
  }
