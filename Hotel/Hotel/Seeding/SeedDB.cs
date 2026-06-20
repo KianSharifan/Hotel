@@ -444,26 +444,26 @@ public class SeedDB
             await context.SaveChangesAsync();
             var tables = new List<Table>
             {
-                new Table { Id = 1, RestaurantId = 1, Status = "Available", Reserved = false, Capacity = 2 },
-                new Table { Id = 2, RestaurantId = 1, Status = "Available", Reserved = false, Capacity = 2 },
-                new Table { Id = 3, RestaurantId = 1, Status = "Available", Reserved = false, Capacity = 2 },
-                new Table { Id = 4, RestaurantId = 1, Status = "Available", Reserved = false, Capacity = 2 },
-                new Table { Id = 5, RestaurantId = 1, Status = "Available", Reserved = false, Capacity = 2 },
-                new Table { Id = 6, RestaurantId = 1, Status = "Available", Reserved = false, Capacity = 4 },
-                new Table { Id = 7, RestaurantId = 1, Status = "Available", Reserved = false, Capacity = 4 },
-                new Table { Id = 8, RestaurantId = 1, Status = "Available", Reserved = false, Capacity = 4 },
-                new Table { Id = 9, RestaurantId = 1, Status = "Available", Reserved = false, Capacity = 4 },
-                new Table { Id = 10, RestaurantId = 1, Status = "Available", Reserved = false, Capacity = 4 },
-                new Table { Id = 11, RestaurantId = 1, Status = "Available", Reserved = false, Capacity = 4 },
-                new Table { Id = 12, RestaurantId = 1, Status = "Available", Reserved = false, Capacity = 4 },
-                new Table { Id = 13, RestaurantId = 1, Status = "Available", Reserved = false, Capacity = 4 },
-                new Table { Id = 14, RestaurantId = 1, Status = "Available", Reserved = false, Capacity = 6 },
-                new Table { Id = 15, RestaurantId = 1, Status = "Available", Reserved = false, Capacity = 6 },
-                new Table { Id = 16, RestaurantId = 1, Status = "Available", Reserved = false, Capacity = 6 },
-                new Table { Id = 17, RestaurantId = 1, Status = "Available", Reserved = false, Capacity = 6 },
-                new Table { Id = 18, RestaurantId = 1, Status = "Available", Reserved = false, Capacity = 6 },
-                new Table { Id = 19, RestaurantId = 1, Status = "Available", Reserved = false, Capacity = 8 },
-                new Table { Id = 20, RestaurantId = 1, Status = "Available", Reserved = false, Capacity = 8 }
+                new Table { Id = 1, RestaurantId = 1, Status = "Available", Capacity = 2 },
+                new Table { Id = 2, RestaurantId = 1, Status = "Available", Capacity = 2 },
+                new Table { Id = 3, RestaurantId = 1, Status = "Available", Capacity = 2 },
+                new Table { Id = 4, RestaurantId = 1, Status = "Available", Capacity = 2 },
+                new Table { Id = 5, RestaurantId = 1, Status = "Available", Capacity = 2 },
+                new Table { Id = 6, RestaurantId = 1, Status = "Available", Capacity = 4 },
+                new Table { Id = 7, RestaurantId = 1, Status = "Available", Capacity = 4 },
+                new Table { Id = 8, RestaurantId = 1, Status = "Available", Capacity = 4 },
+                new Table { Id = 9, RestaurantId = 1, Status = "Available", Capacity = 4 },
+                new Table { Id = 10, RestaurantId = 1, Status = "Available", Capacity = 4 },
+                new Table { Id = 11, RestaurantId = 1, Status = "Available", Capacity = 4 },
+                new Table { Id = 12, RestaurantId = 1, Status = "Available", Capacity = 4 },
+                new Table { Id = 13, RestaurantId = 1, Status = "Available", Capacity = 4 },
+                new Table { Id = 14, RestaurantId = 1, Status = "Available", Capacity = 6 },
+                new Table { Id = 15, RestaurantId = 1, Status = "Available", Capacity = 6 },
+                new Table { Id = 16, RestaurantId = 1, Status = "Available", Capacity = 6 },
+                new Table { Id = 17, RestaurantId = 1, Status = "Available", Capacity = 6 },
+                new Table { Id = 18, RestaurantId = 1, Status = "Available", Capacity = 6 },
+                new Table { Id = 19, RestaurantId = 1, Status = "Available", Capacity = 8 },
+                new Table { Id = 20, RestaurantId = 1, Status = "Available", Capacity = 8 }
             };
             context.RestaurantTables.AddRange(tables);
 var rooms = new List<Room>

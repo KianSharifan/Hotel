@@ -13,7 +13,7 @@ using Hotel.Services;
 namespace Hotel.Controllers;
 
 // [Authorize]
-[Route("Home")]
+[Route("API/Home")]
 [ApiController]
 public class HotelController : Controller
 {
@@ -22,27 +22,28 @@ public class HotelController : Controller
     {
         _context = context;
     }
-    [HttpGet]
-    public async Task<IActionResult> GetHotels()
-    {
-        RoomServices roomServices = new RoomServices(_context);
-        List<RoomType> output = new List<RoomType>();
-
-        try
-        {
-            output = await roomServices.AvailableRooms(new RoomSearchDTO()
-                {
-                    NumberOfAdults = 2, NumberOfKids = 1, CheckOut = DateOnly.MinValue,
-                    CheckIn = new DateOnly(2026, 3, 12)
-                }
-            );
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
-        
-        return Ok(output);
-    }
+    
+    // [HttpGet]
+    // public async Task<IActionResult> GetHotels()
+    // {
+    //     RoomServices roomServices = new RoomServices(_context);
+    //     List<RoomType> output = new List<RoomType>();
+    //
+    //     try
+    //     {
+    //         output = await roomServices.AvailableRoomTypes(new RoomSearchDTO()
+    //             {
+    //                 NumberOfAdults = 2, NumberOfKids = 1, CheckOut = DateOnly.MinValue,
+    //                 CheckIn = new DateOnly(2026, 3, 12)
+    //             }
+    //         );
+    //     }
+    //     catch (Exception e)
+    //     {
+    //         Console.WriteLine(e);
+    //         throw;
+    //     }
+    //     
+    //     return Ok(output);
+    // }
 }

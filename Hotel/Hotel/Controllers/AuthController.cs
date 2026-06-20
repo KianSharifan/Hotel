@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Hotel.Controllers;
 
 [ApiController]
-[Route("Login")]
+[Route("API/Login")]
 public class AuthController : ControllerBase
 {
     private readonly AppDBContext _context;

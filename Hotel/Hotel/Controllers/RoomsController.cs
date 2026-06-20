@@ -6,7 +6,7 @@ using Hotel.Models;
 namespace Hotel.Controllers;
 
 
-[Route("Rooms")]
+[Route("API/Rooms")]
 [ApiController]
 public class RoomsController : Controller
 {
@@ -17,6 +17,7 @@ public class RoomsController : Controller
         _context = context;
         _roomServices = roomServices;
     }
+    
     [HttpGet]
     public async Task<IActionResult> GetRoomTypes()
     {
