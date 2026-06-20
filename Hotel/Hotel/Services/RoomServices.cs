@@ -1,5 +1,6 @@
 using Hotel.Data;
 using Hotel.DTOs;
+using Hotel.Mappers;
 using Hotel.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,9 +15,15 @@ public class RoomServices
         _context = context;
     }
 
-    public async Task<List<RoomType>> AllRoomTypes()
+    public async Task<List<RoomTypeDTO>> AllRoomTypes()
     {
-        return await _context.RoomTypes.ToListAsync();
+        List<RoomTypeDTO> output = new List<RoomTypeDTO>();
+        foreach (var roomType in _context.RoomTypes)
+        {
+            var dto = roomType.ToDTO();
+            output.Add(dto);
+        }
+        return output;
     }
 
     public async Task<List<RoomType>> AvailableRoomTypes(RoomSearchDTO input)
