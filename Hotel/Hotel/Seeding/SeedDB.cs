@@ -38,7 +38,8 @@ public class SeedDB
                     NumberDoubleBed = 1,
                     NumberSingleBed = 0,
                     NumberSofaBed = 0,
-                    Description = "A comfortable room with a queen bed, work desk, and modern bathroom."
+                    Description = "A comfortable room with a queen bed, work desk, and modern bathroom.",
+                    URL = "https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=2074"
                 },
                 new RoomType
                 {
@@ -48,7 +49,8 @@ public class SeedDB
                     NumberDoubleBed = 1,
                     NumberSingleBed = 1,
                     NumberSofaBed = 0,
-                    Description = "A spacious room featuring a king bed, seating area, and premium décor."
+                    Description = "A spacious room featuring a king bed, seating area, and premium décor.",
+                    URL="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=1974"
                 },
                 new RoomType
                 {
@@ -58,7 +60,8 @@ public class SeedDB
                     NumberDoubleBed = 0,
                     NumberSingleBed = 2,
                     NumberSofaBed = 0,
-                    Description = "An upgraded room offering enhanced bedding, better views, and refined finishes."
+                    Description = "An upgraded room offering enhanced bedding, better views, and refined finishes.",
+                    URL="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1974"
                 },
                 new RoomType
                 {
@@ -68,7 +71,8 @@ public class SeedDB
                     NumberDoubleBed = 1,
                     NumberSingleBed = 0,
                     NumberSofaBed = 1,
-                    Description = "A semi-suite with a lounge area, elegant furnishings, and an expanded bathroom."
+                    Description = "A semi-suite with a lounge area, elegant furnishings, and an expanded bathroom.",
+                    URL="https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=1974"
                 },
                 new RoomType
                 {
@@ -78,7 +82,8 @@ public class SeedDB
                     NumberDoubleBed = 1,
                     NumberSingleBed = 0,
                     NumberSofaBed = 1,
-                    Description = "A luxury suite with a separate living room, workspace, and upgraded amenities."
+                    Description = "A luxury suite with a separate living room, workspace, and upgraded amenities.",
+                    URL="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=2070"
                 },
                 new RoomType
                 {
@@ -88,7 +93,9 @@ public class SeedDB
                     NumberDoubleBed = 2,
                     NumberSingleBed = 0,
                     NumberSofaBed = 1,
-                    Description = "The hotel's signature suite with multiple rooms, premium décor, and exclusive services."
+                    Description = "The hotel's signature suite with multiple rooms, premium décor, and exclusive services.",
+                    URL="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=2070"
+                    
                 }
             };
             context.RoomTypes.AddRange(roomTypes);
