@@ -9,7 +9,7 @@ function RestaurantReservation() {
   const [guests, setGuests] = useState(1)
   const [time, setTime] = useState("")
   const [email, setEmail] = useState("")
-  const [success, setSuccess] = useState(false)
+  //const [success, setSuccess] = useState(false)
   const [specialRequest, setSpecialRequest] = useState("")
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -68,14 +68,21 @@ function RestaurantReservation() {
     try {
       const payload = {
         email: email,
-        status: specialRequest || "No special request",
-        // specialrequest: specialRequest || "No special request",
+        specialReq: specialRequest,
         capacity: guests,
         time: buildDateTime(date, time)
       };
 
+console.log("PAYLOAD SENT:", JSON.stringify(payload, null, 2));
+
+const dt = buildDateTime(date, time);
+
+console.log("DATE:", date);
+console.log("TIME:", time);
+console.log("ISO:", dt);
+
       const res = await fetch(
-        "http://localhost:5000/API/Restaurant/Tables",
+        "http://localhost:5263/API/Restaurant/Tables",
         {
           method: "POST",
           headers: {
