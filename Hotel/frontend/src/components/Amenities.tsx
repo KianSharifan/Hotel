@@ -34,14 +34,14 @@ const amenities = [
     title: "Private Beach",
     description: "Exclusive beach access with luxury cabanas.",
     image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
-    link: "/"
+    link: "/amenities/privatebeach"
   },
-  {
-    title: "Luxury Suites",
-    description: "Elegant suites crafted for unforgettable stays.",
-    image: "https://images.unsplash.com/photo-1566073771259-6a8506099945",
-    link: "/rooms"
-  }
+  // {
+  //   title: "Luxury Suites",
+  //   description: "Elegant suites crafted for unforgettable stays.",
+  //   image: "https://images.unsplash.com/photo-1566073771259-6a8506099945",
+  //   link: "/rooms"
+  // }
 ]
 
 

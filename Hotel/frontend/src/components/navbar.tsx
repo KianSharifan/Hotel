@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
+import { useAuth } from "../context/AuthContext"
 
 function Navbar() {
 
   const navigate = useNavigate()
+  const { user, logout } = useAuth()
 
   return (
 
@@ -77,37 +79,76 @@ function Navbar() {
 
           <button
             onClick={() => navigate("/amenities/spa")}
-
             className="
             hover:text-gray-500
-            transition
-            "
-          >
+            transition">
             Spa
           </button>
 
         </nav>
-
       </div>
 
-      
-      <div
+
+      {
+        user ? (
+          <div className="flex items-center gap-4">
+
+            <span className="text-sm">
+              {user.username}
+            </span>
+
+            <button
+              onClick={logout}
+              className="
+              border
+              border-[#c8a84b]
+              px-4
+              py-2
+              rounded-xl
+              "
+            >
+              Logout
+            </button>
+
+          </div>
+        ) : (
+          <button
+            onClick={() => navigate("/login")}
+            className="
+            border
+            border-white
+            px-5
+            py-2
+            rounded-xl
+            hover:bg-white
+            hover:text-black
+            transition
+            "
+          >
+            Login
+          </button>
+        )
+      }
+      {/* <button 
+        onClick={() => navigate("/login")}
         className="
         text-right
-        text-sm
-        space-y-2
+        transition
+        text-lg
+        border
+        border-white
+        px-5
+        py-2
+        rounded-xl
+        text-l
+        hover:bg-white
+        hover:text-black
+        transition
         "
       >
+        Login
+      </button> */}
 
-        <p>
-          +1 800 987 654
-        </p>
-
-        <p>
-          contact@noire.com
-        </p>
-
-      </div>
 
     </header>
 

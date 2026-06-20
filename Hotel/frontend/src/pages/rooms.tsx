@@ -1,11 +1,53 @@
-import rooms from "../data/rooms"
+// import rooms from "../data/rooms"
 import { useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react"
+
+
+interface RoomType {
+  roomTypeId: number
+  name: string
+  maxGuests: number
+  numberDoubleBed: number
+  numberSofaBed: number
+  numberSingleBed: number
+  description: string
+  url: string
+  price: number
+}
 
 function Rooms() {
 
+
+  const [rooms, setRooms] = useState<RoomType[]>([])
+  const [loading, setLoading] = useState(true)
   const navigate = useNavigate();
 
+
+useEffect(() => {
+  fetch("http://localhost:5263/Rooms")
+    .then(response => response.json())
+    .then(data => {
+      console.log("DATA:", data)
+      setRooms(data)
+      setLoading(false)
+    })
+    .catch(error => {
+      console.log("ERROR:", error)
+      setLoading(false)
+    })
+}, [])
+
+  if (loading) {
+    return (
+      <div className="text-white text-center mt-20">
+        Loading rooms...
+      </div>
+    )
+  }
+
   return (
+
+
 
     <div className="bg-black text-white min-h-screen">
 
@@ -74,14 +116,13 @@ function Rooms() {
         </div>
 
       </section>
-
       {/* rooms */}
       <div className="py-28 px-8 md:px-20 space-y-32">
 
         {rooms.map((room, index) => (
 
           <div
-            key={room.id}
+            key={room.roomTypeId}
 
             className={`
               flex
@@ -107,7 +148,7 @@ function Rooms() {
             >
 
               <img
-                src={room.image}
+                src={room.url}
 
                 className="
                 w-full
@@ -170,6 +211,13 @@ function Rooms() {
               >
                 {room.description}
               </p>
+
+              <div className="mb-8 text-gray-400">
+                <p>Guests: {room.maxGuests}</p>
+                <p>Double Beds: {room.numberDoubleBed}</p>
+                <p>Single Beds: {room.numberSingleBed}</p>
+                <p>Sofa Beds: {room.numberSofaBed}</p>
+              </div>
 
               {/* buttons */}
               <div className="flex gap-6">
