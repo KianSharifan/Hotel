@@ -25,47 +25,61 @@ public class RestaurantTablesController : Controller
     [HttpPost]
     public async Task<IActionResult> Reservation(TableStatusDTO reservation)
     {
-        if (reservation.Time != null && reservation.Email != null)
+        try
         {
-            var availableTables = _context.RestaurantTables.Where(t => t.Capacity >= reservation.Capacity)
-                .Where(t => t.Status == "Available")
-                .OrderBy(t => t.Capacity -  reservation.Capacity)
-                .ToList();
-
-            foreach (var table in availableTables)
+            if (reservation.Time != null && reservation.Email != null)
             {
-                if (!_context.TableReservations.Any(s => s.TableId == table.Id
-                                                         && s.Time.Date == reservation.Time.Value.Date
-                                                         && s.Time.Hour * 60 + s.Time.Minute - 120 <
-                                                         reservation.Time.Value.Hour * 60 + reservation.Time.Value.Minute
-                                                         && reservation.Time.Value.Hour * 60 +
-                                                         reservation.Time.Value.Minute <
-                                                         s.Time.Hour * 60 + s.Time.Minute + 120))
+                var availableTables = _context.RestaurantTables.Where(t => t.Capacity >= reservation.Capacity)
+                    .Where(t => t.Status == "Available")
+                    .OrderBy(t => t.Capacity -  reservation.Capacity)
+                    .ToList();
+
+                foreach (var table in availableTables)
                 {
-                    var reserve = new TableReservation()
+                    if (!_context.TableReservations.Any(s => s.TableId == table.Id
+                                                             && s.Time.Date == reservation.Time.Value.Date
+                                                             && s.Time.Hour * 60 + s.Time.Minute - 120 <
+                                                             reservation.Time.Value.Hour * 60 + reservation.Time.Value.Minute
+                                                             && reservation.Time.Value.Hour * 60 +
+                                                             reservation.Time.Value.Minute <
+                                                             s.Time.Hour * 60 + s.Time.Minute + 120))
                     {
-                        TableId = table.Id,
-                        Time = reservation.Time.Value,
-                        Description = reservation.Status,
-                        Email = reservation.Email
-                    };
-                    _context.TableReservations.Add(reserve);
-                    await _context.SaveChangesAsync();
-                    return Ok("Reservation Successful");
+                        var reserve = new TableReservation()
+                        {
+                            TableId = table.Id,
+                            Time = reservation.Time.Value,
+                            Description = reservation.SpecialReq,
+                            Email = reservation.Email
+                        };
+                        _context.TableReservations.Add(reserve);
+                        await _context.SaveChangesAsync();
+                        return Ok("Reservation Successful");
+                    }
                 }
             }
+            return BadRequest("No available tables");
         }
-        return BadRequest("No available tables");
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
     
     //should have authorization
     [HttpGet("{id}")]
     public async Task<IActionResult> GetTableStatus(int id)
     {
-        var table = await _context.RestaurantTables.FindAsync(id);
-        if (table == null)
-            return NotFound();
-        return Ok(table);
+        try
+        {
+            var table = await _context.RestaurantTables.FindAsync(id);
+            if (table == null)
+                return NotFound();
+            return Ok(table);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
     
     
@@ -73,33 +87,56 @@ public class RestaurantTablesController : Controller
     [HttpPut("{id}")]
     public async Task<IActionResult> Update(int id,[FromBody]TableStatusDTO input)
     {
-        string output = await _restaurantServices.TableUpdate(id, input);
-        if (output == "Not Found")
-            return NotFound();
-        if(output == "Bad Request")
-            return BadRequest();
-        return Ok();
+        try
+        {
+            string output = await _restaurantServices.TableUpdate(id, input);
+            if (output == "Not Found")
+                return NotFound();
+            if(output == "Bad Request")
+                return BadRequest();
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
     
     //should have authentication
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteTable(int id)
     {
-        var table = await _context.RestaurantTables.FindAsync(id);
-        if (table == null)
-            return NotFound();
-        _context.RestaurantTables.Remove(table);
-        await _context.SaveChangesAsync();
-        return Ok();
+        try
+        {
+            var table = await _context.RestaurantTables.FindAsync(id);
+            if (table == null)
+                return NotFound();
+            _context.RestaurantTables.Remove(table);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
     
     //should have authentication
     [HttpPost("{id}")]
-    public async Task<IActionResult> CreateTable([FromBody]TableDTO input)
+    public async Task<IActionResult> CreateTable(int id,[FromBody]TableDTO input)
     {
-        var table = input.ToTable();
-        _context.RestaurantTables.Add(table);
-        await _context.SaveChangesAsync();
-        return Ok();
+        try
+        {
+            if(_context.RestaurantTables.Any(t => t.Id == id))
+                return BadRequest("Table with such id already exists");
+            var table = input.ToTable();
+            _context.RestaurantTables.Add(table);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 }

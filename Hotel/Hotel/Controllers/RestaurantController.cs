@@ -24,118 +24,174 @@ public class RestaurantController : Controller
     [HttpGet]
     public IActionResult Restaurant()
     {
-        RestaurantDTO dto = _context.Restaurants.First().ToRestaurantDTO();
-        return Ok(dto);
+        try
+        {
+            RestaurantDTO dto = _context.Restaurants.First().ToRestaurantDTO();
+            return Ok(dto);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
     
     [HttpGet("Menu")]
     public async Task<IActionResult> Menu()
     {
-        var menuCategories = await _restaurantServices.GetAllMenuCategories();
-        var menuItems = await _restaurantServices.GetAllMenuItems();
-        var result = new
+        try
         {
-            menuItems,
-            menuCategories
-        };
-        return Ok(result);
+            var menuCategories = await _restaurantServices.GetAllMenuCategories();
+            var menuItems = await _restaurantServices.GetAllMenuItems();
+            var result = new
+            {
+                menuItems,
+                menuCategories
+            };
+            return Ok(result);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
     [HttpGet("Menu/Categories")]
     public async Task<IActionResult> Categories()
     {
-        List<Models.MenuCategory>  menuCategories = await _restaurantServices.GetAllMenuCategories();
-        return Ok(menuCategories);
+        try
+        {
+            List<Models.MenuCategory>  menuCategories = await _restaurantServices.GetAllMenuCategories();
+            return Ok(menuCategories);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
     //should have authentication
     [HttpPost("Menu/Categories")]
     public async Task<IActionResult> CreateCategory(CategoryDTO category)
     {
-        if(_restaurantServices.CategoryExists(category))
-            return BadRequest("Category already exists");
-        var cat = new Models.MenuCategory()
+        try
         {
-            Name = category.Name,
-        };
-        _context.MenuCategories.Add(cat);
-        await _context.SaveChangesAsync();
-        return Ok();
+            if(_restaurantServices.CategoryExists(category))
+                return BadRequest("Category already exists");
+            var cat = new Models.MenuCategory()
+            {
+                Name = category.Name,
+            };
+            _context.MenuCategories.Add(cat);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
     
     //should have authentication
     [HttpDelete("Menu/Categories")]
     public async Task<IActionResult> DeleteCategory(CategoryDTO category)
     {
-        if(!_restaurantServices.CategoryExists(category))
-            return BadRequest("Category does not exists");
-        _context.MenuCategories.Remove(_context.MenuCategories.First(c => c.Name == category.Name));
-        await _context.SaveChangesAsync();
-        return Ok();
+        try
+        {
+            if(!_restaurantServices.CategoryExists(category))
+                return BadRequest("Category does not exists");
+            _context.MenuCategories.Remove(_context.MenuCategories.First(c => c.Name == category.Name));
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
     
     //should have authentication
     [HttpPost("Menu/{menuCategory}/MenuItems")]
     public async Task<IActionResult> AddMenuItems(string menuCategory,MenuItemDTO dto)
     {
-        var category = _context.MenuCategories
-            .FirstOrDefault(m => m.Name == menuCategory);
-    
-        if (category == null)
-            return BadRequest("Category does not exist");
-    
-        int categoryId = category.MenuCategoryId;
-        if (dto.Price != null)
+        try
         {
-            var item = new Models.MenuItem()
+            var category = _context.MenuCategories
+                .FirstOrDefault(m => m.Name == menuCategory);
+    
+            if (category == null)
+                return BadRequest("Category does not exist");
+    
+            int categoryId = category.MenuCategoryId;
+            if (dto.Price != null)
             {
-                Name = dto.Name,
-                MenuCategoryId = categoryId,
-                Price = dto.Price.Value,
-                Description = dto.Description
-            };
-            _context.MenuItems.Add(item);
-            await _context.SaveChangesAsync();
-            return Ok();
+                var item = new Models.MenuItem()
+                {
+                    Name = dto.Name,
+                    MenuCategoryId = categoryId,
+                    Price = dto.Price.Value,
+                    Description = dto.Description
+                };
+                _context.MenuItems.Add(item);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            return BadRequest("Price is not valid");
         }
-        return BadRequest("Price is not valid");
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
     
     // should have authentication
     [HttpPut("Menu/{menuCategory}/MenuItems")]
     public async Task<IActionResult> UpdateMenuItems(string menuCategory,MenuItemDTO dto)
     {
-        var menuItem = await _context.MenuItems
-            .Include(m  => m.MenuCategory)
-            .FirstOrDefaultAsync(m => m.Name == dto.Name);
-        if (menuItem == null)
-            return BadRequest("Item does not exist");
-        if(menuItem.MenuCategory.Name != menuCategory)
-            return BadRequest("Category does not match");
+        try
+        {
+            var menuItem = await _context.MenuItems
+                .Include(m  => m.MenuCategory)
+                .FirstOrDefaultAsync(m => m.Name == dto.Name);
+            if (menuItem == null)
+                return BadRequest("Item does not exist");
+            if(menuItem.MenuCategory.Name != menuCategory)
+                return BadRequest("Category does not match");
 
-        if(dto.Price != null)
-            menuItem.Price = dto.Price.Value;
-        if(dto.Description != null)
-            menuItem.Description = dto.Description;
-        if(dto.Name != null)
-            menuItem.Name = dto.Name;
-        await _context.SaveChangesAsync();
-        return Ok();
+            if(dto.Price != null)
+                menuItem.Price = dto.Price.Value;
+            if(dto.Description != null)
+                menuItem.Description = dto.Description;
+            if(dto.Name != null)
+                menuItem.Name = dto.Name;
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
     
     // should have authentication
     [HttpDelete("Menu/{menuCategory}/MenuItems")]
     public async Task<IActionResult> DeleteMenuItems(string menuCategory,MenuItemDTO dto)
     {
-        var menuItem = await _context.MenuItems
-            .Include(m  => m.MenuCategory)
-            .FirstOrDefaultAsync(m => m.Name == dto.Name);
-        if (menuItem == null)
-            return BadRequest("Item does not exist");
-        if(menuItem.MenuCategory.Name != menuCategory)
-            return BadRequest("Category does not match");
-        _context.MenuItems.Remove(menuItem);
-        await _context.SaveChangesAsync();
-        return Ok();
+        try
+        {
+            var menuItem = await _context.MenuItems
+                .Include(m  => m.MenuCategory)
+                .FirstOrDefaultAsync(m => m.Name == dto.Name);
+            if (menuItem == null)
+                return BadRequest("Item does not exist");
+            if(menuItem.MenuCategory.Name != menuCategory)
+                return BadRequest("Category does not match");
+            _context.MenuItems.Remove(menuItem);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 }

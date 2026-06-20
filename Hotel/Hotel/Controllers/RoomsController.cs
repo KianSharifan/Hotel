@@ -21,11 +21,11 @@ public class RoomsController : Controller
     
     //should have authentication
      [HttpGet("{id}")]
-     public IActionResult GetRoomTypes(int id)
+     public IActionResult GetRoom(int id)
      {
          try
          {
-             return Ok(_context.RoomAmenities.Where(r => r.RoomId == id));
+             return Ok(_context.Rooms.Where(r => r.RoomId == id));
          }
          catch (Exception e)
          {
@@ -33,13 +33,45 @@ public class RoomsController : Controller
          }
      }
      
+     // should have authentication
+     [HttpGet]
+     public IActionResult GetRooms()
+     {
+         try
+         {
+             return Ok(_context.Rooms);
+         }
+         catch (Exception e)
+         {
+             return BadRequest(e.Message);
+         }
+     }
+
      //should have authentication
-     // [HttpPost("{id}")]
-     // public IActionResult CreateRoomType(int id, RoomTypeDTO roomTypeDto)
+     // [HttpPut("{id}")]
+     // public IActionResult UpdateRoom(int id, Room room)
      // {
-     //     var roomType = new RoomType()
-     //     {
-     //         
-     //     }
+     //     
      // }
+     
+     //should have authentication
+     [HttpDelete("{id}")]
+     public async Task<IActionResult> DeleteRoom(int id)
+     {
+         try
+         {
+             var room = await _context.Rooms.FindAsync(id);
+             if (room == null)
+                 return NotFound();
+             _context.Rooms.Remove(room);
+             await _context.SaveChangesAsync();
+             return Ok();
+         }
+         catch (Exception e)
+         {
+             return BadRequest(e.Message);
+         }
+     }
+     
+     
  }

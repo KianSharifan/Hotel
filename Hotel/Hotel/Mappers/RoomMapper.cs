@@ -21,16 +21,27 @@ public static class RoomMapper
 
     public static RoomType ToRoomType(this RoomTypeDTO dto)
     {
-        RoomType roomType = new RoomType()
+        RoomType roomType = new RoomType();
+        try
         {
-            Name = dto.Name,
-            MaxGuests = dto.MaxGuests,
-            Description = dto.Description,
-            NumberSingleBed = dto.NumberOfSingles,
-            NumberDoubleBed = dto.NumberOfDoubles,
-            NumberSofaBed = dto.NumberOfDoubles,
-            URL = dto.Image
-        };
+            if (dto.MaxGuests != null && dto.NumberOfSingles != null && dto.NumberOfDoubles != null && dto.NumberOfSingles != null)
+            {
+                roomType.Name = dto.Name;
+                roomType.MaxGuests = dto.MaxGuests.Value;
+                roomType.Description = dto.Description;
+                roomType.NumberSingleBed = dto.NumberOfSingles.Value;
+                roomType.NumberDoubleBed = dto.NumberOfDoubles.Value;
+                roomType.NumberSofaBed = dto.NumberOfDoubles.Value;
+                roomType.URL = dto.Image;
+                return roomType; 
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
         return roomType;
     }
 }
