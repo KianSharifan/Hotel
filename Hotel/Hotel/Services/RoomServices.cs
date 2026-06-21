@@ -15,7 +15,7 @@ public class RoomServices
         _context = context;
     }
 
-    public async Task<List<RoomTypeDTO>> AllRoomTypes()
+    public List<RoomTypeDTO> AllRoomTypes()
     {
         List<RoomTypeDTO> output = new List<RoomTypeDTO>();
         foreach (var roomType in _context.RoomTypes)

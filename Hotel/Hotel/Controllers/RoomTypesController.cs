@@ -4,9 +4,7 @@ using Hotel.Services;
 using Hotel.DTOs;
 using Hotel.Models;
 
-
 namespace Hotel.Controllers;
-
 
 [Route("API/RoomTypes")]
 [ApiController]
@@ -25,7 +23,7 @@ public class RoomTypesController : Controller
     {
         try
         {
-            return Ok(await _roomServices.AllRoomTypes());
+            return Ok(_roomServices.AllRoomTypes());
         }
         catch (Exception e)
         {

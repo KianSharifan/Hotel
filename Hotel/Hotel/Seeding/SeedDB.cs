@@ -537,8 +537,8 @@ new Room { RoomId = 31, HotelId = 1, RoomNumber = 901, Floor = 9, RoomTypeId = 6
                 new RoomAmenities { RoomId = 31, AmenityId = 5 },
                 new RoomAmenities { RoomId = 31, AmenityId = 6 }
             };
-            context.RoomAmenities.AddRange(roomAmenities);
-            var shifts = new List<Shift>
+            context.RoomAmenities.AddRange(roomAmenities); 
+var shifts = new List<Shift>
 {
     new Shift { Id = 1, Day = "Monday", StartTime = new TimeOnly(0, 0), EndTime = new TimeOnly(8, 0) },
     new Shift { Id = 2, Day = "Monday", StartTime = new TimeOnly(8, 0), EndTime = new TimeOnly(16, 0) },
