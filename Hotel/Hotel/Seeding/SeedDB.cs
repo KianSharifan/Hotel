@@ -97,22 +97,22 @@ public class SeedDB
                 new Role
                 {
                     RoleId = 1,
-                    Name = "Administrator"
+                    Name = "HotelManager"
                 },
                 new Role
                 {
                     RoleId = 2,
-                    Name = "Manager"
+                    Name = "Security"
                 },
                 new Role
                 {
                     RoleId = 3,
-                    Name = "Receptionist"
+                    Name = "Engineer"
                 },
                 new Role
                 {
                     RoleId = 4,
-                    Name = "Housekeeping"
+                    Name = "Housekeeper"
                 },
                 new Role
                 {
@@ -122,7 +122,7 @@ public class SeedDB
                 new Role
                 {
                     RoleId = 6,
-                    Name = "Concierge"
+                    Name = "RestaurantManager"
                 },
                 new Role
                 {
@@ -133,6 +133,26 @@ public class SeedDB
                 {
                 RoleId = 8,
                 Name = "Chef"
+                },
+                new Role
+                {
+                    RoleId = 9,
+                    Name = "FrontOfficeManager"
+                },
+                new Role
+                {
+                    RoleId = 10,
+                    Name = "DirectorOfHR"
+                },
+                new Role
+                {
+                    RoleId = 11,
+                    Name = "DirectorOfFinance"
+                },
+                new Role
+                {
+                    RoleId = 12,
+                    Name = "DirectorOfRooms"
                 }
             };
             context.Roles.AddRange(roles);
