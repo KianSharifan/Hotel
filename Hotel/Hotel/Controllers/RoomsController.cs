@@ -69,8 +69,6 @@ public class RoomsController : Controller
                  room.RoomTypeId = dto.RoomTypeId.Value;
              if(dto.Note != null)
                  room.Notes = dto.Note;
-             if(dto.PricePerNight != null)
-                 room.PricePerNight = dto.PricePerNight.Value;
              await _context.SaveChangesAsync();
              return Ok();
          }
@@ -111,7 +109,6 @@ public class RoomsController : Controller
                  r.RoomId = room.Id.Value;
                  r.HotelId = room.HotelId.Value;
                  r.Floor = room.Floor.Value;
-                 r.PricePerNight = room.PricePerNight.Value;
                  r.Notes =  room.Note;
                  r.Status = room.Status;
                  r.RoomNumber = room.RoomNumber.Value;
