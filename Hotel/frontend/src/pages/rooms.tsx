@@ -6,11 +6,11 @@ interface RoomType {
   roomTypeId: number
   name: string
   maxGuests: number
-  numberOfDoubles: number
-  numberOfSofa: number
-  numberOfSingles: number
+  numberDoubleBed: number
+  numberSofaBed: number
+  numberSingleBed: number
   description: string
-  image: string
+  URL: string
   price: number
 }
 
@@ -147,7 +147,7 @@ function Rooms() {
             >
 
               <img
-                src={room.image}
+                src={room.URL}
 
                 className="
                 w-full
@@ -213,9 +213,9 @@ function Rooms() {
 
               <div className="mb-8 text-gray-400">
                 <p>Guests: {room.maxGuests}</p>
-                <p>Double Beds: {room.numberOfDoubles}</p>
-                <p>Single Beds: {room.numberOfSingles}</p>
-                <p>Sofa Beds: {room.numberOfSofa}</p>
+                <p>Double Beds: {room.numberDoubleBed}</p>
+                <p>Single Beds: {room.numberSingleBed}</p>
+                <p>Sofa Beds: {room.numberSofaBed}</p>
               </div>
 
               {/* buttons */}
