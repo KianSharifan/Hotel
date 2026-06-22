@@ -14,7 +14,8 @@ public static class RoomMapper
             NumberOfDoubles = roomType.NumberDoubleBed,
             NumberOfSingles = roomType.NumberSingleBed,
             NumberOfSofa = roomType.NumberSingleBed,
-            Description = roomType.Description
+            Description = roomType.Description,
+            Price = roomType.Price
         };
         return dto;
     }

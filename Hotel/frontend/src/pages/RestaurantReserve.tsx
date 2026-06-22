@@ -46,7 +46,6 @@ function RestaurantReservation() {
   }
 
 
-
   async function handleReservation() {
     setMessage(null);
     setIsSuccess(null);

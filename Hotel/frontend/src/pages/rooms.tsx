@@ -1,4 +1,3 @@
-// import rooms from "../data/rooms"
 import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 
@@ -7,11 +6,11 @@ interface RoomType {
   roomTypeId: number
   name: string
   maxGuests: number
-  numberDoubleBed: number
-  numberSofaBed: number
-  numberSingleBed: number
+  numberOfDoubles: number
+  numberOfSofa: number
+  numberOfSingles: number
   description: string
-  url: string
+  image: string
   price: number
 }
 
@@ -23,27 +22,27 @@ function Rooms() {
   const navigate = useNavigate();
 
 
-useEffect(() => {
-  fetch("http://localhost:5263/Rooms")
-    .then(response => response.json())
-    .then(data => {
-      console.log("DATA:", data)
-      setRooms(data)
-      setLoading(false)
-    })
-    .catch(error => {
-      console.log("ERROR:", error)
-      setLoading(false)
-    })
-}, [])
+  useEffect(() => {
+    fetch("http://localhost:5263/API/RoomTypes")
+      .then(response => response.json())
+      .then(data => {
+        console.log("DATA:", data)
+        setRooms(data)
+        setLoading(false)
+      })
+      .catch(error => {
+        console.log("ERROR:", error)
+        setLoading(false)
+      })
+  }, [])
 
-  if (loading) {
-    return (
-      <div className="text-white text-center mt-20">
-        Loading rooms...
-      </div>
-    )
-  }
+    if (loading) {
+      return (
+        <div className="text-white text-center mt-20">
+          Loading rooms...
+        </div>
+      )
+    }
 
   return (
 
@@ -148,7 +147,7 @@ useEffect(() => {
             >
 
               <img
-                src={room.url}
+                src={room.image}
 
                 className="
                 w-full
@@ -214,9 +213,9 @@ useEffect(() => {
 
               <div className="mb-8 text-gray-400">
                 <p>Guests: {room.maxGuests}</p>
-                <p>Double Beds: {room.numberDoubleBed}</p>
-                <p>Single Beds: {room.numberSingleBed}</p>
-                <p>Sofa Beds: {room.numberSofaBed}</p>
+                <p>Double Beds: {room.numberOfDoubles}</p>
+                <p>Single Beds: {room.numberOfSingles}</p>
+                <p>Sofa Beds: {room.numberOfSofa}</p>
               </div>
 
               {/* buttons */}
