@@ -57,7 +57,7 @@ public class RoomTypesController : Controller
     
     //should have authentication
     [HttpPost]
-    public async Task<IActionResult> CreateRoomType(RoomTypeDTO dto)
+    public async Task<IActionResult> CreateRoomType([FromBody]RoomTypeDTO dto)
     {
         try
         {
@@ -88,7 +88,7 @@ public class RoomTypesController : Controller
             
     //should have authentication
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateRoomType(int id, RoomTypeDTO dto)
+    public async Task<IActionResult> UpdateRoomType(int id, [FromBody]RoomTypeDTO dto)
     {
         try
         {

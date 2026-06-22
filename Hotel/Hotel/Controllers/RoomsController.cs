@@ -126,8 +126,8 @@ public class RoomsController : Controller
          }
      }
 
-     [HttpGet("Reservation")]
-     public async Task<IActionResult> Reservation(RoomReservationDTO input)
+     [HttpPost("Reservation")]
+     public async Task<IActionResult> Reservation([FromBody] RoomReservationDTO input)
      {
          try
          {
@@ -136,7 +136,7 @@ public class RoomsController : Controller
                  return BadRequest("Reservation could not be done no other room with this roomType Available");
              return Ok(output);
          }
-         catch (Exception e)
+         catch(Exception e)
          {
              return BadRequest(e.Message);
          }
