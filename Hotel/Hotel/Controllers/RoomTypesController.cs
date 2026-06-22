@@ -32,7 +32,7 @@ public class RoomTypesController : Controller
     }
 
     [HttpGet("AvailableRoomTypes")]
-    public async Task<IActionResult> GetAvailableRoomTypes([FromBody]RoomSearchDTO roomSearch)
+    public async Task<IActionResult> GetAvailableRoomTypes([FromQuery]RoomSearchDTO roomSearch)
     {
         var output = await _roomServices.AvailableRoomTypes(roomSearch);
         return Ok(output);
