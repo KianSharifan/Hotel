@@ -71,7 +71,7 @@ public class RestaurantController : Controller
 
     //should have authentication
     [HttpPost("Menu/Categories")]
-    public async Task<IActionResult> CreateCategory(CategoryDTO category)
+    public async Task<IActionResult> CreateCategory([FromBody]CategoryDTO category)
     {
         try
         {
@@ -93,7 +93,7 @@ public class RestaurantController : Controller
     
     //should have authentication
     [HttpDelete("Menu/Categories")]
-    public async Task<IActionResult> DeleteCategory(CategoryDTO category)
+    public async Task<IActionResult> DeleteCategory([FromBody]CategoryDTO category)
     {
         try
         {
@@ -111,7 +111,7 @@ public class RestaurantController : Controller
     
     //should have authentication
     [HttpPost("Menu/{menuCategory}/MenuItems")]
-    public async Task<IActionResult> AddMenuItems(string menuCategory,MenuItemDTO dto)
+    public async Task<IActionResult> AddMenuItems(string menuCategory,[FromBody]MenuItemDTO dto)
     {
         try
         {
@@ -145,7 +145,7 @@ public class RestaurantController : Controller
     
     // should have authentication
     [HttpPut("Menu/{menuCategory}/MenuItems")]
-    public async Task<IActionResult> UpdateMenuItems(string menuCategory,MenuItemDTO dto)
+    public async Task<IActionResult> UpdateMenuItems(string menuCategory,[FromBody]MenuItemDTO dto)
     {
         try
         {
@@ -174,7 +174,7 @@ public class RestaurantController : Controller
     
     // should have authentication
     [HttpDelete("Menu/{menuCategory}/MenuItems")]
-    public async Task<IActionResult> DeleteMenuItems(string menuCategory,MenuItemDTO dto)
+    public async Task<IActionResult> DeleteMenuItems(string menuCategory,[FromBody]MenuItemDTO dto)
     {
         try
         {

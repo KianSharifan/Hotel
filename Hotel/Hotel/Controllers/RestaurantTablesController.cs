@@ -23,7 +23,7 @@ public class RestaurantTablesController : Controller
     
     //should have authentication
     [HttpPost]
-    public async Task<IActionResult> Reservation(TableStatusDTO reservation)
+    public async Task<IActionResult> Reservation([FromBody]TableStatusDTO reservation)
     {
         try
         {
