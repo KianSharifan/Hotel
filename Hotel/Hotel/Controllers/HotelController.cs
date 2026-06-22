@@ -1,13 +1,9 @@
 using Hotel.Models;
 using Hotel.Data;
 using Microsoft.AspNetCore.Mvc;
-using BCrypt.Net;
 using Hotel.DTOs;
 using Hotel.Mappers;
-using Hotel.Migrations;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using Hotel.Services;
 
 
 namespace Hotel.Controllers;
