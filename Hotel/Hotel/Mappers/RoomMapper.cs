@@ -25,7 +25,7 @@ public static class RoomMapper
         RoomType roomType = new RoomType();
         try
         {
-            if (dto.MaxGuests != null && dto.NumberOfSingles != null && dto.NumberOfDoubles != null && dto.NumberOfSingles != null)
+            if (dto.MaxGuests != null && dto.NumberOfSingles != null && dto.NumberOfDoubles != null && dto.NumberOfSingles != null && dto.Price != null)
             {
                 roomType.Name = dto.Name;
                 roomType.MaxGuests = dto.MaxGuests.Value;
@@ -33,6 +33,7 @@ public static class RoomMapper
                 roomType.NumberSingleBed = dto.NumberOfSingles.Value;
                 roomType.NumberDoubleBed = dto.NumberOfDoubles.Value;
                 roomType.NumberSofaBed = dto.NumberOfDoubles.Value;
+                roomType.Price = dto.Price.Value;
                 roomType.URL = dto.Image;
                 return roomType; 
             }

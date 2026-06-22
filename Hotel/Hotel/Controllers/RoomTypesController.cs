@@ -4,9 +4,7 @@ using Hotel.Services;
 using Hotel.DTOs;
 using Hotel.Models;
 
-
 namespace Hotel.Controllers;
-
 
 [Route("API/RoomTypes")]
 [ApiController]
@@ -25,7 +23,7 @@ public class RoomTypesController : Controller
     {
         try
         {
-            return Ok(await _roomServices.AllRoomTypes());
+            return Ok(_context.RoomTypes);
         }
         catch (Exception e)
         {
@@ -40,19 +38,6 @@ public class RoomTypesController : Controller
         return Ok(output);
     }
     
-    [HttpGet("Admin")]
-    public IActionResult GetAllRoomTypes()
-    {
-        try
-        {
-            return Ok(_context.RoomTypes);
-        }
-        catch (Exception e)
-        {
-            return BadRequest(e.Message);
-        }
-    }
-
     //should have authentication
     [HttpGet("{id}")]
     public async Task<IActionResult> GetRoomType(int id)
