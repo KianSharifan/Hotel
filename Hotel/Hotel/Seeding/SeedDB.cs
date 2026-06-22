@@ -62,6 +62,7 @@ public class SeedDB
                     NumberSofaBed = 0,
                     Description = "An upgraded room offering enhanced bedding, better views, and refined finishes.",
                     URL="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1974"
+                    Price= 
                 },
                 new RoomType
                 {

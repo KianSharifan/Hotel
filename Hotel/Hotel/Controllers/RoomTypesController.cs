@@ -69,7 +69,7 @@ public class RoomTypesController : Controller
                 roomType.Description = dto.Description;
                 roomType.NumberSingleBed = dto.NumberOfSingles.Value;
                 roomType.NumberDoubleBed = dto.NumberOfDoubles.Value;
-                roomType.NumberSofaBed = dto.NumberOfDoubles.Value;
+                roomType.NumberSofaBed = dto.NumberOfSofa.Value;
                 roomType.URL = dto.Image; 
             }
             else
@@ -80,9 +80,16 @@ public class RoomTypesController : Controller
             await _context.SaveChangesAsync();
             return Ok();
         }
-        catch (Exception e)
+        // catch (Exception e)
+        // {
+        //     return BadRequest(e.Message);
+        // }
+
+        catch(Exception e)
         {
-            return BadRequest(e.Message);
+            return BadRequest(
+                e.InnerException?.Message ?? e.Message
+            );
         }
     }
             

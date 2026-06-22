@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "motion/react"
 import { useBooking } from "../context/BookingContext"
 import BookingHeader from "../components/BookingHeader"
 import { CreditCard, Lock, CheckCircle } from "lucide-react"
+import { reserveRoom } from "../api/reservationApi"
 
 function fmt(d: string) {
   if (!d) return ""
@@ -61,7 +62,23 @@ export default function PaymentPage() {
   async function handlePay() {
     if (!canPay) return
     setLoading(true)
-    await new Promise(r => setTimeout(r, 2200))
+    await reserveRoom({
+      nAdults: booking.adults,
+      nKids: booking.children,
+
+      checkIn: booking.checkIn,
+      checkOut: booking.checkOut,
+
+      roomTypeId: booking.selectedRoom?.id,
+
+      meals: 0,
+
+      totalPrice: grandTotal,
+
+      guestId: 1,
+
+      specialRequest: ""
+    })
     setLoading(false)
     setConfirmed(true)
   }

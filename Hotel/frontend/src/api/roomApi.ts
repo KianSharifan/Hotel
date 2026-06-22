@@ -1,4 +1,4 @@
-const API = "https://localhost:5001/API/RoomTypes"
+const API = "http://localhost:5263/API/RoomTypes"
 
 export async function getAvailableRooms(
   adults: number,
