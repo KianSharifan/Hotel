@@ -8,7 +8,7 @@ public class RoomReservationDTO
     public int NKids { get; set; }
     public DateOnly CheckIn  { get; set; }
     public DateOnly CheckOut { get; set; }
-    public RoomType RoomType { get; set; }
+    public int RoomTypeId { get; set; }
     //0 for nothing 1 for just breakfast 2 for everything
     public int Meals { get; set; }
     public double TotalPrice { get; set; }

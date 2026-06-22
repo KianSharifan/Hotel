@@ -35,7 +35,7 @@ public class RoomServices
     private async Task<Room?> FindAvailableRoom(RoomReservationDTO input)
     {
         return await _context.Rooms
-            .Where(room => room.Status == "Available" && room.RoomType == input.RoomType)
+            .Where(room => room.Status == "Available" && room.RoomType.RoomTypeId == input.RoomTypeId)
             .Where(room => !_context.Reservations.Any(r =>
                 r.RoomId == room.RoomId &&
                 r.CheckInDate < input.CheckOut &&

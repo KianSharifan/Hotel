@@ -44,8 +44,10 @@ public class RoomTypesController : Controller
     {
         try
         {
-            await _context.RoomTypes.FindAsync(id);
-            return Ok();
+            var i = await _context.RoomTypes.FindAsync(id);
+            if (i == null)
+                return NotFound();
+            return Ok(i);
         }
         catch (Exception e)
         {
