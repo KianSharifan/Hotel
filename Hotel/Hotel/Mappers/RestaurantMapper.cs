@@ -19,13 +19,14 @@ public static class RestaurantMapper
 
     public static RestaurantDTO ToRestaurantDTO(this Restaurant restaurant)
     {
-        RestaurantDTO restaurantDto = new RestaurantDTO()
+        RestaurantDTO restaurantDto = new RestaurantDTO();
+        if (restaurant.Name != null && restaurant.Address != null)
         {
-            Name = restaurant.Name,
-            Address = restaurant.Address,
-            OpenTime = restaurant.OpeningTime,
-            CloseTime = restaurant.ClosingTime
-        };
+            restaurantDto.Name = restaurant.Name;
+            restaurantDto.Address = restaurant.Address;
+            restaurantDto.OpenTime = restaurant.OpeningTime;
+            restaurantDto.CloseTime = restaurant.ClosingTime;
+        }
         return restaurantDto;
     }
 
@@ -42,10 +43,10 @@ public static class RestaurantMapper
 
     public static TableDTO ToTableDTO(this Table table)
     {
-        TableDTO tableDTO = new TableDTO()
+        TableDTO tableDto = new TableDTO()
         {
             Capacity = table.Capacity,
         };
-        return tableDTO;
+        return tableDto;
     }
 }

@@ -1,6 +1,6 @@
 namespace Hotel.DTOs;
 
-public class HotelHomeDTO
+public class HotelDTO
 {
     public string? Name { get; set; }
     public string? Address { get; set; }
@@ -8,7 +8,7 @@ public class HotelHomeDTO
     public string? Country { get; set; }
     public string? Phone { get; set; }
     public string? Email { get; set; }
-    public double StarRating { get; set; }
-    public TimeOnly CheckinTime { get; set; }
-    public TimeOnly CheckoutTime { get; set; }
+    public double? StarRating { get; set; }
+    public TimeOnly? CheckinTime { get; set; }
+    public TimeOnly? CheckoutTime { get; set; }
 }
