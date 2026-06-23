@@ -1,12 +1,145 @@
+using Hotel.Data;
+using Hotel.DTOs;
+using Hotel.Mappers;
+using Hotel.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hotel.Controllers;
 
+
+[Route("API/Users")]
+[ApiController]
 public class UsersController : Controller
 {
-    // GET
-    public IActionResult Index()
+    private readonly AppDBContext _context;
+
+    public UsersController(AppDBContext context)
     {
-        return View();
+        _context = context;
+    }
+    
+    //should have auth
+    [HttpGet]
+    public IActionResult GetAllUsers()
+    {
+        try
+        {
+            var output = new List<AdminUserDTO>();
+            foreach (var user in _context.Users)
+            {
+                output.Add(user.ToAdminDTO());
+            }
+            return Ok(output);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+    
+    //should have auth
+    [HttpPost("CreateGuest")]
+    public async Task<IActionResult> CreateGuest([FromBody] GuestCreateDTO guest)
+    {
+        try
+        {
+            var role = _context.Roles.FirstOrDefault(x => x.Name == "Guest");
+            if(role == null)
+                return BadRequest("Role Guest not found");
+            var u = new User()
+            {
+                Username = guest.Username,
+                Email = guest.Email,
+                IsActive = false,
+                CreatedAt = DateTime.Now,
+                RoleId = role.RoleId,
+                PasswordHash = Encoding.UTF8.GetBytes(guest.Password).ToString()
+            };
+            var g = new Guest()
+            {
+                GuestId = u.Id
+            };
+            _context.Guests.Add(g);
+            _context.Users.Add(u);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+    
+    //should have auth
+    [HttpDelete("Delete/{userName}")]
+    public async Task<IActionResult> DeleteUser(String userName)
+    {
+        try
+        {
+            var user = _context.Users.Where(x => x.Username == userName).Include(x => x.Role).FirstOrDefault();
+            if (user == null)
+                return NotFound();
+            _context.Users.Remove(user);
+            if (user.Role.Name == "Guest")
+            {
+                var g = _context.Guests.Find(user.Id);
+                if (g == null)
+                    return NotFound();
+                _context.Guests.Remove(g);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            var e = _context.Employees.Find(user.Id);
+            if (e == null)
+                return NotFound();
+            _context.Employees.Remove(e);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+        catch (Exception exception)
+        {
+            return BadRequest(exception.Message);
+        }
+    }
+    
+    // should have auth
+    [HttpPost("CreateEmployee")]
+    public async Task<IActionResult> CreateEmployee(EmployeeCreateDTO employee)
+    {
+        try
+        {
+            var position = _context.Positions.Find(employee.PositionId);
+            if(position == null)
+                return BadRequest("Position not found");
+            if (employee.Salary < position.BaseSalary)
+                return BadRequest("Salary is too low");
+            var u = new User()
+            {
+                Username = employee.UserName,
+                Email = employee.Email,
+                IsActive = true,
+                CreatedAt = DateTime.Now,
+                PasswordHash = Encoding.UTF8.GetBytes(employee.Password).ToString(),
+                RoleId = employee.RoleId
+            };
+            var e = new Employee()
+            {
+                BirthDate = employee.BirthDate.ToDateTime(new TimeOnly(0, 0, 0)),
+                Salary = employee.Salary,
+                HireDate = DateTime.Today,
+                DepartmentId = employee.DepartmentId,
+                PositionId = position.Id
+            };
+            _context.Users.Add(u);
+            _context.Employees.Add(e);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+        catch (Exception exception)
+        {
+            return BadRequest(exception.Message);
+        }
     }
 }

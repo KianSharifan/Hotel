@@ -1,13 +1,11 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Hotel.Data;
 using Microsoft.IdentityModel.Tokens;
 using Hotel.Models;
 
 public class JwtService
 {
-    private readonly AppDBContext  _context;
     private readonly IConfiguration _configuration;
     public JwtService(IConfiguration configuration)
     {

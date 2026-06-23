@@ -162,6 +162,34 @@ public class SeedDB
                 }
             };
             context.Roles.AddRange(roles);
+            var positions = new List<Position>()
+            {
+                new Position
+                {
+                    Id = 1,
+                    Title = "Intern",
+                    BaseSalary = 10000
+                },
+                new Position
+                {
+                    Id = 2,
+                    Title = "Junior",
+                    BaseSalary = 40000
+                },
+                new Position
+                {
+                    Id = 3,
+                    Title = "Senior",
+                    BaseSalary = 70000
+                },
+                new Position
+                {
+                    Id = 4,
+                    Title = "Manager",
+                    BaseSalary = 10000
+                }
+            };
+            context.Positions.AddRange(positions);
             var departments = new List<Department>
             {
                 new Department
