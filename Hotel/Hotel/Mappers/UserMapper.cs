@@ -20,6 +20,4 @@ public static class UserMapper
         };
         return output;
     }
-    
-    // public static U
 }

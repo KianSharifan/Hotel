@@ -1,6 +1,7 @@
 using Hotel.Data;
 using Hotel.DTOs;
 using Hotel.Mappers;
+using Hotel.Models;
 using Microsoft.AspNetCore.Mvc;
 using Hotel.Services;
 using Microsoft.EntityFrameworkCore;
@@ -34,6 +35,31 @@ public class RestaurantController : Controller
             return BadRequest(e.Message);
         }
     }
+
+    [HttpPut("Restaurant")]
+    public async Task<IActionResult> UpdateRestaurant(RestaurantDTO dto)
+    {
+        try
+        {
+            var r = await _context.Restaurants.FirstOrDefaultAsync();
+            if (r == null)
+                return NotFound();
+            if(dto.Name != null)
+                r.Name = dto.Name;
+            if (dto.Address != null)
+                r.Address = dto.Address;
+            if (dto.OpenTime != null)
+                r.OpeningTime = dto.OpenTime.Value;
+            if (dto.CloseTime != null)
+                r.ClosingTime = dto.CloseTime.Value;
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
     
     [HttpGet("Menu")]
     public async Task<IActionResult> Menu()
@@ -60,7 +86,7 @@ public class RestaurantController : Controller
     {
         try
         {
-            List<Models.MenuCategory>  menuCategories = await _restaurantServices.GetAllMenuCategories();
+            List<MenuCategory>  menuCategories = await _restaurantServices.GetAllMenuCategories();
             return Ok(menuCategories);
         }
         catch (Exception e)
@@ -77,7 +103,7 @@ public class RestaurantController : Controller
         {
             if(_restaurantServices.CategoryExists(category))
                 return BadRequest("Category already exists");
-            var cat = new Models.MenuCategory()
+            var cat = new MenuCategory()
             {
                 Name = category.Name,
             };
@@ -124,7 +150,7 @@ public class RestaurantController : Controller
             int categoryId = category.MenuCategoryId;
             if (dto.Price != null)
             {
-                var item = new Models.MenuItem()
+                var item = new MenuItem()
                 {
                     Name = dto.Name,
                     MenuCategoryId = categoryId,
@@ -186,6 +212,93 @@ public class RestaurantController : Controller
             if(menuItem.MenuCategory.Name != menuCategory)
                 return BadRequest("Category does not match");
             _context.MenuItems.Remove(menuItem);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+    
+    //should have auth
+    [HttpPost("Orders")]
+    public async Task<IActionResult> CreateOrder([FromBody]OrderDTO order)
+    {
+        try
+        {
+            var o = new Order()
+            {
+                GuestId = order.GuestId,
+                TableId = order.TableId,
+                OrderType = order.OrderType,
+                Status = order.Status,
+                CreatedAt = new TimeOnly(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second)
+            };
+            _context.Orders.Add(o);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+    
+    //should have auth
+    [HttpDelete("Orders/{id}")]
+    public async Task<IActionResult> DeleteOrder(int id)
+    {
+        try
+        {
+            var o = _context.Orders.FirstOrDefault(o => o.Id == id);
+            if (o == null)
+            {
+                return NotFound();
+            }
+            _context.Orders.Remove(o);
+            List<OrderItem>  orderItems = _context.OrderItems.Where(oi => oi.OrderId == id).ToList();
+            _context.OrderItems.RemoveRange(orderItems);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+    
+    //should have auth
+    [HttpPost("Orders/{orderId}/Items/{itemId}")]
+    public async Task<IActionResult> AddOrderItem(int orderId,int itemId,[FromBody]OrderItemDTO dto)
+    {
+        try
+        {
+            var oi = new OrderItem()
+            {
+                OrderId = orderId,
+                ItemId = itemId,
+                Quantity = dto.Quantity
+            };
+            _context.OrderItems.Add(oi);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+
+    [HttpPut("Orders/{orderId}/Items/{itemId}")]
+    public async Task<IActionResult> ChangeOrderItem(int orderId,int itemId, [FromBody] OrderItemDTO dto)
+    {
+        try
+        {
+            var oi = _context.OrderItems.FirstOrDefault(oi => oi.OrderId == orderId && oi.ItemId == itemId);
+            if (oi == null)
+                return NotFound();
+            oi.Quantity = dto.Quantity;
             await _context.SaveChangesAsync();
             return Ok();
         }

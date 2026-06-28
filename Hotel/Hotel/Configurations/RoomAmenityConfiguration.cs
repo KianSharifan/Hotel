@@ -8,11 +8,11 @@ public class RoomAmenityConfiguration : IEntityTypeConfiguration<RoomAmenities>
 {
     public void Configure(EntityTypeBuilder<RoomAmenities> builder)
     {
-        builder.HasKey(a => new{a.RoomId , a.AmenityId});
+        builder.HasKey(a => new{a.RoomTypeId , a.AmenityId});
         
-        builder.HasOne(r => r.Room)
+        builder.HasOne(r => r.RoomType)
             .WithMany()
-            .HasForeignKey(r => r.RoomId)
+            .HasForeignKey(r => r.RoomTypeId)
             .OnDelete(DeleteBehavior.Cascade);
         
         builder.HasOne(a => a.Amenity)

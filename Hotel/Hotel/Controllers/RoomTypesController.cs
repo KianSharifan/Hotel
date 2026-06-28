@@ -19,7 +19,7 @@ public class RoomTypesController : Controller
     }
     
     [HttpGet]
-    public async Task<IActionResult> GetRoomTypes()
+    public IActionResult GetRoomTypes()
     {
         try
         {
@@ -134,6 +134,130 @@ public class RoomTypesController : Controller
             if (roomType == null)
                 return NotFound();
             _context.RoomTypes.Remove(roomType);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+    
+    //should have auth
+    [HttpGet("AllAmenities")]
+    public IActionResult GetAllAmenities()
+    {
+        try
+        {
+            return Ok(_context.Amenities);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+    
+    //should have auth
+    [HttpPost("CreateAmenity")]
+    public async Task<IActionResult> CreateAmenity([FromBody]AmenityDTO dto)
+    {
+        try
+        {
+            if (dto.Name == null)
+                return BadRequest("Invalid input");
+            if(_context.Amenities.Any(a => a.Name == dto.Name))
+                return BadRequest("Amenity already exists");
+            var amenity = new Amenity()
+            {
+                Name = dto.Name,
+            };
+            await _context.Amenities.AddAsync(amenity);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+    
+    //should have auth
+    [HttpPut("UpdateAmenity")]
+    public async Task<IActionResult> UpdateAmenity([FromBody] AmenityDTO dto)
+    {
+        try
+        {
+            if (dto.Name == null)
+                return BadRequest("Invalid input"); 
+            var a = _context.Amenities.FirstOrDefault(a => a.Name == dto.Name);
+            if (a == null)
+                return NotFound();
+            a.Name = dto.Name;
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+    
+    //should have auth
+    [HttpDelete("DeleteAmenity")]
+    public async Task<IActionResult> DeleteAmenity(int id)
+    {
+        try
+        {
+            var a  = _context.Amenities.FirstOrDefault(a => a.Id == id);
+            if (a == null)
+                return NotFound();
+            _context.Amenities.Remove(a);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+    
+    //should have auth
+    [HttpPost("AddRoomAmenity")]
+    public async Task<IActionResult> AddRoomAmenity([FromBody]RoomAmenities dto)
+    {
+        try
+        {
+            if (!_context.Amenities.Any(a => a.Id == dto.AmenityId))
+                return NotFound();
+            if(!_context.RoomTypes.Any(r => r.RoomTypeId == dto.RoomTypeId))
+                return NotFound();
+            if(_context.RoomAmenities.Any(r => r.AmenityId == dto.AmenityId && r.RoomTypeId == dto.RoomTypeId))
+                return BadRequest("Amenity already exists");
+            _context.RoomAmenities.Add(dto);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+    
+    //should have auth
+    [HttpDelete("DeleteRoomAmenity")]
+    public async Task<IActionResult> DeleteRoomAmenity([FromBody] RoomAmenities dto)
+    {
+        try
+        {
+            if (!_context.Amenities.Any(a => a.Id == dto.AmenityId))
+                return NotFound();
+            if (!_context.RoomTypes.Any(r => r.RoomTypeId == dto.RoomTypeId))
+                return NotFound();
+        
+            var r = _context.RoomAmenities.FirstOrDefault(r => r.AmenityId == dto.AmenityId  && r.RoomTypeId == dto.RoomTypeId);
+            if (r == null)
+                return NotFound();
+            _context.RoomAmenities.Remove(r);
             await _context.SaveChangesAsync();
             return Ok();
         }
