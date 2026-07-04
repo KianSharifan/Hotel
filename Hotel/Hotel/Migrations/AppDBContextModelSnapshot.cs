@@ -383,13 +383,6 @@ namespace Hotel.Migrations
                     b.Property<TimeOnly>("CreatedAt")
                         .HasColumnType("time without time zone");
 
-                    b.Property<int?>("GuestId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("OrderType")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
                     b.Property<string>("Status")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
@@ -401,8 +394,6 @@ namespace Hotel.Migrations
                         .HasColumnType("double precision");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GuestId");
 
                     b.HasIndex("TableId");
 
@@ -997,17 +988,10 @@ namespace Hotel.Migrations
 
             modelBuilder.Entity("Hotel.Models.Order", b =>
                 {
-                    b.HasOne("Hotel.Models.Guest", "Guest")
-                        .WithMany()
-                        .HasForeignKey("GuestId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.HasOne("Hotel.Models.Table", "Table")
                         .WithMany()
                         .HasForeignKey("TableId")
                         .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("Guest");
 
                     b.Navigation("Table");
                 });

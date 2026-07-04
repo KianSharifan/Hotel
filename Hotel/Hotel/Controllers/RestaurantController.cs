@@ -222,6 +222,43 @@ public class RestaurantController : Controller
     }
     
     //should have auth
+    [HttpGet("Orders")]
+    public async Task<IActionResult> AllOrders()
+    {
+        try
+        {
+            return Ok(await _context.Orders.ToListAsync());
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+    
+    //should have auth
+    [HttpGet("Orders/{id}")]
+    public async Task<IActionResult> GetOrder(int id)
+    {
+        try
+        {
+            var o = await _context.Orders.FirstOrDefaultAsync(o => o.Id == id);
+            if (o == null)
+                return NotFound();
+            List<OrderItem> orderItems = await _context.OrderItems.Where(or => or.OrderId == id).ToListAsync();
+            var r = new
+            {
+                o,
+                orderItems
+            };
+            return Ok(r);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+    
+    //should have auth
     [HttpPost("Orders")]
     public async Task<IActionResult> CreateOrder([FromBody]OrderDTO order)
     {
@@ -229,15 +266,20 @@ public class RestaurantController : Controller
         {
             var o = new Order()
             {
-                GuestId = order.GuestId,
                 TableId = order.TableId,
-                OrderType = order.OrderType,
                 Status = order.Status,
                 CreatedAt = new TimeOnly(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second)
             };
             _context.Orders.Add(o);
+            if (order.OrderItems != null)
+            {
+                foreach (var oi in order.OrderItems)
+                {
+                    _context.OrderItems.Add(oi.ToOrderItem(o.Id));
+                } 
+            }
             await _context.SaveChangesAsync();
-            return Ok();
+            return Ok(o.Id);
         }
         catch (Exception e)
         {
@@ -267,38 +309,38 @@ public class RestaurantController : Controller
             return BadRequest(e.Message);
         }
     }
-    
-    //should have auth
-    [HttpPost("Orders/{orderId}/Items/{itemId}")]
-    public async Task<IActionResult> AddOrderItem(int orderId,int itemId,[FromBody]OrderItemDTO dto)
-    {
-        try
-        {
-            var oi = new OrderItem()
-            {
-                OrderId = orderId,
-                ItemId = itemId,
-                Quantity = dto.Quantity
-            };
-            _context.OrderItems.Add(oi);
-            await _context.SaveChangesAsync();
-            return Ok();
-        }
-        catch (Exception e)
-        {
-            return BadRequest(e.Message);
-        }
-    }
 
-    [HttpPut("Orders/{orderId}/Items/{itemId}")]
-    public async Task<IActionResult> ChangeOrderItem(int orderId,int itemId, [FromBody] OrderItemDTO dto)
+    //should have auth
+    [HttpPut("Orders/{orderId}")]
+    public async Task<IActionResult> ChangeOrderItem(int orderId, [FromBody] OrderDTO dto)
     {
         try
         {
-            var oi = _context.OrderItems.FirstOrDefault(oi => oi.OrderId == orderId && oi.ItemId == itemId);
-            if (oi == null)
+            var o = _context.Orders.FirstOrDefault(o => o.Id == orderId);
+            if (o == null)
                 return NotFound();
-            oi.Quantity = dto.Quantity;
+            if(dto.Status != null)
+                o.Status = dto.Status;
+            if (dto.OrderItems != null)
+            {
+                foreach (var oi in dto.OrderItems)
+                {
+                    var temp = _context.OrderItems.FirstOrDefault(ori => ori.OrderId == orderId);
+
+                    if (oi.Quantity == 0)
+                    {
+                        _context.Remove(_context.OrderItems.Where(ori => ori.OrderId == orderId));
+                    }
+                    else if (temp != null)
+                    {
+                        temp.Quantity = oi.Quantity;
+                    }
+                    else
+                    {
+                        await _context.OrderItems.AddAsync(oi.ToOrderItem(orderId));
+                    }
+                }
+            }
             await _context.SaveChangesAsync();
             return Ok();
         }
