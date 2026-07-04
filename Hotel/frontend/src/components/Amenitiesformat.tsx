@@ -1,5 +1,3 @@
-// components/LuxurySection.tsx
-
 import React from "react";
 
 type LuxurySectionProps = {

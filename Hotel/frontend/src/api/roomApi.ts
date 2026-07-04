@@ -4,7 +4,7 @@ export async function getAvailableRooms(
   adults: number,
   children: number,
   checkIn: string,
-  checkOut: string
+  checkOut: string,
 ) {
   const response = await fetch(
     `${API}/AvailableRoomTypes?NumberOfAdults=${adults}&NumberOfKids=${children}&CheckIn=${checkIn}&CheckOut=${checkOut}`

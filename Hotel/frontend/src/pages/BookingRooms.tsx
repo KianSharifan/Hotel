@@ -110,7 +110,7 @@ function handleSelect(room: any) {
         <div className="flex flex-col gap-8">
           {filteredRooms.map((room, index) => (
             <motion.div
-              key={room.id}
+              key={room.roomTypeId}
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.12, duration: 0.7, ease: "easeOut" }}
