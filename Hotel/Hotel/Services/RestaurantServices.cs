@@ -14,12 +14,12 @@ public class RestaurantServices
     _context = context;
     }
 
-    public async Task<List<Models.MenuCategory>> GetAllMenuCategories()
+    public async Task<List<MenuCategory>> GetAllMenuCategories()
     {
         return await _context.MenuCategories.ToListAsync();
     }
 
-    public async Task<List<Models.MenuItem>> GetAllMenuItems()
+    public async Task<List<MenuItem>> GetAllMenuItems()
     {
         return await _context.MenuItems.ToListAsync();
     }
@@ -41,7 +41,7 @@ public class RestaurantServices
         {
             if (table.Status != "Available")
                 return "Bad Request";
-            if (input.Time != null)
+            if (input.Time != null && input.Email != null)
             {
                 if (!_context.TableReservations.Any(t => t.TableId == id
                                                         && t.Time.Date == input.Time.Value.Date

@@ -12,3 +12,4 @@ GET {{root_url}}/Restaurant/Menu/Pizzas/MenuItems
 Accept: application/json
 ###
 
+DELETE {{root_url}}/API/Users/Delete/kian

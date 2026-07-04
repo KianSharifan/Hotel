@@ -3,6 +3,7 @@ using System;
 using Hotel.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Hotel.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20260626085641_ramenity")]
+    partial class ramenity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -417,9 +420,6 @@ namespace Hotel.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ItemId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("OrderId")
                         .HasColumnType("integer");
 
@@ -427,8 +427,6 @@ namespace Hotel.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ItemId");
 
                     b.HasIndex("OrderId");
 
@@ -1014,19 +1012,11 @@ namespace Hotel.Migrations
 
             modelBuilder.Entity("Hotel.Models.OrderItem", b =>
                 {
-                    b.HasOne("Hotel.Models.MenuItem", "MenuItem")
-                        .WithMany()
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Hotel.Models.Order", "Order")
                         .WithMany()
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("MenuItem");
 
                     b.Navigation("Order");
                 });

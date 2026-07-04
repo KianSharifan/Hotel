@@ -168,6 +168,34 @@ public class SeedDB
                 }
             };
             context.Roles.AddRange(roles);
+            var positions = new List<Position>()
+            {
+                new Position
+                {
+                    Id = 1,
+                    Title = "Intern",
+                    BaseSalary = 10000
+                },
+                new Position
+                {
+                    Id = 2,
+                    Title = "Junior",
+                    BaseSalary = 40000
+                },
+                new Position
+                {
+                    Id = 3,
+                    Title = "Senior",
+                    BaseSalary = 70000
+                },
+                new Position
+                {
+                    Id = 4,
+                    Title = "Manager",
+                    BaseSalary = 10000
+                }
+            };
+            context.Positions.AddRange(positions);
             var departments = new List<Department>
             {
                 new Department
@@ -539,35 +567,39 @@ new Room { RoomId = 31, HotelId = 1, RoomNumber = 901, Floor = 9, RoomTypeId = 6
             await context.SaveChangesAsync();
             var roomAmenities = new List<RoomAmenities>
             {
-                new RoomAmenities { RoomId = 1, AmenityId = 1 },
-                new RoomAmenities { RoomId = 1, AmenityId = 4 },
-                new RoomAmenities { RoomId = 2, AmenityId = 1 },
-                new RoomAmenities { RoomId = 2, AmenityId = 2 },
-                new RoomAmenities { RoomId = 3, AmenityId = 1 },
-                new RoomAmenities { RoomId = 3, AmenityId = 4 },
+                new RoomAmenities { RoomTypeId = 1, AmenityId = 1 },
+                new RoomAmenities { RoomTypeId = 1, AmenityId = 4 },
+                new RoomAmenities { RoomTypeId = 1, AmenityId = 2 },
+                new RoomAmenities { RoomTypeId = 1, AmenityId = 3 },
+                
+                new RoomAmenities { RoomTypeId = 2, AmenityId = 1 },
+                new RoomAmenities { RoomTypeId = 2, AmenityId = 4 },
+                new RoomAmenities { RoomTypeId = 2, AmenityId = 2 },
+                new RoomAmenities { RoomTypeId = 2, AmenityId = 3 },
+                
+                new RoomAmenities { RoomTypeId = 3, AmenityId = 1 },
+                new RoomAmenities { RoomTypeId = 3, AmenityId = 4 },
+                new RoomAmenities { RoomTypeId = 3, AmenityId = 2 },
+                new RoomAmenities { RoomTypeId = 3, AmenityId = 3 },
+                
+                new RoomAmenities { RoomTypeId = 4, AmenityId = 1 },
+                new RoomAmenities { RoomTypeId = 4, AmenityId = 2 },
+                new RoomAmenities { RoomTypeId = 4, AmenityId = 3 },
+                new RoomAmenities { RoomTypeId = 4, AmenityId = 4 },
+                new RoomAmenities { RoomTypeId = 4, AmenityId = 5 },
+                
+                new RoomAmenities { RoomTypeId = 5, AmenityId = 1 },
+                new RoomAmenities { RoomTypeId = 5, AmenityId = 2 },
+                new RoomAmenities { RoomTypeId = 5, AmenityId = 3 },
+                new RoomAmenities { RoomTypeId = 5, AmenityId = 4 },
+                new RoomAmenities { RoomTypeId = 5, AmenityId = 6 },
 
-                new RoomAmenities { RoomId = 11, AmenityId = 1 },
-                new RoomAmenities { RoomId = 11, AmenityId = 2 },
-                new RoomAmenities { RoomId = 11, AmenityId = 4 },
-                new RoomAmenities { RoomId = 11, AmenityId = 3 },
-    
-                new RoomAmenities { RoomId = 15, AmenityId = 1 },
-                new RoomAmenities { RoomId = 15, AmenityId = 2 },
-                new RoomAmenities { RoomId = 15, AmenityId = 4 },
-                new RoomAmenities { RoomId = 15, AmenityId = 6 },
-
-                new RoomAmenities { RoomId = 29, AmenityId = 1 },
-                new RoomAmenities { RoomId = 29, AmenityId = 2 },
-                new RoomAmenities { RoomId = 29, AmenityId = 3 },
-                new RoomAmenities { RoomId = 29, AmenityId = 4 },
-                new RoomAmenities { RoomId = 29, AmenityId = 6 },
-
-                new RoomAmenities { RoomId = 31, AmenityId = 1 },
-                new RoomAmenities { RoomId = 31, AmenityId = 2 },
-                new RoomAmenities { RoomId = 31, AmenityId = 3 },
-                new RoomAmenities { RoomId = 31, AmenityId = 4 },
-                new RoomAmenities { RoomId = 31, AmenityId = 5 },
-                new RoomAmenities { RoomId = 31, AmenityId = 6 }
+                new RoomAmenities { RoomTypeId = 6, AmenityId = 1 },
+                new RoomAmenities { RoomTypeId = 6, AmenityId = 2 },
+                new RoomAmenities { RoomTypeId = 6, AmenityId = 3 },
+                new RoomAmenities { RoomTypeId = 6, AmenityId = 4 },
+                new RoomAmenities { RoomTypeId = 6, AmenityId = 5 },
+                new RoomAmenities { RoomTypeId = 6, AmenityId = 6 }
             };
             context.RoomAmenities.AddRange(roomAmenities); 
 var shifts = new List<Shift>

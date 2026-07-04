@@ -13,5 +13,10 @@ public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
             .WithMany()
             .HasForeignKey(oi => oi.OrderId)
             .OnDelete(DeleteBehavior.Cascade);
+        
+        builder.HasOne(x => x.MenuItem)
+            .WithMany()
+            .HasForeignKey(oi => oi.ItemId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
