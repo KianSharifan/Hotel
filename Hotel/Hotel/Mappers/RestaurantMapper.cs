@@ -36,4 +36,15 @@ public static class RestaurantMapper
         };
         return tableDto;
     }
+
+    public static OrderItem ToOrderItem(this OrderItemDTO dto,int orderId)
+    {
+        OrderItem orderItem = new OrderItem()
+        {
+            OrderId = orderId,
+            Quantity = dto.Quantity,
+            ItemId = dto.ItemId
+        };
+        return orderItem;
+    }
 }
