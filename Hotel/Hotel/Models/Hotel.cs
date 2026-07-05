@@ -10,15 +10,15 @@ public class Hotel
     public string? Phone { get; set; }
     public string? Email { get; set; }
 
-    private double starRating;
+    private double _starRating;
     public double StarRating
     {
-        get => starRating;
+        get => _starRating;
         set
         {
             if (value > 5 || value < 0)
                 throw new Exception();
-            starRating = value;
+            _starRating = value;
         }
     }
 

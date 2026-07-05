@@ -3,10 +3,11 @@ namespace Hotel.Models;
 public class Shift
 {
     public int Id { get; set; }
-    private string day;
+
+    private string _day = null!;
     public string Day
     {
-        get => day;
+        get => _day;
         set
         {
             if (value != "Monday" &&
@@ -19,7 +20,7 @@ public class Shift
             {
                 throw new ArgumentException("Invalid day");
             }
-            day = value;
+            _day = value;
         }
     }
 

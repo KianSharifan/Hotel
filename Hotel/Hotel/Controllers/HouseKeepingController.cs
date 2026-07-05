@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Hotel.Data;
+using Hotel.DTOs;
+using Hotel.Mappers;
+using Hotel.Models;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -16,6 +19,7 @@ public class HouseKeepingController : Controller
         _context = context;
     }
 
+    //should have auth
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
@@ -28,10 +32,113 @@ public class HouseKeepingController : Controller
             return BadRequest(e.Message);
         }
     }
+    
+    //should have auth
+    [HttpGet("Employee/{userName}")]
+    public async Task<IActionResult> GetEmployee(string userName)
+    {
+        try
+        {
+            var houseKeeper = await _context.Employees.FirstOrDefaultAsync(e => e.User.Role.Name == "Housekeeper" && e.User.Username == userName);
+            if (houseKeeper == null)
+                return NotFound();
+            var keeping = _context.HouseKeepings.Where(h => h.EmployeeId == houseKeeper.Id).ToList();
+            var output = new List<HouseKeepingDTO>();
+            foreach (var k in keeping)
+            {
+                k.ToDto();
+                output.Add(k.ToDto());
+            }
+            return Ok(output);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
 
-    // [HttpPost]
-    // public async Task<IActionResult> Create()
-    // {
-    //     
-    // }
+    //should have auth
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody]HouseKeepingDTO houseKeeping)
+    {
+        try
+        {
+            if (houseKeeping.RoomId != null && houseKeeping.ScheduledDate != null)
+            {
+                var employee = _context.Users
+                    .Where(u => u.Role.Name == "HouseKeeping")
+                    .OrderByDescending(u => _context.HouseKeepings.Count(h =>
+                        h.EmployeeId == u.Id &&
+                        h.ScheduledDate == houseKeeping.ScheduledDate))
+                    .FirstOrDefault();
+                if (employee == null)
+                {
+                    return BadRequest("No HouseKeeper Exists");
+                }
+                var hk = new HouseKeeping()
+                {
+                    Notes = houseKeeping.Notes,
+                    RoomId = houseKeeping.RoomId.Value,
+                    ScheduledDate = houseKeeping.ScheduledDate.Value,
+                    Status = false,
+                    EmployeeId = employee.Id,
+                };
+                await _context.HouseKeepings.AddAsync(hk);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            return BadRequest("Not valid inputs");
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+    
+    //should have auth
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id,[FromBody] HouseKeepingDTO houseKeeping)
+    {
+        try
+        {
+            var h = await _context.HouseKeepings.FirstOrDefaultAsync(h => h.Id == id);
+            if (h == null)
+                return NotFound();
+            if (houseKeeping.RoomId != null)
+                h.RoomId = houseKeeping.RoomId.Value;
+            if (houseKeeping.ScheduledDate != null)
+                h.ScheduledDate = houseKeeping.ScheduledDate.Value;
+            if (houseKeeping.EmployeeId != null)
+                h.EmployeeId = houseKeeping.EmployeeId.Value;
+            if(houseKeeping.Notes != null)
+                h.Notes = houseKeeping.Notes;
+            if(houseKeeping.Status != null)
+                h.Status = houseKeeping.Status.Value;
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+    
+    //should have auth
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        try
+        {
+            var hk = await _context.HouseKeepings.FirstOrDefaultAsync(h => h.Id == id);
+            if (hk == null)
+                return NotFound();
+            _context.HouseKeepings.Remove(hk);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
 }

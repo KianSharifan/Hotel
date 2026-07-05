@@ -13,3 +13,13 @@ Accept: application/json
 ###
 
 DELETE {{root_url}}/API/Users/Delete/kian
+Accept: application/json
+###
+
+GET {{root_url}}/API/HouseKeeping/Employee
+Accept: application/json
+###
+
+GET {{root_url}}/API/HouseKeeping
+Accept: application/json
+###

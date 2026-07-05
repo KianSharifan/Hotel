@@ -4,7 +4,7 @@ public class MenuItem
 {
     public int Id { get; set; }
     public int MenuCategoryId { get; set; }
-    public MenuCategory MenuCategory { get; set; }
+    public MenuCategory? MenuCategory { get; set; }
     public string? Name { get; set; }
     public string? Description { get; set; }
     private double _price;
