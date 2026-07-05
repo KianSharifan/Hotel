@@ -23,3 +23,11 @@ Accept: application/json
 GET {{root_url}}/API/HouseKeeping
 Accept: application/json
 ###
+
+GET {{root_url}}/API/Maintenance
+Accept: application/json
+###
+
+GET {{root_url}}/API/Maintenance/kkk
+Accept: application/json
+###

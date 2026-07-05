@@ -9,6 +9,7 @@ public static class HouseKeepingMapper
     {
         var h = new HouseKeepingDTO
         {
+            HouseKeepingId = houseKeeping.Id,
             EmployeeId = houseKeeping.EmployeeId,
             RoomId = houseKeeping.RoomId,
             Notes = houseKeeping.Notes,

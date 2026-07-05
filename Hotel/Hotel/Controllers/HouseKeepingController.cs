@@ -46,7 +46,6 @@ public class HouseKeepingController : Controller
             var output = new List<HouseKeepingDTO>();
             foreach (var k in keeping)
             {
-                k.ToDto();
                 output.Add(k.ToDto());
             }
             return Ok(output);
@@ -66,7 +65,7 @@ public class HouseKeepingController : Controller
             if (houseKeeping.RoomId != null && houseKeeping.ScheduledDate != null)
             {
                 var employee = _context.Users
-                    .Where(u => u.Role.Name == "HouseKeeping")
+                    .Where(u => u.Role.Name == "Housekeeper")
                     .OrderByDescending(u => _context.HouseKeepings.Count(h =>
                         h.EmployeeId == u.Id &&
                         h.ScheduledDate == houseKeeping.ScheduledDate))

@@ -16,5 +16,5 @@ public class MaintenanceRequest
     [MaxLength(100)]
     public string? Status { get; set; }
     public DateTime CreatedDate { get; set; }
-    public DateTime ModifiedDate { get; set; }
+    public DateTime? ModifiedDate { get; set; }
 }
