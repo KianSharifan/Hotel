@@ -39,7 +39,8 @@ public class SeedDB
                     NumberSingleBed = 0,
                     NumberSofaBed = 0,
                     Description = "A comfortable room with a queen bed, work desk, and modern bathroom.",
-                    Price = 69.99
+                    Price = 69.99,
+                    URL = "https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=2074"
                 },
                 new RoomType
                 {
@@ -51,6 +52,7 @@ public class SeedDB
                     NumberSofaBed = 0,
                     Description = "A spacious room featuring a king bed, seating area, and premium décor.",
                     Price = 92.99,
+                    URL="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=1974"
                 },
                 new RoomType
                 {
@@ -61,7 +63,8 @@ public class SeedDB
                     NumberSingleBed = 2,
                     NumberSofaBed = 0,
                     Description = "An upgraded room offering enhanced bedding, better views, and refined finishes.",
-                    Price = 119.99
+                    Price = 119.99,
+                    URL="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1974"
                 },
                 new RoomType
                 {
@@ -72,7 +75,8 @@ public class SeedDB
                     NumberSingleBed = 0,
                     NumberSofaBed = 1,
                     Description = "A semi-suite with a lounge area, elegant furnishings, and an expanded bathroom.",
-                    Price = 149.99
+                    Price = 149.99,
+                    URL="https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=1974"
                 },
                 new RoomType
                 {
@@ -83,7 +87,8 @@ public class SeedDB
                     NumberSingleBed = 0,
                     NumberSofaBed = 1,
                     Description = "A luxury suite with a separate living room, workspace, and upgraded amenities.",
-                    Price = 249.99
+                    Price = 249.99,
+                    URL="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=2070"
                 },
                 new RoomType
                 {
@@ -94,7 +99,8 @@ public class SeedDB
                     NumberSingleBed = 0,
                     NumberSofaBed = 1,
                     Description = "The hotel's signature suite with multiple rooms, premium décor, and exclusive services.",
-                    Price =499.99
+                    Price =499.99,
+                    URL="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=2070"
                 }
             };
             context.RoomTypes.AddRange(roomTypes);

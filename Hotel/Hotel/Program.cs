@@ -54,6 +54,21 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<RoomServices>();
 builder.Services.AddScoped<RestaurantServices>();
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy =>
+        {
+            policy
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowAnyOrigin();
+        });
+});
+
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -71,6 +86,10 @@ if (app.Environment.IsDevelopment())
     // app.UseSwaggerUI();
     app.MapOpenApi();
 }
+
+app.UseCors("AllowFrontend");
+
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

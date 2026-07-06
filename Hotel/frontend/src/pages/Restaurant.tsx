@@ -84,12 +84,29 @@ function Restaurant() {
           <p className="text-xl text-gray-300 mb-10">
             Luxury fine dining experience
           </p>
+          <div className="flex justify-center gap-6">
+            <button
+              onClick={()=>navigate("/restaurant/menu")}
+              className="w-52 bg-white text-black px-8 py-4 rounded-xl border-2 border-gray-700/50
+              transition-all
+              duration-300
+              hover:bg-gray-300
+              hover:scale-105">
+              Menu
+            </button>
 
-          <button
-            onClick={()=>navigate("/restaurant/restaurantReservation")}
-            className="bg-white text-black px-8 py-4 rounded-xl">
-            Reserve Table
-          </button>
+            <button
+              onClick={()=>navigate("/restaurant/restaurantReservation")}
+              className="w-52 bg-white text-black px-8 py-4 rounded-xl border-2 border-gray-700/50
+              transition-all
+              duration-300
+              hover:bg-gray-300
+              hover:scale-105">
+              Reserve Table
+            </button>
+        </div>
+
+
 
         </div>
 

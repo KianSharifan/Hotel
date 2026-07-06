@@ -15,6 +15,7 @@ public class RestaurantTablesController : Controller
     private readonly AppDBContext  _context;
     private readonly RestaurantServices _restaurantServices;
 
+
     public RestaurantTablesController(AppDBContext context, RestaurantServices restaurantServices)
     {
         _context = context;

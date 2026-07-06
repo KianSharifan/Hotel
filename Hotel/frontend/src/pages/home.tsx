@@ -30,7 +30,7 @@
 import { useState } from "react"
 import Navbar from "../components/navbar"
 import Hero from "../components/Hero"
-import FeaturedRooms from "../components/FeaturedRooms"
+import Events from "../components/Events"
 import Amenities from "../components/Amenities"
 import Footer from "../components/Footer"
 import IntroScreen from "../components/IntroScreen"
@@ -51,7 +51,7 @@ function Home() {
 
       <Navbar />
       <Hero />
-      <FeaturedRooms />
+      <Events />
       <Amenities />
       <Footer />
     </div>

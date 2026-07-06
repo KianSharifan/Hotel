@@ -48,6 +48,7 @@ import Restaurant from "./pages/Restaurant"
 import Spa from "./pages/Spa"
 import Golf from "./pages/Golf"
 import Pool from "./pages/Pool"
+import PrivateBeach from "./pages/PrivateBeach"
 import Reservation from "./pages/Reservation"
 import RestaurantReservation from "./pages/RestaurantReserve"
 import GuestsPage from "./pages/GuestsPage"
@@ -55,17 +56,27 @@ import DatesPage from "./pages/DatesPage"
 import BookingRooms from "./pages/BookingRooms"
 import PaymentPage from "./pages/PaymentPage"
 import { BookingProvider } from "./context/BookingContext"
+import Menu from "./pages/Menu"
+import Login from "./pages/Login"
+import { AuthProvider } from "./context/AuthContext"
+import Register from "./pages/Register"
+import RestaurantOrders from "./pages/RestaurantPanel/RestaurantOrders"
 
-const BOOKING_PATHS = [
+
+
+const HIDDEN_NAVBAR_PATHS = [
   "/reservation/guests",
   "/reservation/dates",
   "/reservation/rooms",
   "/reservation/payment",
+  "/login",
+  "/register",
+  "/restaurant-panel"
 ]
 
 function AppInner() {
   const location = useLocation()
-  const hideNavbar = BOOKING_PATHS.some((p) => location.pathname.startsWith(p))
+  const hideNavbar = HIDDEN_NAVBAR_PATHS.some((p) => location.pathname.startsWith(p))
 
   return (
     <>
@@ -76,9 +87,15 @@ function AppInner() {
         <Route path="/restaurant" element={<Restaurant />} />
         <Route path="/amenities/spa" element={<Spa />} />
         <Route path="/amenities/pool" element={<Pool />} />
+        <Route path="/amenities/privatebeach" element={<PrivateBeach />} />
         <Route path="/amenities/golf" element={<Golf />} />
         <Route path="/reservation" element={<Reservation />} />
         <Route path="/restaurant/restaurantReservation" element={<RestaurantReservation />} />
+        <Route path="/restaurant/menu" element={<Menu />} />
+        <Route path="/login" element={<Login />}/>
+        <Route path="/register" element={<Register />}/>
+        <Route path="/restaurant-panel" element={<RestaurantOrders  />}/>
+        
 
         {/* New 4-step booking flow */}
         <Route path="/reservation/guests" element={<GuestsPage />} />
@@ -93,9 +110,11 @@ function AppInner() {
 function App() {
   return (
     <BrowserRouter>
-      <BookingProvider>
-        <AppInner />
-      </BookingProvider>
+      <AuthProvider>
+        <BookingProvider>
+          <AppInner />
+        </BookingProvider>
+      </AuthProvider>
     </BrowserRouter>
   )
 }

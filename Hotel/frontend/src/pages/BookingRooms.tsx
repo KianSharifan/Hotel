@@ -3,24 +3,89 @@ import { motion } from "motion/react"
 import { useBooking } from "../context/BookingContext"
 import BookingHeader from "../components/BookingHeader"
 import { amenityIcons } from "../data/amenityIcons"
-import rooms from "../data/rooms"
+// import rooms from "../data/rooms"
+import { useEffect, useState } from "react"
+import { getAvailableRooms } from "../api/roomApi"
+
+
+
 
 export default function BookingRooms() {
   const { booking, setRoom, resetBooking } = useBooking()
   const navigate = useNavigate()
+  const [rooms, setRooms] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+
+  // if (loading) {
+  //   return (
+  //     <div className="min-h-screen bg-[#080808] text-white flex items-center justify-center">
+  //       Loading rooms...
+  //     </div>
+  //   )
+  // }
+
+  useEffect(() => {
+  if (
+    !booking.checkIn ||
+    !booking.checkOut ||
+    booking.adults + booking.children === 0
+  ) {
+    return
+  }
+
+    async function loadRooms() {
+      try {
+        const data = await getAvailableRooms(
+          booking.adults,
+          booking.children,
+          booking.checkIn,
+          booking.checkOut
+        )
+
+    
+console.log("ROOMS FROM API", data)
+        setRooms(data)
+      }
+      catch (err) {
+        console.error(err)
+      }
+      finally {
+        setLoading(false)
+      }
+    }
+
+    loadRooms()
+  }, [])
+
 
   const totalGuests = booking.adults + booking.children
-  const filteredRooms = rooms.filter(r => r.maxGuests >= totalGuests)
+  const filteredRooms = rooms
 
   function nights() {
     if (!booking.checkIn || !booking.checkOut) return 1
     return Math.round((new Date(booking.checkOut).getTime() - new Date(booking.checkIn).getTime()) / 86400000)
   }
 
-  function handleSelect(room: typeof rooms[0]) {
-    setRoom({ id: room.id, name: room.name, price: room.price })
-    navigate("/reservation/payment")
-  }
+  // function handleSelect(room: typeof rooms[0]) {
+  //   setRoom({
+  //     id: room.roomTypeId,
+  //     name: room.name,
+  //     price: room.price
+  //   })
+  //   navigate("/reservation/payment")
+  // }
+
+function handleSelect(room: any) {
+  console.log("SELECTED ROOM", room)
+
+  setRoom({
+    id: room.roomTypeId,
+    name: room.name,
+    price: room.price
+  })
+
+  navigate("/reservation/payment")
+}
 
   return (
     <div className="min-h-screen bg-[#080808] pt-[120px]">
@@ -45,7 +110,7 @@ export default function BookingRooms() {
         <div className="flex flex-col gap-8">
           {filteredRooms.map((room, index) => (
             <motion.div
-              key={room.id}
+              key={room.roomTypeId}
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.12, duration: 0.7, ease: "easeOut" }}
@@ -58,7 +123,7 @@ export default function BookingRooms() {
               {/* Image */}
               <div className="relative overflow-hidden h-[340px]">
                 <motion.img
-                  src={room.image}
+                  src={room.url}
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.7 }}
                   className="w-full h-full object-cover block"
@@ -79,8 +144,10 @@ export default function BookingRooms() {
                   <div className="flex gap-3 mb-5 flex-wrap">
                     {[
                       { label: `${room.maxGuests} Guests` },
-                      { label: `${room.beds} Beds` },
-                      { label: room.size },
+                      { label: `${room.numberDoubleBed +
+                                room.numberSingleBed +
+                                room.numberSofaBed} Beds` },
+                      // { label: room.size },
                     ].map(tag => (
                       <span key={tag.label} className="px-4 py-1.5 rounded-full border border-[#c8a84b]/20 text-xs text-[#c8a84b]/75 font-sans tracking-wide">
                         {tag.label}
@@ -89,17 +156,18 @@ export default function BookingRooms() {
                   </div>
 
                   {/* Amenities */}
-                  <div className="flex gap-2.5 flex-wrap mb-8">
+                  {/* <div className="flex gap-2.5 flex-wrap mb-8">
                     {room.amenities.slice(0, 5).map((amenity: string) => {
                       const Icon = amenityIcons[amenity]
                       return (
-                        <div key={amenity} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.07] text-xs text-white/45 font-sans">
+                        <div key={amenity} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full 
+                        bg-white/[0.04] border border-white/[0.07] text-xs text-white/45 font-sans">
                           {Icon && <Icon size={12} className="text-[#c8a84b]/60" />}
                           {amenity}
                         </div>
                       )
                     })}
-                  </div>
+                  </div> */}
                 </div>
 
                 {/* Price + CTA */}
@@ -145,3 +213,26 @@ export default function BookingRooms() {
     </div>
   )
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
