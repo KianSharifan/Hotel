@@ -35,7 +35,7 @@ public class RestaurantController : Controller
             return BadRequest(e.Message);
         }
     }
-
+    
     [HttpPut("Restaurant")]
     public async Task<IActionResult> UpdateRestaurant(RestaurantDTO dto)
     {
@@ -236,6 +236,27 @@ public class RestaurantController : Controller
     }
     
     //should have auth
+    [HttpGet("Orders/NotCompleted")]
+    public IActionResult AllNotCompletedOrders()
+    {
+        try
+        {
+            var output = _context.Orders
+                .Where(o => o.Status != "Completed")
+                .Join(_context.OrderItems,
+                    order => order.Id,
+                    item => item.OrderId,
+                    (order, item) => new
+                    { Order = order, OrderItem = item });
+            return Ok(output);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+    
+    //should have auth
     [HttpGet("Orders/{id}")]
     public async Task<IActionResult> GetOrder(int id)
     {
@@ -267,7 +288,7 @@ public class RestaurantController : Controller
             var o = new Order()
             {
                 TableId = order.TableId,
-                Status = order.Status,
+                Status = "Pending",
                 CreatedAt = new TimeOnly(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second)
             };
             _context.Orders.Add(o);
@@ -326,20 +347,16 @@ public class RestaurantController : Controller
             {
                 foreach (var oi in dto.OrderItems)
                 {
-                    var temp = _context.OrderItems.FirstOrDefault(ori => ori.OrderId == oi.ItemId);
-
-                    if (oi.Quantity == 0)
-                    {
-                        _context.Remove(_context.OrderItems.Where(ori => ori.OrderId == oi.ItemId));
-                    }
-                    else if (temp != null)
-                    {
-                        temp.Quantity = oi.Quantity;
-                    }
-                    else
-                    {
+                    var temp = _context.OrderItems.FirstOrDefault(ori =>
+                        ori.ItemId == oi.ItemId && ori.OrderId == orderId);
+                    
+                    if (temp == null)
                         await _context.OrderItems.AddAsync(oi.ToOrderItem(orderId));
-                    }
+ 
+                    else if (oi.Quantity == 0)
+                        _context.OrderItems.Remove(temp);
+                    else
+                        temp.Quantity = oi.Quantity;
                 }
             }
             await _context.SaveChangesAsync();
