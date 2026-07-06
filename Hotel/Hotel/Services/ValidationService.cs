@@ -6,11 +6,11 @@ using Hotel.Models;
 
 namespace Hotel.Services;
 
-public class CardService
+public class ValidationService
 {
     private readonly AppDBContext _context;
     
-    public CardService(AppDBContext context)
+    public ValidationService(AppDBContext context)
     {
     _context = context;
     }
