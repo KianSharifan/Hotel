@@ -107,13 +107,13 @@ public class RestaurantController : Controller
             {
                 Name = category.Name,
             };
-            _context.MenuCategories.Add(cat);
+            await _context.MenuCategories.AddAsync(cat);
             await _context.SaveChangesAsync();
             return Ok();
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            return BadRequest(e.ToString());
         }
     }
     
@@ -157,7 +157,7 @@ public class RestaurantController : Controller
                     Price = dto.Price.Value,
                     Description = dto.Description
                 };
-                _context.MenuItems.Add(item);
+                await _context.MenuItems.AddAsync(item);
                 await _context.SaveChangesAsync();
                 return Ok();
             }
