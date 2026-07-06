@@ -85,9 +85,32 @@ public class FrontDeskManagerController : Controller
     
     //should have auth
     [HttpPost("CheckIn")]
-    public async Task<IActionResult> CheckIn()
+    public async Task<IActionResult> CheckIn([FromBody]CheckInDTO dto)
     {
-        
+        try
+        {
+            var r = await _context.Reservations.FirstOrDefaultAsync(r =>
+                r.CheckInDate == dto.ReservationDate && r.Guest.User.Username == dto.UserName);
+            if (r == null)
+                return NotFound();
+            var g = _context.Guests.FirstOrDefault(g => g.GuestId == r.GuestId);
+            if (g == null)
+                return NotFound();
+            g.Nationality = dto.Nationality;
+            g.PassportNumber = dto.PassportNumber;
+            var u = _context.Users.FirstOrDefault(u => u.Username == dto.UserName);
+            if (u == null)
+                return NotFound();
+            u.IsActive = true;
+            u.FirstName = dto.FirstName;
+            u.LastName = dto.LastName;
+            await _context.SaveChangesAsync();
+            return Ok(r.Room.RoomNumber);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
     }
 
     //should have auth

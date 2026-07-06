@@ -30,12 +30,15 @@ public class CardService
         {
             return false;
         }
+        var r = _context.Roles.FirstOrDefault(u => u.Name == "Guest");
+        if (r == null)
+            return false;
         User user = new User()
         {
             Username = paymentDto.Username,
             PasswordHash = Encoding.UTF8.GetBytes(paymentDto.Password).ToString(),
             CreatedAt = DateTime.Now,
-            RoleId = 5
+            RoleId = r.RoleId
         };
         _context.Users.Add(user);
         _context.SaveChanges();
