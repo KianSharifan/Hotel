@@ -1,6 +1,6 @@
 namespace Hotel.Models;
 
-public class GuestServiceUsage
+public class  GuestServiceUsage
 {
     public int Id { get; set; }
     public int GuestId { get; set; }
