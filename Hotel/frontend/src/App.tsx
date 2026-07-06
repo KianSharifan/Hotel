@@ -60,7 +60,8 @@ import Menu from "./pages/Menu"
 import Login from "./pages/Login"
 import { AuthProvider } from "./context/AuthContext"
 import Register from "./pages/Register"
-import RestaurantOrders from "./pages/RestaurantPanel/RestaurantOrders"
+import RestaurantOrders from "./pages/ControlPanel/RestaurantOrders"
+import AdminLayout from "./layouts/AdminLayout"
 
 
 
@@ -71,7 +72,7 @@ const HIDDEN_NAVBAR_PATHS = [
   "/reservation/payment",
   "/login",
   "/register",
-  "/restaurant-panel"
+  "/admin/restaurant-panel"
 ]
 
 function AppInner() {
@@ -94,8 +95,16 @@ function AppInner() {
         <Route path="/restaurant/menu" element={<Menu />} />
         <Route path="/login" element={<Login />}/>
         <Route path="/register" element={<Register />}/>
-        <Route path="/restaurant-panel" element={<RestaurantOrders  />}/>
+        {/* <Route path="/restaurant-panel" element={<RestaurantOrders  />}/> */}
         
+
+        <Route path="/admin" element={<AdminLayout />}>
+
+            <Route
+                path="restaurant-panel"
+                element={<RestaurantOrders />}
+            />
+        </Route>
 
         {/* New 4-step booking flow */}
         <Route path="/reservation/guests" element={<GuestsPage />} />
