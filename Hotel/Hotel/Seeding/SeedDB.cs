@@ -16,7 +16,6 @@ public class SeedDB
             context.Hotels.Add(
                 new Models.Hotel
                 {
-                    Id = 1,
                     Name = "Noir",
                     Address = "220 Central Park South,NY 10019",
                     Phone = "212-308-9100",
@@ -32,7 +31,6 @@ public class SeedDB
             {
                 new RoomType
                 {
-                    RoomTypeId = 1,
                     Name = "Standard Room",
                     MaxGuests = 2,
                     NumberDoubleBed = 1,
@@ -44,7 +42,6 @@ public class SeedDB
                 },
                 new RoomType
                 {
-                    RoomTypeId = 2,
                     Name = "Deluxe Room",
                     MaxGuests = 3,
                     NumberDoubleBed = 1,
@@ -56,7 +53,6 @@ public class SeedDB
                 },
                 new RoomType
                 {
-                    RoomTypeId = 3,
                     Name = "Superior Room",
                     MaxGuests = 2,
                     NumberDoubleBed = 0,
@@ -68,7 +64,6 @@ public class SeedDB
                 },
                 new RoomType
                 {
-                    RoomTypeId = 4,
                     Name = "Junior Suite",
                     MaxGuests = 3,
                     NumberDoubleBed = 1,
@@ -80,7 +75,6 @@ public class SeedDB
                 },
                 new RoomType
                 {
-                    RoomTypeId = 5,
                     Name = "Executive Suite",
                     MaxGuests = 3,
                     NumberDoubleBed = 1,
@@ -92,7 +86,6 @@ public class SeedDB
                 },
                 new RoomType
                 {
-                    RoomTypeId = 6,
                     Name = "Presidential Suite",
                     MaxGuests = 4,
                     NumberDoubleBed = 2,
@@ -108,62 +101,50 @@ public class SeedDB
             {
                 new Role
                 {
-                    RoleId = 1,
                     Name = "HotelManager"
                 },
                 new Role
                 {
-                    RoleId = 2,
                     Name = "Security"
                 },
                 new Role
                 {
-                    RoleId = 3,
                     Name = "Engineer"
                 },
                 new Role
                 {
-                    RoleId = 4,
                     Name = "Housekeeper"
                 },
                 new Role
                 {
-                    RoleId = 5,
                     Name = "Guest"
                 },
                 new Role
                 {
-                    RoleId = 6,
                     Name = "RestaurantManager"
                 },
                 new Role
                 {
-                RoleId = 7,
                 Name = "Waiter"
                 },
                 new Role
                 {
-                RoleId = 8,
                 Name = "Chef"
                 },
                 new Role
                 {
-                    RoleId = 9,
                     Name = "FrontOfficeManager"
                 },
                 new Role
                 {
-                    RoleId = 10,
                     Name = "DirectorOfHR"
                 },
                 new Role
                 {
-                    RoleId = 11,
                     Name = "DirectorOfFinance"
                 },
                 new Role
                 {
-                    RoleId = 12,
                     Name = "DirectorOfRooms"
                 }
             };
@@ -172,25 +153,21 @@ public class SeedDB
             {
                 new Position
                 {
-                    Id = 1,
                     Title = "Intern",
                     BaseSalary = 10000
                 },
                 new Position
                 {
-                    Id = 2,
                     Title = "Junior",
                     BaseSalary = 40000
                 },
                 new Position
                 {
-                    Id = 3,
                     Title = "Senior",
                     BaseSalary = 70000
                 },
                 new Position
                 {
-                    Id = 4,
                     Title = "Manager",
                     BaseSalary = 10000
                 }
@@ -200,37 +177,30 @@ public class SeedDB
             {
                 new Department
                 {
-                    Id = 1,
                     Name = "Front Office"
                 },
                 new Department
                 {
-                    Id = 2,
                     Name = "Housekeeping"
                 },
                 new Department
                 {
-                    Id = 3,
                     Name = "Food and Beverage"
                 },
                 new Department
                 {
-                    Id = 4,
                     Name = "Maintenance"
                 },
                 new Department
                 {
-                    Id = 5,
                     Name = "Security"
                 },
                 new Department
                 {
-                    Id = 6,
                     Name = "Human Resources"
                 },
                 new Department
                 {
-                    Id = 7,
                     Name = "Finance"
                 }
             };
@@ -239,42 +209,34 @@ public class SeedDB
             {
                 new MenuCategory
                 {
-                    MenuCategoryId = 1,
                     Name = "Breakfast"
                 },
                 new MenuCategory
                 {
-                    MenuCategoryId = 2,
                     Name = "Appetizers"
                 },
                 new MenuCategory
                 {
-                    MenuCategoryId = 3,
                     Name = "Main Courses"
                 },
                 new MenuCategory
                 {
-                    MenuCategoryId = 4,
                     Name = "Desserts"
                 },
                 new MenuCategory
                 {
-                    MenuCategoryId = 5,
                     Name = "Beverages"
                 },
                 new MenuCategory
                 {
-                    MenuCategoryId = 6,
                     Name = "Kids Menu"
                 },
                 new MenuCategory
                 {
-                    MenuCategoryId = 7,
                     Name = "Pizzas"
                 },
                 new MenuCategory
                 {
-                    MenuCategoryId = 8,
                     Name = "Burgers"
                 },
             };
@@ -283,72 +245,71 @@ public class SeedDB
             var menuItems = new List<MenuItem>
             { 
             // BREAKFAST (1)
-    new MenuItem { Id = 1, MenuCategoryId = 1, Name = "Classic Omelette", Description = "Three‑egg omelette with cheese and herbs.", Price = 8.99 },
-    new MenuItem { Id = 2, MenuCategoryId = 1, Name = "Pancake Stack", Description = "Fluffy pancakes with maple syrup.", Price = 7.49 },
-    new MenuItem { Id = 3, MenuCategoryId = 1, Name = "French Toast", Description = "Golden toast with cinnamon and powdered sugar.", Price = 7.99 },
-    new MenuItem { Id = 4, MenuCategoryId = 1, Name = "English Breakfast", Description = "Eggs, sausage, beans, toast, and tomatoes.", Price = 11.99 },
-    new MenuItem { Id = 5, MenuCategoryId = 1, Name = "Fruit Bowl", Description = "Fresh seasonal fruits.", Price = 5.49 },
-    new MenuItem { Id = 6, MenuCategoryId = 1, Name = "Avocado Toast", Description = "Sourdough topped with smashed avocado.", Price = 6.99 },
+    new MenuItem {MenuCategoryId = 1, Name = "Classic Omelette", Description = "Three‑egg omelette with cheese and herbs.", Price = 8.99 },
+    new MenuItem {MenuCategoryId = 1, Name = "Pancake Stack", Description = "Fluffy pancakes with maple syrup.", Price = 7.49 },
+    new MenuItem {MenuCategoryId = 1, Name = "French Toast", Description = "Golden toast with cinnamon and powdered sugar.", Price = 7.99 },
+    new MenuItem {MenuCategoryId = 1, Name = "English Breakfast", Description = "Eggs, sausage, beans, toast, and tomatoes.", Price = 11.99 },
+    new MenuItem {MenuCategoryId = 1, Name = "Fruit Bowl", Description = "Fresh seasonal fruits.", Price = 5.49 },
+    new MenuItem {MenuCategoryId = 1, Name = "Avocado Toast", Description = "Sourdough topped with smashed avocado.", Price = 6.99 },
             // APPETIZERS (2)
-    new MenuItem { Id = 7, MenuCategoryId = 2, Name = "Caesar Salad", Description = "Romaine lettuce with parmesan and croutons.", Price = 6.99 },
-    new MenuItem { Id = 8, MenuCategoryId = 2, Name = "Garlic Bread", Description = "Toasted baguette with garlic butter.", Price = 4.49 },
-    new MenuItem { Id = 9, MenuCategoryId = 2, Name = "Tomato Soup", Description = "Creamy tomato soup with basil.", Price = 5.99 },
-    new MenuItem { Id = 10, MenuCategoryId = 2, Name = "Mozzarella Sticks", Description = "Crispy fried mozzarella with marinara.", Price = 6.49 },
-    new MenuItem { Id = 11, MenuCategoryId = 2, Name = "Chicken Wings", Description = "Spicy or BBQ wings served with dip.", Price = 8.99 },
-    new MenuItem { Id = 12, MenuCategoryId = 2, Name = "Greek Salad", Description = "Feta cheese, olives, cucumber, and tomatoes.", Price = 7.49 },
+    new MenuItem {MenuCategoryId = 2, Name = "Caesar Salad", Description = "Romaine lettuce with parmesan and croutons.", Price = 6.99 },
+    new MenuItem {MenuCategoryId = 2, Name = "Garlic Bread", Description = "Toasted baguette with garlic butter.", Price = 4.49 },
+    new MenuItem {MenuCategoryId = 2, Name = "Tomato Soup", Description = "Creamy tomato soup with basil.", Price = 5.99 },
+    new MenuItem {MenuCategoryId = 2, Name = "Mozzarella Sticks", Description = "Crispy fried mozzarella with marinara.", Price = 6.49 },
+    new MenuItem {MenuCategoryId = 2, Name = "Chicken Wings", Description = "Spicy or BBQ wings served with dip.", Price = 8.99 },
+    new MenuItem {MenuCategoryId = 2, Name = "Greek Salad", Description = "Feta cheese, olives, cucumber, and tomatoes.", Price = 7.49 },
             // MAIN COURSES (3)
-    new MenuItem { Id = 13, MenuCategoryId = 3, Name = "Grilled Chicken Plate", Description = "Chicken breast with vegetables.", Price = 14.99 },
-    new MenuItem { Id = 14, MenuCategoryId = 3, Name = "Beef Steak", Description = "Sirloin steak cooked to preference.", Price = 19.99 },
-    new MenuItem { Id = 15, MenuCategoryId = 3, Name = "Salmon Fillet", Description = "Grilled salmon with lemon butter.", Price = 17.49 },
-    new MenuItem { Id = 16, MenuCategoryId = 3, Name = "Pasta Alfredo", Description = "Creamy Alfredo sauce with fettuccine.", Price = 12.99 },
-    new MenuItem { Id = 17, MenuCategoryId = 3, Name = "Chicken Curry", Description = "Mild curry served with rice.", Price = 13.49 },
-    new MenuItem { Id = 18, MenuCategoryId = 3, Name = "Vegetable Stir Fry", Description = "Mixed vegetables with soy glaze.", Price = 11.49 },
-    new MenuItem { Id = 19, MenuCategoryId = 3, Name = "BBQ Ribs", Description = "Slow‑cooked ribs with BBQ sauce.", Price = 18.99 },
-    new MenuItem { Id = 20, MenuCategoryId = 3, Name = "Shrimp Scampi", Description = "Garlic butter shrimp with pasta.", Price = 16.99 },
-    new MenuItem { Id = 49, MenuCategoryId = 3, Name = "Chicken Parmesan", Description = "Breaded chicken with marinara.", Price = 15.49 },
-    new MenuItem { Id = 50, MenuCategoryId = 3, Name = "Lamb Chops", Description = "Grilled lamb with herbs.", Price = 21.99 },
-    new MenuItem { Id = 51, MenuCategoryId = 3, Name = "Fish & Chips", Description = "Crispy fried fish with fries.", Price = 13.99 },
-    new MenuItem { Id = 52, MenuCategoryId = 3, Name = "Beef Lasagna", Description = "Layered pasta with beef and cheese.", Price = 12.49 },
+    new MenuItem {MenuCategoryId = 3, Name = "Grilled Chicken Plate", Description = "Chicken breast with vegetables.", Price = 14.99 },
+    new MenuItem {MenuCategoryId = 3, Name = "Beef Steak", Description = "Sirloin steak cooked to preference.", Price = 19.99 },
+    new MenuItem {MenuCategoryId = 3, Name = "Salmon Fillet", Description = "Grilled salmon with lemon butter.", Price = 17.49 },
+    new MenuItem {MenuCategoryId = 3, Name = "Pasta Alfredo", Description = "Creamy Alfredo sauce with fettuccine.", Price = 12.99 },
+    new MenuItem {MenuCategoryId = 3, Name = "Chicken Curry", Description = "Mild curry served with rice.", Price = 13.49 },
+    new MenuItem {MenuCategoryId = 3, Name = "Vegetable Stir Fry", Description = "Mixed vegetables with soy glaze.", Price = 11.49 },
+    new MenuItem {MenuCategoryId = 3, Name = "BBQ Ribs", Description = "Slow‑cooked ribs with BBQ sauce.", Price = 18.99 },
+    new MenuItem {MenuCategoryId = 3, Name = "Shrimp Scampi", Description = "Garlic butter shrimp with pasta.", Price = 16.99 },
+    new MenuItem {MenuCategoryId = 3, Name = "Chicken Parmesan", Description = "Breaded chicken with marinara.", Price = 15.49 },
+    new MenuItem {MenuCategoryId = 3, Name = "Lamb Chops", Description = "Grilled lamb with herbs.", Price = 21.99 },
+    new MenuItem {MenuCategoryId = 3, Name = "Fish & Chips", Description = "Crispy fried fish with fries.", Price = 13.99 },
+    new MenuItem {MenuCategoryId = 3, Name = "Beef Lasagna", Description = "Layered pasta with beef and cheese.", Price = 12.49 },
             // DESSERTS (4)
-    new MenuItem { Id = 21, MenuCategoryId = 4, Name = "Chocolate Lava Cake", Description = "Molten chocolate center.", Price = 6.49 },
-    new MenuItem { Id = 22, MenuCategoryId = 4, Name = "Cheesecake Slice", Description = "Classic creamy cheesecake.", Price = 5.99 },
-    new MenuItem { Id = 23, MenuCategoryId = 4, Name = "Ice Cream Bowl", Description = "Three scoops of your choice.", Price = 4.99 },
-    new MenuItem { Id = 24, MenuCategoryId = 4, Name = "Apple Pie", Description = "Warm apple pie with cinnamon.", Price = 5.49 },
-    new MenuItem { Id = 25, MenuCategoryId = 4, Name = "Tiramisu", Description = "Coffee‑flavored Italian dessert.", Price = 6.99 },
-    new MenuItem { Id = 26, MenuCategoryId = 4, Name = "Brownie Sundae", Description = "Brownie topped with ice cream.", Price = 6.49 },
+    new MenuItem {MenuCategoryId = 4, Name = "Chocolate Lava Cake", Description = "Molten chocolate center.", Price = 6.49 },
+    new MenuItem {MenuCategoryId = 4, Name = "Cheesecake Slice", Description = "Classic creamy cheesecake.", Price = 5.99 },
+    new MenuItem {MenuCategoryId = 4, Name = "Ice Cream Bowl", Description = "Three scoops of your choice.", Price = 4.99 },
+    new MenuItem {MenuCategoryId = 4, Name = "Apple Pie", Description = "Warm apple pie with cinnamon.", Price = 5.49 },
+    new MenuItem {MenuCategoryId = 4, Name = "Tiramisu", Description = "Coffee‑flavored Italian dessert.", Price = 6.99 },
+    new MenuItem {MenuCategoryId = 4, Name = "Brownie Sundae", Description = "Brownie topped with ice cream.", Price = 6.49 },
             // BEVERAGES (5)
-    new MenuItem { Id = 27, MenuCategoryId = 5, Name = "Fresh Orange Juice", Description = "Freshly squeezed.", Price = 3.99 },
-    new MenuItem { Id = 28, MenuCategoryId = 5, Name = "Cappuccino", Description = "Espresso with steamed milk.", Price = 3.49 },
-    new MenuItem { Id = 29, MenuCategoryId = 5, Name = "Latte", Description = "Smooth espresso latte.", Price = 3.79 },
-    new MenuItem { Id = 30, MenuCategoryId = 5, Name = "Iced Tea", Description = "Chilled black tea with lemon.", Price = 2.99 },
-    new MenuItem { Id = 31, MenuCategoryId = 5, Name = "Cola", Description = "Chilled soft drink.", Price = 1.99 },
-    new MenuItem { Id = 32, MenuCategoryId = 5, Name = "Mineral Water", Description = "Still or sparkling.", Price = 1.49 },
-    new MenuItem { Id = 33, MenuCategoryId = 5, Name = "Hot Chocolate", Description = "Rich cocoa drink.", Price = 3.29 },
+    new MenuItem {MenuCategoryId = 5, Name = "Fresh Orange Juice", Description = "Freshly squeezed.", Price = 3.99 },
+    new MenuItem {MenuCategoryId = 5, Name = "Cappuccino", Description = "Espresso with steamed milk.", Price = 3.49 },
+    new MenuItem {MenuCategoryId = 5, Name = "Latte", Description = "Smooth espresso latte.", Price = 3.79 },
+    new MenuItem {MenuCategoryId = 5, Name = "Iced Tea", Description = "Chilled black tea with lemon.", Price = 2.99 },
+    new MenuItem {MenuCategoryId = 5, Name = "Cola", Description = "Chilled soft drink.", Price = 1.99 },
+    new MenuItem {MenuCategoryId = 5, Name = "Mineral Water", Description = "Still or sparkling.", Price = 1.49 },
+    new MenuItem {MenuCategoryId = 5, Name = "Hot Chocolate", Description = "Rich cocoa drink.", Price = 3.29 },
             // KIDS MENU (6)
-    new MenuItem { Id = 34, MenuCategoryId = 6, Name = "Kids Chicken Nuggets", Description = "Served with fries.", Price = 5.49 },
-    new MenuItem { Id = 35, MenuCategoryId = 6, Name = "Mini Pasta Bowl", Description = "Small pasta with tomato sauce.", Price = 4.99 },
-    new MenuItem { Id = 36, MenuCategoryId = 6, Name = "Kids Burger", Description = "Small beef burger with cheese.", Price = 5.99 },
-    new MenuItem { Id = 37, MenuCategoryId = 6, Name = "Kids Pizza Slice", Description = "Cheese pizza slice.", Price = 4.49 },
+    new MenuItem {MenuCategoryId = 6, Name = "Kids Chicken Nuggets", Description = "Served with fries.", Price = 5.49 },
+    new MenuItem {MenuCategoryId = 6, Name = "Mini Pasta Bowl", Description = "Small pasta with tomato sauce.", Price = 4.99 },
+    new MenuItem {MenuCategoryId = 6, Name = "Kids Burger", Description = "Small beef burger with cheese.", Price = 5.99 },
+    new MenuItem {MenuCategoryId = 6, Name = "Kids Pizza Slice", Description = "Cheese pizza slice.", Price = 4.49 },
             // PIZZAS (7)
-    new MenuItem { Id = 38, MenuCategoryId = 7, Name = "Margherita Pizza", Description = "Tomato, mozzarella, basil.", Price = 9.99 },
-    new MenuItem { Id = 39, MenuCategoryId = 7, Name = "Pepperoni Pizza", Description = "Pepperoni and cheese.", Price = 11.49 },
-    new MenuItem { Id = 40, MenuCategoryId = 7, Name = "BBQ Chicken Pizza", Description = "BBQ sauce, chicken, onions.", Price = 12.49 },
-    new MenuItem { Id = 41, MenuCategoryId = 7, Name = "Veggie Pizza", Description = "Peppers, onions, olives.", Price = 10.99 },
-    new MenuItem { Id = 42, MenuCategoryId = 7, Name = "Four Cheese Pizza", Description = "Mozzarella, cheddar, parmesan, gorgonzola.", Price = 12.99 },
+    new MenuItem {MenuCategoryId = 7, Name = "Margherita Pizza", Description = "Tomato, mozzarella, basil.", Price = 9.99 },
+    new MenuItem {MenuCategoryId = 7, Name = "Pepperoni Pizza", Description = "Pepperoni and cheese.", Price = 11.49 },
+    new MenuItem {MenuCategoryId = 7, Name = "BBQ Chicken Pizza", Description = "BBQ sauce, chicken, onions.", Price = 12.49 },
+    new MenuItem {MenuCategoryId = 7, Name = "Veggie Pizza", Description = "Peppers, onions, olives.", Price = 10.99 },
+    new MenuItem {MenuCategoryId = 7, Name = "Four Cheese Pizza", Description = "Mozzarella, cheddar, parmesan, gorgonzola.", Price = 12.99 },
             // BURGERS (8)
-    new MenuItem { Id = 43, MenuCategoryId = 8, Name = "Classic Beef Burger", Description = "Beef patty with cheese.", Price = 10.99 },
-    new MenuItem { Id = 44, MenuCategoryId = 8, Name = "Chicken Burger", Description = "Crispy chicken fillet.", Price = 9.49 },
-    new MenuItem { Id = 45, MenuCategoryId = 8, Name = "Double Beef Burger", Description = "Two patties, double cheese.", Price = 13.49 },
-    new MenuItem { Id = 46, MenuCategoryId = 8, Name = "Veggie Burger", Description = "Plant‑based patty with toppings.", Price = 9.99 },
-    new MenuItem { Id = 47, MenuCategoryId = 8, Name = "BBQ Bacon Burger", Description = "Beef, bacon, BBQ sauce.", Price = 12.49 },
-    new MenuItem { Id = 48, MenuCategoryId = 8, Name = "Spicy Jalapeño Burger", Description = "Beef patty with jalapeños.", Price = 11.49 },
+    new MenuItem {MenuCategoryId = 8, Name = "Classic Beef Burger", Description = "Beef patty with cheese.", Price = 10.99 },
+    new MenuItem {MenuCategoryId = 8, Name = "Chicken Burger", Description = "Crispy chicken fillet.", Price = 9.49 },
+    new MenuItem {MenuCategoryId = 8, Name = "Double Beef Burger", Description = "Two patties, double cheese.", Price = 13.49 },
+    new MenuItem {MenuCategoryId = 8, Name = "Veggie Burger", Description = "Plant‑based patty with toppings.", Price = 9.99 },
+    new MenuItem {MenuCategoryId = 8, Name = "BBQ Bacon Burger", Description = "Beef, bacon, BBQ sauce.", Price = 12.49 },
+    new MenuItem {MenuCategoryId = 8, Name = "Spicy Jalapeño Burger", Description = "Beef patty with jalapeños.", Price = 11.49 },
 };
             context.MenuItems.AddRange(menuItems);
             context.Restaurants.Add
             (
                 new Restaurant
                 {
-                    Id = 1,
                     HotelId = 1,
                     Name = "Aurelia Fine Dining",
                     Address = "1st Floor, Main Lobby",
@@ -360,133 +321,114 @@ public class SeedDB
 {
     new Service
     {
-        Id = 1,
         Name = "Room Cleaning",
         Description = "Daily housekeeping service including bed making, dusting, and bathroom cleaning.",
         Price = 75.00
     },
     new Service
     {
-        Id = 2,
         Name = "Laundry Service",
         Description = "Professional washing, drying, and folding of guest clothing.",
         Price = 17.50
     },
     new Service
     {
-        Id = 3,
         Name = "Dry Cleaning",
         Description = "Premium dry cleaning for delicate or formal garments.",
         Price = 20.00
     },
     new Service
     {
-        Id = 4,
         Name = "In‑Room Dining",
         Description = "Food and beverages delivered directly to the guest's room.",
         Price = 15.00
     },
     new Service
     {
-        Id = 5,
         Name = "Airport Shuttle",
         Description = "Transportation service to and from the airport.",
         Price = 90.00
     },
     new Service
     {
-        Id = 6,
         Name = "Spa Massage",
         Description = "Relaxing full‑body massage performed by professional therapists.",
         Price = 60.00
     },
     new Service
     {
-        Id = 7,
         Name = "Sauna Access",
         Description = "Unlimited access to the hotel's sauna facilities.",
         Price = 10.00
     },
     new Service
     {
-        Id = 8,
         Name = "Fitness Center Access",
         Description = "Full access to the gym and fitness equipment.",
         Price = 14.99
     },
     new Service
     {
-        Id = 9,
         Name = "Swimming Pool Access",
         Description = "Use of the indoor or outdoor swimming pool.",
         Price = 14.99
     },
     new Service
     {
-        Id = 10,
         Name = "Breakfast Buffet",
         Description = "Unlimited breakfast buffet with hot and cold dishes.",
         Price = 34.99
     },
     new Service
     {
-        Id = 11,
         Name = "Late Checkout",
         Description = "Extend checkout time until 3 PM.",
         Price = 60.00
     },
     new Service
     {
-        Id = 12,
         Name = "Early Check‑In",
         Description = "Check in as early as 9 AM.",
         Price = 60.00
     },
     new Service
     {
-        Id = 13,
         Name = "City Tour",
         Description = "Guided tour of local attractions and landmarks.",
         Price = 200.00
     },
     new Service
     {
-        Id = 14,
         Name = "Babysitting Service",
         Description = "Professional childcare service available on request.",
         Price = 120.00
     },
     new Service
     {
-        Id = 15,
         Name = "Pet Care",
         Description = "Pet sitting and feeding service for guests traveling with animals.",
         Price = 70.00
     },
     new Service
     {
-        Id = 16,
         Name = "Mini‑Bar Refill",
         Description = "Restocking of in‑room mini‑bar items.",
         Price = 40.00
     },
     new Service
     {
-        Id = 17,
         Name = "Event Hall Booking",
         Description = "Rental of the hotel's event hall for meetings or celebrations.",
         Price = 1200.00
     },
     new Service
     {
-        Id = 18,
         Name = "Breakfast",
         Price = 30,
         Description = "A full journey in a table full of tastes as much as you want to."
     },
     new Service
     {
-        Id = 19,
         Name = "AllMeals",
         Price = 50,
         Description = "You can use both Breakfast and Lunch tables as much as you want to."
@@ -497,71 +439,71 @@ public class SeedDB
             await context.SaveChangesAsync();
             var tables = new List<Table>
             {
-                new Table { Id = 1, RestaurantId = 1, Status = "Available", Capacity = 2 },
-                new Table { Id = 2, RestaurantId = 1, Status = "Available", Capacity = 2 },
-                new Table { Id = 3, RestaurantId = 1, Status = "Available", Capacity = 2 },
-                new Table { Id = 4, RestaurantId = 1, Status = "Available", Capacity = 2 },
-                new Table { Id = 5, RestaurantId = 1, Status = "Available", Capacity = 2 },
-                new Table { Id = 6, RestaurantId = 1, Status = "Available", Capacity = 4 },
-                new Table { Id = 7, RestaurantId = 1, Status = "Available", Capacity = 4 },
-                new Table { Id = 8, RestaurantId = 1, Status = "Available", Capacity = 4 },
-                new Table { Id = 9, RestaurantId = 1, Status = "Available", Capacity = 4 },
-                new Table { Id = 10, RestaurantId = 1, Status = "Available", Capacity = 4 },
-                new Table { Id = 11, RestaurantId = 1, Status = "Available", Capacity = 4 },
-                new Table { Id = 12, RestaurantId = 1, Status = "Available", Capacity = 4 },
-                new Table { Id = 13, RestaurantId = 1, Status = "Available", Capacity = 4 },
-                new Table { Id = 14, RestaurantId = 1, Status = "Available", Capacity = 6 },
-                new Table { Id = 15, RestaurantId = 1, Status = "Available", Capacity = 6 },
-                new Table { Id = 16, RestaurantId = 1, Status = "Available", Capacity = 6 },
-                new Table { Id = 17, RestaurantId = 1, Status = "Available", Capacity = 6 },
-                new Table { Id = 18, RestaurantId = 1, Status = "Available", Capacity = 6 },
-                new Table { Id = 19, RestaurantId = 1, Status = "Available", Capacity = 8 },
-                new Table { Id = 20, RestaurantId = 1, Status = "Available", Capacity = 8 }
+                new Table {RestaurantId = 1, Status = "Available", Capacity = 2 },
+                new Table {RestaurantId = 1, Status = "Available", Capacity = 2 },
+                new Table {RestaurantId = 1, Status = "Available", Capacity = 2 },
+                new Table {RestaurantId = 1, Status = "Available", Capacity = 2 },
+                new Table {RestaurantId = 1, Status = "Available", Capacity = 2 },
+                new Table {RestaurantId = 1, Status = "Available", Capacity = 4 },
+                new Table {RestaurantId = 1, Status = "Available", Capacity = 4 },
+                new Table {RestaurantId = 1, Status = "Available", Capacity = 4 },
+                new Table {RestaurantId = 1, Status = "Available", Capacity = 4 },
+                new Table {RestaurantId = 1, Status = "Available", Capacity = 4 },
+                new Table {RestaurantId = 1, Status = "Available", Capacity = 4 },
+                new Table {RestaurantId = 1, Status = "Available", Capacity = 4 },
+                new Table {RestaurantId = 1, Status = "Available", Capacity = 4 },
+                new Table {RestaurantId = 1, Status = "Available", Capacity = 6 },
+                new Table {RestaurantId = 1, Status = "Available", Capacity = 6 },
+                new Table {RestaurantId = 1, Status = "Available", Capacity = 6 },
+                new Table {RestaurantId = 1, Status = "Available", Capacity = 6 },
+                new Table {RestaurantId = 1, Status = "Available", Capacity = 6 },
+                new Table {RestaurantId = 1, Status = "Available", Capacity = 8 },
+                new Table {RestaurantId = 1, Status = "Available", Capacity = 8 }
             };
             context.RestaurantTables.AddRange(tables);
 var rooms = new List<Room>
 {
- new Room { RoomId = 1, HotelId = 1, RoomNumber = 101, Floor = 1, RoomTypeId = 1, Status = "Available", Notes = null },
-new Room { RoomId = 2, HotelId = 1, RoomNumber = 102, Floor = 1, RoomTypeId = 1, Status = "Available", Notes = null },
-new Room { RoomId = 3, HotelId = 1, RoomNumber = 103, Floor = 1, RoomTypeId = 1, Status = "Available", Notes = null },
-new Room { RoomId = 4, HotelId = 1, RoomNumber = 104, Floor = 1, RoomTypeId = 1, Status = "Available", Notes = null },
-new Room { RoomId = 5, HotelId = 1, RoomNumber = 105, Floor = 1, RoomTypeId = 1, Status = "Available", Notes = null },
-new Room { RoomId = 6, HotelId = 1, RoomNumber = 201, Floor = 2, RoomTypeId = 1, Status = "Available", Notes = null },
-new Room { RoomId = 7, HotelId = 1, RoomNumber = 202, Floor = 2, RoomTypeId = 1, Status = "Available", Notes = null },
-new Room { RoomId = 8, HotelId = 1, RoomNumber = 203, Floor = 2, RoomTypeId = 1, Status = "Available", Notes = null },
-new Room { RoomId = 9, HotelId = 1, RoomNumber = 204, Floor = 2, RoomTypeId = 1, Status = "Available", Notes = null },
-new Room { RoomId = 10, HotelId = 1, RoomNumber = 205, Floor = 2, RoomTypeId = 1, Status = "Available", Notes = null },
-new Room { RoomId = 11, HotelId = 1, RoomNumber = 301, Floor = 3, RoomTypeId = 2, Status = "Available", Notes = null },
-new Room { RoomId = 12, HotelId = 1, RoomNumber = 302, Floor = 3, RoomTypeId = 2, Status = "Available", Notes = null },
-new Room { RoomId = 13, HotelId = 1, RoomNumber = 303, Floor = 3, RoomTypeId = 2, Status = "Available", Notes = null },
-new Room { RoomId = 14, HotelId = 1, RoomNumber = 304, Floor = 3, RoomTypeId = 2, Status = "Available",  Notes = null },
-new Room { RoomId = 15, HotelId = 1, RoomNumber = 401, Floor = 4, RoomTypeId = 2, Status = "Available", Notes = null },
-new Room { RoomId = 16, HotelId = 1, RoomNumber = 402, Floor = 4, RoomTypeId = 2, Status = "Available", Notes = null },
-new Room { RoomId = 17, HotelId = 1, RoomNumber = 403, Floor = 4, RoomTypeId = 2, Status = "Available", Notes = null },
-new Room { RoomId = 18, HotelId = 1, RoomNumber = 404, Floor = 4, RoomTypeId = 2, Status = "Available", Notes = null },
-new Room { RoomId = 19, HotelId = 1, RoomNumber = 501, Floor = 5, RoomTypeId = 3, Status = "Available", Notes = null },
-new Room { RoomId = 20, HotelId = 1, RoomNumber = 502, Floor = 5, RoomTypeId = 3, Status = "Available", Notes = null },
-new Room { RoomId = 21, HotelId = 1, RoomNumber = 503, Floor = 5, RoomTypeId = 3, Status = "Available", Notes = null },
-new Room { RoomId = 22, HotelId = 1, RoomNumber = 601, Floor = 6, RoomTypeId = 3, Status = "Available", Notes = null },
-new Room { RoomId = 23, HotelId = 1, RoomNumber = 602, Floor = 6, RoomTypeId = 3, Status = "Available", Notes = null },
-new Room { RoomId = 24, HotelId = 1, RoomNumber = 603, Floor = 6, RoomTypeId = 3, Status = "Available", Notes = null },
-new Room { RoomId = 25, HotelId = 1, RoomNumber = 701, Floor = 7, RoomTypeId = 4, Status = "Available", Notes = null },
-new Room { RoomId = 26, HotelId = 1, RoomNumber = 702, Floor = 7, RoomTypeId = 4, Status = "Available", Notes = null },
-new Room { RoomId = 27, HotelId = 1, RoomNumber = 703, Floor = 7, RoomTypeId = 4, Status = "Available", Notes = null },
-new Room { RoomId = 28, HotelId = 1, RoomNumber = 704, Floor = 7, RoomTypeId = 4, Status = "Available", Notes = null },
-new Room { RoomId = 29, HotelId = 1, RoomNumber = 801, Floor = 8, RoomTypeId = 5, Status = "Available", Notes = null },
-new Room { RoomId = 30, HotelId = 1, RoomNumber = 802, Floor = 8, RoomTypeId = 5, Status = "Available", Notes = null },
-new Room { RoomId = 31, HotelId = 1, RoomNumber = 901, Floor = 9, RoomTypeId = 6, Status = "Available", Notes = null } 
+ new Room {HotelId = 1, RoomNumber = 101, Floor = 1, RoomTypeId = 1, Status = "Available", Notes = null },
+new Room {HotelId = 1, RoomNumber = 102, Floor = 1, RoomTypeId = 1, Status = "Available", Notes = null },
+new Room {HotelId = 1, RoomNumber = 103, Floor = 1, RoomTypeId = 1, Status = "Available", Notes = null },
+new Room {HotelId = 1, RoomNumber = 104, Floor = 1, RoomTypeId = 1, Status = "Available", Notes = null },
+new Room {HotelId = 1, RoomNumber = 105, Floor = 1, RoomTypeId = 1, Status = "Available", Notes = null },
+new Room {HotelId = 1, RoomNumber = 201, Floor = 2, RoomTypeId = 1, Status = "Available", Notes = null },
+new Room {HotelId = 1, RoomNumber = 202, Floor = 2, RoomTypeId = 1, Status = "Available", Notes = null },
+new Room {HotelId = 1, RoomNumber = 203, Floor = 2, RoomTypeId = 1, Status = "Available", Notes = null },
+new Room {HotelId = 1, RoomNumber = 204, Floor = 2, RoomTypeId = 1, Status = "Available", Notes = null },
+new Room {HotelId = 1, RoomNumber = 205, Floor = 2, RoomTypeId = 1, Status = "Available", Notes = null },
+new Room {HotelId = 1, RoomNumber = 301, Floor = 3, RoomTypeId = 2, Status = "Available", Notes = null },
+new Room {HotelId = 1, RoomNumber = 302, Floor = 3, RoomTypeId = 2, Status = "Available", Notes = null },
+new Room {HotelId = 1, RoomNumber = 303, Floor = 3, RoomTypeId = 2, Status = "Available", Notes = null },
+new Room {HotelId = 1, RoomNumber = 304, Floor = 3, RoomTypeId = 2, Status = "Available",  Notes = null },
+new Room {HotelId = 1, RoomNumber = 401, Floor = 4, RoomTypeId = 2, Status = "Available", Notes = null },
+new Room {HotelId = 1, RoomNumber = 402, Floor = 4, RoomTypeId = 2, Status = "Available", Notes = null },
+new Room {HotelId = 1, RoomNumber = 403, Floor = 4, RoomTypeId = 2, Status = "Available", Notes = null },
+new Room {HotelId = 1, RoomNumber = 404, Floor = 4, RoomTypeId = 2, Status = "Available", Notes = null },
+new Room {HotelId = 1, RoomNumber = 501, Floor = 5, RoomTypeId = 3, Status = "Available", Notes = null },
+new Room {HotelId = 1, RoomNumber = 502, Floor = 5, RoomTypeId = 3, Status = "Available", Notes = null },
+new Room {HotelId = 1, RoomNumber = 503, Floor = 5, RoomTypeId = 3, Status = "Available", Notes = null },
+new Room {HotelId = 1, RoomNumber = 601, Floor = 6, RoomTypeId = 3, Status = "Available", Notes = null },
+new Room {HotelId = 1, RoomNumber = 602, Floor = 6, RoomTypeId = 3, Status = "Available", Notes = null },
+new Room {HotelId = 1, RoomNumber = 603, Floor = 6, RoomTypeId = 3, Status = "Available", Notes = null },
+new Room {HotelId = 1, RoomNumber = 701, Floor = 7, RoomTypeId = 4, Status = "Available", Notes = null },
+new Room {HotelId = 1, RoomNumber = 702, Floor = 7, RoomTypeId = 4, Status = "Available", Notes = null },
+new Room {HotelId = 1, RoomNumber = 703, Floor = 7, RoomTypeId = 4, Status = "Available", Notes = null },
+new Room {HotelId = 1, RoomNumber = 704, Floor = 7, RoomTypeId = 4, Status = "Available", Notes = null },
+new Room {HotelId = 1, RoomNumber = 801, Floor = 8, RoomTypeId = 5, Status = "Available", Notes = null },
+new Room {HotelId = 1, RoomNumber = 802, Floor = 8, RoomTypeId = 5, Status = "Available", Notes = null },
+new Room {HotelId = 1, RoomNumber = 901, Floor = 9, RoomTypeId = 6, Status = "Available", Notes = null } 
 };
             context.Rooms.AddRange(rooms);
             var amenities = new List<Amenity>
             {
-                new Amenity { Id = 1, Name = "Free Wi-Fi" },
-                new Amenity { Id = 2, Name = "Air Conditioning" },
-                new Amenity { Id = 3, Name = "Mini Bar" },
-                new Amenity { Id = 4, Name = "Flat Screen TV" },
-                new Amenity { Id = 5, Name = "Jacuzzi" },
-                new Amenity { Id = 6, Name = "Balcony with View" }
+                new Amenity {Name = "Free Wi-Fi" },
+                new Amenity {Name = "Air Conditioning" },
+                new Amenity {Name = "Mini Bar" },
+                new Amenity {Name = "Flat Screen TV" },
+                new Amenity {Name = "Jacuzzi" },
+                new Amenity {Name = "Balcony with View" }
             };
             context.Amenities.AddRange(amenities);
             await context.SaveChangesAsync();
@@ -604,33 +546,33 @@ new Room { RoomId = 31, HotelId = 1, RoomNumber = 901, Floor = 9, RoomTypeId = 6
             context.RoomAmenities.AddRange(roomAmenities); 
 var shifts = new List<Shift>
 {
-    new Shift { Id = 1, Day = "Monday", StartTime = new TimeOnly(0, 0), EndTime = new TimeOnly(8, 0) },
-    new Shift { Id = 2, Day = "Monday", StartTime = new TimeOnly(8, 0), EndTime = new TimeOnly(16, 0) },
-    new Shift { Id = 3, Day = "Monday", StartTime = new TimeOnly(16, 0), EndTime = new TimeOnly(23, 59) },
+    new Shift {Day = "Monday", StartTime = new TimeOnly(0, 0), EndTime = new TimeOnly(8, 0) },
+    new Shift {Day = "Monday", StartTime = new TimeOnly(8, 0), EndTime = new TimeOnly(16, 0) },
+    new Shift {Day = "Monday", StartTime = new TimeOnly(16, 0), EndTime = new TimeOnly(23, 59) },
 
-    new Shift { Id = 4, Day = "Tuesday", StartTime = new TimeOnly(0, 0), EndTime = new TimeOnly(8, 0) },
-    new Shift { Id = 5, Day = "Tuesday", StartTime = new TimeOnly(8, 0), EndTime = new TimeOnly(16, 0) },
-    new Shift { Id = 6, Day = "Tuesday", StartTime = new TimeOnly(16, 0), EndTime = new TimeOnly(23, 59) },
+    new Shift {Day = "Tuesday", StartTime = new TimeOnly(0, 0), EndTime = new TimeOnly(8, 0) },
+    new Shift {Day = "Tuesday", StartTime = new TimeOnly(8, 0), EndTime = new TimeOnly(16, 0) },
+    new Shift {Day = "Tuesday", StartTime = new TimeOnly(16, 0), EndTime = new TimeOnly(23, 59) },
 
-    new Shift { Id = 7, Day = "Wednesday", StartTime = new TimeOnly(0, 0), EndTime = new TimeOnly(8, 0) },
-    new Shift { Id = 8, Day = "Wednesday", StartTime = new TimeOnly(8, 0), EndTime = new TimeOnly(16, 0) },
-    new Shift { Id = 9, Day = "Wednesday", StartTime = new TimeOnly(16, 0), EndTime = new TimeOnly(23, 59) },
+    new Shift {Day = "Wednesday", StartTime = new TimeOnly(0, 0), EndTime = new TimeOnly(8, 0) },
+    new Shift {Day = "Wednesday", StartTime = new TimeOnly(8, 0), EndTime = new TimeOnly(16, 0) },
+    new Shift {Day = "Wednesday", StartTime = new TimeOnly(16, 0), EndTime = new TimeOnly(23, 59) },
 
-    new Shift { Id = 10, Day = "Thursday", StartTime = new TimeOnly(0, 0), EndTime = new TimeOnly(8, 0) },
-    new Shift { Id = 11, Day = "Thursday", StartTime = new TimeOnly(8, 0), EndTime = new TimeOnly(16, 0) },
-    new Shift { Id = 12, Day = "Thursday", StartTime = new TimeOnly(16, 0), EndTime = new TimeOnly(23, 59) },
+    new Shift {Day = "Thursday", StartTime = new TimeOnly(0, 0), EndTime = new TimeOnly(8, 0) },
+    new Shift {Day = "Thursday", StartTime = new TimeOnly(8, 0), EndTime = new TimeOnly(16, 0) },
+    new Shift {Day = "Thursday", StartTime = new TimeOnly(16, 0), EndTime = new TimeOnly(23, 59) },
 
-    new Shift { Id = 13, Day = "Friday", StartTime = new TimeOnly(0, 0), EndTime = new TimeOnly(8, 0) },
-    new Shift { Id = 14, Day = "Friday", StartTime = new TimeOnly(8, 0), EndTime = new TimeOnly(16, 0) },
-    new Shift { Id = 15, Day = "Friday", StartTime = new TimeOnly(16, 0), EndTime = new TimeOnly(23, 59) },
+    new Shift {Day = "Friday", StartTime = new TimeOnly(0, 0), EndTime = new TimeOnly(8, 0) },
+    new Shift {Day = "Friday", StartTime = new TimeOnly(8, 0), EndTime = new TimeOnly(16, 0) },
+    new Shift {Day = "Friday", StartTime = new TimeOnly(16, 0), EndTime = new TimeOnly(23, 59) },
 
-    new Shift { Id = 16, Day = "Saturday", StartTime = new TimeOnly(0, 0), EndTime = new TimeOnly(8, 0) },
-    new Shift { Id = 17, Day = "Saturday", StartTime = new TimeOnly(8, 0), EndTime = new TimeOnly(16, 0) },
-    new Shift { Id = 18, Day = "Saturday", StartTime = new TimeOnly(16, 0), EndTime = new TimeOnly(23, 59) },
+    new Shift {Day = "Saturday", StartTime = new TimeOnly(0, 0), EndTime = new TimeOnly(8, 0) },
+    new Shift {Day = "Saturday", StartTime = new TimeOnly(8, 0), EndTime = new TimeOnly(16, 0) },
+    new Shift {Day = "Saturday", StartTime = new TimeOnly(16, 0), EndTime = new TimeOnly(23, 59) },
 
-    new Shift { Id = 19, Day = "Sunday", StartTime = new TimeOnly(0, 0), EndTime = new TimeOnly(8, 0) },
-    new Shift { Id = 20, Day = "Sunday", StartTime = new TimeOnly(8, 0), EndTime = new TimeOnly(16, 0) },
-    new Shift { Id = 21, Day = "Sunday", StartTime = new TimeOnly(16, 0), EndTime = new TimeOnly(23, 59) }
+    new Shift {Day = "Sunday", StartTime = new TimeOnly(0, 0), EndTime = new TimeOnly(8, 0) },
+    new Shift {Day = "Sunday", StartTime = new TimeOnly(8, 0), EndTime = new TimeOnly(16, 0) },
+    new Shift {Day = "Sunday", StartTime = new TimeOnly(16, 0), EndTime = new TimeOnly(23, 59) }
 };
             context.Shifts.AddRange(shifts);
             await context.SaveChangesAsync();
