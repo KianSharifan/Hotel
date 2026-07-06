@@ -271,6 +271,7 @@ public class RestaurantController : Controller
                 CreatedAt = new TimeOnly(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second)
             };
             _context.Orders.Add(o);
+            await _context.SaveChangesAsync();
             if (order.OrderItems != null)
             {
                 foreach (var oi in order.OrderItems)
@@ -325,11 +326,11 @@ public class RestaurantController : Controller
             {
                 foreach (var oi in dto.OrderItems)
                 {
-                    var temp = _context.OrderItems.FirstOrDefault(ori => ori.OrderId == orderId);
+                    var temp = _context.OrderItems.FirstOrDefault(ori => ori.OrderId == oi.ItemId);
 
                     if (oi.Quantity == 0)
                     {
-                        _context.Remove(_context.OrderItems.Where(ori => ori.OrderId == orderId));
+                        _context.Remove(_context.OrderItems.Where(ori => ori.OrderId == oi.ItemId));
                     }
                     else if (temp != null)
                     {

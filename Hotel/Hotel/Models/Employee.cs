@@ -4,21 +4,21 @@ public class Employee
 {
     public int Id { get; set; }
     public int PositionId { get; set; }
-    public Position Position { get; set; }
+    public Position? Position { get; set; }
     public int DepartmentId { get; set; }
-    public Department Department { get; set; }
+    public Department? Department { get; set; }
     public DateTime HireDate { get; set; }
 
-    public User User { get; set; }
-    private double salary;
+    public User? User { get; set; }
+    private double _salary;
     public double Salary
     {
-        get => salary;
+        get => _salary;
         set
         {
             if (value < 0)
                 throw new Exception();
-            salary = value;
+            _salary = value;
         }
     }
     

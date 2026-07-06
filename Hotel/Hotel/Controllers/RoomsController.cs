@@ -99,7 +99,7 @@ public class RoomsController : Controller
 
      //should have authentication
      [HttpPost]
-     public async Task<IActionResult> PostRoom([FromBody] RoomDTO room)
+     public async Task<IActionResult> CreateRoom([FromBody] RoomDTO room)
      {
          try
          {

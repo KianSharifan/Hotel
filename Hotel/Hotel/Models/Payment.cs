@@ -1,5 +1,3 @@
-using System.Transactions;
-
 namespace Hotel.Models;
 
 public class Payment

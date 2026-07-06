@@ -21,5 +21,8 @@ public class RoomConfiguration : IEntityTypeConfiguration<Room>
 
         builder.Property(r => r.Status)
             .HasMaxLength(500);
+        
+        builder.Property(r => r.Notes)
+            .HasMaxLength(500);
     } 
 }

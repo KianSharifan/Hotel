@@ -4,56 +4,56 @@ public class Invoice
 {
     public int Id { get; set; }
     public int GuestId { get; set; }
-    public Guest Guest { get; set; }
+    public Guest? Guest { get; set; }
     public int ReservationId { get; set; }
-    public Reservation Reservation { get; set; }
+    public Reservation? Reservation { get; set; }
     public DateTime IssueDate { get; set; }
     
-    private double subTotal;
+    private double _subTotal;
     public double SubTotal
     {
-        get => subTotal;
+        get => _subTotal;
         set
         {
             if (value < 0)
                 throw new Exception();
-            subTotal = value;
+            _subTotal = value;
         }
     }
 
-    private double discount;
+    private double _discount;
     public double Discount
     {
-        get => discount;
+        get => _discount;
         set
         {
             if (value < 0)
                 throw new Exception();
-            discount = value;
+            _discount = value;
         }
     }
 
-    private double tax;
+    private double _tax;
     public double Tax
     {
-        get => tax;
+        get => _tax;
         set
         {
             if (value < 0)
                 throw new Exception();
-            tax = value;
+            _tax = value;
         }
     }
 
-    private double total;
+    private double _total;
     public double Total
     {
-        get => total;
+        get => _total;
         set
         {
             if (value < 0)
                 throw new Exception();
-            total = value;
+            _total = value;
         }
     }
 

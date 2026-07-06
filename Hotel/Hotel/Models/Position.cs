@@ -4,15 +4,15 @@ public class Position
 {
     public int Id { get; set; }
     public string? Title { get; set; }
-    private double baseSalary;
+    private double _baseSalary;
     public double BaseSalary
     {
-        get => baseSalary;
+        get => _baseSalary;
         set
         {
             if (value < 0)
                 throw new Exception();
-            baseSalary = value;
+            _baseSalary = value;
         }
     }
 }

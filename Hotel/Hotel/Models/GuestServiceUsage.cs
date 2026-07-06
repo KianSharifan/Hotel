@@ -1,36 +1,36 @@
 namespace Hotel.Models;
 
-public class GuestServiceUsage
+public class  GuestServiceUsage
 {
     public int Id { get; set; }
     public int GuestId { get; set; }
-    public Guest Guest { get; set; }
+    public Guest? Guest { get; set; }
     public int ServiceId { get; set; }
-    public Service Service { get; set; }
+    public Service? Service { get; set; }
     public int ReservationId { get; set; }
-    public Reservation Reservation { get; set; } 
+    public Reservation? Reservation { get; set; } 
 
-    private uint quantity;
+    private uint _quantity;
     public uint Quantity
     {
-        get => quantity;
+        get => _quantity;
         set
         {
             if (value <= 0)
                 throw new Exception();
-            quantity = value;
+            _quantity = value;
         }
     }
 
-    private double price;
+    private double _price;
     public double Price
     {
-        get => price;
+        get => _price;
         set
         {
             if (value <= 0)
                 throw new Exception();
-            price = value;
+            _price = value;
         }
     }
 

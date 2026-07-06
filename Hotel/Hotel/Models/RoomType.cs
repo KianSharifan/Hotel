@@ -5,15 +5,15 @@ public class RoomType
     public int RoomTypeId { get; set; }
     public string? Name { get; set; }
 
-    private uint maxGuests;
+    private uint _maxGuests;
     public uint MaxGuests
     {
-        get => maxGuests;
+        get => _maxGuests;
         set
         {
             if (value > 15)
                 throw new Exception();
-            maxGuests = value;
+            _maxGuests = value;
         }
     }
     public int NumberDoubleBed { get; set; }
@@ -21,15 +21,15 @@ public class RoomType
     public int NumberSingleBed { get; set; }
     public string? Description { get; set; }
     public string? URL { get; set; }
-    private double price;
+    private double _price;
     public double Price
     {
-        get => price;
+        get => _price;
         set
         {
             if (value < 0)
                 throw new Exception();
-            price = value;
+            _price = value;
         }
     }
 }
