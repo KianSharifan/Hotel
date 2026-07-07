@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
-import { getMenu, createOrder, updateOrder, deleteOrder, getOrders} from "../../api/restaurantApi"
-import type { OrderDTO} from "../../api/restaurantApi"
+import {getMenu, createOrder, updateOrder, deleteOrder, getActiveOrders, getOrder} from "../../api/restaurantApi"
 
 interface MenuCategory {
   menuCategoryId: number
@@ -23,13 +22,20 @@ interface SelectedItem {
   totalPrice: number
 }
 
-interface RestaurantOrder {
-  id: number
-  tableId: number
-  status: string
-  items: SelectedItem[]
-  total: number
+interface OrderItem {
+    itemId: number;
+    quantity: number;
 }
+
+interface RestaurantOrder {
+    id: number
+    tableId: number
+    status: string
+    createdAt: string
+    items: OrderItem[]
+}
+
+
 
 export default function RestaurantOrders() {
     const [categories, setCategories] = useState<MenuCategory[]>([])
@@ -44,30 +50,39 @@ export default function RestaurantOrders() {
     const [selectedItems, setSelectedItems] = useState<SelectedItem[]>([])
     const [filteredItems, setFilteredItems] = useState<MenuItem[]>([])
 
+const loadOrders = async () => {
 
+    try {
+        const orders = await getActiveOrders();
+        const completedOrders = await Promise.all(
+            orders.map(async (o) => {
+                const details = await getOrder(o.order.id);
+                return {
+                    id: details.o.id,
+                    tableId: details.o.tableId,
+                    status: details.o.status,
+                    createdAt: details.o.createdAt,
+                    items: details.orderItems
+                };
+            })
+        );
+        setOrders(completedOrders);
+    }
+
+    catch(err){
+        console.log(err);}}
 
     useEffect(() => {
     async function loadMenu() {
       try {
         const data = await getMenu()
-
         setCategories(data.menuCategories)
         setMenuItems(data.menuItems)
-
         console.log(data)
-      } catch (err) {
+      } 
+      catch (err) {
         console.log(err)
       }
-    }
-
-    async function loadOrders() {
-        try {
-            const data = await getOrders()
-            setOrders(data)
-        }
-        catch (err) {
-            console.log(err)
-        }
     }
 
     loadMenu()
@@ -76,27 +91,18 @@ export default function RestaurantOrders() {
 
   return (
     <div className="min-h-screen bg-zinc-100 p-10">
-
-      {/* Header */}
-
       <div className="w-full bg-blue-700 text-white px-12 py-12 mb-10 shadow-lg">
         <h1 className="text-4xl font-bold">
           Restaurant Orders
         </h1>
       </div>
-
-      {/* Create Order */}
-
+      
       <div className="bg-white rounded-xl shadow-md border p-8 mb-12">
-
         <h2 className="text-2xl font-semibold mb-6">
           Create New Order
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
-
-          {/* Table */}
-
           <div>
             <label className="block mb-2 font-medium">
               Table Number
@@ -109,8 +115,6 @@ export default function RestaurantOrders() {
               className="w-full border rounded-lg px-4 py-3"
             />
           </div>
-
-          {/* Category */}
 
           <div>
             <label className="block mb-2 font-medium">
@@ -129,8 +133,7 @@ export default function RestaurantOrders() {
                   menuItems.filter(item => item.menuCategoryId === id)
                 )
               }}
-              className="w-full border rounded-lg px-4 py-3"
-            >
+              className="w-full border rounded-lg px-4 py-3">
               <option value="">
                 Choose Category
               </option>
@@ -138,15 +141,12 @@ export default function RestaurantOrders() {
               {categories.map(category => (
                 <option
                   key={category.menuCategoryId}
-                  value={category.menuCategoryId}
-                >
+                  value={category.menuCategoryId}>
                   {category.name}
                 </option>
               ))}
             </select>
           </div>
-
-          {/* Item */}
 
           <div>
             <label className="block mb-2 font-medium">
@@ -158,8 +158,7 @@ export default function RestaurantOrders() {
               disabled={selectedCategory == null}
               onChange={(e) => {
                 const item = filteredItems.find(
-                  x => x.id === Number(e.target.value)
-                )
+                  x => x.id === Number(e.target.value))
 
                 setSelectedMenuItem(item ?? null)
               }}
@@ -180,7 +179,6 @@ export default function RestaurantOrders() {
             </select>
           </div>
 
-          {/* Quantity */}
 
           <div>
             <label className="block mb-2 font-medium">
@@ -196,7 +194,6 @@ export default function RestaurantOrders() {
             />
           </div>
 
-          {/* Price */}
 
           <div>
             <label className="block mb-2 font-medium">
@@ -230,11 +227,10 @@ export default function RestaurantOrders() {
                           ...item,
                           quantity: item.quantity + quantity,
                           totalPrice: (item.quantity + quantity) * item.price
-                        }
-                      : item
-                  )
+                        }: item)
                 )
-              } else {
+              } 
+              else {
                 setSelectedItems([
                   ...selectedItems,
                   {
@@ -246,7 +242,6 @@ export default function RestaurantOrders() {
                   }
                 ])
               }
-
               setSelectedMenuItem(null)
               setQuantity(1)
             }}
@@ -255,46 +250,19 @@ export default function RestaurantOrders() {
             Add Item
           </button>
 
-            {/* Submit */}
-
             <button
             onClick={async () => {
                 if (selectedItems.length === 0) return
 
-                const orderDTO = {
-                    tableId: Number(tableId),
-                    status: "Preparing",
-                    orderItems: selectedItems.map(item => ({
-                        itemId: item.id,
-                        quantity: item.quantity
-                    }))}
-                const orderId = await createOrder(orderDTO)
-        
-                const newOrder: RestaurantOrder = {
-                    id: orderId,
-                    tableId: Number(tableId),
-                    status: "Preparing",
-                    items: selectedItems,
-                    total: selectedItems.reduce(
-                        (sum, item) => sum + item.totalPrice,
-                        0
-                    )
-                }
-
-                const dto: OrderDTO = {
-                    tableId: Number(tableId),
-                    status: "Pending",
-                    orderItems: selectedItems.map(item => ({
-                        itemId: item.id,
-                        quantity: item.quantity
+                await createOrder({
+                    tableId:Number(tableId),
+                    orderItems:selectedItems.map(item=>({
+                        itemId:item.id,
+                        quantity:item.quantity
                     }))
-                }
-                await createOrder(dto)
+                });
 
-                const data = await getOrders()
-
-                setOrders(data)
-
+                await loadOrders();
 
                 setSelectedItems([])
                 setTableId("")
@@ -309,8 +277,6 @@ export default function RestaurantOrders() {
             </button>
 
             </div>
-
-            {/* Selected Items */}
 
             {selectedItems.length > 0 && (
             <div className="mt-10">
@@ -363,7 +329,6 @@ export default function RestaurantOrders() {
                     </tr>
                     ))}
                 </tbody>
-
                 </table>
 
             </div>
@@ -371,65 +336,72 @@ export default function RestaurantOrders() {
 
             </div>
 
-    {/* Orders */}
+                {/* Orders */}
 
-    <div className="bg-white rounded-xl shadow-md border p-8">
+                <div className="bg-white rounded-xl shadow-md border p-8">
+                <h2 className="text-2xl font-semibold mb-6">
+                    Current Orders
+                </h2>
 
-    <h2 className="text-2xl font-semibold mb-6">
-        Current Orders
-    </h2>
-
-    <div className="overflow-x-auto">
-
-        {orders.length === 0 ? (
-
-        <div className="text-center text-gray-500 py-10">
-            No orders yet.
-        </div>
-
-        ) : (
-
-        <table className="w-full border-collapse">
-
-            <thead>
-            <tr className="bg-gray-100">
-                <th className="text-left p-4">Table</th>
-                <th className="text-left p-4">Items</th>
-                <th className="text-center p-4">Total</th>
-                <th className="text-center p-4">Status</th>
-                <th className="text-center p-4">Actions</th>
-            </tr>
-            </thead>
-
-            <tbody>
-
-            {orders.map(order => (
-
-                <tr key={order.id} className="border-b align-top">
-
-                <td className="p-4 font-semibold">
-                    {order.tableId}
-                </td>
-
-                <td className="p-4">
-
-                    {order.items.map(item => (
-
-                    <div
-                        key={item.id}
-                        className="flex justify-between mb-2"
-                    >
-                        <span>{item.name}</span>
-                        <span>x{item.quantity}</span>
-                        <span>${item.totalPrice}</span>
+                <div className="overflow-x-auto">
+                    {orders.length === 0 ? (
+                    <div className="text-center text-gray-500 py-10">
+                        No orders yet.
                     </div>
+                    ) : (
 
-                    ))}
+                    <table className="w-full border-collapse">
+                        <thead>
+                        <tr className="bg-gray-100">
+                            <th className="text-left p-4">Table</th>
+                            <th className="text-left p-4">Items</th>
+                            <th className="text-center p-4">Total</th>
+                            <th className="text-center p-4">Status</th>
+                            <th className="text-center p-4">Actions</th>
+                        </tr>
+                        </thead>
 
-                </td>
+                        <tbody>
+                        {orders.map(order => (
+                            <tr key={order.id} className="border-b align-top">
+                            <td className="p-4 font-semibold">
+                                {order.tableId}
+                            </td>
+
+                            <td className="p-4">
+
+                            {order.items.map(item => {
+                                const menu = menuItems.find(m => m.id === item.itemId);
+                                return (
+                                    <div
+                                        key={item.itemId}
+                                        className="flex justify-between mb-2"
+                                    >
+
+                                        <span>
+                                            {menu?.name}
+                                        </span>
+                                        <span>
+                                            x{item.quantity}
+                                        </span>
+
+                                        <span> $
+                                            {((menu?.price ?? 0)*item.quantity ).toFixed(2)}
+                                        </span>
+                                    </div>
+                                );
+                            })}
+                                </td>
 
                 <td className="text-center p-4 font-semibold">
-                    ${order.total}
+                    $
+                    {order.items
+                        .reduce((sum,item)=>{
+
+                            const menu=menuItems.find(
+                                m=>m.id===item.itemId
+                            );
+                            return sum+(menu?.price??0)*item.quantity;},0).toFixed(2)}
                 </td>
 
                 <td className="text-center p-4">
@@ -439,16 +411,14 @@ export default function RestaurantOrders() {
                     onChange={async (e) => {
 
                         await updateOrder(order.id, {
-                            status: e.target.value,
-                            orderItems: null
-                        })
+                            status: e.target.value})
 
-                        const data = await getOrders()
-                        setOrders(data)
-
+                        await loadOrders();
                     }}
+
                     className="border rounded px-3 py-2"
                     >
+
                     <option>Pending</option>
                     <option>Preparing</option>
                     <option>Ready</option>
@@ -459,16 +429,10 @@ export default function RestaurantOrders() {
                 </td>
 
                 <td className="text-center p-4">
-
                     <button
-
                     onClick={async () => {
-
                         await deleteOrder(order.id)
-
-                        const data = await getOrders()
-                        setOrders(data)
-
+                        await loadOrders();
                     }}
                     className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
                     >
@@ -476,20 +440,13 @@ export default function RestaurantOrders() {
                     </button>
 
                 </td>
-
                 </tr>
-
             ))}
 
             </tbody>
-
         </table>
-
         )}
-
     </div>
-
     </div>
-
 </div>
 )}

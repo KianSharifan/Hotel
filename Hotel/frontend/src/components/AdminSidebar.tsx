@@ -103,25 +103,25 @@ export default function AdminSidebar() {
                     </Link>
 
                     <Link
-                        to="/admin/rooms"
+                        to="/admin/restaurant-panel/staff"
                         className="px-6 py-4 hover:bg-blue-800"
                     >
                         Staff
                     </Link>
 
-                    {/* <Link
-                        to="/admin/reservations"
+                    <Link
+                        to="/admin/restaurant-panel/orders-history"
                         className="px-6 py-4 hover:bg-blue-800"
                     >
-                        Reservations
+                        Orders History
                     </Link>
-
+{/* 
                     <Link
                         to="/admin/staff"
                         className="px-6 py-4 hover:bg-blue-800"
                     >
                         Staff
-                    </Link> */}
+                    </Link>  */}
 
                 </nav>
 

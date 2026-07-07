@@ -63,6 +63,8 @@ import Register from "./pages/Register"
 import RestaurantOrders from "./pages/ControlPanel/RestaurantOrders"
 import RestaurantMenu from "./pages/ControlPanel/RestaurantMenu"
 import AdminLayout from "./layouts/AdminLayout"
+import OrdersHistory from "./pages/ControlPanel/OrdersHistory"
+import Staff from "./pages/ControlPanel/RestaurantEmployees"
 
 
 
@@ -104,6 +106,8 @@ function AppInner() {
 
           <Route path="restaurant-panel" element={<RestaurantOrders />}/>
           <Route path="restaurant-panel/menu-panel" element={<RestaurantMenu />}/>
+          <Route path="restaurant-panel/orders-history" element={<OrdersHistory />}/>
+          <Route path="restaurant-panel/staff" element={<Staff />}/>
         </Route>
 
         {/* New 4-step booking flow */}

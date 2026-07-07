@@ -1,14 +1,14 @@
 const MENU_API = "http://localhost:5263/API/Restaurant/Menu"
-export interface OrderItemDTO {
-    itemId: number
-    quantity: number
-}
+// export interface OrderItemDTO {
+//     itemId: number
+//     quantity: number
+// }
 
-export interface OrderDTO {
-    tableId: number
-    status: string
-    orderItems: OrderItemDTO[]
-}
+// export interface OrderDTO {
+//     tableId: number
+//     status: string
+//     orderItems: OrderItemDTO[]
+// }
 
 export async function getMenu() {
 
@@ -93,7 +93,7 @@ export async function createMenuItem(
             body: JSON.stringify(item)
         }
     );
-    
+
     if (!response.ok) {
         const text = await response.text();
         console.log(text);
@@ -147,58 +147,198 @@ export async function deleteMenuItem(
 
 
 
-export async function createOrder(order: OrderDTO) 
-        {
-            const response = await fetch(
-            "http://localhost:5263/API/Restaurant/Orders",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(order)
-            })
-
-            if (!response.ok)
-                throw new Error("Failed to create order")
-
-            return await response.json()
-}
-
 
 export async function getOrders() {
-    const response = await fetch("http://localhost:5263/API/Restaurant/Orders")
+    const response = await fetch(
+        "http://localhost:5263/API/Restaurant/Orders"
+    );
 
     if (!response.ok)
-        throw new Error("Failed to load orders")
+        throw new Error("Failed to load orders.");
 
-    return await response.json()
+    return await response.json();
 }
 
-export async function deleteOrder(id: number) {
+
+
+
+export async function getOrder(id: number) {
     const response = await fetch(
-        `http://localhost:5263/API/Restaurant/Orders/${id}`,
-        {
-            method: "DELETE"
-        }
-    )
+        `http://localhost:5263/API/Restaurant/Orders/${id}`
+    );
 
     if (!response.ok)
-        throw new Error("Failed to delete order")
+        throw new Error("Failed to load order.");
+
+    return await response.json();
 }
 
-export async function updateOrder(id: number, order: any) {
+
+
+
+export async function getActiveOrders(): Promise<ActiveOrderResponse[]> {
     const response = await fetch(
-        `http://localhost:5001/API/Restaurant/Orders/${id}`,
+        "http://localhost:5263/API/Restaurant/Orders/NotCompleted"
+    );
+
+    if (!response.ok)
+        throw new Error("Failed to load current orders.");
+
+    return await response.json();
+}
+
+
+export async function createOrder(order: {
+    tableId: number;
+    orderItems: {
+        itemId: number;
+        quantity: number;
+    }[];
+}) {
+
+    const response = await fetch(
+        "http://localhost:5263/API/Restaurant/Orders",
         {
-            method: "PUT",
+            method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(order)
         }
-    )
+    );
 
     if (!response.ok)
-        throw new Error("Failed to update order")
+        throw new Error("Failed to create order.");
+
+    return await response.json(); // returns new order id
 }
+
+
+export async function deleteOrder(id: number) {
+
+    const response = await fetch(
+        `http://localhost:5263/API/Restaurant/Orders/${id}`,
+        {
+            method: "DELETE"
+        }
+    );
+
+    if (!response.ok)
+        throw new Error("Failed to delete order.");
+}
+
+
+export async function updateOrder(
+    orderId: number,
+    dto: {
+        status?: string;
+        orderItems?: {
+            itemId: number;
+            quantity: number;
+        }[];
+    }
+) {
+
+    const response = await fetch(
+        `http://localhost:5263/API/Restaurant/Orders/${orderId}`,
+        {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(dto)
+        }
+    );
+
+    if (!response.ok)
+        throw new Error("Failed to update order.");
+}
+
+
+interface ActiveOrderResponse {
+    order: {
+        id: number;
+        tableId: number;
+        status: string;
+        createdAt: string;
+    };
+
+    orderItem: {
+        itemId: number;
+        quantity: number;
+    };
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// export async function createOrder(order: OrderDTO) 
+//         {
+//             const response = await fetch(
+//             "http://localhost:5263/API/Restaurant/Orders",
+//             {
+//                 method: "POST",
+//                 headers: {
+//                     "Content-Type": "application/json"
+//                 },
+//                 body: JSON.stringify(order)
+//             })
+
+//             if (!response.ok)
+//                 throw new Error("Failed to create order")
+
+//             return await response.json()
+// }
+
+
+// export async function getOrders() {
+//     const response = await fetch("http://localhost:5263/API/Restaurant/Orders")
+
+//     if (!response.ok)
+//         throw new Error("Failed to load orders")
+
+//     return await response.json()
+// }
+
+// export async function deleteOrder(id: number) {
+//     const response = await fetch(
+//         `http://localhost:5263/API/Restaurant/Orders/${id}`,
+//         {
+//             method: "DELETE"
+//         }
+//     )
+
+//     if (!response.ok)
+//         throw new Error("Failed to delete order")
+// }
+
+// export async function updateOrder(id: number, order: any) {
+//     const response = await fetch(
+//         `http://localhost:5001/API/Restaurant/Orders/${id}`,
+//         {
+//             method: "PUT",
+//             headers: {
+//                 "Content-Type": "application/json"
+//             },
+//             body: JSON.stringify(order)
+//         }
+//     )
+
+//     if (!response.ok)
+//         throw new Error("Failed to update order")
+// }
