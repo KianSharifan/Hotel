@@ -37,5 +37,10 @@ public class ServiceController : Controller
         return Ok(await _context.GuestServiceUsages.Where(g => g.Guest.User.Username == userName).Include(g=>g.Service).ToListAsync());
     }
     
-    //should have 
+    //should have auth
+    // [HttpGet("ServiceUsers/{serviceName}")]
+    // public async Task<IActionResult> ServiceUsers(string serviceName)
+    // {
+    //     
+    // }
 }

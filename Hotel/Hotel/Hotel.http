@@ -16,6 +16,10 @@ DELETE {{root_url}}/API/Users/Delete/kian
 Accept: application/json
 ###
 
+GET {{root_url}}/API/Restaurant/Orders/NotCompleted
+Accept: application/json
+###
+
 POST {{root_url}}/API/Restaurant/Menu/Categories
 Content-Type: application/json
 Accept: application/json

@@ -242,18 +242,28 @@ public class RestaurantController : Controller
     
     //should have auth
     [HttpGet("Orders/NotCompleted")]
-    public IActionResult AllNotCompletedOrders()
+    public async Task<IActionResult> AllNotCompletedOrders()
     {
         try
         {
-            var output = _context.Orders
+            var output =await _context.Orders
                 .Where(o => o.Status != "Completed")
-                .Join(_context.OrderItems,
-                    order => order.Id,
-                    item => item.OrderId,
-                    (order, item) => new
-                    { Order = order, OrderItem = item });
+                .Select(o => new
+                {
+                    Order = o,
+                    Items =_context.OrderItems
+                        .Where(oi => oi.OrderId == o.Id)
+                        .Select(oi => new
+                        {
+                            oi.MenuItem.Name,
+                            oi.Quantity,
+                            oi.MenuItem.Price
+                        })
+                        .ToList()
+                })
+                .ToListAsync();
             return Ok(output);
+
         }
         catch (Exception e)
         {
@@ -270,7 +280,13 @@ public class RestaurantController : Controller
             var o = await _context.Orders.FirstOrDefaultAsync(o => o.Id == id);
             if (o == null)
                 return NotFound();
-            List<OrderItem> orderItems = await _context.OrderItems.Where(or => or.OrderId == id).ToListAsync();
+            var orderItems = await _context.OrderItems.Where(or => or.OrderId == id)
+                .Select(oi => new
+                {
+                    oi.Quantity,
+                    oi.MenuItem.Name
+                })
+                .ToListAsync();
             var r = new
             {
                 o,
