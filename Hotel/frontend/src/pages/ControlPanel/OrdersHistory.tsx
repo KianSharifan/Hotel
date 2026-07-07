@@ -6,10 +6,11 @@ interface Order {
     tableId: number
     status: string
     createdAt: string
+    totalPrice: number
 }
 
 interface OrderItem {
-    itemId: number
+    name: string
     quantity: number
 }
 
@@ -91,6 +92,10 @@ useEffect(() => {
                                     Time
                                 </th>
 
+                                <th className="text-left p-4">
+                                    Total
+                                </th>
+
                             </tr>
 
                         </thead>
@@ -141,6 +146,10 @@ useEffect(() => {
 
     </td>
 
+    <td className="p-4 font-semibold">
+        ${order.totalPrice.toFixed(2)}
+    </td>
+
 </tr>
 
 ))}
@@ -170,7 +179,7 @@ useEffect(() => {
 
                 <th className="p-3 text-left">
 
-                    Item ID
+                    Item Name
 
                 </th>
 
@@ -189,13 +198,13 @@ useEffect(() => {
             {orderItems.map(item => (
 
                 <tr
-                    key={item.itemId}
+                    key={`${item.name}-${item.quantity}`}
                     className="border-b"
                 >
 
                     <td className="p-3">
 
-                        {item.itemId}
+                        {item.name}
 
                     </td>
 
