@@ -10,7 +10,7 @@ namespace Hotel.Controllers;
 
 [Route("API/Restaurant/Tables")]
 [ApiController]
-public class RestaurantTablesController : Controller
+file class RestaurantTablesController : Controller
 {
     private readonly AppDBContext  _context;
     private readonly RestaurantServices _restaurantServices;

@@ -279,7 +279,8 @@ public class RestaurantController : Controller
                 .Select(oi => new
                 {
                     oi.Quantity,
-                    oi.MenuItem.Name
+                    oi.MenuItem.Name,
+                    oi.MenuItem.Price
                 })
                 .ToListAsync();
             var r = new
@@ -301,21 +302,25 @@ public class RestaurantController : Controller
     {
         try
         {
+            double total = 0;
             var o = new Order()
             {
                 TableId = order.TableId,
                 Status = "Pending",
                 CreatedAt = new TimeOnly(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second)
             };
-            _context.Orders.Add(o);
             await _context.SaveChangesAsync();
             if (order.OrderItems != null)
             {
                 foreach (var oi in order.OrderItems)
                 {
-                    _context.OrderItems.Add(oi.ToOrderItem(o.Id));
+                    var item = oi.ToOrderItem(o.Id);
+                    _context.OrderItems.Add(item);
+                    total += item.Quantity*item.MenuItem.Price;
                 } 
             }
+            o.TotalPrice = total;
+            _context.Orders.Add(o);
             await _context.SaveChangesAsync();
             return Ok(o.Id);
         }
@@ -337,8 +342,6 @@ public class RestaurantController : Controller
                 return NotFound();
             }
             _context.Orders.Remove(o);
-            List<OrderItem>  orderItems = _context.OrderItems.Where(oi => oi.OrderId == id).ToList();
-            _context.OrderItems.RemoveRange(orderItems);
             await _context.SaveChangesAsync();
             return Ok();
         }
@@ -365,14 +368,22 @@ public class RestaurantController : Controller
                 {
                     var temp = _context.OrderItems.FirstOrDefault(ori =>
                         ori.ItemId == oi.ItemId && ori.OrderId == orderId);
-                    
+                    var item = oi.ToOrderItem(o.Id);
                     if (temp == null)
-                        await _context.OrderItems.AddAsync(oi.ToOrderItem(orderId));
- 
+                    {
+                        o.TotalPrice += item.Quantity * item.MenuItem.Price;
+                        await _context.OrderItems.AddAsync(item);
+                    }
                     else if (oi.Quantity == 0)
+                    {
+                        o.TotalPrice += (item.Quantity-temp.Quantity) * item.MenuItem.Price;
                         _context.OrderItems.Remove(temp);
+                    }
                     else
+                    {
+                        o.TotalPrice += (item.Quantity-temp.Quantity) * item.MenuItem.Price;
                         temp.Quantity = oi.Quantity;
+                    }
                 }
             }
             await _context.SaveChangesAsync();
