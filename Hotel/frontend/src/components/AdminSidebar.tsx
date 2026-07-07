@@ -96,7 +96,7 @@ export default function AdminSidebar() {
                     </Link>
 
                     <Link
-                        to="/admin/menu"
+                        to="/admin/restaurant-panel/menu-panel"
                         className="px-6 py-4 hover:bg-blue-800"
                     >
                         Menu

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
-import { getMenu } from "../../api/restaurantApi"
+import { getMenu, createOrder, updateOrder, deleteOrder, getOrders} from "../../api/restaurantApi"
+import type { OrderDTO} from "../../api/restaurantApi"
 
 interface MenuCategory {
   menuCategoryId: number
@@ -31,19 +32,21 @@ interface RestaurantOrder {
 }
 
 export default function RestaurantOrders() {
-  const [categories, setCategories] = useState<MenuCategory[]>([])
-  const [menuItems, setMenuItems] = useState<MenuItem[]>([])
-  const [orders, setOrders] = useState<RestaurantOrder[]>([])
+    const [categories, setCategories] = useState<MenuCategory[]>([])
+    const [menuItems, setMenuItems] = useState<MenuItem[]>([])
+    const [orders, setOrders] = useState<RestaurantOrder[]>([])
 
-  const [tableId, setTableId] = useState("")
-  const [selectedMenuItem, setSelectedMenuItem] = useState<MenuItem | null>(null)
-  const [selectedCategory, setSelectedCategory] = useState<number | null>(null)
+    const [tableId, setTableId] = useState("")
+    const [selectedMenuItem, setSelectedMenuItem] = useState<MenuItem | null>(null)
+    const [selectedCategory, setSelectedCategory] = useState<number | null>(null)
 
-  const [quantity, setQuantity] = useState(1)
-  const [selectedItems, setSelectedItems] = useState<SelectedItem[]>([])
-  const [filteredItems, setFilteredItems] = useState<MenuItem[]>([])
+    const [quantity, setQuantity] = useState(1)
+    const [selectedItems, setSelectedItems] = useState<SelectedItem[]>([])
+    const [filteredItems, setFilteredItems] = useState<MenuItem[]>([])
 
-  useEffect(() => {
+
+
+    useEffect(() => {
     async function loadMenu() {
       try {
         const data = await getMenu()
@@ -57,7 +60,18 @@ export default function RestaurantOrders() {
       }
     }
 
+    async function loadOrders() {
+        try {
+            const data = await getOrders()
+            setOrders(data)
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+
     loadMenu()
+    loadOrders()
   }, [])
 
   return (
@@ -241,99 +255,121 @@ export default function RestaurantOrders() {
             Add Item
           </button>
 
-{/* Submit */}
+            {/* Submit */}
 
-<button
-  onClick={() => {
-    if (selectedItems.length === 0) return
+            <button
+            onClick={async () => {
+                if (selectedItems.length === 0) return
 
-    const newOrder: RestaurantOrder = {
-      id: Date.now(),
-      tableId: Number(tableId),
-      status: "Preparing",
-      items: selectedItems,
-      total: selectedItems.reduce(
-        (sum, item) => sum + item.totalPrice,
-        0
-      )
-    }
-
-    setOrders([...orders, newOrder])
-
-    setSelectedItems([])
-    setTableId("")
-    setSelectedMenuItem(null)
-    setSelectedCategory(null)
-    setFilteredItems([])
-    setQuantity(1)
-  }}
-  className="bg-green-600 text-white px-8 py-3 rounded-lg"
->
-  Submit Order
-</button>
-
-</div>
-
-{/* Selected Items */}
-
-{selectedItems.length > 0 && (
-  <div className="mt-10">
-
-    <table className="w-full border">
-
-      <thead className="bg-gray-100">
-        <tr>
-          <th className="p-3 text-left">Item</th>
-          <th>Qty</th>
-          <th>Price</th>
-          <th>Total</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        {selectedItems.map(item => (
-          <tr key={item.id} className="border-t">
-
-            <td className="p-3">
-              {item.name}
-            </td>
-
-            <td className="text-center">
-              {item.quantity}
-            </td>
-
-            <td className="text-center">
-              ${item.price}
-            </td>
-
-            <td className="text-center">
-              ${item.totalPrice}
-            </td>
-
-            <td className="text-center">
-              <button
-                onClick={() =>
-                  setSelectedItems(
-                    selectedItems.filter(x => x.id !== item.id)
-                  )
+                const orderDTO = {
+                    tableId: Number(tableId),
+                    status: "Preparing",
+                    orderItems: selectedItems.map(item => ({
+                        itemId: item.id,
+                        quantity: item.quantity
+                    }))}
+                const orderId = await createOrder(orderDTO)
+        
+                const newOrder: RestaurantOrder = {
+                    id: orderId,
+                    tableId: Number(tableId),
+                    status: "Preparing",
+                    items: selectedItems,
+                    total: selectedItems.reduce(
+                        (sum, item) => sum + item.totalPrice,
+                        0
+                    )
                 }
-                className="text-red-500"
-              >
-                Remove
-              </button>
-            </td>
 
-          </tr>
-        ))}
-      </tbody>
+                const dto: OrderDTO = {
+                    tableId: Number(tableId),
+                    status: "Pending",
+                    orderItems: selectedItems.map(item => ({
+                        itemId: item.id,
+                        quantity: item.quantity
+                    }))
+                }
+                await createOrder(dto)
 
-    </table>
+                const data = await getOrders()
 
-  </div>
-)}
+                setOrders(data)
 
-</div>
+
+                setSelectedItems([])
+                setTableId("")
+                setSelectedMenuItem(null)
+                setSelectedCategory(null)
+                setFilteredItems([])
+                setQuantity(1)
+            }}
+            className="bg-green-600 text-white px-8 py-3 rounded-lg"
+            >
+            Submit Order
+            </button>
+
+            </div>
+
+            {/* Selected Items */}
+
+            {selectedItems.length > 0 && (
+            <div className="mt-10">
+
+                <table className="w-full border">
+
+                <thead className="bg-gray-100">
+                    <tr>
+                    <th className="p-3 text-left">Item</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {selectedItems.map(item => (
+                    <tr key={item.id} className="border-t">
+
+                        <td className="p-3">
+                        {item.name}
+                        </td>
+
+                        <td className="text-center">
+                        {item.quantity}
+                        </td>
+
+                        <td className="text-center">
+                        ${item.price}
+                        </td>
+
+                        <td className="text-center">
+                        ${item.totalPrice}
+                        </td>
+
+                        <td className="text-center">
+                        <button
+                            onClick={() =>
+                            setSelectedItems(
+                                selectedItems.filter(x => x.id !== item.id)
+                            )
+                            }
+                            className="text-red-500"
+                        >
+                            Remove
+                        </button>
+                        </td>
+
+                    </tr>
+                    ))}
+                </tbody>
+
+                </table>
+
+            </div>
+            )}
+
+            </div>
 
     {/* Orders */}
 
@@ -400,19 +436,21 @@ export default function RestaurantOrders() {
 
                     <select
                     value={order.status}
-                    onChange={(e) =>
-                        setOrders(
-                        orders.map(o =>
-                            o.id === order.id
-                            ? { ...o, status: e.target.value }
-                            : o
-                        )
-                        )
-                    }
+                    onChange={async (e) => {
+
+                        await updateOrder(order.id, {
+                            status: e.target.value,
+                            orderItems: null
+                        })
+
+                        const data = await getOrders()
+                        setOrders(data)
+
+                    }}
                     className="border rounded px-3 py-2"
                     >
+                    <option>Pending</option>
                     <option>Preparing</option>
-                    <option>Cooking</option>
                     <option>Ready</option>
                     <option>Served</option>
                     <option>Completed</option>
@@ -423,11 +461,15 @@ export default function RestaurantOrders() {
                 <td className="text-center p-4">
 
                     <button
-                    onClick={() =>
-                        setOrders(
-                        orders.filter(o => o.id !== order.id)
-                        )
-                    }
+
+                    onClick={async () => {
+
+                        await deleteOrder(order.id)
+
+                        const data = await getOrders()
+                        setOrders(data)
+
+                    }}
                     className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
                     >
                     Delete

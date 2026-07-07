@@ -165,7 +165,12 @@ public class RestaurantController : Controller
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            // return BadRequest(e.Message);
+            return BadRequest(new
+            {
+                e.Message,
+                Inner = e.InnerException?.Message
+            });
         }
     }
     

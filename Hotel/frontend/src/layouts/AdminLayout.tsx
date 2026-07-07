@@ -9,7 +9,7 @@ export default function AdminLayout() {
 
             <AdminSidebar />
 
-            <div className="pt-6 px-8">
+            <div >
 
                 <Outlet />
 
