@@ -23,8 +23,9 @@ interface SelectedItem {
 }
 
 interface OrderItem {
-    itemId: number;
-    quantity: number;
+    name:string;
+    quantity:number;
+    price:number;
 }
 
 interface RestaurantOrder {
@@ -253,7 +254,13 @@ const loadOrders = async () => {
             <button
             onClick={async () => {
                 if (selectedItems.length === 0) return
-
+console.log(JSON.stringify({
+    tableId: Number(tableId),
+    orderItems: selectedItems.map(item => ({
+        itemId: item.id,
+        quantity: item.quantity
+    }))
+}, null, 2));
                 await createOrder({
                     tableId:Number(tableId),
                     orderItems:selectedItems.map(item=>({
@@ -369,39 +376,30 @@ const loadOrders = async () => {
                             </td>
 
                             <td className="p-4">
-
-                            {order.items.map(item => {
-                                const menu = menuItems.find(m => m.id === item.itemId);
-                                return (
+                                {order.items.map((item, index) => (
                                     <div
-                                        key={item.itemId}
+                                        key={index}
                                         className="flex justify-between mb-2"
                                     >
+                                        <span>{item.name}</span>
+
+                                        <span>x{item.quantity}</span>
 
                                         <span>
-                                            {menu?.name}
-                                        </span>
-                                        <span>
-                                            x{item.quantity}
-                                        </span>
-
-                                        <span> $
-                                            {((menu?.price ?? 0)*item.quantity ).toFixed(2)}
+                                            ${(item.price * item.quantity).toFixed(2)}
                                         </span>
                                     </div>
-                                );
-                            })}
+                                ))}
                                 </td>
 
                 <td className="text-center p-4 font-semibold">
                     $
                     {order.items
-                        .reduce((sum,item)=>{
-
-                            const menu=menuItems.find(
-                                m=>m.id===item.itemId
-                            );
-                            return sum+(menu?.price??0)*item.quantity;},0).toFixed(2)}
+                        .reduce(
+                            (sum, item) => sum + item.price * item.quantity,
+                            0
+                        )
+                        .toFixed(2)}
                 </td>
 
                 <td className="text-center p-4">
