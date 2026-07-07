@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Hotel.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    [Migration("20260705121406_lastversion1.2")]
-    partial class lastversion12
+    [Migration("20260706220914_lastversion")]
+    partial class lastversion
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

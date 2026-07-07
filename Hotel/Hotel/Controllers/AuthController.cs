@@ -1,3 +1,4 @@
+using System.Text;
 using Hotel.Data;
 using Microsoft.AspNetCore.Mvc;
 using Hotel.DTOs;
@@ -20,18 +21,17 @@ public class AuthController : ControllerBase
         _jwtService = jwtService;
     }
 
-    [HttpPost("login")]
+    [HttpPost]
     public IActionResult Login(LoginDto dto)
     {
         var user = _context.Users
             .Include(u => u.Role.Name)
-            .FirstOrDefault(x =>
-                x.Username == dto.Username);
+            .FirstOrDefault(x => x.Username == dto.Username);
 
         if (user == null)
             return Unauthorized();
 
-        if (user.PasswordHash != dto.Password)
+        if (user.PasswordHash != Encoding.UTF8.GetBytes(dto.Password).ToString())
             return Unauthorized();
 
         var token =

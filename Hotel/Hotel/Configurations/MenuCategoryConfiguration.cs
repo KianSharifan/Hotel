@@ -13,7 +13,7 @@ public class MenuCategoryConfiguration : IEntityTypeConfiguration<MenuCategory>
         builder.Property(m => m.Name)
             .IsRequired()
             .HasMaxLength(100);
-
+        
         builder.HasIndex(m => m.Name)
             .IsUnique();
     }

@@ -4,7 +4,7 @@ GET {{root_url}}/Home
 Accept: application/json
 ###
 
-GET {{root_url}}/API/Rooms
+GET {{root_url}}/API/Service/GuestUsed/kian
 Accept: application/json
 ###
 
@@ -16,18 +16,21 @@ DELETE {{root_url}}/API/Users/Delete/kian
 Accept: application/json
 ###
 
-GET {{root_url}}/API/HouseKeeping/Employee
+POST {{root_url}}/API/Restaurant/Menu/Categories
+Content-Type: application/json
 Accept: application/json
+
+{
+  "name": "aba"
+}
 ###
 
-GET {{root_url}}/API/HouseKeeping
+POST {{root_url}}/API/Restaurant/Menu/Pizzas/MenuItems
+Content-Type: application/json
 Accept: application/json
-###
 
-GET {{root_url}}/API/Maintenance
-Accept: application/json
-###
-
-GET {{root_url}}/API/Maintenance/kkk
-Accept: application/json
-###
+{
+  "name": "Pepperoni Pizza",
+  "description": "Classic pepperoni with mozzarella",
+  "price": 12.12
+}
