@@ -243,12 +243,16 @@ public class RestaurantController : Controller
         {
             var output = _context.Orders
                 .Where(o => o.Status != "Completed")
-                .Join(_context.OrderItems,
-                    order => order.Id,
-                    item => item.OrderId,
-                    (order, item) => new
-                    { Order = order, OrderItem = item });
+                .Select(o => new
+                {
+                    Order = o,
+                    Items = _context.OrderItems
+                        .Where(oi => oi.OrderId == o.Id)
+                        .ToList()
+                })
+                .ToList();
             return Ok(output);
+
         }
         catch (Exception e)
         {
