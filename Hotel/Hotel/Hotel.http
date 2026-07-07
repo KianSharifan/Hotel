@@ -38,3 +38,35 @@ Accept: application/json
   "description": "Classic pepperoni with mozzarella",
   "price": 12.12
 }
+###
+
+POST {{root_url}}/API/Restaurant/Orders
+Content-Type: application/json
+Accept: application/json
+
+{
+  "tableId": 1,
+  "status": "Pending",
+  "orderItems": [
+    {
+      "itemId": 1,
+      "quantity": 2
+    },
+    {
+      "itemId": 2,
+      "quantity": 1
+    },
+    {
+      "itemId": 3,
+      "quantity": 3
+    },
+    {
+      "itemId": 4,
+      "quantity": 1
+    },
+    {
+      "itemId": 5,
+      "quantity": 2
+    }
+  ]
+}

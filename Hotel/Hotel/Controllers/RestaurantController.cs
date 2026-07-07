@@ -309,6 +309,7 @@ public class RestaurantController : Controller
                 Status = "Pending",
                 CreatedAt = new TimeOnly(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second)
             };
+            _context.Orders.Add(o);
             await _context.SaveChangesAsync();
             if (order.OrderItems != null)
             {
@@ -316,17 +317,18 @@ public class RestaurantController : Controller
                 {
                     var item = oi.ToOrderItem(o.Id);
                     _context.OrderItems.Add(item);
+                    await _context.SaveChangesAsync();
+                    item.MenuItem = await _context.MenuItems.FindAsync(item.ItemId);
                     total += item.Quantity*item.MenuItem.Price;
-                } 
+                }
             }
             o.TotalPrice = total;
-            _context.Orders.Add(o);
             await _context.SaveChangesAsync();
             return Ok(o.Id);
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            return BadRequest(e.ToString());
         }
     }
     
@@ -369,6 +371,7 @@ public class RestaurantController : Controller
                     var temp = _context.OrderItems.FirstOrDefault(ori =>
                         ori.ItemId == oi.ItemId && ori.OrderId == orderId);
                     var item = oi.ToOrderItem(o.Id);
+                    item.MenuItem = await _context.MenuItems.FindAsync(item.ItemId);
                     if (temp == null)
                     {
                         o.TotalPrice += item.Quantity * item.MenuItem.Price;
