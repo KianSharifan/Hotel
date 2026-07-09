@@ -17,7 +17,7 @@ public class FrontDeskManagerController : Controller
     }
     
     //should have auth
-    [HttpPost("Reservations")]
+    [HttpGet("Reservations")]
     public async Task<ActionResult> AllReservations()
     {
         try
