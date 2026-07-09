@@ -210,7 +210,7 @@ export async function createOrder(order: {
     if (!response.ok)
         throw new Error("Failed to create order.");
 
-    return await response.json(); // returns new order id
+    return await response.json(); 
 }
 
 

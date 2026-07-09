@@ -60,11 +60,13 @@ import Menu from "./pages/Menu"
 import Login from "./pages/Login"
 import { AuthProvider } from "./context/AuthContext"
 import Register from "./pages/Register"
+import EmployeeRegister from "./pages/EmployeeRegister"
 import RestaurantOrders from "./pages/ControlPanel/RestaurantOrders"
 import RestaurantMenu from "./pages/ControlPanel/RestaurantMenu"
 import AdminLayout from "./layouts/AdminLayout"
 import OrdersHistory from "./pages/ControlPanel/OrdersHistory"
 import Staff from "./pages/ControlPanel/RestaurantEmployees"
+import FrontDeskManager from "./pages/ControlPanel/FrontDeskManager"
 
 
 
@@ -76,7 +78,9 @@ const HIDDEN_NAVBAR_PATHS = [
   "/login",
   "/register",
   "/admin/restaurant-panel",
-  "/admin/restaurant-panel/menu-panel"
+  "/admin/restaurant-panel/menu-panel",
+  "/employeeRegister",
+  "/frontdesk-manager"
 ]
 
 function AppInner() {
@@ -99,7 +103,8 @@ function AppInner() {
         <Route path="/restaurant/menu" element={<Menu />} />
         <Route path="/login" element={<Login />}/>
         <Route path="/register" element={<Register />}/>
-        {/* <Route path="/restaurant-panel" element={<RestaurantOrders  />}/> */}
+        <Route path="/employeeRegister" element={<EmployeeRegister />}/>
+        <Route path="/frontdesk-manager" element={<FrontDeskManager />}/>
         
 
         <Route path="/admin" element={<AdminLayout />}>

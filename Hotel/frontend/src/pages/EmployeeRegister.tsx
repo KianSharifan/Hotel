@@ -1,51 +1,60 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { createGuest} from "../api/loginApi"
+import { createEmployee} from "../api/loginApi"
 
-export default function Register() {
+export default function EmployeeRegister() {
 
   const navigate = useNavigate()
 
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
+  const [roleId, setRoleId] = useState("")
+  const [departmentId, setDepartmentId] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
+  
 
-  async function handleRegister() {
+    async function handleRegister() {
+
     if (
         !username ||
         !email ||
+        !roleId ||
+        !departmentId ||
         !password
     ) {
-        alert("Please fill all fields")
-        return
+      alert("Please fill all fields")
+      return
     }
 
     if (password !== confirmPassword) {
-        alert("Passwords do not match")
-        return
+      alert("Passwords do not match")
+      return
     }
 
     try {
 
-        await createGuest({
-            username,
+        await createEmployee({
+            userName: username,
             email,
-            password
+            password,
+            roleId: Number(roleId),
+            departmentId: Number(departmentId),
+
+            // Temporary values until your backend/UI supports them
+            salary: 0,
+            positionId: 1,
+            birthDate: "2000-01-01"
         })
 
-        alert("Account created successfully!")
-
+        alert("Employee account created successfully!")
         navigate("/login")
-
     }
     catch (err) {
-
         if (err instanceof Error)
             alert(err.message)
         else
-            alert("Registration failed.")
-
+            alert("Failed to create account.")
     }
   }
 
@@ -148,6 +157,42 @@ export default function Register() {
             "
           />
 
+          <input
+            type="number"
+            placeholder="Role ID"
+            value={roleId}
+            onChange={(e) => setRoleId(e.target.value)}
+            className="
+            w-full
+            bg-black/30
+            border
+            border-white/10
+            rounded-xl
+            px-4
+            py-4
+            text-white
+            outline-none
+            "
+          />
+
+
+          <input
+            type="number"
+            placeholder="Department ID"
+            value={departmentId}
+            onChange={(e) => setDepartmentId(e.target.value)}
+            className="
+            w-full
+            bg-black/30
+            border
+            border-white/10
+            rounded-xl
+            px-4
+            py-4
+            text-white
+            outline-none
+            "
+          />
 
           <input
             type="password"
@@ -216,18 +261,6 @@ export default function Register() {
 
         </p>
 
-        <p className="text-center text-gray-400 mt-3">
-
-          Are you an employee?{" "}
-
-          <Link
-            to="/employeeRegister"
-            className="text-[#c8a84b]"
-          >
-            Click here
-          </Link>
-
-        </p>
 
         <Link to="/">
           <p className="text-center text-white opacity-70 underline mt-2">Go home</p>
