@@ -33,6 +33,6 @@ public class  GuestServiceUsage
             _price = value;
         }
     }
-
+    
     public DateTime UseDate { get; set; }
 }

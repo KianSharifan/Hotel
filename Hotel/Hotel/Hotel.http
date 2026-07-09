@@ -4,7 +4,7 @@ GET {{root_url}}/Home
 Accept: application/json
 ###
 
-GET {{root_url}}/API/Service/GuestUsed/kian
+GET {{root_url}}/API/Service/AllServiceUsages
 Accept: application/json
 ###
 
