@@ -24,7 +24,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         .HasMaxLength(15);
 
         builder.Property(u => u.PasswordHash)
-            .HasMaxLength(60);
+            .HasMaxLength(256);
         
         builder.Property(u => u.FirstName)
             .HasMaxLength(20);
