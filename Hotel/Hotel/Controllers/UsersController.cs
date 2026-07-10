@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using Hotel.Data;
 using Hotel.DTOs;
 using Hotel.Mappers;
@@ -14,10 +15,14 @@ namespace Hotel.Controllers;
 public class UsersController : Controller
 {
     private readonly AppDBContext _context;
+    private readonly JwtService _jwtService;
 
-    public UsersController(AppDBContext context)
+
+    public UsersController(AppDBContext context, JwtService jwtService)
     {
         _context = context;
+        _jwtService = jwtService;
+
     }
     
     //should have auth
@@ -48,23 +53,27 @@ public class UsersController : Controller
             var role = _context.Roles.FirstOrDefault(x => x.Name == "Guest");
             if(role == null)
                 return BadRequest("Role Guest not found");
+            var bytes = Encoding.UTF8.GetBytes(guest.Password);
             var u = new User()
             {
                 Username = guest.Username,
                 Email = guest.Email,
                 IsActive = false,
-                CreatedAt = DateTime.Now,
+                CreatedAt = DateTime.UtcNow,
                 RoleId = role.RoleId,
-                PasswordHash = Encoding.UTF8.GetBytes(guest.Password).ToString()
+                PasswordHash = Convert.ToHexString(SHA256.HashData(bytes))
             };
+            await _context.Users.AddAsync(u);
+            await _context.SaveChangesAsync();
             var g = new Guest()
             {
                 GuestId = u.Id
             };
-            _context.Guests.Add(g);
-            _context.Users.Add(u);
+            u.Role = await _context.Roles.FirstOrDefaultAsync(x => x.Name == "Guest");
+            var token = _jwtService.GenerateToken(u);
+            await _context.Guests.AddAsync(g);
             await _context.SaveChangesAsync();
-            return Ok();
+            return Ok(new {Token = token});
         }
         catch (Exception e)
         {
@@ -78,10 +87,13 @@ public class UsersController : Controller
     {
         try
         {
-            var user = _context.Users.Where(x => x.Username == userName).Include(x => x.Role).FirstOrDefault();
+            var user = _context.Users.Where(x => x.Username == userName)
+                .Include(x => x.Role).FirstOrDefault();
             if (user == null)
                 return NotFound();
             _context.Users.Remove(user);
+            if(user.Role == null)
+                return BadRequest("Role Not found");
             if (user.Role.Name == "Guest")
             {
                 var g = _context.Guests.Find(user.Id);
@@ -115,13 +127,14 @@ public class UsersController : Controller
                 return BadRequest("Position not found");
             if (employee.Salary < position.BaseSalary)
                 return BadRequest("Salary is too low");
+            byte[] bytes = Encoding.UTF8.GetBytes(employee.Password);
             var u = new User()
             {
                 Username = employee.UserName,
                 Email = employee.Email,
                 IsActive = true,
-                CreatedAt = DateTime.Now,
-                PasswordHash = Encoding.UTF8.GetBytes(employee.Password).ToString(),
+                CreatedAt = DateTime.UtcNow,
+                PasswordHash = Convert.ToHexString(SHA256.HashData(bytes)),
                 RoleId = employee.RoleId
             };
             var e = new Employee()

@@ -159,7 +159,7 @@ public class ServiceController : Controller
     }
     
     //should have auth
-    [HttpDelete("ServiceUsages/{id}")]
+    [HttpDelete("GuestUseService/{id}")]
     public async Task<IActionResult> DeleteServiceUsage(int id)
     {
         try
