@@ -1,6 +1,9 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { createGuest} from "../api/loginApi"
+import { useAuth } from "../context/AuthContext"
+
+
 
 export default function Register() {
 
@@ -11,12 +14,10 @@ export default function Register() {
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
 
+  const { login } = useAuth()
+
   async function handleRegister() {
-    if (
-        !username ||
-        !email ||
-        !password
-    ) {
+    if (!username ||!email ||!password) {
         alert("Please fill all fields")
         return
     }
@@ -27,27 +28,23 @@ export default function Register() {
     }
 
     try {
+          const result = await createGuest({
+              username,
+              email,
+              password
+          })
 
-        await createGuest({
-            Username: username,
-            Email: email,
-            Password: password
-        })
-
-        alert("Account created successfully!")
-
-        const params = new URLSearchParams(location.search)
-        const returnTo = params.get("return") ?? "/"
-        navigate(`/login?return=${encodeURIComponent(returnTo)}`)
-
+          login(result.token)
+          alert("Account created successfully!")
+          const params = new URLSearchParams(location.search)
+          const returnTo = params.get("return") ?? "/"
+          navigate(returnTo)
     }
     catch (err) {
-
         if (err instanceof Error)
             alert(err.message)
         else
             alert("Registration failed.")
-
     }
   }
 

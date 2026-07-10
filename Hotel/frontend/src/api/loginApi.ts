@@ -12,11 +12,10 @@ export async function getUsers() {
 }
 
 export async function createGuest(guest: {
-    Username:string;
-    Email:string;
-    Password:string;
+    username: string;
+    email: string;
+    password: string;
 }) {
-
     const response = await fetch(
         "http://localhost:5263/API/Users/CreateGuest",
         {
@@ -33,8 +32,7 @@ export async function createGuest(guest: {
         throw new Error(error || "Failed to create guest.");
     }
 
-    // Controller currently returns Ok() with no JSON body.
-    return;
+    return await response.json();
 }
 
 export async function deleteUser(username: string) {
