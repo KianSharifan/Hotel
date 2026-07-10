@@ -1,6 +1,7 @@
 import { useState } from "react"
 import {Link, useNavigate } from "react-router-dom"
 import { useAuth } from "../context/AuthContext"
+import { login as loginApi } from "../api/loginApi"
 
 function Login() {
     const navigate = useNavigate()
@@ -8,19 +9,38 @@ function Login() {
     const { login } = useAuth()
 
     const [username, setUsername] = useState("")
-    const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
-  function handleLogin(e: React.FormEvent) {
-    e.preventDefault()
+    async function handleLogin(e: React.FormEvent) {
+        e.preventDefault();
 
-    login({
-      username: "setayesh",
-      email,
-    })
+        if (!username || !password) {
+            alert("Please enter username and password.");
+            return;
+        }
 
-    navigate("/")
-  }
+        try {
+
+            const data = await loginApi({
+                username,
+                password
+            });
+
+            login(data.token);
+
+            alert("Login successful!");
+
+            const params = new URLSearchParams(location.search)
+            const returnTo = params.get("return") ?? "/"
+            navigate(returnTo)
+
+        }
+        catch (err: any) {
+
+            alert(err.message);
+
+        }
+    }
 
   return (
     <div
@@ -74,7 +94,7 @@ function Login() {
           className="space-y-5"
         >
           <input
-            type="username"
+            type="text"
             placeholder="Username"
             value={username}
             onChange={(e)=>
@@ -131,7 +151,7 @@ function Login() {
 
             <button
                 onClick={() =>
-                navigate("/register")
+                navigate("/register?return=/payment")
                 }
                 className="
                 ml-2

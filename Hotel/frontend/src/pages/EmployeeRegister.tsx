@@ -12,6 +12,9 @@ export default function EmployeeRegister() {
   const [departmentId, setDepartmentId] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
+  const [positionId, setPositionId] = useState("")
+  const [salary,setSalary]=useState("")
+  const [birthDate,setBirthDate]=useState("")
   
 
     async function handleRegister() {
@@ -21,7 +24,10 @@ export default function EmployeeRegister() {
         !email ||
         !roleId ||
         !departmentId ||
-        !password
+        !password ||
+        !positionId ||
+        !salary ||
+        !birthDate
     ) {
       alert("Please fill all fields")
       return
@@ -40,11 +46,9 @@ export default function EmployeeRegister() {
             password,
             roleId: Number(roleId),
             departmentId: Number(departmentId),
-
-            // Temporary values until your backend/UI supports them
-            salary: 0,
-            positionId: 1,
-            birthDate: "2000-01-01"
+            salary:Number(salary),
+            positionId:Number(positionId),
+            birthDate
         })
 
         alert("Employee account created successfully!")
@@ -181,6 +185,62 @@ export default function EmployeeRegister() {
             placeholder="Department ID"
             value={departmentId}
             onChange={(e) => setDepartmentId(e.target.value)}
+            className="
+            w-full
+            bg-black/30
+            border
+            border-white/10
+            rounded-xl
+            px-4
+            py-4
+            text-white
+            outline-none
+            "
+          />
+
+          <input
+            type="date"
+            value={birthDate}
+            onChange={(e)=>setBirthDate(e.target.value)}
+            placeholder="BirthDate"
+            className="
+            w-full
+            bg-black/30
+            border
+            border-white/10
+            rounded-xl
+            px-4
+            py-4
+            text-white
+            outline-none
+            "
+          />
+
+
+          <input
+            type="number"
+            placeholder="Position ID"
+            value={positionId}
+            onChange={(e)=>setPositionId(e.target.value)}
+            className="
+            w-full
+            bg-black/30
+            border
+            border-white/10
+            rounded-xl
+            px-4
+            py-4
+            text-white
+            outline-none
+            "
+          />
+
+
+          <input
+            type="number"
+            placeholder="Salary"
+            value={salary}
+            onChange={(e)=>setSalary(e.target.value)}
             className="
             w-full
             bg-black/30

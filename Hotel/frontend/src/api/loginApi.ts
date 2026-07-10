@@ -12,9 +12,9 @@ export async function getUsers() {
 }
 
 export async function createGuest(guest: {
-    username: string;
-    email: string;
-    password: string;
+    Username:string;
+    Email:string;
+    Password:string;
 }) {
 
     const response = await fetch(
@@ -85,13 +85,14 @@ export async function createEmployee(employee: {
     return;
 }
 
+
 export async function login(credentials: {
     username: string;
     password: string;
 }) {
 
     const response = await fetch(
-        "http://localhost:5263/API/Users/Login",
+        "http://localhost:5263/API/Login",
         {
             method: "POST",
             headers: {
@@ -103,7 +104,7 @@ export async function login(credentials: {
 
     if (!response.ok) {
         const error = await response.text();
-        throw new Error(error || "Login failed.");
+        throw new Error(error);
     }
 
     return await response.json();

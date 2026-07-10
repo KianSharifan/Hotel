@@ -1,10 +1,11 @@
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { motion, AnimatePresence } from "motion/react"
 import { useBooking } from "../context/BookingContext"
 import BookingHeader from "../components/BookingHeader"
 import { CreditCard, Lock, CheckCircle } from "lucide-react"
 import { reserveRoom } from "../api/reservationApi"
+import { useAuth } from "../context/AuthContext"
 
 function fmt(d: string) {
   if (!d) return ""
@@ -32,6 +33,7 @@ function LuxInput({ label, placeholder, value, onChange, type = "text", maxLengt
 export default function PaymentPage() {
   const { booking, resetBooking } = useBooking()
   const navigate = useNavigate()
+  const { user } = useAuth()
   const [cardName, setCardName] = useState("")
   const [cardNumber, setCardNumber] = useState("")
   const [expiry, setExpiry] = useState("")
@@ -266,6 +268,71 @@ export default function PaymentPage() {
           </button>
         </div>
       </div>
+
+{!user && (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay: 0.5 }}
+    className="
+      mt-8
+      bg-white/[0.02]
+      border
+      border-[#c8a84b]/10
+      rounded-3xl
+      p-8
+      text-center
+    "
+  >
+    <p className="text-[0.65rem] tracking-[0.35em] uppercase text-[#c8a84b]/60 mb-3">
+      Guest Account
+    </p>
+
+    <h3 className="font-serif-lux text-2xl italic text-white mb-3">
+      Reserve Even Faster
+    </h3>
+
+    <p className="text-white/50 text-sm leading-7 mb-8">
+      Create a complimentary guest account to manage your
+      reservations, enjoy quicker bookings, and receive exclusive
+      offers from Noire Palace.
+    </p>
+
+    <div className="flex justify-center gap-4">
+      <Link
+        to="/login?return=/payment"
+        className="
+          px-8
+          py-3
+          rounded-xl
+          border
+          border-[#c8a84b]/30
+          text-[#c8a84b]
+          hover:bg-[#c8a84b]/10
+          transition
+        "
+      >
+        Login
+      </Link>
+
+      <Link
+        to="/register?return=/payment"
+        className="
+          px-8
+          py-3
+          rounded-xl
+          bg-[#c8a84b]
+          text-black
+          font-semibold
+          hover:scale-105
+          transition
+        "
+      >
+        Create Account
+      </Link>
+    </div>
+  </motion.div>
+)}
     </div>
   )
 }

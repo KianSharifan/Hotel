@@ -29,14 +29,16 @@ export default function Register() {
     try {
 
         await createGuest({
-            username,
-            email,
-            password
+            Username: username,
+            Email: email,
+            Password: password
         })
 
         alert("Account created successfully!")
 
-        navigate("/login")
+        const params = new URLSearchParams(location.search)
+        const returnTo = params.get("return") ?? "/"
+        navigate(`/login?return=${encodeURIComponent(returnTo)}`)
 
     }
     catch (err) {
