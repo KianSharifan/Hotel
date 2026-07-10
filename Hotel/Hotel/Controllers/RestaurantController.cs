@@ -312,7 +312,7 @@ public class RestaurantController : Controller
             {
                 TableId = order.TableId,
                 Status = "Pending",
-                CreatedAt = new TimeOnly(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second)
+                CreatedAt = new TimeOnly(DateTime.UtcNow.Hour, DateTime.UtcNow.Minute, DateTime.UtcNow.Second)
             };
             _context.Orders.Add(o);
             await _context.SaveChangesAsync();

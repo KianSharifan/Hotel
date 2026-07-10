@@ -68,7 +68,7 @@ public class FrontDeskManagerController : Controller
                 Total = total,
                 Discount = dto.Discount.Value,
                 Tax = dto.Tax.Value,
-                IssueDate = DateTime.Now,
+                IssueDate = DateTime.UtcNow,
                 Status = "Not Payed!"
             };
             var u = r.Guest.User;
@@ -131,7 +131,7 @@ public class FrontDeskManagerController : Controller
                 TransactionId = dto.TransactionId,
                 Amount = i.Total,
                 Status = "Paid",
-                PaymentDate = DateTime.Now
+                PaymentDate = DateTime.UtcNow
             };
             await _context.Payments.AddAsync(p);
             i.Status = "Paid";

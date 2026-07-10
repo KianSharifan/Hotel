@@ -14,6 +14,8 @@ public class JwtService
 
     public string GenerateToken(User user)
     {
+        if(user.Role == null || user.Role.Name == null)
+            return string.Empty;
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier,
@@ -27,14 +29,10 @@ public class JwtService
         };
 
         var key =
-            new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(
-                    _configuration["Jwt:Key"]));
+            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
 
         var credentials =
-            new SigningCredentials(
-                key,
-                SecurityAlgorithms.HmacSha256);
+            new SigningCredentials(key,SecurityAlgorithms.HmacSha256);
 
         var token =
             new JwtSecurityToken(

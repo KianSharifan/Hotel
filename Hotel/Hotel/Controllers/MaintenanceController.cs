@@ -81,7 +81,7 @@ public class MaintenanceController : Controller
                     Description = dto.Description,
                     Status = dto.Status,
                     Priority = dto.Priority,
-                    CreatedDate = DateTime.Now
+                    CreatedDate = DateTime.UtcNow
                 };
                 await _context.MaintenanceRequests.AddAsync(req);
                 return Ok();
@@ -133,7 +133,7 @@ public class MaintenanceController : Controller
             if (dto.Priority != null)
                 m.Priority = dto.Priority;
             if(dto.Status == "Done")
-                m.ModifiedDate = DateTime.Now;
+                m.ModifiedDate = DateTime.UtcNow;
             await _context.SaveChangesAsync();
             return Ok();
         }

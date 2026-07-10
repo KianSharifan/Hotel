@@ -1,4 +1,4 @@
-using System.Runtime.InteropServices.JavaScript;
+using System.Security.Cryptography;
 using System.Text;
 using Hotel.Data;
 using Hotel.DTOs;
@@ -17,11 +17,15 @@ public class ValidationService
 
     public bool GuestExists(PaymentDTO paymentDto)
     {
-        if (_context.Guests.Any(g => g.User.Username == paymentDto.Username))
-        {
-            return true;
-        }
-        return false;
+        var u = _context.Users.FirstOrDefault(u => u.Username == paymentDto.Username);
+        if (u == null)
+            return false;
+        var rId = _context.Roles.FirstOrDefault(r => r.Name == "Guest");
+        if (rId == null)
+            return false;
+        if (u.RoleId != rId.RoleId)
+            return false;
+        return true;
     }
 
     public bool AddGuest(PaymentDTO paymentDto)
@@ -33,11 +37,14 @@ public class ValidationService
         var r = _context.Roles.FirstOrDefault(u => u.Name == "Guest");
         if (r == null)
             return false;
+        if (paymentDto.Password == null || paymentDto.Username == null)
+            return false;
+        byte[] bytes = Encoding.UTF8.GetBytes(paymentDto.Password);
         User user = new User()
         {
             Username = paymentDto.Username,
-            PasswordHash = Encoding.UTF8.GetBytes(paymentDto.Password).ToString(),
-            CreatedAt = DateTime.Now,
+            PasswordHash = Convert.ToHexString(SHA256.HashData(bytes)),
+            CreatedAt = DateTime.UtcNow,
             RoleId = r.RoleId
         };
         _context.Users.Add(user);
