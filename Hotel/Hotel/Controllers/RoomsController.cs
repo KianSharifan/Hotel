@@ -123,33 +123,24 @@ public class RoomsController : Controller
          }
      }
 
-    //  [HttpPost("Reservation")]
-    //  public async Task<IActionResult> Reservation([FromBody] RoomReservationDTO input)
-    //  {
-    //      try
-    //      {
-    //          int output = await _roomServices.Reserve(input);
-    //          if (output == 0)
-    //              return BadRequest("Reservation could not be done no other room with this roomType Available");
-    //          return Ok(output);
-    //      }
-    //      catch(Exception e)
-    //      {
-    //          return BadRequest(e.Message);
-    //      }
-    //  }
-
     [HttpPost("Reservation")]
     public async Task<IActionResult> Reservation([FromBody] RoomReservationDTO input)
     {
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
+        try
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-        int output = await _roomServices.Reserve(input);
+            int output = await _roomServices.Reserve(input);
 
-        if (output == 0)
-            return BadRequest("No available room");
+            if (output == 0)
+                return BadRequest("No available room");
 
-        return Ok(output);
+            return Ok(output);
+        }
+        catch (Exception)
+        {
+            return BadRequest("Not valid inputs!");
+        }
     }
  }

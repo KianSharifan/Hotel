@@ -37,16 +37,15 @@ public class FrontDeskManagerController : Controller
     {
         try
         {
-            var r = _context.Reservations.FirstOrDefault(r => r.CheckInDate == dto.ReservationDate && r.Room.RoomNumber == dto.RoomNumber);
+            var r = _context.Reservations.Include(r => r.Room).Include(r=>r.Guest).FirstOrDefault(r => r.CheckInDate == dto.ReservationDate && r.Room.RoomNumber == dto.RoomNumber);
             if (r == null)
                 return NotFound();
             double total = 0;
+            r.Room.RoomType = _context.RoomTypes.FirstOrDefault(rt => r.Room.RoomTypeId == rt.RoomTypeId);
             total += (r.CheckOutDate.DayNumber - r.CheckInDate.DayNumber) * r.Room.RoomType.Price;
             var su = _context.GuestServiceUsages.Where(s => s.ReservationId == r.Id).ToList();
             foreach (var s in su)
-            {
                 total += s.Price;
-            }
             var subTotal = total;
             if(dto.Discount > 100 || dto.Discount < 0)
                 return BadRequest("Discount can't be greater than 100 or less than 0");
@@ -71,6 +70,7 @@ public class FrontDeskManagerController : Controller
                 IssueDate = DateTime.UtcNow,
                 Status = "Not Payed!"
             };
+            r.Guest.User = _context.Users.FirstOrDefault(u => u.Id == r.GuestId);
             var u = r.Guest.User;
             u.IsActive = false;
             await _context.Invoices.AddAsync(i);
@@ -89,7 +89,7 @@ public class FrontDeskManagerController : Controller
     {
         try
         {
-            var r = await _context.Reservations.FirstOrDefaultAsync(r =>
+            var r = await _context.Reservations.Include(r => r.Room).Include(r=>r.Guest).FirstOrDefaultAsync(r =>
                 r.CheckInDate == dto.ReservationDate && r.Guest.User.Username == dto.UserName);
             if (r == null)
                 return NotFound();
