@@ -13,10 +13,10 @@ namespace Hotel.Controllers;
 [ApiController]
 public class RestaurantController : Controller
 {
-    private readonly AppDBContext  _context;
+    private readonly AppDbContext  _context;
     private readonly RestaurantServices _restaurantServices;
 
-    public RestaurantController(AppDBContext context, RestaurantServices restaurantServices)
+    public RestaurantController(AppDbContext context, RestaurantServices restaurantServices)
     {
         _context = context;
         _restaurantServices = restaurantServices;
@@ -27,7 +27,7 @@ public class RestaurantController : Controller
     {
         try
         {
-            RestaurantDTO dto = _context.Restaurants.First().ToRestaurantDTO();
+            RestaurantDto dto = _context.Restaurants.First().ToRestaurantDto();
             return Ok(dto);
         }
         catch (Exception e)
@@ -37,7 +37,7 @@ public class RestaurantController : Controller
     }
     
     [HttpPut("Restaurant")]
-    public async Task<IActionResult> UpdateRestaurant(RestaurantDTO dto)
+    public async Task<IActionResult> UpdateRestaurant(RestaurantDto dto)
     {
         try
         {
@@ -97,7 +97,7 @@ public class RestaurantController : Controller
 
     //should have authentication
     [HttpPost("Menu/Categories")]
-    public async Task<IActionResult> CreateCategory([FromBody]CategoryDTO category)
+    public async Task<IActionResult> CreateCategory([FromBody]CategoryDto category)
     {
         try
         {
@@ -119,7 +119,7 @@ public class RestaurantController : Controller
     
     //should have authentication
     [HttpDelete("Menu/Categories")]
-    public async Task<IActionResult> DeleteCategory([FromBody]CategoryDTO category)
+    public async Task<IActionResult> DeleteCategory([FromBody]CategoryDto category)
     {
         try
         {
@@ -137,7 +137,7 @@ public class RestaurantController : Controller
     
     //should have authentication
     [HttpPost("Menu/{menuCategory}/MenuItems")]
-    public async Task<IActionResult> AddMenuItems(string menuCategory,[FromBody]MenuItemDTO dto)
+    public async Task<IActionResult> AddMenuItems(string menuCategory,[FromBody]MenuItemDto dto)
     {
         try
         {
@@ -171,7 +171,7 @@ public class RestaurantController : Controller
     
     // should have authentication
     [HttpPut("Menu/{menuCategory}/MenuItems")]
-    public async Task<IActionResult> UpdateMenuItems(string menuCategory,[FromBody]MenuItemDTO dto)
+    public async Task<IActionResult> UpdateMenuItems(string menuCategory,[FromBody]MenuItemDto dto)
     {
         try
         {
@@ -180,7 +180,7 @@ public class RestaurantController : Controller
                 .FirstOrDefaultAsync(m => m.Name == dto.Name);
             if (menuItem == null)
                 return BadRequest("Item does not exist");
-            if(menuItem.MenuCategory.Name != menuCategory)
+            if(menuItem.MenuCategory!.Name != menuCategory)
                 return BadRequest("Category does not match");
 
             if(dto.Price != null)
@@ -200,7 +200,7 @@ public class RestaurantController : Controller
     
     // should have authentication
     [HttpDelete("Menu/{menuCategory}/MenuItems")]
-    public async Task<IActionResult> DeleteMenuItems(string menuCategory,[FromBody]MenuItemDTO dto)
+    public async Task<IActionResult> DeleteMenuItems(string menuCategory,[FromBody]MenuItemDto dto)
     {
         try
         {
@@ -209,7 +209,7 @@ public class RestaurantController : Controller
                 .FirstOrDefaultAsync(m => m.Name == dto.Name);
             if (menuItem == null)
                 return BadRequest("Item does not exist");
-            if(menuItem.MenuCategory.Name != menuCategory)
+            if(menuItem.MenuCategory!.Name != menuCategory)
                 return BadRequest("Category does not match");
             _context.MenuItems.Remove(menuItem);
             await _context.SaveChangesAsync();
@@ -248,9 +248,10 @@ public class RestaurantController : Controller
                     Order = o,
                     Items =_context.OrderItems
                         .Where(oi => oi.OrderId == o.Id)
+                        .Include(oi => oi.MenuItem)
                         .Select(oi => new
                         {
-                            oi.MenuItem.Name,
+                            oi.MenuItem!.Name,
                             oi.Quantity,
                             oi.MenuItem.Price
                         })
@@ -275,11 +276,13 @@ public class RestaurantController : Controller
             var o = await _context.Orders.FirstOrDefaultAsync(o => o.Id == id);
             if (o == null)
                 return NotFound();
-            var orderItems = await _context.OrderItems.Where(or => or.OrderId == id)
+            var orderItems = await _context.OrderItems
+                .Where(or => or.OrderId == id)
+                .Include(or => or.MenuItem)
                 .Select(oi => new
                 {
                     oi.Quantity,
-                    oi.MenuItem.Name,
+                    oi.MenuItem!.Name,
                     oi.MenuItem.Price
                 })
                 .ToListAsync();
@@ -298,7 +301,7 @@ public class RestaurantController : Controller
     
     //should have auth
     [HttpPost("Orders")]
-    public async Task<IActionResult> CreateOrder([FromBody]OrderDTO order)
+    public async Task<IActionResult> CreateOrder([FromBody]OrderDto order)
     {
         try
         {
@@ -319,7 +322,7 @@ public class RestaurantController : Controller
                     _context.OrderItems.Add(item);
                     await _context.SaveChangesAsync();
                     item.MenuItem = await _context.MenuItems.FindAsync(item.ItemId);
-                    total += item.Quantity*item.MenuItem.Price;
+                    total += item.Quantity*item.MenuItem!.Price;
                 }
             }
             o.TotalPrice = total;
@@ -355,7 +358,7 @@ public class RestaurantController : Controller
 
     //should have auth
     [HttpPut("Orders/{orderId}")]
-    public async Task<IActionResult> ChangeOrderItem(int orderId, [FromBody] OrderDTO dto)
+    public async Task<IActionResult> ChangeOrderItem(int orderId, [FromBody] OrderDto dto)
     {
         try
         {
@@ -374,17 +377,17 @@ public class RestaurantController : Controller
                     item.MenuItem = await _context.MenuItems.FindAsync(item.ItemId);
                     if (temp == null)
                     {
-                        o.TotalPrice += item.Quantity * item.MenuItem.Price;
+                        o.TotalPrice += item.Quantity * item.MenuItem!.Price;
                         await _context.OrderItems.AddAsync(item);
                     }
                     else if (oi.Quantity == 0)
                     {
-                        o.TotalPrice += (item.Quantity-temp.Quantity) * item.MenuItem.Price;
+                        o.TotalPrice += (item.Quantity-temp.Quantity) * item.MenuItem!.Price;
                         _context.OrderItems.Remove(temp);
                     }
                     else
                     {
-                        o.TotalPrice += (item.Quantity-temp.Quantity) * item.MenuItem.Price;
+                        o.TotalPrice += (item.Quantity-temp.Quantity) * item.MenuItem!.Price;
                         temp.Quantity = oi.Quantity;
                     }
                 }

@@ -11,9 +11,9 @@ namespace Hotel.Controllers;
 [ApiController]
 public class ServiceController : Controller
 {
-    private readonly AppDBContext _context;
+    private readonly AppDbContext _context;
 
-    public ServiceController(AppDBContext context)
+    public ServiceController(AppDbContext context)
     {
         _context = context;
     }
@@ -38,13 +38,18 @@ public class ServiceController : Controller
     {
         try
         {
-            return Ok(await _context.GuestServiceUsages.Where(g => g.Guest.User.Username == userName)
+            if (!_context.Users.Any(u => u.Username == userName))
+                return NotFound();
+            return Ok(await _context.GuestServiceUsages
+                .Include(usage => usage.Guest)
+                .ThenInclude(usage => usage!.User)
+                .Where(g => g.Guest!.User!.Username == userName)
                 .Include(g=>g.Service)
                 .Select(s => new
                 {
                     s.Quantity,
                     s.Price,
-                    s.Service.Name,
+                    s.Service!.Name,
                 }).ToListAsync());
         }
         catch (Exception e)
@@ -59,13 +64,16 @@ public class ServiceController : Controller
     {
         try
         {
-            return Ok(await _context.GuestServiceUsages.Where(g => g.Service.Name.ToLower() == serviceName)
+            if (!_context.Services.Any(s => s.Name!.ToLower() == serviceName))
+                return NotFound("No such service");
+            return Ok(await _context.GuestServiceUsages
+                .Where(g => g.Service!.Name!.ToLower() == serviceName)
                 .Include(g => g.Guest)
                 .Select(s => new
                 {
                     s.Quantity,
                     s.Price,
-                    s.Guest.User.Username,
+                    s.Guest!.User!.Username,
                     s.Guest.User.FirstName
                 }).ToListAsync());
         }
@@ -77,7 +85,7 @@ public class ServiceController : Controller
     
     //should have auth
     [HttpPost]
-    public async Task<IActionResult> CreateService([FromBody]ServiceDTO dto)
+    public async Task<IActionResult> CreateService([FromBody]ServiceDto dto)
     {
         try
         {
@@ -103,7 +111,7 @@ public class ServiceController : Controller
     
     //should have auth
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateService(int id, [FromBody] ServiceDTO dto)
+    public async Task<IActionResult> UpdateService(int id, [FromBody] ServiceDto dto)
     {
         try
         {
@@ -179,20 +187,24 @@ public class ServiceController : Controller
     
     //should have auth
     [HttpPost("GuestUseService")]
-    public async Task<IActionResult> GuestServiceCreate([FromBody] GuestServiceUsageDTO dto)
+    public async Task<IActionResult> GuestServiceCreate([FromBody] GuestServiceUsageDto dto)
     {
         var g = await _context.Users.FirstOrDefaultAsync(u => u.Username == dto.UserName);
         if (g == null)
             return NotFound("No Such Guest!");
-        var s = await _context.Services.FirstOrDefaultAsync(s => s.Name.ToLower() == dto.ServiceName.ToLower());
+        if (dto.ServiceName == null)
+            return BadRequest("No Service Name!");
+        var s = await _context.Services.FirstOrDefaultAsync(s => s.Name!.ToLower() == dto.ServiceName.ToLower());
         if (s == null)
             return NotFound("No Such Service");
+        if (dto.UseDate == null)
+            return BadRequest("No Service Use Date!");
         var r = _context.Reservations
             .Include(r=> r.Room)
             .FirstOrDefault(r => r.GuestId == g.Id 
                                  && r.CheckInDate.DayNumber <= DateOnly.FromDateTime(dto.UseDate.Value).DayNumber 
                                  && r.CheckOutDate.DayNumber >= DateOnly.FromDateTime(dto.UseDate.Value).DayNumber
-                                 && r.Room.RoomNumber == dto.RoomNumber);
+                                 && r.Room!.RoomNumber == dto.RoomNumber);
         if (r == null)
             return NotFound();
         if(dto.UseDate == null)
@@ -216,7 +228,7 @@ public class ServiceController : Controller
     
     //should have auth
     [HttpPut("GuestUseService/{id}")]
-    public async Task<IActionResult> GuestServiceUpdate(int id, [FromBody] GuestServiceUsageDTO dto)
+    public async Task<IActionResult> GuestServiceUpdate(int id, [FromBody] GuestServiceUsageDto dto)
     {
         try
         {

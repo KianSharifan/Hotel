@@ -12,9 +12,9 @@ namespace Hotel.Controllers;
 [ApiController]
 public class HouseKeepingController : Controller
 {
-    private readonly AppDBContext  _context;
+    private readonly AppDbContext  _context;
 
-    public HouseKeepingController(AppDBContext context)
+    public HouseKeepingController(AppDbContext context)
     {
         _context = context;
     }
@@ -39,11 +39,15 @@ public class HouseKeepingController : Controller
     {
         try
         {
-            var houseKeeper = await _context.Employees.FirstOrDefaultAsync(e => e.User.Role.Name == "Housekeeper" && e.User.Username == userName);
+            
+            var houseKeeper = await _context.Employees
+                .Include(employee => employee.User)
+                .ThenInclude(employee => employee!.Role)
+                .FirstOrDefaultAsync(e => e.User!.Role!.Name == "Housekeeper" && e.User.Username == userName);
             if (houseKeeper == null)
-                return NotFound();
+                return NotFound("No housekeeper with this UserName was found");
             var keeping = _context.HouseKeepings.Where(h => h.EmployeeId == houseKeeper.Id).ToList();
-            var output = new List<HouseKeepingDTO>();
+            var output = new List<HouseKeepingDto>();
             foreach (var k in keeping)
             {
                 output.Add(k.ToDto());
@@ -58,22 +62,21 @@ public class HouseKeepingController : Controller
 
     //should have auth
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody]HouseKeepingDTO houseKeeping)
+    public async Task<IActionResult> Create([FromBody]HouseKeepingDto houseKeeping)
     {
         try
         {
             if (houseKeeping.RoomId != null && houseKeeping.ScheduledDate != null)
             {
                 var employee = _context.Users
-                    .Where(u => u.Role.Name == "Housekeeper")
+                    .Include(user => user.Role)
+                    .Where(u => u.Role!.Name == "Housekeeper")
                     .OrderByDescending(u => _context.HouseKeepings.Count(h =>
                         h.EmployeeId == u.Id &&
                         h.ScheduledDate == houseKeeping.ScheduledDate))
                     .FirstOrDefault();
                 if (employee == null)
-                {
                     return BadRequest("No HouseKeeper Exists");
-                }
                 var hk = new HouseKeeping()
                 {
                     Notes = houseKeeping.Notes,
@@ -96,7 +99,7 @@ public class HouseKeepingController : Controller
     
     //should have auth
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id,[FromBody] HouseKeepingDTO houseKeeping)
+    public async Task<IActionResult> Update(int id,[FromBody] HouseKeepingDto houseKeeping)
     {
         try
         {

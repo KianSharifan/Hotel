@@ -1,6 +1,6 @@
 namespace Hotel.DTOs;
 
-public class AmenityDTO
+public class AmenityDto
 {
     public string? Name { get; set; }
 }

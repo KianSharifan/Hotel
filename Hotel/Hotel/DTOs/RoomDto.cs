@@ -1,6 +1,6 @@
 namespace Hotel.DTOs;
 
-public class RoomDTO
+public class RoomDto
 {
     public int? Id { get; set; }
     public int? HotelId { get; set; }

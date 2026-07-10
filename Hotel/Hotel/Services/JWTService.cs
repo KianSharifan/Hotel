@@ -4,6 +4,8 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Hotel.Models;
 
+namespace Hotel.Services;
+
 public class JwtService
 {
     private readonly IConfiguration _configuration;
@@ -29,7 +31,7 @@ public class JwtService
         };
 
         var key =
-            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
 
         var credentials =
             new SigningCredentials(key,SecurityAlgorithms.HmacSha256);

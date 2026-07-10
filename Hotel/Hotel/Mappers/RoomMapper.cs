@@ -1,15 +1,15 @@
 namespace Hotel.Mappers;
-using Hotel.DTOs;
-using Hotel.Models;
+using DTOs;
+using Models;
 
 public static class RoomMapper
 {
-    public static RoomTypeDTO ToDTO(this RoomType roomType)
+    public static RoomTypeDto ToDto(this RoomType roomType)
     {
-        RoomTypeDTO dto = new RoomTypeDTO()
+        RoomTypeDto dto = new RoomTypeDto()
         {
             Name = roomType.Name,
-            Image = roomType.URL,
+            Image = roomType.PicUrl,
             MaxGuests = roomType.MaxGuests,
             NumberOfDoubles = roomType.NumberDoubleBed,
             NumberOfSingles = roomType.NumberSingleBed,
@@ -20,7 +20,7 @@ public static class RoomMapper
         return dto;
     }
 
-    public static RoomType ToRoomType(this RoomTypeDTO dto)
+    public static RoomType ToRoomType(this RoomTypeDto dto)
     {
         RoomType roomType = new RoomType();
         try
@@ -34,7 +34,7 @@ public static class RoomMapper
                 roomType.NumberDoubleBed = dto.NumberOfDoubles.Value;
                 roomType.NumberSofaBed = dto.NumberOfDoubles.Value;
                 roomType.Price = dto.Price.Value;
-                roomType.URL = dto.Image;
+                roomType.PicUrl = dto.Image;
                 return roomType; 
             }
         }

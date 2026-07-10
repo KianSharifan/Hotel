@@ -7,9 +7,9 @@ namespace Hotel.Services;
 
 public class RestaurantServices
 {
-    private readonly AppDBContext  _context;
+    private readonly AppDbContext  _context;
     
-    public RestaurantServices(AppDBContext context)
+    public RestaurantServices(AppDbContext context)
     {
     _context = context;
     }
@@ -24,7 +24,7 @@ public class RestaurantServices
         return await _context.MenuItems.ToListAsync();
     }
 
-    public bool CategoryExists(CategoryDTO dto)
+    public bool CategoryExists(CategoryDto dto)
     {
         if(_context.MenuCategories.Any(c => c.Name == dto.Name))
             return true;
@@ -32,7 +32,7 @@ public class RestaurantServices
     }
 
     //this should have authentication
-    public async Task<string> TableUpdate(int id, TableStatusDTO input)
+    public async Task<string> TableUpdate(int id, TableStatusDto input)
     {
         var table = await _context.RestaurantTables.FindAsync(id);
         if (table == null)

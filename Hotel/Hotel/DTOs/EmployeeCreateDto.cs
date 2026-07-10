@@ -1,10 +1,10 @@
 namespace Hotel.DTOs;
 
-public class EmployeeCreateDTO
+public class EmployeeCreateDto
 {
-    public string UserName { get; set; }
-    public string Password { get; set; }
-    public string Email { get; set; }
+    public required string UserName { get; set; }
+    public required string Password { get; set; }
+    public required string Email { get; set; }
     public int RoleId { get; set; }
     public DateOnly BirthDate { get; set; }
     public double Salary { get; set; }

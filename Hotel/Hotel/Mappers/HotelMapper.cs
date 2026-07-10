@@ -1,11 +1,10 @@
 namespace Hotel.Mappers;
-
-using Hotel.Models;
-using Hotel.DTOs;
+using Models;
+using DTOs;
 
 public static class HotelMapper
 {
-    public static Hotel ToHotel(this HotelDTO dto)
+    public static Hotel ToHotel(this HotelDto dto)
     {
         var h = new Hotel();
         if (dto.CheckinTime.HasValue &&  dto.CheckoutTime.HasValue && dto.StarRating.HasValue)
@@ -23,9 +22,9 @@ public static class HotelMapper
         return h;
     }
 
-    public static HotelDTO ToDTO(this Hotel hotel)
+    public static HotelDto ToDto(this Hotel hotel)
     {
-        return new HotelDTO()
+        return new HotelDto()
         {
             Name = hotel.Name,
             Email = hotel.Email,

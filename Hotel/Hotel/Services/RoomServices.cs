@@ -7,14 +7,14 @@ namespace Hotel.Services;
 
 public class RoomServices
 {
-    private readonly AppDBContext _context;
+    private readonly AppDbContext _context;
 
-    public RoomServices(AppDBContext context)
+    public RoomServices(AppDbContext context)
     {
         _context = context;
     }
 
-    public async Task<List<RoomType?>> AvailableRoomTypes(RoomSearchDTO input)
+    public async Task<List<RoomType?>> AvailableRoomTypes(RoomSearchDto input)
     {
         int totalGuests = input.NumberOfAdults + input.NumberOfKids;
         var roomTypes = await _context.Rooms.Include(r => r.RoomType)
@@ -31,7 +31,7 @@ public class RoomServices
         return roomTypes;
     }
 
-    private async Task<Room?> FindAvailableRoom(RoomReservationDTO input)
+    private async Task<Room?> FindAvailableRoom(RoomReservationDto input)
     {
         return await _context.Rooms.Include(r => r.RoomType)
             .Where(room => room.Status == "Available" && room.RoomType!.RoomTypeId == input.RoomTypeId)
@@ -42,7 +42,7 @@ public class RoomServices
             .FirstOrDefaultAsync();
     }
 
-    public async Task<int> Reserve(RoomReservationDTO input)
+    public async Task<int> Reserve(RoomReservationDto input)
     {
         int output = 0;
         var room = await FindAvailableRoom(input);

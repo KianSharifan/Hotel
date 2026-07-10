@@ -4,9 +4,9 @@ using Models;
 
 public static class RestaurantMapper
 {
-    public static RestaurantDTO ToRestaurantDTO(this Restaurant restaurant)
+    public static RestaurantDto ToRestaurantDto(this Restaurant restaurant)
     {
-        RestaurantDTO restaurantDto = new RestaurantDTO();
+        RestaurantDto restaurantDto = new RestaurantDto();
         if (restaurant.Name != null && restaurant.Address != null)
         {
             restaurantDto.Name = restaurant.Name;
@@ -17,7 +17,7 @@ public static class RestaurantMapper
         return restaurantDto;
     }
 
-    public static Table ToTable(this TableDTO dto)
+    public static Table ToTable(this TableDto dto)
     {
         Table table = new Table()
         {
@@ -28,16 +28,16 @@ public static class RestaurantMapper
         return table;
     }
 
-    public static TableDTO ToTableDTO(this Table table)
+    public static TableDto ToTableDto(this Table table)
     {
-        TableDTO tableDto = new TableDTO()
+        TableDto tableDto = new TableDto()
         {
             Capacity = table.Capacity,
         };
         return tableDto;
     }
 
-    public static OrderItem ToOrderItem(this OrderItemDTO dto,int orderId)
+    public static OrderItem ToOrderItem(this OrderItemDto dto,int orderId)
     {
         OrderItem orderItem = new OrderItem()
         {

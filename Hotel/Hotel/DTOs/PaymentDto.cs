@@ -1,6 +1,6 @@
 namespace Hotel.DTOs;
 
-public class PaymentDTO
+public class PaymentDto
 {
     public string? Email { get; set; }
     public string? Username { get; set; }

@@ -12,9 +12,9 @@ namespace Hotel.Controllers;
 [ApiController]
 public class RoomsController : Controller
 {
-    private readonly AppDBContext  _context;
+    private readonly AppDbContext  _context;
     private readonly RoomServices _roomServices;
-    public RoomsController(AppDBContext context, RoomServices roomServices)
+    public RoomsController(AppDbContext context, RoomServices roomServices)
     {
         _context = context;
         _roomServices = roomServices;
@@ -50,7 +50,7 @@ public class RoomsController : Controller
 
      //should have authentication
      [HttpPut("{id}")]
-     public async Task<IActionResult> UpdateRoom(int id, [FromBody]RoomDTO dto)
+     public async Task<IActionResult> UpdateRoom(int id, [FromBody]RoomDto dto)
      {
          try
          {
@@ -99,7 +99,7 @@ public class RoomsController : Controller
 
      //should have authentication
      [HttpPost]
-     public async Task<IActionResult> CreateRoom([FromBody] RoomDTO room)
+     public async Task<IActionResult> CreateRoom([FromBody] RoomDto room)
      {
          try
          {
@@ -124,7 +124,7 @@ public class RoomsController : Controller
      }
 
     [HttpPost("Reservation")]
-    public async Task<IActionResult> Reservation([FromBody] RoomReservationDTO input)
+    public async Task<IActionResult> Reservation([FromBody] RoomReservationDto input)
     {
         try
         {

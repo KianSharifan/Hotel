@@ -1,6 +1,6 @@
 namespace Hotel.DTOs;
 
-public class MenuItemDTO
+public class ServiceDto
 {
     public string? Name { get; set; }
     public string? Description { get; set; }

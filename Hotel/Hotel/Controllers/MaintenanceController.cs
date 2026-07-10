@@ -11,9 +11,9 @@ namespace Hotel.Controllers;
 [ApiController]
 public class MaintenanceController : Controller
 {
-    private readonly AppDBContext  _context;
+    private readonly AppDbContext  _context;
 
-    public MaintenanceController(AppDBContext context)
+    public MaintenanceController(AppDbContext context)
     {
         _context = context;
     }
@@ -38,11 +38,11 @@ public class MaintenanceController : Controller
     {
         try
         {
-            var engineer = await _context.Employees.FirstOrDefaultAsync(e => e.User.Role.Name == "Engineer" && e.User.Username == userName);
+            var engineer = await _context.Employees.Include(employee => employee.User).FirstOrDefaultAsync(e => e.User!.Role!.Name == "Engineer" && e.User.Username == userName);
             if (engineer == null)
                 return NotFound();
             var maintenances = _context.MaintenanceRequests.Where(m => m.ReportedEmployeeId == engineer.Id);
-            var output = new List<MaintenanceRequestDTO>();
+            var output = new List<MaintenanceRequestDto>();
             foreach (var m in maintenances)
             {
                 output.Add(m.ToDto());
@@ -57,7 +57,7 @@ public class MaintenanceController : Controller
     
     //should have auth
     [HttpPost]
-    public async Task<IActionResult> CreateMaintenance([FromBody] MaintenanceRequestDTO dto)
+    public async Task<IActionResult> CreateMaintenance([FromBody] MaintenanceRequestDto dto)
     {
         try
         {
@@ -68,7 +68,10 @@ public class MaintenanceController : Controller
                     emp = _context.Employees.FirstOrDefault(e => e.Id == dto.ReportedEmployeeId);
                 else
                 {
-                    emp = _context.Employees.Where(e => e.User.Role.Name == "Housekeeper")
+                    emp = _context.Employees
+                        .Include(employee => employee.User)
+                        .ThenInclude(employee => employee!.Role)
+                        .Where(e => e.User!.Role!.Name == "Housekeeper")
                         .OrderByDescending(u => _context.MaintenanceRequests.Count(m => m.ReportedEmployeeId == u.Id))
                         .FirstOrDefault();
                 }
@@ -115,7 +118,7 @@ public class MaintenanceController : Controller
     
     //should have auth
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateMaintenance(int id, [FromBody] MaintenanceRequestDTO dto)
+    public async Task<IActionResult> UpdateMaintenance(int id, [FromBody] MaintenanceRequestDto dto)
     {
         try
         {

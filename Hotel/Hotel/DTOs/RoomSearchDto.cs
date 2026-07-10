@@ -1,6 +1,6 @@
 namespace Hotel.DTOs;
 
-public class RoomSearchDTO
+public class RoomSearchDto
 {
     public int NumberOfAdults { get; set; }
     public int NumberOfKids { get; set; }

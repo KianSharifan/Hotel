@@ -12,11 +12,11 @@ namespace Hotel.Controllers;
 [ApiController]
 file class RestaurantTablesController : Controller
 {
-    private readonly AppDBContext  _context;
+    private readonly AppDbContext  _context;
     private readonly RestaurantServices _restaurantServices;
 
 
-    public RestaurantTablesController(AppDBContext context, RestaurantServices restaurantServices)
+    public RestaurantTablesController(AppDbContext context, RestaurantServices restaurantServices)
     {
         _context = context;
         _restaurantServices = restaurantServices;
@@ -24,7 +24,7 @@ file class RestaurantTablesController : Controller
     
     //should have authentication
     [HttpPost]
-    public async Task<IActionResult> Reservation([FromBody]TableStatusDTO reservation)
+    public async Task<IActionResult> Reservation([FromBody]TableStatusDto reservation)
     {
         try
         {
@@ -86,7 +86,7 @@ file class RestaurantTablesController : Controller
     
     //should have authorization [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id,[FromBody]TableStatusDTO input)
+    public async Task<IActionResult> Update(int id,[FromBody]TableStatusDto input)
     {
         try
         {
@@ -124,7 +124,7 @@ file class RestaurantTablesController : Controller
     
     //should have authentication
     [HttpPost("{id}")]
-    public async Task<IActionResult> CreateTable(int id,[FromBody]TableDTO input)
+    public async Task<IActionResult> CreateTable(int id,[FromBody]TableDto input)
     {
         try
         {

@@ -10,9 +10,9 @@ namespace Hotel.Controllers;
 [ApiController]
 public class RoomTypesController : Controller
 {
-    private readonly AppDBContext  _context;
+    private readonly AppDbContext  _context;
     private readonly RoomServices _roomServices;
-    public RoomTypesController(AppDBContext context, RoomServices roomServices)
+    public RoomTypesController(AppDbContext context, RoomServices roomServices)
     {
         _context = context;
         _roomServices = roomServices;
@@ -32,7 +32,7 @@ public class RoomTypesController : Controller
     }
 
     [HttpGet("AvailableRoomTypes")]
-    public async Task<IActionResult> GetAvailableRoomTypes([FromQuery]RoomSearchDTO roomSearch)
+    public async Task<IActionResult> GetAvailableRoomTypes([FromQuery]RoomSearchDto roomSearch)
     {
         var output = await _roomServices.AvailableRoomTypes(roomSearch);
         return Ok(output);
@@ -57,12 +57,12 @@ public class RoomTypesController : Controller
     
     //should have authentication
     [HttpPost]
-    public async Task<IActionResult> CreateRoomType([FromBody]RoomTypeDTO dto)
+    public async Task<IActionResult> CreateRoomType([FromBody]RoomTypeDto dto)
     {
         try
         {
             RoomType roomType = new RoomType();
-            if (dto.MaxGuests != null && dto.NumberOfSingles != null && dto.NumberOfDoubles != null && dto.NumberOfSingles != null)
+            if (dto.MaxGuests != null && dto.NumberOfSingles != null && dto.NumberOfDoubles != null && dto.NumberOfSofa != null)
             {
                 roomType.Name = dto.Name;
                 roomType.MaxGuests = dto.MaxGuests.Value;
@@ -70,32 +70,25 @@ public class RoomTypesController : Controller
                 roomType.NumberSingleBed = dto.NumberOfSingles.Value;
                 roomType.NumberDoubleBed = dto.NumberOfDoubles.Value;
                 roomType.NumberSofaBed = dto.NumberOfSofa.Value;
-                roomType.URL = dto.Image; 
+                roomType.PicUrl = dto.Image; 
             }
             else
             {
-                throw new Exception("Invalid input");
+                return BadRequest("Invalid inputs");
             }
             await _context.RoomTypes.AddAsync(roomType);
             await _context.SaveChangesAsync();
             return Ok();
         }
-        // catch (Exception e)
-        // {
-        //     return BadRequest(e.Message);
-        // }
-
         catch(Exception e)
         {
-            return BadRequest(
-                e.InnerException?.Message ?? e.Message
-            );
+            return BadRequest(e.Message);
         }
     }
             
     //should have authentication
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateRoomType(int id, [FromBody]RoomTypeDTO dto)
+    public async Task<IActionResult> UpdateRoomType(int id, [FromBody]RoomTypeDto dto)
     {
         try
         {
@@ -115,7 +108,7 @@ public class RoomTypesController : Controller
                 if(dto.NumberOfSofa != null)
                     roomType.NumberSofaBed = dto.NumberOfSofa.Value;
                 if(dto.Image != null)
-                    roomType.URL = dto.Image;
+                    roomType.PicUrl = dto.Image;
                 if(dto.Price != null)
                     roomType.Price = dto.Price.Value;
                 
@@ -166,7 +159,7 @@ public class RoomTypesController : Controller
     
     //should have auth
     [HttpPost("CreateAmenity")]
-    public async Task<IActionResult> CreateAmenity([FromBody]AmenityDTO dto)
+    public async Task<IActionResult> CreateAmenity([FromBody]AmenityDto dto)
     {
         try
         {
@@ -190,7 +183,7 @@ public class RoomTypesController : Controller
     
     //should have auth
     [HttpPut("UpdateAmenity")]
-    public async Task<IActionResult> UpdateAmenity([FromBody] AmenityDTO dto)
+    public async Task<IActionResult> UpdateAmenity([FromBody] AmenityDto dto)
     {
         try
         {

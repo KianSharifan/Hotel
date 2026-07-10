@@ -1,6 +1,6 @@
 namespace Hotel.DTOs;
 
-public class AdminUserDTO
+public class AdminUserDto
 {
     public int Id { get; set; }
     public string? Username { get; set; }
