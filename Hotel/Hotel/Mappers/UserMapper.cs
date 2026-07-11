@@ -1,12 +1,12 @@
 namespace Hotel.Mappers;
-using Hotel.DTOs;
-using Hotel.Models;
+using DTOs;
+using Models;
 
 public static class UserMapper
 {
-    public static AdminUserDTO ToAdminDTO(this User user)
+    public static AdminUserDto ToAdminDto(this User user)
     {
-        var output = new AdminUserDTO()
+        var output = new AdminUserDto()
         {
             Id = user.Id,
             Email = user.Email,

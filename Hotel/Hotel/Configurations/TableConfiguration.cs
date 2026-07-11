@@ -1,6 +1,5 @@
-
 namespace Hotel.Configurations;
-using Hotel.Models;
+using Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

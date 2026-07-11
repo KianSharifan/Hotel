@@ -8,14 +8,14 @@ namespace Hotel.Services;
 
 public class ValidationService
 {
-    private readonly AppDBContext _context;
+    private readonly AppDbContext _context;
     
-    public ValidationService(AppDBContext context)
+    public ValidationService(AppDbContext context)
     {
     _context = context;
     }
 
-    public bool GuestExists(PaymentDTO paymentDto)
+    public bool GuestExists(PaymentDto paymentDto)
     {
         var u = _context.Users.FirstOrDefault(u => u.Username == paymentDto.Username);
         if (u == null)
@@ -28,7 +28,7 @@ public class ValidationService
         return true;
     }
 
-    public bool AddGuest(PaymentDTO paymentDto)
+    public bool AddGuest(PaymentDto paymentDto)
     {
         if (GuestExists(paymentDto))
         {

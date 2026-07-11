@@ -1,6 +1,6 @@
 namespace Hotel.DTOs;
 
-public class GuestServiceUsageDTO
+public class GuestServiceUsageDto
 {
     public string? UserName { get; set; }
     public string? ServiceName { get; set; }

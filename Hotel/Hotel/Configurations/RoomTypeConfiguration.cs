@@ -1,5 +1,5 @@
 namespace Hotel.Configurations;
-using Hotel.Models;
+using Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -14,7 +14,7 @@ public class RoomTypeConfiguration : IEntityTypeConfiguration<RoomType>
         builder.Property(rt => rt.Description)
             .HasMaxLength(600);
         
-        builder.Property(rt => rt.URL)
+        builder.Property(rt => rt.PicUrl)
             .HasMaxLength(500);
     }
 }

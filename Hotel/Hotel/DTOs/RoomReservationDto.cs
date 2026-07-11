@@ -2,7 +2,7 @@ using Hotel.Models;
 
 namespace Hotel.DTOs;
 
-public class RoomReservationDTO
+public class RoomReservationDto
 {
     public int NAdults { get; set; }
     public int NKids { get; set; }
@@ -12,7 +12,7 @@ public class RoomReservationDTO
     //0 for nothing 1 for just breakfast 2 for everything
     public int Meals { get; set; }
     public double TotalPrice { get; set; }
-    public PaymentDTO? PaymentDTO { get; set; }
+    public PaymentDto? PaymentDTO { get; set; }
     public int GuestId { get; set; }
     public string? SpecialRequest { get; set; }
 }

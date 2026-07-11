@@ -1,6 +1,6 @@
 namespace Hotel.DTOs;
 
-public class CheckInDTO
+public class CheckInDto
 {
     public string? UserName { get; set; }
     public DateOnly? ReservationDate { get; set; }

@@ -5,9 +5,9 @@ namespace Hotel.Mappers;
 
 public static class HouseKeepingMapper
 {
-    public static HouseKeepingDTO ToDto(this HouseKeeping houseKeeping)
+    public static HouseKeepingDto ToDto(this HouseKeeping houseKeeping)
     {
-        var h = new HouseKeepingDTO
+        var h = new HouseKeepingDto
         {
             HouseKeepingId = houseKeeping.Id,
             EmployeeId = houseKeeping.EmployeeId,

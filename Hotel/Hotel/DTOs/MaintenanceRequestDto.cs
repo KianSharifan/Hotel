@@ -1,6 +1,6 @@
 namespace Hotel.DTOs;
 
-public class MaintenanceRequestDTO
+public class MaintenanceRequestDto
 {
     public int? Id { get; set; }
     public int? RoomId { get; set; }

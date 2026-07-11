@@ -1,5 +1,3 @@
-using System.Collections.Immutable;
-using Hotel.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Hotel.Configurations;

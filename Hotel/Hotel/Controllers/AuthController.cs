@@ -4,6 +4,7 @@ using Hotel.Data;
 using Microsoft.AspNetCore.Mvc;
 using Hotel.DTOs;
 using Microsoft.EntityFrameworkCore;
+using Hotel.Services;
 
 namespace Hotel.Controllers;
 
@@ -11,10 +12,10 @@ namespace Hotel.Controllers;
 [Route("API/Login")]
 public class AuthController : ControllerBase
 {
-    private readonly AppDBContext _context;
+    private readonly AppDbContext _context;
     private readonly JwtService _jwtService;
 
-    public AuthController(AppDBContext context, JwtService jwtService)
+    public AuthController(AppDbContext context, JwtService jwtService)
     {
         _context = context;
         _jwtService = jwtService;

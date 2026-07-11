@@ -20,7 +20,7 @@ public class RoomType
     public int NumberSofaBed { get; set; }
     public int NumberSingleBed { get; set; }
     public string? Description { get; set; }
-    public string? URL { get; set; }
+    public string? PicUrl { get; set; }
     private double _price;
     public double Price
     {

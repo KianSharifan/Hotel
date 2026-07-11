@@ -6,6 +6,7 @@ using Hotel.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Hotel.Services;
 
 namespace Hotel.Controllers;
 
@@ -14,11 +15,11 @@ namespace Hotel.Controllers;
 [ApiController]
 public class UsersController : Controller
 {
-    private readonly AppDBContext _context;
+    private readonly AppDbContext _context;
     private readonly JwtService _jwtService;
 
 
-    public UsersController(AppDBContext context, JwtService jwtService)
+    public UsersController(AppDbContext context, JwtService jwtService)
     {
         _context = context;
         _jwtService = jwtService;
@@ -31,10 +32,10 @@ public class UsersController : Controller
     {
         try
         {
-            var output = new List<AdminUserDTO>();
+            var output = new List<AdminUserDto>();
             foreach (var user in _context.Users)
             {
-                output.Add(user.ToAdminDTO());
+                output.Add(user.ToAdminDto());
             }
             return Ok(output);
         }
@@ -46,7 +47,7 @@ public class UsersController : Controller
     
     //should have auth
     [HttpPost("CreateGuest")]
-    public async Task<IActionResult> CreateGuest([FromBody] GuestCreateDTO guest)
+    public async Task<IActionResult> CreateGuest([FromBody] GuestCreateDto guest)
     {
         try
         {
@@ -118,7 +119,7 @@ public class UsersController : Controller
     
     // should have auth
     [HttpPost("CreateEmployee")]
-    public async Task<IActionResult> CreateEmployee(EmployeeCreateDTO employee)
+    public async Task<IActionResult> CreateEmployee(EmployeeCreateDto employee)
     {
         try
         {

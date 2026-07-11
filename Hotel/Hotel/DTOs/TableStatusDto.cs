@@ -1,6 +1,6 @@
 namespace Hotel.DTOs;
 
-public class TableStatusDTO
+public class TableStatusDto
 {
     public string? Email { get; set; }
     public string? SpecialReq { get; set; }

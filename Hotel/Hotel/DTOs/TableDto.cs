@@ -1,6 +1,6 @@
 namespace Hotel.DTOs;
 
-public class TableDTO
+public class TableDto
 {
     public uint Capacity { get; set; }
 }

@@ -5,9 +5,9 @@ namespace Hotel.Mappers;
 
 public static class MaintenanceRequestMapper
 {
-    public static MaintenanceRequestDTO ToDto(this MaintenanceRequest maintenanceRequest)
+    public static MaintenanceRequestDto ToDto(this MaintenanceRequest maintenanceRequest)
     {
-        var m = new MaintenanceRequestDTO()
+        var m = new MaintenanceRequestDto()
         {
             Id = maintenanceRequest.Id,
             RoomId = maintenanceRequest.RoomId,

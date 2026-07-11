@@ -1,6 +1,6 @@
 namespace Hotel.DTOs;
 
-public class RoleDTO
+public class CategoryDto
 {
     public string? Name { get; set; }
 }

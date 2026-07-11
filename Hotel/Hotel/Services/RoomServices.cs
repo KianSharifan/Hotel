@@ -1,6 +1,5 @@
 using Hotel.Data;
 using Hotel.DTOs;
-using Hotel.Mappers;
 using Hotel.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,19 +7,19 @@ namespace Hotel.Services;
 
 public class RoomServices
 {
-    private readonly AppDBContext _context;
+    private readonly AppDbContext _context;
 
-    public RoomServices(AppDBContext context)
+    public RoomServices(AppDbContext context)
     {
         _context = context;
     }
 
-    public async Task<List<RoomType>> AvailableRoomTypes(RoomSearchDTO input)
+    public async Task<List<RoomType?>> AvailableRoomTypes(RoomSearchDto input)
     {
         int totalGuests = input.NumberOfAdults + input.NumberOfKids;
-        var roomTypes = await _context.Rooms
+        var roomTypes = await _context.Rooms.Include(r => r.RoomType)
             .Where(room => room.Status == "Available")
-            .Where(room => room.RoomType.MaxGuests >= totalGuests)
+            .Where(room => room.RoomType!.MaxGuests >= totalGuests)
             .Where(room => !_context.Reservations.Any(r => 
                 r.RoomId == room.RoomId && 
                 r.CheckInDate < input.CheckOut && 
@@ -32,10 +31,10 @@ public class RoomServices
         return roomTypes;
     }
 
-    private async Task<Room?> FindAvailableRoom(RoomReservationDTO input)
+    private async Task<Room?> FindAvailableRoom(RoomReservationDto input)
     {
-        return await _context.Rooms
-            .Where(room => room.Status == "Available" && room.RoomType.RoomTypeId == input.RoomTypeId)
+        return await _context.Rooms.Include(r => r.RoomType)
+            .Where(room => room.Status == "Available" && room.RoomType!.RoomTypeId == input.RoomTypeId)
             .Where(room => !_context.Reservations.Any(r =>
                 r.RoomId == room.RoomId &&
                 r.CheckInDate < input.CheckOut &&
@@ -43,7 +42,7 @@ public class RoomServices
             .FirstOrDefaultAsync();
     }
 
-    public async Task<int> Reserve(RoomReservationDTO input)
+    public async Task<int> Reserve(RoomReservationDto input)
     {
         int output = 0;
         var room = await FindAvailableRoom(input);
@@ -64,6 +63,8 @@ public class RoomServices
         if (input.Meals == 1)
         {
             var service = _context.Services.FirstOrDefault(s => s.Name == "Breakfast");
+            if (service == null)
+                return 0;
             GuestServiceUsage gsu = new GuestServiceUsage()
             {
                 GuestId = input.GuestId,
@@ -76,10 +77,11 @@ public class RoomServices
             };
             _context.GuestServiceUsages.Add(gsu);
         }
-
         if (input.Meals == 2)
         {
             var service = _context.Services.FirstOrDefault(s => s.Name == "AllMeals");
+            if (service == null)
+                return 0;
             GuestServiceUsage gsu = new GuestServiceUsage()
             {
                 GuestId = input.GuestId,
@@ -92,7 +94,7 @@ public class RoomServices
             };
             _context.GuestServiceUsages.Add(gsu);
         }
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
         return output;
     }
 }

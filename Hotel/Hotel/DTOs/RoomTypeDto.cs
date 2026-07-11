@@ -1,6 +1,6 @@
 namespace Hotel.DTOs;
 
-public class RoomTypeDTO
+public class RoomTypeDto
 {
     public string? Name { get; set; }
     public uint? MaxGuests { get; set; }

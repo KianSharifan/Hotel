@@ -3,14 +3,13 @@ using Hotel.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hotel.Seeding;
-
-public class SeedDB
+public class SeedDb
 {
     public static async Task SeedDataBase(IApplicationBuilder app)
     {
         using var scope = app.ApplicationServices.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<AppDBContext>();
-        context.Database.Migrate();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        await context.Database.MigrateAsync();
         if (!context.Hotels.Any())
         {
             context.Hotels.Add(
@@ -38,7 +37,7 @@ public class SeedDB
                     NumberSofaBed = 0,
                     Description = "A comfortable room with a queen bed, work desk, and modern bathroom.",
                     Price = 69.99,
-                    URL = "https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=2074"
+                    PicUrl = "https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=2074"
                 },
                 new RoomType
                 {
@@ -49,7 +48,7 @@ public class SeedDB
                     NumberSofaBed = 0,
                     Description = "A spacious room featuring a king bed, seating area, and premium décor.",
                     Price = 92.99,
-                    URL="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=1974"
+                    PicUrl="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=1974"
                 },
                 new RoomType
                 {
@@ -60,7 +59,7 @@ public class SeedDB
                     NumberSofaBed = 0,
                     Description = "An upgraded room offering enhanced bedding, better views, and refined finishes.",
                     Price = 119.99,
-                    URL="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1974"
+                    PicUrl="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1974"
                 },
                 new RoomType
                 {
@@ -71,7 +70,7 @@ public class SeedDB
                     NumberSofaBed = 1,
                     Description = "A semi-suite with a lounge area, elegant furnishings, and an expanded bathroom.",
                     Price = 149.99,
-                    URL="https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=1974"
+                    PicUrl="https://images.unsplash.com/photo-1566665797739-1674de7a421a?q=80&w=1974"
                 },
                 new RoomType
                 {
@@ -82,7 +81,7 @@ public class SeedDB
                     NumberSofaBed = 1,
                     Description = "A luxury suite with a separate living room, workspace, and upgraded amenities.",
                     Price = 249.99,
-                    URL="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=2070"
+                    PicUrl="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?q=80&w=2070"
                 },
                 new RoomType
                 {
@@ -93,10 +92,10 @@ public class SeedDB
                     NumberSofaBed = 1,
                     Description = "The hotel's signature suite with multiple rooms, premium décor, and exclusive services.",
                     Price =499.99,
-                    URL="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=2070"
+                    PicUrl="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=2070"
                 }
             };
-            context.RoomTypes.AddRange(roomTypes);
+            await context.RoomTypes.AddRangeAsync(roomTypes);
             var roles = new List<Role>
             {
                 new Role
@@ -148,7 +147,7 @@ public class SeedDB
                     Name = "DirectorOfRooms"
                 }
             };
-            context.Roles.AddRange(roles);
+            await context.Roles.AddRangeAsync(roles);
             var positions = new List<Position>()
             {
                 new Position
@@ -172,7 +171,7 @@ public class SeedDB
                     BaseSalary = 10000
                 }
             };
-            context.Positions.AddRange(positions);
+            await context.Positions.AddRangeAsync(positions);
             var departments = new List<Department>
             {
                 new Department
@@ -204,7 +203,7 @@ public class SeedDB
                     Name = "Finance"
                 }
             };
-            context.Departments.AddRange(departments);
+            await context.Departments.AddRangeAsync(departments);
             var menuCategories = new List<MenuCategory>
             {
                 new MenuCategory
@@ -240,7 +239,7 @@ public class SeedDB
                     Name = "Burgers"
                 },
             };
-            context.MenuCategories.AddRange(menuCategories);
+            await context.MenuCategories.AddRangeAsync(menuCategories);
             await context.SaveChangesAsync();
             var menuItems = new List<MenuItem>
             { 
@@ -305,8 +304,8 @@ public class SeedDB
     new MenuItem {MenuCategoryId = 8, Name = "BBQ Bacon Burger", Description = "Beef, bacon, BBQ sauce.", Price = 12.49 },
     new MenuItem {MenuCategoryId = 8, Name = "Spicy Jalapeño Burger", Description = "Beef patty with jalapeños.", Price = 11.49 },
 };
-            context.MenuItems.AddRange(menuItems);
-            context.Restaurants.Add
+            await context.MenuItems.AddRangeAsync(menuItems);
+            await context.Restaurants.AddAsync
             (
                 new Restaurant
                 {
@@ -435,7 +434,7 @@ public class SeedDB
     }
     
 };
-            context.Services.AddRange(services);
+            await context.Services.AddRangeAsync(services);
             await context.SaveChangesAsync();
             var tables = new List<Table>
             {
@@ -460,7 +459,7 @@ public class SeedDB
                 new Table {RestaurantId = 1, Status = "Available", Capacity = 8 },
                 new Table {RestaurantId = 1, Status = "Available", Capacity = 8 }
             };
-            context.RestaurantTables.AddRange(tables);
+            await context.RestaurantTables.AddRangeAsync(tables);
 var rooms = new List<Room>
 {
  new Room {HotelId = 1, RoomNumber = 101, Floor = 1, RoomTypeId = 1, Status = "Available", Notes = null },
@@ -495,7 +494,7 @@ new Room {HotelId = 1, RoomNumber = 801, Floor = 8, RoomTypeId = 5, Status = "Av
 new Room {HotelId = 1, RoomNumber = 802, Floor = 8, RoomTypeId = 5, Status = "Available", Notes = null },
 new Room {HotelId = 1, RoomNumber = 901, Floor = 9, RoomTypeId = 6, Status = "Available", Notes = null } 
 };
-            context.Rooms.AddRange(rooms);
+            await context.Rooms.AddRangeAsync(rooms);
             var amenities = new List<Amenity>
             {
                 new Amenity {Name = "Free Wi-Fi" },
@@ -505,7 +504,7 @@ new Room {HotelId = 1, RoomNumber = 901, Floor = 9, RoomTypeId = 6, Status = "Av
                 new Amenity {Name = "Jacuzzi" },
                 new Amenity {Name = "Balcony with View" }
             };
-            context.Amenities.AddRange(amenities);
+            await context.Amenities.AddRangeAsync(amenities);
             await context.SaveChangesAsync();
             var roomAmenities = new List<RoomAmenities>
             {
@@ -543,7 +542,7 @@ new Room {HotelId = 1, RoomNumber = 901, Floor = 9, RoomTypeId = 6, Status = "Av
                 new RoomAmenities { RoomTypeId = 6, AmenityId = 5 },
                 new RoomAmenities { RoomTypeId = 6, AmenityId = 6 }
             };
-            context.RoomAmenities.AddRange(roomAmenities); 
+            await context.RoomAmenities.AddRangeAsync(roomAmenities); 
 var shifts = new List<Shift>
 {
     new Shift {Day = "Monday", StartTime = new TimeOnly(0, 0), EndTime = new TimeOnly(8, 0) },
@@ -574,7 +573,7 @@ var shifts = new List<Shift>
     new Shift {Day = "Sunday", StartTime = new TimeOnly(8, 0), EndTime = new TimeOnly(16, 0) },
     new Shift {Day = "Sunday", StartTime = new TimeOnly(16, 0), EndTime = new TimeOnly(23, 59) }
 };
-            context.Shifts.AddRange(shifts);
+            await context.Shifts.AddRangeAsync(shifts);
             await context.SaveChangesAsync();
         }
     }

@@ -12,8 +12,8 @@ namespace Hotel.Controllers;
 [ApiController]
 public class HotelController : Controller
 {
-    private readonly AppDBContext _context;
-    public HotelController(AppDBContext context)
+    private readonly AppDbContext _context;
+    public HotelController(AppDbContext context)
     {
         _context = context;
     }
@@ -24,13 +24,13 @@ public class HotelController : Controller
         var hotel = await _context.Hotels.FirstOrDefaultAsync();
         if (hotel == null)
             return NotFound();
-        var output = hotel.ToDTO();
+        var output = hotel.ToDto();
         return Ok(output);
     }
 
     //should have auth
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateHotels(int id, [FromBody]HotelDTO dto)
+    public async Task<IActionResult> UpdateHotels(int id, [FromBody]HotelDto dto)
     {
         var h =  await _context.Hotels.FirstOrDefaultAsync(x => x.Id == id);
         if (h == null)
@@ -66,7 +66,7 @@ public class HotelController : Controller
     
     //should have auth
     [HttpPost("Departments")]
-    public async Task<IActionResult> CreateDepartment([FromBody]DepartmentDTO department)
+    public async Task<IActionResult> CreateDepartment([FromBody]DepartmentDto department)
     {
         if (department.Name == null)
             return BadRequest();
@@ -83,7 +83,7 @@ public class HotelController : Controller
 
     //should have auth
     [HttpPut("Departments/{id}")]
-    public async Task<IActionResult> DeleteDepartment(int id,[FromBody]DepartmentDTO department)
+    public async Task<IActionResult> DeleteDepartment(int id,[FromBody]DepartmentDto department)
     {
         var d = await _context.Departments.FirstOrDefaultAsync(x => x.Id == id);
         if (d == null)
@@ -114,7 +114,7 @@ public class HotelController : Controller
     
     //should have auth
     [HttpPost("Roles")]
-    public async Task<IActionResult> CreateRole([FromBody] RoleDTO role)
+    public async Task<IActionResult> CreateRole([FromBody] RoleDto role)
     {
         if (role.Name == null)
             return BadRequest();
@@ -131,7 +131,7 @@ public class HotelController : Controller
     
     //should have auth
     [HttpPut("Roles/{id}")]
-    public async Task<IActionResult> UpdateRole(int id, [FromBody] RoleDTO role)
+    public async Task<IActionResult> UpdateRole(int id, [FromBody] RoleDto role)
     {
         var r = _context.Roles.FirstOrDefault(x => x.RoleId == id);
         if (r == null)

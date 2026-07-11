@@ -2,9 +2,9 @@ using Hotel.Models;
 
 namespace Hotel.DTOs;
 
-public class OrderDTO
+public class OrderDto
 {
     public int TableId { get; set; }
     public string? Status { get; set; }
-    public List<OrderItemDTO>?  OrderItems { get; set; }
+    public List<OrderItemDto>?  OrderItems { get; set; }
 }

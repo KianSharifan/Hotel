@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 namespace Hotel.Data;
-using Hotel.Models;
+using Models;
 using System.Reflection;
-public class AppDBContext : DbContext
+public class AppDbContext : DbContext
 {
-    public AppDBContext(DbContextOptions<AppDBContext> options)
+    public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
     {
     }
