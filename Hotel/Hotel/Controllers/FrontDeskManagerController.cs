@@ -32,6 +32,23 @@ public class FrontDeskManagerController : Controller
     }
     
     //should have auth
+    [HttpGet("Reservations/{id}")]
+    public async Task<ActionResult> GetReservation(int id)
+    {
+        try
+        {
+            var r = await _context.Reservations.FirstOrDefaultAsync(r => r.Id == id);
+            if (r == null)
+                return NotFound();
+            return Ok(r);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+        }
+    }
+    
+    //should have auth
     [HttpPost("Checkout")]
     public async Task<IActionResult> CheckOut([FromBody]CheckOutDto dto)
     {
