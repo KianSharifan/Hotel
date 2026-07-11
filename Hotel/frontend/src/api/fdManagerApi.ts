@@ -64,10 +64,14 @@ export async function checkOut(data: {
         }
     );
 
-    if (!response.ok) {
-        const error = await response.text();
-        throw new Error(error);
-    }
+if (!response.ok) {
+    console.log("STATUS:", response.status);
+
+    const text = await response.text();
+    console.log("BODY:", text);
+
+    throw new Error(text);
+}
 
     return await response.json();
 }

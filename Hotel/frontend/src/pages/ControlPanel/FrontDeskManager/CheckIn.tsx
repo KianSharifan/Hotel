@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import {getReservations, checkIn, checkOut, payInvoice} from "../../../api/fdManagerApi";
+import {getReservations, checkIn} from "../../../api/fdManagerApi";
 
 export default function CheckIn() {
 
@@ -10,8 +10,8 @@ export default function CheckIn() {
   const [passport, setPassport] = useState("")
   const [nationality, setNationality] = useState("")
   const [reservations, setReservations] = useState<any[]>([]);
-  const [selectedReservation, setSelectedReservation] = useState<any | null>(null);
   const [search, setSearch] = useState("");
+  const [assignedRoom, setAssignedRoom] = useState<number | null>(null);
 
 
     const loadReservations = async () => {
@@ -61,7 +61,7 @@ export default function CheckIn() {
           </div>
 
             <input
-                placeholder="Search username..."
+                placeholder="Search id..."
                 value={search}
                 onChange={(e)=>setSearch(e.target.value)}
                 className="border rounded-lg p-3 w-80 mb-6"
@@ -81,23 +81,12 @@ export default function CheckIn() {
             </thead>
 
             <tbody>
-                {reservations.filter(r =>(r.guest?.user?.username ?? "")
-                                .toLowerCase()
-                                .includes(search.toLowerCase()))
+                {reservations.filter(r => r.id.toString().includes(search))
                                 .map((r) => (
                                 <tr
                                     key={r.id}
-                                    className={`border-b cursor-pointer transition ${
-                                        selectedReservation?.id === r.id ? "bg-blue-100": "hover:bg-gray-100"}`}
-                                    onClick={() => {
-                                        setSelectedReservation(r);
-                                        setReservationDate(
-                                            new Date(r.checkInDate)
-                                                .toISOString()
-                                                .split("T")[0]
-                                        );
-                                        setUsername(r.guest?.user?.username ?? "");
-                                    }}>
+                                    className="border-b"
+                                    >
                         <td className="p-4">{r.id}</td>
                         <td className="p-4">{r.guest?.user?.username ?? r.guestId}</td>
                         <td className="p-4">{r.roomId}</td>
@@ -116,21 +105,6 @@ export default function CheckIn() {
         {/* Check In */}
 
         <div className="bg-white rounded-xl shadow border p-8">
-        {selectedReservation && (
-            <div className="mb-6 rounded-lg bg-blue-50 p-4">
-                <p className="font-semibold">
-                    Selected Reservation
-                </p>
-                <p>
-                    Reservation #
-                    {selectedReservation.id}
-                </p>
-                <p>
-                    Room:
-                    {selectedReservation.roomId}
-                </p>
-            </div>
-            )}
           <h2 className="text-2xl font-semibold mb-6">
             Check In Guest
           </h2>
@@ -139,14 +113,16 @@ export default function CheckIn() {
             <input
                 type="date"
                 value={reservationDate}
-                readOnly
-                className="border rounded-lg p-3 bg-gray-100"
+                onChange={(e)=>{setAssignedRoom(null);
+                    setReservationDate(e.target.value)}}
+                className="border rounded-lg p-3"
             />
 
             <input
-                value={username}
-                readOnly
-                className="border rounded-lg p-3 bg-gray-100"
+              value={username}
+              onChange={(e)=>setUsername(e.target.value)}
+              placeholder="User Name"
+              className="border rounded-lg p-3"
             />
 
             <input
@@ -179,11 +155,19 @@ export default function CheckIn() {
 
             </div>
 
-            <button disabled={!selectedReservation}
+            {assignedRoom !== null && (
+                <div className="mt-6 rounded-lg border border-green-300 bg-green-50 p-4">
+                    <p className="text-lg font-semibold text-green-800">
+                        Guest assigned to Room {assignedRoom}
+                    </p>
+                </div>
+            )}
+
+            <button 
                 onClick={async () => {
 
                     try {
-                        await checkIn({
+                        const roomNumber = await checkIn({
                             reservationDate,
                             userName: username,
                             nationality,
@@ -192,15 +176,17 @@ export default function CheckIn() {
                             lastName
                         });
 
+                        setAssignedRoom(roomNumber);
+
                         alert("Guest checked in!");
                         
-                        setSelectedReservation(null);
                         setReservationDate("");
                         setUsername("");
                         setFirstName("");
                         setLastName("");
                         setPassport("");
                         setNationality("");
+                        // setAssignedRoom(null);
                         await loadReservations();
                     }
 
@@ -209,12 +195,7 @@ export default function CheckIn() {
                         alert("Check In failed.");
                     }
                 }}
-                className={`mt-6 px-8 py-3 rounded-lg text-white transition
-                            ${
-                                selectedReservation
-                                    ? "bg-green-600 hover:bg-green-700"
-                                    : "bg-gray-400 cursor-not-allowed"
-                            }`}
+                className="mt-6 bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg"
             >
                 Check In
             </button>

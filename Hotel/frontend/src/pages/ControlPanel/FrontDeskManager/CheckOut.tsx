@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react"
-import {getReservations, checkIn, checkOut, payInvoice} from "../../../api/fdManagerApi";
+import {getReservations, checkOut, payInvoice} from "../../../api/fdManagerApi";
 
 export default function CheckOut() {
 
-  const [checkoutDate, setCheckoutDate] = useState("")
+  const [reservationDate, setReservationDate] = useState("");
   const [roomNumber, setRoomNumber] = useState("")
   const [tax, setTax] = useState("")
   const [discount, setDiscount] = useState("")
@@ -11,6 +11,7 @@ export default function CheckOut() {
   const [transactionId, setTransactionId] = useState("")
   const [invoiceId,setInvoiceId]=useState<number|null>(null);
   const [reservations, setReservations] = useState<any[]>([]);
+  const [search, setSearch] = useState("");
   
 
 
@@ -42,6 +43,65 @@ export default function CheckOut() {
 
       <div className="max-w-7xl mx-auto p-10 space-y-10">
 
+        {/* Reservations */}
+
+        <div className="bg-white rounded-xl shadow border p-8">
+          <div className="flex justify-between items-center mb-6">
+
+            <h2 className="text-2xl font-semibold">
+              Reservations
+            </h2>
+
+            <button
+                onClick={loadReservations}
+                className="bg-blue-600 text-white px-6 py-3 rounded-lg"
+            >
+                Refresh Reservations
+            </button>
+
+          </div>
+
+            <input
+                placeholder="Search id..."
+                value={search}
+                onChange={(e)=>setSearch(e.target.value)}
+                className="border rounded-lg p-3 w-80 mb-6"
+            />
+
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="bg-gray-100">
+
+                <th className="p-4 text-left">Reservation ID</th>
+                <th className="p-4 text-left">Guest</th>
+                <th className="p-4 text-left">Room</th>
+                <th className="p-4 text-left">Check In</th>
+                <th className="p-4 text-left">Check Out</th>
+
+              </tr>
+            </thead>
+
+            <tbody>
+                {reservations.filter(r => r.id.toString().includes(search))
+                                .map((r) => (
+                                <tr
+                                    key={r.id}
+                                    className="border-b"
+                                    >
+                        <td className="p-4">{r.id}</td>
+                        <td className="p-4">{r.guest?.user?.username ?? r.guestId}</td>
+                        <td className="p-4">{r.roomId}</td>
+                        <td className="p-4">
+                            {new Date(r.checkInDate).toLocaleDateString()}
+                        </td>
+                        <td className="p-4">
+                            {new Date(r.checkOutDate).toLocaleDateString()}
+                        </td>
+                    </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
 
 
         {/* Check Out */}
@@ -56,8 +116,8 @@ export default function CheckOut() {
 
             <input
               type="date"
-              value={checkoutDate}
-              onChange={(e)=>setCheckoutDate(e.target.value)}
+              value={reservationDate}
+              onChange={(e)=>setReservationDate(e.target.value)}
               className="border rounded-lg p-3"
             />
 
@@ -89,10 +149,18 @@ export default function CheckOut() {
             <button
                 onClick={async () => {
 
-                    try {
-
+                    try{
+                        if (
+                            !reservationDate ||
+                            !roomNumber ||
+                            !tax ||
+                            !discount
+                        ){
+                            alert("Please complete all fields.");
+                            return;
+                        }
                         const id = await checkOut({
-                            reservationDate: checkoutDate,
+                            reservationDate: reservationDate,
                             roomNumber: Number(roomNumber),
                             tax: Number(tax),
                             discount: Number(discount)
@@ -134,9 +202,8 @@ export default function CheckOut() {
             <input
                 type="number"
                 value={invoiceId ?? ""}
-                onChange={(e) => setInvoiceId(Number(e.target.value))}
-                placeholder="Invoice ID"
-                className="border rounded-lg p-3"
+                readOnly
+                className="border rounded-lg p-3 bg-gray-100"
             />
 
             <select
@@ -145,22 +212,10 @@ export default function CheckOut() {
               className="border rounded-lg p-3"
             >
 
-              <option value="">
-                Payment Method
-              </option>
-
-              <option>
-                Cash
-              </option>
-
-              <option>
-                Card
-              </option>
-
-              <option>
-                Bank Transfer
-              </option>
-
+                <option value="">Payment Method</option>
+                <option value="Cash">Cash</option>
+                <option value="Card">Card</option>
+                <option value="Bank Transfer">Bank Transfer</option>
             </select>
 
             <input
@@ -172,7 +227,7 @@ export default function CheckOut() {
 
           </div>
 
-            <button
+            <button disabled={invoiceId == null}
                 onClick={async () => {
 
                     if (invoiceId == null) {
@@ -180,8 +235,16 @@ export default function CheckOut() {
                         return;
                     }
 
-                    try {
+                    try{
+                        if(!paymentMethod){
+                            alert("Select a payment method.");
+                            return;
+                        }
 
+                        if(!transactionId){
+                            alert("Transaction ID required.");
+                            return;
+                        }
                         await payInvoice(
                             invoiceId,
                             {
@@ -191,6 +254,16 @@ export default function CheckOut() {
                         );
 
                         alert("Payment registered.");
+                        setInvoiceId(null);
+                        setReservationDate("");
+                        setRoomNumber("");
+                        setTax("");
+                        setDiscount("");
+                        setPaymentMethod("");
+                        setTransactionId("");
+                        setSearch("");
+
+                        await loadReservations();
 
                     }
 
@@ -202,7 +275,12 @@ export default function CheckOut() {
                     }
 
                 }}
-                className="mt-6 bg-blue-600 text-white px-8 py-3 rounded-lg"
+                className={`mt-6 px-8 py-3 rounded-lg text-white
+                            ${
+                            invoiceId!= null
+                            ? "bg-blue-600 hover:bg-blue-700"
+                            : "bg-gray-400 cursor-not-allowed"
+                            }`}
             >
                 Register Payment
             </button>
