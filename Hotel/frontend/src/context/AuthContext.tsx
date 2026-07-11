@@ -1,154 +1,275 @@
+// import {
+//     createContext,
+//     useContext,
+//     useEffect,
+//     useState,
+// } from "react";
+// import type { ReactNode } from "react";
+// import { jwtDecode } from "jwt-decode";
+
+// type JwtPayload = {
+//     nameid: string;
+//     unique_name: string;
+//     role: string;
+//     exp: number;
+// };
+
+// type User = {
+//     id: number;
+//     username: string;
+//     role: string;
+// };
+
+// type AuthContextType = {
+//     user: User | null;
+//     token: string | null;
+//     isAuthenticated: boolean;
+//     login: (token: string) => void;
+//     logout: () => void;
+// };
+
+// const AuthContext = createContext<AuthContextType | null>(null);
+
+// export function AuthProvider({
+//     children,
+// }: {
+//     children: ReactNode;
+// }) {
+
+//     const [user, setUser] = useState<User | null>(null);
+
+//     const [token, setToken] = useState<string | null>(null);
+
+//     useEffect(() => {
+
+//         const savedToken =
+//             localStorage.getItem("token");
+
+//         if (!savedToken)
+//             return;
+
+//         try {
+
+// const decoded = jwtDecode<Record<string, any>>(token);
+
+//             if (decoded.exp * 1000 < Date.now()) {
+
+//                 localStorage.removeItem("token");
+//                 return;
+
+//             }
+
+//             setToken(savedToken);
+
+// setUser({
+//     id: Number(
+//         decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]
+//     ),
+//     username:
+//         decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
+//     role:
+//         decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"],
+// });
+
+//         }
+
+//         catch {
+
+//             localStorage.removeItem("token");
+
+//         }
+
+//     }, []);
+
+//     function login(newToken: string) {
+
+//         localStorage.setItem("token", newToken);
+
+// const decoded = jwtDecode<Record<string, any>>(token);
+
+//         setToken(newToken);
+
+// setUser({
+//     id: Number(
+//         decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]
+//     ),
+//     username:
+//         decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
+//     role:
+//         decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"],
+// });
+
+//     }
+
+//     function logout() {
+
+//         localStorage.removeItem("token");
+
+//         setUser(null);
+
+//         setToken(null);
+
+//     }
+
+//     return (
+
+//         <AuthContext.Provider
+//             value={{
+
+//                 user,
+
+//                 token,
+
+//                 isAuthenticated: !!user,
+
+//                 login,
+
+//                 logout
+
+//             }}
+//         >
+
+//             {children}
+
+//         </AuthContext.Provider>
+
+//     );
+
+// }
+
+// export function useAuth() {
+
+//     const context =
+//         useContext(AuthContext);
+
+//     if (!context)
+//         throw new Error(
+//             "useAuth must be used inside AuthProvider"
+//         );
+
+//     return context;
+
+// }
+
 import {
-    createContext,
-    useContext,
-    useEffect,
-    useState,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
 } from "react";
 import type { ReactNode } from "react";
 import { jwtDecode } from "jwt-decode";
 
-type JwtPayload = {
-    nameid: string;
-    unique_name: string;
-    role: string;
-    exp: number;
-};
-
 type User = {
-    id: number;
-    username: string;
-    role: string;
+  id: number;
+  username: string;
+  role: string;
 };
 
 type AuthContextType = {
-    user: User | null;
-    token: string | null;
-    isAuthenticated: boolean;
-    login: (token: string) => void;
-    logout: () => void;
+  user: User | null;
+  token: string | null;
+  isAuthenticated: boolean;
+  login: (token: string) => void;
+  logout: () => void;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({
-    children,
+  children,
 }: {
-    children: ReactNode;
+  children: ReactNode;
 }) {
+  const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
 
-    const [user, setUser] = useState<User | null>(null);
+  useEffect(() => {
+    const savedToken = localStorage.getItem("token");
 
-    const [token, setToken] = useState<string | null>(null);
+    if (!savedToken) return;
 
-    useEffect(() => {
+    try {
+      const decoded = jwtDecode<Record<string, any>>(savedToken);
 
-        const savedToken =
-            localStorage.getItem("token");
-
-        if (!savedToken)
-            return;
-
-        try {
-
-            const decoded =
-                jwtDecode<JwtPayload>(savedToken);
-
-            if (decoded.exp * 1000 < Date.now()) {
-
-                localStorage.removeItem("token");
-                return;
-
-            }
-
-            setToken(savedToken);
-
-            setUser({
-
-                id: Number(decoded.nameid),
-
-                username: decoded.unique_name,
-
-                role: decoded.role
-
-            });
-
-        }
-
-        catch {
-
-            localStorage.removeItem("token");
-
-        }
-
-    }, []);
-
-    function login(newToken: string) {
-
-        localStorage.setItem("token", newToken);
-
-        const decoded =
-            jwtDecode<JwtPayload>(newToken);
-
-        setToken(newToken);
-
-        setUser({
-
-            id: Number(decoded.nameid),
-
-            username: decoded.unique_name,
-
-            role: decoded.role
-
-        });
-
-    }
-
-    function logout() {
-
+      if (decoded.exp * 1000 < Date.now()) {
         localStorage.removeItem("token");
+        return;
+      }
 
-        setUser(null);
+      setToken(savedToken);
 
-        setToken(null);
-
+      setUser({
+        id: Number(
+          decoded[
+            "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+          ]
+        ),
+        username:
+          decoded[
+            "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
+          ],
+        role:
+          decoded[
+            "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+          ],
+      });
+    } catch {
+      localStorage.removeItem("token");
     }
+  }, []);
 
-    return (
+  function login(newToken: string) {
+    localStorage.setItem("token", newToken);
 
-        <AuthContext.Provider
-            value={{
+    const decoded = jwtDecode<Record<string, any>>(newToken);
 
-                user,
+    setToken(newToken);
 
-                token,
+    setUser({
+      id: Number(
+        decoded[
+          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+        ]
+      ),
+      username:
+        decoded[
+          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
+        ],
+      role:
+        decoded[
+          "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+        ],
+    });
+  }
 
-                isAuthenticated: !!user,
+  function logout() {
+    localStorage.removeItem("token");
+    setUser(null);
+    setToken(null);
+  }
 
-                login,
-
-                logout
-
-            }}
-        >
-
-            {children}
-
-        </AuthContext.Provider>
-
-    );
-
+  return (
+    <AuthContext.Provider
+      value={{
+        user,
+        token,
+        isAuthenticated: !!user,
+        login,
+        logout,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 export function useAuth() {
+  const context = useContext(AuthContext);
 
-    const context =
-        useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used inside AuthProvider");
+  }
 
-    if (!context)
-        throw new Error(
-            "useAuth must be used inside AuthProvider"
-        );
-
-    return context;
-
+  return context;
 }

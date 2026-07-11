@@ -62,27 +62,35 @@ export default function PaymentPage() {
   const canPay = cardName && cardNumber.replace(/\s/g, "").length === 16 && expiry.length === 5 && cvv.length >= 3
 
   async function handlePay() {
-    if (!canPay) return
-    setLoading(true)
-    await reserveRoom({
-      nAdults: booking.adults,
-      nKids: booking.children,
 
-      checkIn: booking.checkIn,
-      checkOut: booking.checkOut,
-
-      roomTypeId: booking.selectedRoom?.id,
-
-      meals: 0,
-
-      totalPrice: grandTotal,
-
-      guestId: 1,
-
-      specialRequest: ""
-    })
-    setLoading(false)
-    setConfirmed(true)
+      if (!canPay) return;
+      if (!user) {
+          navigate("/login?return=/reservation/payment");
+          return;
+      }
+      setLoading(true);
+      try {
+        console.log(user);
+console.log(typeof user?.id);
+console.log(user?.id);
+          await reserveRoom({
+              nAdults: booking.adults,
+              nKids: booking.children,
+              checkIn: booking.checkIn,
+              checkOut: booking.checkOut,
+              roomTypeId: booking.selectedRoom?.id,
+              meals: 0,
+              totalPrice: grandTotal,
+              guestId: user.id,
+              specialRequest: ""
+          });
+          setConfirmed(true);
+      } catch (err) {
+          console.error(err);
+          alert("Reservation failed.");
+      } finally {
+          setLoading(false);
+      }
   }
 
   if (confirmed) return (
@@ -229,7 +237,7 @@ export default function PaymentPage() {
             {/* Pay button */}
             <motion.button
               onClick={handlePay}
-              disabled={!canPay || loading}
+              disabled={!canPay || loading || !user}
               whileHover={canPay && !loading ? { scale: 1.02 } : {}}
               whileTap={canPay && !loading ? { scale: 0.97 } : {}}
               className={`w-full p-5 rounded-2xl font-serif-lux text-lg italic transition-all duration-400 border-none flex items-center justify-center gap-2.5 ${
@@ -300,7 +308,7 @@ export default function PaymentPage() {
 
     <div className="flex justify-center gap-4">
       <Link
-        to="/login?return=/payment"
+        to="/login?return=/reservation/payment"
         className="
           px-8
           py-3
@@ -316,7 +324,7 @@ export default function PaymentPage() {
       </Link>
 
       <Link
-        to="/register?return=/payment"
+        to="/register?return=/reservation/payment"
         className="
           px-8
           py-3

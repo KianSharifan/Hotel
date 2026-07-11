@@ -1,25 +1,17 @@
 import { useState, useEffect } from "react"
-import {getReservations, checkIn, checkOut, payInvoice} from "../../api/fdManagerApi";
+import {getReservations, checkIn, checkOut, payInvoice} from "../../../api/fdManagerApi";
 
-export default function FrontDeskManager() {
-
-  const [reservationDate, setReservationDate] = useState("")
-  const [username, setUsername] = useState("")
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
-  const [passport, setPassport] = useState("")
-  const [nationality, setNationality] = useState("")
+export default function CheckOut() {
 
   const [checkoutDate, setCheckoutDate] = useState("")
   const [roomNumber, setRoomNumber] = useState("")
   const [tax, setTax] = useState("")
   const [discount, setDiscount] = useState("")
-
   const [paymentMethod, setPaymentMethod] = useState("")
   const [transactionId, setTransactionId] = useState("")
   const [invoiceId,setInvoiceId]=useState<number|null>(null);
-
   const [reservations, setReservations] = useState<any[]>([]);
+  
 
 
     const loadReservations = async () => {
@@ -50,150 +42,7 @@ export default function FrontDeskManager() {
 
       <div className="max-w-7xl mx-auto p-10 space-y-10">
 
-        {/* Reservations */}
 
-        <div className="bg-white rounded-xl shadow border p-8">
-
-          <div className="flex justify-between items-center mb-6">
-
-            <h2 className="text-2xl font-semibold">
-              Reservations
-            </h2>
-
-            <button
-                onClick={loadReservations}
-                className="bg-blue-600 text-white px-6 py-3 rounded-lg"
-            >
-                Refresh Reservations
-            </button>
-
-          </div>
-
-          <table className="w-full border-collapse">
-
-            <thead>
-
-              <tr className="bg-gray-100">
-
-                <th className="p-4 text-left">Reservation ID</th>
-                <th className="p-4 text-left">Guest</th>
-                <th className="p-4 text-left">Room</th>
-                <th className="p-4 text-left">Check In</th>
-                <th className="p-4 text-left">Check Out</th>
-
-              </tr>
-
-            </thead>
-
-            <tbody>
-                {reservations.map((r) => (
-                    <tr key={r.id} className="border-b">
-                        <td className="p-4">{r.id}</td>
-                        <td className="p-4">{r.guestId}</td>
-                        <td className="p-4">{r.roomId}</td>
-                        <td className="p-4">
-                            {new Date(r.checkInDate).toLocaleDateString()}
-                        </td>
-                        <td className="p-4">
-                            {new Date(r.checkOutDate).toLocaleDateString()}
-                        </td>
-                    </tr>
-                ))}
-            </tbody>
-
-          </table>
-
-        </div>
-
-        {/* Check In */}
-
-        <div className="bg-white rounded-xl shadow border p-8">
-
-          <h2 className="text-2xl font-semibold mb-6">
-            Check In Guest
-          </h2>
-
-          <div className="grid grid-cols-2 gap-5">
-
-            <input
-              type="date"
-              value={reservationDate}
-              onChange={(e)=>setReservationDate(e.target.value)}
-              placeholder="Reservation Date"
-              className="border rounded-lg p-3"
-            />
-
-            <input
-              value={username}
-              onChange={(e)=>setUsername(e.target.value)}
-              placeholder="Username"
-              className="border rounded-lg p-3"
-            />
-
-            <input
-              value={firstName}
-              onChange={(e)=>setFirstName(e.target.value)}
-              placeholder="First Name"
-              className="border rounded-lg p-3"
-            />
-
-            <input
-              value={lastName}
-              onChange={(e)=>setLastName(e.target.value)}
-              placeholder="Last Name"
-              className="border rounded-lg p-3"
-            />
-
-            <input
-              value={passport}
-              onChange={(e)=>setPassport(e.target.value)}
-              placeholder="Passport Number"
-              className="border rounded-lg p-3"
-            />
-
-            <input
-              value={nationality}
-              onChange={(e)=>setNationality(e.target.value)}
-              placeholder="Nationality"
-              className="border rounded-lg p-3"
-            />
-
-            </div>
-
-            <button
-                onClick={async () => {
-
-                    try {
-
-                        await checkIn({
-                            reservationDate,
-                            userName: username,
-                            nationality,
-                            passportNumber: passport,
-                            firstName,
-                            lastName
-                        });
-
-                        alert("Guest checked in!");
-
-                        await loadReservations();
-
-                    }
-
-                    catch (err) {
-
-                        console.log(err);
-                        alert("Check In failed.");
-
-                    }
-
-                }}
-                className="mt-6 bg-green-600 text-white px-8 py-3 rounded-lg"
-            >
-                Check In
-            </button>
-
-        </div>
 
         {/* Check Out */}
 

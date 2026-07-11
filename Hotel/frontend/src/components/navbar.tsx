@@ -314,7 +314,7 @@ export default function Navbar() {
             </>
           ) : (
             <button
-              onClick={() => navigate("/login?return=/payment")}
+              onClick={() => navigate("/login")}
               className="
                 px-4 py-1.5
                 uppercase

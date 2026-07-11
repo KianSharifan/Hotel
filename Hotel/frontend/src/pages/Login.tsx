@@ -1,15 +1,18 @@
 import { useState } from "react"
-import {Link, useNavigate } from "react-router-dom"
+import {Link, useNavigate, useLocation  } from "react-router-dom"
 import { useAuth } from "../context/AuthContext"
 import { login as loginApi } from "../api/loginApi"
+import { jwtDecode } from "jwt-decode";
 
 function Login() {
     const navigate = useNavigate()
-
+    const location = useLocation();
     const { login } = useAuth()
-
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
+
+    const params = new URLSearchParams(location.search)
+    const returnTo = params.get("return") ?? "/"
 
     async function handleLogin(e: React.FormEvent) {
         e.preventDefault();
@@ -26,14 +29,12 @@ function Login() {
                 password
             });
 
+
+console.log(jwtDecode(data.token));
+
             login(data.token);
-
             alert("Login successful!");
-
-            const params = new URLSearchParams(location.search)
-            const returnTo = params.get("return") ?? "/"
             navigate(returnTo)
-
         }
         catch (err: any) {
 
@@ -151,7 +152,7 @@ function Login() {
 
             <button
                 onClick={() =>
-                navigate("/register?return=/payment")
+                navigate(`/register?return=${encodeURIComponent(returnTo)}`)
                 }
                 className="
                 ml-2
