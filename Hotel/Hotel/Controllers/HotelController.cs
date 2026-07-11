@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hotel.Controllers;
 
-[Route("API/")]
+[Route("API")]
 [ApiController]
 public class HotelController : Controller
 {
@@ -29,10 +29,10 @@ public class HotelController : Controller
     }
 
     //should have auth
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateHotels(int id, [FromBody]HotelDto dto)
+    [HttpPut]
+    public async Task<IActionResult> UpdateHotels([FromBody]HotelDto dto)
     {
-        var h =  await _context.Hotels.FirstOrDefaultAsync(x => x.Id == id);
+        var h =  await _context.Hotels.FirstOrDefaultAsync();
         if (h == null)
             return NotFound();
         if(dto.Name != null)
@@ -101,54 +101,6 @@ public class HotelController : Controller
         if (d == null)
             return NotFound();
         _context.Departments.Remove(d);
-        await _context.SaveChangesAsync();
-        return Ok();
-    }
-    
-    //should have auth
-    [HttpGet("Roles")]
-    public async Task<IActionResult> AllRoles()
-    {
-        return Ok(await _context.Roles.ToListAsync());
-    }
-    
-    //should have auth
-    [HttpPost("Roles")]
-    public async Task<IActionResult> CreateRole([FromBody] RoleDto role)
-    {
-        if (role.Name == null)
-            return BadRequest();
-        if (_context.Roles.Any(x => x.Name == role.Name))
-            return BadRequest("Role with the same name already exists");
-        var r = new Role()
-        {
-            Name = role.Name
-        };
-        await _context.Roles.AddAsync(r);
-        await _context.SaveChangesAsync();
-        return Ok();
-    }
-    
-    //should have auth
-    [HttpPut("Roles/{id}")]
-    public async Task<IActionResult> UpdateRole(int id, [FromBody] RoleDto role)
-    {
-        var r = _context.Roles.FirstOrDefault(x => x.RoleId == id);
-        if (r == null)
-            return NotFound();
-        r.Name = role.Name;
-        await _context.SaveChangesAsync();
-        return Ok();
-    }
-    
-    //should have auth
-    [HttpDelete("Roles/{id}")]
-    public async Task<IActionResult> DeleteRole(int id)
-    {
-        var r = _context.Roles.FirstOrDefault(x => x.RoleId == id);
-        if (r == null)
-            return NotFound();
-        _context.Roles.Remove(r);
         await _context.SaveChangesAsync();
         return Ok();
     }
