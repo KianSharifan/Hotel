@@ -42,13 +42,13 @@ public class RoomServices
             .FirstOrDefaultAsync();
     }
 
-    public async Task<int> Reserve(RoomReservationDto input)
+    public async Task<(int,int)> Reserve(RoomReservationDto input)
     {
-        int output = 0;
+        var output = (0,0);
         var room = await FindAvailableRoom(input);
         if (room == null)
             return output;
-        output = room.RoomId;
+        output.Item1 = (int)room.RoomNumber;
         Reservation reservation = new Reservation()
         {
             CheckInDate = input.CheckIn,
@@ -59,12 +59,14 @@ public class RoomServices
             Status = "Not Checked In",
             SpecialRequest = input.SpecialRequest
         };
-        _context.Reservations.Add(reservation);
+        await _context.Reservations.AddAsync(reservation);
+        await _context.SaveChangesAsync();
+        output.Item2 = reservation.Id;
         if (input.Meals == 1)
         {
             var service = _context.Services.FirstOrDefault(s => s.Name == "Breakfast");
             if (service == null)
-                return 0;
+                return (0,0);
             GuestServiceUsage gsu = new GuestServiceUsage()
             {
                 GuestId = input.GuestId,
@@ -75,13 +77,13 @@ public class RoomServices
                 UseDate = input.CheckIn.ToDateTime(new TimeOnly(08, 00, 00)),
                 ReservationId = reservation.Id
             };
-            _context.GuestServiceUsages.Add(gsu);
+            await _context.GuestServiceUsages.AddAsync(gsu);
         }
         if (input.Meals == 2)
         {
             var service = _context.Services.FirstOrDefault(s => s.Name == "AllMeals");
             if (service == null)
-                return 0;
+                return (0,0);
             GuestServiceUsage gsu = new GuestServiceUsage()
             {
                 GuestId = input.GuestId,
@@ -92,7 +94,7 @@ public class RoomServices
                 UseDate = input.CheckIn.ToDateTime(new TimeOnly(08, 00, 00)),
                 ReservationId = reservation.Id
             };
-            _context.GuestServiceUsages.Add(gsu);
+            await _context.GuestServiceUsages.AddAsync(gsu);
         }
         await _context.SaveChangesAsync();
         return output;

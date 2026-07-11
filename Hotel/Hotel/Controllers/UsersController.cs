@@ -123,7 +123,9 @@ public class UsersController : Controller
     {
         try
         {
-            var position = _context.Positions.Find(employee.PositionId);
+            if (employee.Position == null)
+                return BadRequest("Position null");
+            var position = await _context.Positions.FirstOrDefaultAsync(p => p.Title!.ToLower() == employee.Position.ToLower());
             if(position == null)
                 return BadRequest("Position not found");
             if (employee.Salary < position.BaseSalary)

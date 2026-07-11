@@ -9,5 +9,5 @@ public class EmployeeCreateDto
     public DateOnly BirthDate { get; set; }
     public double Salary { get; set; }
     public int DepartmentId { get; set; }
-    public int PositionId { get; set; }
+    public string? Position { get; set; }
 }

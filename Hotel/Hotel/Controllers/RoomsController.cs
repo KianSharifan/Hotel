@@ -26,25 +26,28 @@ public class RoomsController : Controller
      {
          try
          {
-             return Ok(await _context.Rooms.FindAsync(id));
+             var r = await _context.Rooms.FirstOrDefaultAsync(r => r.RoomId == id);
+             if (r == null)
+                 return NotFound();
+             return Ok(r);
          }
-         catch (Exception e)
+         catch (Exception)
          {
-             return BadRequest(e.Message);
+             return StatusCode(500, "An unexpected error occurred");
          }
      }
      
      // should have authentication
      [HttpGet]
-     public IActionResult GetRooms()
+     public async Task<IActionResult> GetRooms()
      {
          try
          {
-             return Ok(_context.Rooms);
+             return Ok(await _context.Rooms.ToListAsync());
          }
-         catch (Exception e)
+         catch (Exception)
          {
-             return BadRequest(e.Message);
+             return StatusCode(500, "An unexpected error occurred");
          }
      }
 
@@ -70,11 +73,11 @@ public class RoomsController : Controller
              if(dto.Note != null)
                  room.Notes = dto.Note;
              await _context.SaveChangesAsync();
-             return Ok();
+             return Ok(room);
          }
-         catch (Exception e)
+         catch (Exception)
          {
-             return BadRequest(e.Message);
+             return StatusCode(500, "An unexpected error occurred");
          }
      }
      
@@ -89,11 +92,11 @@ public class RoomsController : Controller
                  return NotFound();
              _context.Rooms.Remove(room);
              await _context.SaveChangesAsync();
-             return Ok();
+             return NoContent();
          }
-         catch (Exception e)
+         catch (Exception)
          {
-             return BadRequest(e.Message);
+             return StatusCode(500, "An unexpected error occurred");
          }
      }
 
@@ -103,23 +106,25 @@ public class RoomsController : Controller
      {
          try
          {
-             var r = new Room();
-             if (room.RoomTypeId != null && room.Id != null && room.HotelId != null && room.Floor != null && room.PricePerNight != null && room.RoomNumber != null)
+             if (room.RoomTypeId == null || room.HotelId == null || room.Floor == null || room.RoomNumber == null)
+                 return BadRequest("Missing required fields");
+
+             var r = new Room
              {
-                 r.RoomId = room.Id.Value;
-                 r.HotelId = room.HotelId.Value;
-                 r.Floor = room.Floor.Value;
-                 r.Notes =  room.Note;
-                 r.Status = room.Status;
-                 r.RoomNumber = room.RoomNumber.Value;
-             }
+                 HotelId = room.HotelId.Value,
+                 Floor = room.Floor.Value,
+                 Notes = room.Note,
+                 Status = room.Status,
+                 RoomNumber = room.RoomNumber.Value,
+                 RoomTypeId = room.RoomTypeId.Value
+             };
              _context.Rooms.Add(r);
              await _context.SaveChangesAsync();
-             return Ok();
+             return CreatedAtAction(nameof(GetRoom), new { id = r.RoomId },r);
          }
-         catch (Exception e)
+         catch (Exception)
          {
-             return BadRequest(e.Message);
+             return StatusCode(500, "An unexpected error occurred");
          }
      }
 
@@ -131,16 +136,18 @@ public class RoomsController : Controller
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            int output = await _roomServices.Reserve(input);
-
-            if (output == 0)
+            var output = await _roomServices.Reserve(input);
+            if (output == (0,0))
                 return BadRequest("No available room");
-
-            return Ok(output);
+            return CreatedAtAction(
+                nameof(FrontDeskManagerController.GetReservation)
+                ,controllerName: "FrontDeskManager",
+                routeValues: new { id = output.Item2 },
+                output.Item1);
         }
         catch (Exception)
         {
-            return BadRequest("Not valid inputs!");
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
  }
