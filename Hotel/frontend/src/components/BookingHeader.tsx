@@ -69,7 +69,6 @@ export default function BookingHeader() {
 
   return (
     <>
-      {/* Warning Modal */}
       <AnimatePresence>
         {warningFor !== null && (
           <motion.div
@@ -113,9 +112,8 @@ export default function BookingHeader() {
         )}
       </AnimatePresence>
 
-      {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-[1000] bg-[#060606]/92 backdrop-blur-xl border-b border-[#c8a84b]/15 font-serif-lux">
-        {/* Top bar: logo + cancel */}
+
         <div className="flex items-center justify-between px-12 pt-4 max-w-[1400px] mx-auto">
           <motion.div
             className="cursor-pointer flex items-baseline gap-2.5"
@@ -141,7 +139,7 @@ export default function BookingHeader() {
           </motion.button>
         </div>
 
-        {/* Steps */}
+
         <div className="flex items-stretch max-w-[1400px] mx-auto px-12">
           {STEPS.map((step, idx) => {
             const locked = isLocked(step.num)
@@ -161,7 +159,7 @@ export default function BookingHeader() {
                     locked ? "cursor-not-allowed opacity-30" : lockedBack ? "cursor-pointer opacity-50" : "cursor-pointer opacity-100"
                   }`}
                 >
-                  {/* Active underline */}
+                  
                   <motion.div
                     className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#c8a84b] via-[#f5e09a] to-[#c8a84b] origin-left"
                     initial={false}
@@ -169,7 +167,7 @@ export default function BookingHeader() {
                     transition={{ duration: 0.4, ease: "easeOut" }}
                   />
 
-                  {/* Step number + icon row */}
+
                   <div className="flex items-center gap-2.5 mb-1">
                     <div className={`w-6.5 h-6.5 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-400 ${
                       isDone
@@ -193,7 +191,7 @@ export default function BookingHeader() {
                     )}
                   </div>
 
-                  {/* Summary value */}
+
                   <div className="pl-9">
                     {summary ? (
                       <motion.span
@@ -213,7 +211,7 @@ export default function BookingHeader() {
                   </div>
                 </motion.button>
 
-                {/* Divider */}
+
                 {idx < STEPS.length - 1 && (
                   <div className="w-px h-9 bg-[#c8a84b]/15 flex-shrink-0" />
                 )}

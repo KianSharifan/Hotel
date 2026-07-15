@@ -1,5 +1,3 @@
-// pages/Pool.tsx
-
 import LuxurySection from "../components/Amenitiesformat";
 
 export default function Pool() {

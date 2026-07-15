@@ -21,7 +21,7 @@ export default function LuxurySection({
         reverse ? "md:flex-row-reverse" : ""
       } items-center gap-10 py-16 px-6 md:px-20`}
     >
-      {/* Image */}
+      
       <div className="md:w-1/2 w-full overflow-hidden rounded-3xl shadow-2xl">
         <img
           src={image}
@@ -30,7 +30,7 @@ export default function LuxurySection({
         />
       </div>
 
-      {/* Text */}
+
       <div className="md:w-1/2 w-full">
         <h2 className="text-4xl md:text-5xl font-light tracking-wide text-gray-800">
           {title}

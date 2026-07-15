@@ -71,25 +71,27 @@ export default function PaymentPage() {
       setLoading(true);
       try {
         console.log(user);
-console.log(typeof user?.id);
-console.log(user?.id);
+        console.log(typeof user?.id);
+        console.log(user?.id);
           await reserveRoom({
-              nAdults: booking.adults,
-              nKids: booking.children,
-              checkIn: booking.checkIn,
-              checkOut: booking.checkOut,
-              roomTypeId: booking.selectedRoom?.id,
-              meals: 0,
-              totalPrice: grandTotal,
-              guestId: user.id,
-              specialRequest: ""
+            nAdults: booking.adults,
+            nKids: booking.children,
+            checkIn: booking.checkIn,
+            checkOut: booking.checkOut,
+            roomTypeId: booking.selectedRoom?.id,
+            meals: 0,
+            totalPrice: grandTotal,
+            guestId: user.id,
+            specialRequest: ""
           });
           setConfirmed(true);
-      } catch (err) {
-          console.error(err);
-          alert("Reservation failed.");
-      } finally {
-          setLoading(false);
+      } 
+      catch (err) {
+        console.error(err);
+        alert("Reservation failed.");
+      } 
+      finally {
+        setLoading(false);
       }
   }
 
@@ -147,7 +149,6 @@ console.log(user?.id);
 
       <div className="max-w-[960px] mx-auto px-6 pt-16 pb-32 relative z-10">
 
-        {/* Title */}
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}
           className="text-center mb-14">
           <p className="text-[0.65rem] tracking-[0.45em] uppercase text-[#c8a84b]/60 font-sans mb-4">Step 4 of 4</p>
@@ -159,7 +160,6 @@ console.log(user?.id);
 
         <div className="grid grid-cols-1 md:grid-cols-[1fr_380px] gap-8 items-start">
 
-          {/* Payment form */}
           <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3, duration: 0.7 }}
             className="bg-white/[0.02] border border-[#c8a84b]/10 rounded-3xl p-11">
 
@@ -190,7 +190,6 @@ console.log(user?.id);
             </div>
           </motion.div>
 
-          {/* Summary */}
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4, duration: 0.7 }}>
             <div className="bg-white/[0.02] border border-[#c8a84b]/10 rounded-3xl p-9 mb-4">
               <p className="text-[0.6rem] tracking-[0.3em] uppercase text-[#c8a84b]/50 font-sans mb-5">
@@ -234,7 +233,6 @@ console.log(user?.id);
               </div>
             </div>
 
-            {/* Pay button */}
             <motion.button
               onClick={handlePay}
               disabled={!canPay || loading || !user}
@@ -268,7 +266,6 @@ console.log(user?.id);
           </motion.div>
         </div>
 
-        {/* Cancel */}
         <div className="text-center mt-10">
           <button onClick={() => { resetBooking(); navigate("/") }}
             className="bg-none border-none cursor-pointer text-white/20 text-xs tracking-[0.2em] uppercase font-sans transition-colors duration-300 hover:text-red-400/60">
@@ -277,70 +274,70 @@ console.log(user?.id);
         </div>
       </div>
 
-{!user && (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ delay: 0.5 }}
-    className="
-      mt-8
-      bg-white/[0.02]
-      border
-      border-[#c8a84b]/10
-      rounded-3xl
-      p-8
-      text-center
-    "
-  >
-    <p className="text-[0.65rem] tracking-[0.35em] uppercase text-[#c8a84b]/60 mb-3">
-      Guest Account
-    </p>
+      {!user && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="
+            mt-8
+            bg-white/[0.02]
+            border
+            border-[#c8a84b]/10
+            rounded-3xl
+            p-8
+            text-center
+          "
+        >
+          <p className="text-[0.65rem] tracking-[0.35em] uppercase text-[#c8a84b]/60 mb-3">
+            Guest Account
+          </p>
 
-    <h3 className="font-serif-lux text-2xl italic text-white mb-3">
-      Reserve Even Faster
-    </h3>
+          <h3 className="font-serif-lux text-2xl italic text-white mb-3">
+            Reserve Even Faster
+          </h3>
 
-    <p className="text-white/50 text-sm leading-7 mb-8">
-      Create a complimentary guest account to manage your
-      reservations, enjoy quicker bookings, and receive exclusive
-      offers from Noire Palace.
-    </p>
+          <p className="text-white/50 text-sm leading-7 mb-8">
+            Create a complimentary guest account to manage your
+            reservations, enjoy quicker bookings, and receive exclusive
+            offers from Noire Palace.
+          </p>
 
-    <div className="flex justify-center gap-4">
-      <Link
-        to="/login?return=/reservation/payment"
-        className="
-          px-8
-          py-3
-          rounded-xl
-          border
-          border-[#c8a84b]/30
-          text-[#c8a84b]
-          hover:bg-[#c8a84b]/10
-          transition
-        "
-      >
-        Login
-      </Link>
+          <div className="flex justify-center gap-4">
+            <Link
+              to="/login?return=/reservation/payment"
+              className="
+                px-8
+                py-3
+                rounded-xl
+                border
+                border-[#c8a84b]/30
+                text-[#c8a84b]
+                hover:bg-[#c8a84b]/10
+                transition
+              "
+            >
+              Login
+            </Link>
 
-      <Link
-        to="/register?return=/reservation/payment"
-        className="
-          px-8
-          py-3
-          rounded-xl
-          bg-[#c8a84b]
-          text-black
-          font-semibold
-          hover:scale-105
-          transition
-        "
-      >
-        Create Account
-      </Link>
-    </div>
-  </motion.div>
-)}
+            <Link
+              to="/register?return=/reservation/payment"
+              className="
+                px-8
+                py-3
+                rounded-xl
+                bg-[#c8a84b]
+                text-black
+                font-semibold
+                hover:scale-105
+                transition
+              "
+            >
+              Create Account
+            </Link>
+          </div>
+        </motion.div>
+      )}
     </div>
   )
 }

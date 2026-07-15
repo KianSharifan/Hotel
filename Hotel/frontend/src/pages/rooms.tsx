@@ -1,6 +1,4 @@
-import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
-
 
 interface RoomType {
   roomTypeId: number
@@ -10,17 +8,13 @@ interface RoomType {
   numberSofaBed: number
   numberSingleBed: number
   description: string
-  URL: string
+  picUrl: string
   price: number
 }
 
 function Rooms() {
-
-
   const [rooms, setRooms] = useState<RoomType[]>([])
   const [loading, setLoading] = useState(true)
-  const navigate = useNavigate();
-
 
   useEffect(() => {
     fetch("http://localhost:5263/API/RoomTypes")
@@ -45,12 +39,8 @@ function Rooms() {
     }
 
   return (
-
-
-
     <div className="bg-black text-white min-h-screen">
 
-      {/*hero*/}
       <section
         className="
         h-[70vh]
@@ -67,7 +57,6 @@ function Rooms() {
             "url('https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070')"
         }}
       >
-
 
         <div className="absolute inset-0 bg-black/60"></div>
         <div className="relative z-10 text-center px-6">
@@ -115,11 +104,10 @@ function Rooms() {
         </div>
 
       </section>
-      {/* rooms */}
+ 
       <div className="py-28 px-8 md:px-20 space-y-32">
 
         {rooms.map((room, index) => (
-
           <div
             key={room.roomTypeId}
 
@@ -137,7 +125,6 @@ function Rooms() {
             `}
           >
 
-            {/* img */}
             <div
               className="
               flex-1
@@ -147,7 +134,7 @@ function Rooms() {
             >
 
               <img
-                src={room.URL}
+                src={`http://localhost:5263${room.picUrl}`}
 
                 className="
                 w-full
@@ -162,18 +149,14 @@ function Rooms() {
                 group-hover:brightness-75
                 "
               />
-
             </div>
 
-            {/* text */}
             <div
               className="
               flex-1
-
               transform
               transition-all
               duration-700
-
               group-hover:translate-y-[-10px]
               "
             >
@@ -218,23 +201,18 @@ function Rooms() {
                 <p>Sofa Beds: {room.numberSofaBed}</p>
               </div>
 
-              {/* buttons */}
               <div className="flex gap-6">
 
                 <button
                   className="
                   bg-white
                   text-black
-
                   px-8
                   py-4
-
                   rounded-2xl
                   text-lg
-
                   transition-all
                   duration-500
-
                   hover:bg-gray-300
                   hover:scale-105
                   "
@@ -242,41 +220,11 @@ function Rooms() {
                   Explore
                 </button>
 
-                {/* <button
-
-                  onClick={() => navigate("/reservation")}
-
-                  className="
-                  border
-                  border-white
-
-                  px-8
-                  py-4
-
-                  rounded-2xl
-                  text-lg
-
-                  transition-all
-                  duration-500
-
-                  hover:bg-white
-                  hover:text-black
-                  hover:scale-105
-                  "
-                >
-                  Book Now
-                </button> */}
-
               </div>
-
             </div>
-
           </div>
-
         ))}
-
       </div>
-
     </div>
   )
 }

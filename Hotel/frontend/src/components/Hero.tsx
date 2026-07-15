@@ -1,136 +1,3 @@
-// import hotelImage from "../assets/hero.png"
-// import hotelImage2 from "../assets/hotelImg2.png"
-// import { useNavigate } from "react-router-dom"
-// import { motion } from "motion/react"
-
-// function Hero() {
-//     const navigate = useNavigate()
-
-//   return (
-
-//     <section
-//       className="
-//       w-full
-//       relative
-//       h-screen
-     
-//       bg-cover
-//       bg-center
-//       flex
-//       overflow-hidden
-//       items-center
-//       justify-center
-//       "
-//     //   style={{
-//     //     backgroundImage:
-//     //       "url('https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=2070')"
-//     //   }}
-
-//     style={{
-//         backgroundImage: `url(${hotelImage2})`
-//     }}
-//     >
-
-//       {/* Dark Overlay */}
-//       <div className="absolute inset-0 bg-black/50"></div>
-
-//       {/* Content */}
-//       <motion.div className="relative z-10 text-center  max-w-4xl px-6"
-//         initial={{
-//             opacity: 0,
-//             y: 80
-//           }}
-
-//           animate={{
-//             opacity: 1,
-//             y: 0
-//           }}
-
-//           transition={{
-//             duration: 1.2
-//           }}>
-
-//         <p className="text-[#9F8B4A] uppercase tracking-[10px] mb-6 text-lg">
-
-//           Luxury Resort & Spa
-
-//         </p>
-
-//         <h1 className="text-black drop-shadow-[0_0_10px_rgba(212,175,55,0.8)] text-7xl md:text-8xl leading-tight mb-8 font-cinzel">
-
-//           Experience Timeless Elegance
-
-//         </h1>
-
-//         <p className="text-[#B99939] text-xl md:text-2xl mb-10">
-
-//           Discover world-class hospitality,
-//           breathtaking suites,
-//           and unforgettable moments.
-
-//         </p>
-
-//         <div className="text-[#B99939] flex justify-center gap-6 flex-wrap">
-
-//           <button
-//             onClick={() => navigate("/rooms")}
-//             className="
-//             bg-black
-//             border
-//             border-2
-//             px-8
-//             py-4
-//             rounded-xl
-//             text-lg
-//             hover:bg-[#9E781A]
-//             hover:text-black
-//             transition
-//             text-[#9E781A]
-//             "
-//           >
-//             Explore Rooms
-//           </button>
-
-//           <button
-//             className="
-//             bg-black
-//             border
-//             border-2
-//             text-[#9E781A]
-//             px-8
-//             py-4
-//             rounded-xl
-//             text-lg
-//             hover:bg-[#9E781A]
-//             hover:text-black
-//             transition
-//             "
-//             onClick={() => navigate("/reservation")}
-//           >
-//             Book Now
-//           </button>
-
-//         </div>
-
-//       </motion.div>
-
-//     </section>
-//   )
-// }
-
-// export default Hero
-
-
-
-
-
-
-
-
-
-
-
-
 import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import hotelImage from "../assets/hotelImg.png";
@@ -142,7 +9,6 @@ export default function Hero() {
   return (
     <section className="relative h-screen w-full overflow-hidden">
 
-      {/* Animated Background */}
       <motion.div
         initial={{ scale: 1 }}
         animate={{ scale: 1.06 }}
@@ -159,15 +25,6 @@ export default function Hero() {
           alt="Noire Palace"
           className="h-full w-full object-cover"
         />
-
-        {/* <video    
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="w-full h-full object-cover">
-          <source src={heroVideo} type="video/mp4" />
-        </video> */}
       </motion.div>
 
       {/* Cinematic Overlays */}
@@ -180,7 +37,6 @@ export default function Hero() {
       {/* Golden Glow */}
       <div className="absolute left-[-250px] top-1/2 h-[600px] w-[600px] -translate-y-1/2 rounded-full bg-amber-500/10 blur-[180px]" />
 
-      {/* Hero Content */}
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
@@ -215,25 +71,6 @@ export default function Hero() {
             "
           />
 
-          {/* Tagline */}
-          {/* <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: .4 }}
-            className="
-              uppercase
-              tracking-[0.55em]
-              text-[#b79a5a]
-              text-[11px]
-              md:text-xs
-              font-cinzel
-              mb-5
-            "
-          >
-            Luxury Hotel • Resort • Spa
-          </motion.p> */}
-
-          {/* Heading */}
           <motion.h1
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -251,7 +88,6 @@ export default function Hero() {
             Extraordinary Stays Await
           </motion.h1>
 
-          {/* Description */}
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -270,7 +106,7 @@ export default function Hero() {
             in the heart of Noire Palace.
           </motion.p>
 
-          {/* Button */}
+   
           <motion.button
             whileHover={{
               scale: 1.03,

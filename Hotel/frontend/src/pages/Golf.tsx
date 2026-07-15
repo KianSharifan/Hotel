@@ -1,5 +1,3 @@
-// pages/Golf.tsx
-
 import LuxurySection from "../components/Amenitiesformat";
 
 export default function Golf() {

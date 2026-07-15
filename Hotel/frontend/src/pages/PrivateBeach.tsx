@@ -1,5 +1,3 @@
-// pages/PrivateBeach.tsx
-
 import LuxurySection from "../components/Amenitiesformat";
 
 export default function PrivateBeach() {

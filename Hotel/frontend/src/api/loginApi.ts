@@ -57,7 +57,7 @@ export async function createEmployee(employee: {
     email: string;
     password: string;
     salary: number;
-    positionId: number;
+    position: string;
     departmentId: number;
     roleId: number;
     birthDate: string;

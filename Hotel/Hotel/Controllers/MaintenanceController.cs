@@ -87,6 +87,7 @@ public class MaintenanceController : Controller
                     CreatedDate = DateTime.UtcNow
                 };
                 await _context.MaintenanceRequests.AddAsync(req);
+                await _context.SaveChangesAsync(); //!!!!!!!!!!!!111
                 return Ok();
             }
             return BadRequest("Not valid input");

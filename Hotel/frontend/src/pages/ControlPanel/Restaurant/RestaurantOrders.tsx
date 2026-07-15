@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import {getMenu, createOrder, updateOrder, deleteOrder, getActiveOrders, getOrder} from "../../api/restaurantApi"
+import {getMenu, createOrder, updateOrder, deleteOrder, getActiveOrders, getOrder} from "../../../api/restaurantApi"
 
 interface MenuCategory {
   menuCategoryId: number
@@ -37,7 +37,6 @@ interface RestaurantOrder {
 }
 
 
-
 export default function RestaurantOrders() {
     const [categories, setCategories] = useState<MenuCategory[]>([])
     const [menuItems, setMenuItems] = useState<MenuItem[]>([])
@@ -71,7 +70,7 @@ const loadOrders = async () => {
     }
 
     catch(err){
-        console.log(err);}}
+      console.log(err);}}
 
     useEffect(() => {
     async function loadMenu() {
@@ -254,13 +253,13 @@ const loadOrders = async () => {
             <button
             onClick={async () => {
                 if (selectedItems.length === 0) return
-console.log(JSON.stringify({
-    tableId: Number(tableId),
-    orderItems: selectedItems.map(item => ({
-        itemId: item.id,
-        quantity: item.quantity
-    }))
-}, null, 2));
+                console.log(JSON.stringify({
+                    tableId: Number(tableId),
+                    orderItems: selectedItems.map(item => ({
+                        itemId: item.id,
+                        quantity: item.quantity
+                    }))
+                }, null, 2));
                 await createOrder({
                     tableId:Number(tableId),
                     orderItems:selectedItems.map(item=>({
@@ -342,8 +341,6 @@ console.log(JSON.stringify({
             )}
 
             </div>
-
-                {/* Orders */}
 
                 <div className="bg-white rounded-xl shadow-md border p-8">
                 <h2 className="text-2xl font-semibold mb-6">

@@ -13,7 +13,6 @@ export default function CheckIn() {
   const [search, setSearch] = useState("");
   const [assignedRoom, setAssignedRoom] = useState<number | null>(null);
 
-
     const loadReservations = async () => {
         try {
             const data = await getReservations();

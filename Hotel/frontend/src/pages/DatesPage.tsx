@@ -88,7 +88,6 @@ export default function DatesPage() {
 
       <div className="max-w-[780px] mx-auto px-6 pt-16 pb-32 relative z-10">
 
-        {/* Title */}
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}
           className="text-center mb-12">
           <p className="text-[0.65rem] tracking-[0.45em] uppercase text-[#c8a84b]/60 font-sans mb-4">Step 2 of 4</p>
@@ -98,7 +97,6 @@ export default function DatesPage() {
           <div className="w-[60px] h-px bg-gradient-to-r from-transparent via-[#c8a84b] to-transparent mx-auto" />
         </motion.div>
 
-        {/* Selected dates summary */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
           className="grid grid-cols-[1fr_auto_1fr] items-center gap-4 mb-10 px-8 py-6 bg-white/[0.02] border border-[#c8a84b]/10 rounded-2xl">
           <div className="text-center">
@@ -124,11 +122,9 @@ export default function DatesPage() {
           </div>
         </motion.div>
 
-        {/* Calendar */}
         <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.7 }}
           className="bg-white/[0.02] border border-[#c8a84b]/10 rounded-3xl p-8 overflow-hidden">
 
-          {/* Month nav */}
           <div className="flex items-center justify-between mb-8">
             <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={prevMonth}
               className="w-10 h-10 rounded-full border border-[#c8a84b]/20 bg-transparent cursor-pointer flex items-center justify-center">
@@ -152,7 +148,6 @@ export default function DatesPage() {
             </motion.button>
           </div>
 
-          {/* Day labels */}
           <div className="grid grid-cols-7 mb-2">
             {DAYS.map(d => (
               <div key={d} className="text-center py-2 text-[0.6rem] tracking-[0.15em] uppercase text-white/25 font-sans">
@@ -161,7 +156,6 @@ export default function DatesPage() {
             ))}
           </div>
 
-          {/* Days grid */}
           <AnimatePresence mode="wait">
             <motion.div key={`${viewYear}-${viewMonth}`}
               initial={{ opacity: 0, x: direction * 40 }}
@@ -207,7 +201,6 @@ export default function DatesPage() {
           </AnimatePresence>
         </motion.div>
 
-        {/* CTA */}
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="mt-8">
           <motion.button
             onClick={() => { if (canContinue) { setDates(checkIn, checkOut); navigate("/reservation/rooms") } }}
@@ -224,7 +217,6 @@ export default function DatesPage() {
           </motion.button>
         </motion.div>
 
-        {/* Reset */}
         <div className="text-center mt-6">
           <button onClick={() => { resetBooking(); navigate("/") }}
             className="bg-none border-none cursor-pointer text-white/20 text-xs tracking-[0.2em] uppercase font-sans transition-colors duration-300 hover:text-red-400/60">

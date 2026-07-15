@@ -46,9 +46,7 @@ function Menu() {
       style={{ backgroundColor: "#0a0a0a" }}
     >
 
-      {/* ── HERO ────────────────────────────────────────────────────── */}
       <div className="relative overflow-hidden">
-
         {/* Ambient gold glow */}
         <div
           className="absolute inset-0 pointer-events-none"
@@ -77,7 +75,6 @@ function Menu() {
             Noire Palace · Fine Dining
           </motion.p>
 
-          {/* Main title */}
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
@@ -116,7 +113,6 @@ function Menu() {
         </div>
       </div>
 
-      {/* ── CATEGORY SELECTOR ───────────────────────────────────────── */}
       <div
         className="sticky top-0 z-20 px-6"
         style={{
@@ -162,10 +158,8 @@ function Menu() {
         </div>
       </div>
 
-      {/* ── ITEMS GRID ──────────────────────────────────────────────── */}
       <div className="max-w-5xl mx-auto px-6 py-20">
 
-        {/* Section heading */}
         <AnimatePresence mode="wait">
           <motion.div
             key={selectedCategoryName}
@@ -185,7 +179,6 @@ function Menu() {
           </motion.div>
         </AnimatePresence>
 
-        {/* Items */}
         <AnimatePresence mode="wait">
           <motion.div
             key={selectedCategory}
@@ -202,12 +195,10 @@ function Menu() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.07, ease: "easeOut" }}
               >
-                {/* Item row */}
                 <div
                   className="group py-10 flex gap-8 transition-all duration-500 cursor-default"
                   style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
                 >
-                  {/* Index number */}
                   <div
                     className="hidden md:block pt-1 text-xs tabular-nums flex-shrink-0 transition-colors duration-500"
                     style={{
@@ -219,7 +210,6 @@ function Menu() {
                     {String(index + 1).padStart(2, "0")}
                   </div>
 
-                  {/* Name + Description */}
                   <div className="flex-1 min-w-0">
                     <h2
                       className="text-2xl md:text-3xl font-light mb-3 leading-snug transition-colors duration-500 group-hover:text-white"
@@ -238,7 +228,6 @@ function Menu() {
                     </p>
                   </div>
 
-                  {/* Price */}
                   <div className="flex-shrink-0 flex flex-col items-end justify-start pt-1">
                     <span
                       className="text-xl transition-colors duration-500"
@@ -255,12 +244,10 @@ function Menu() {
               </motion.div>
             ))}
 
-            {/* Last rule */}
             <div style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }} />
           </motion.div>
         </AnimatePresence>
 
-        {/* Footer note */}
         <div className="mt-24 text-center">
           <div className="flex items-center justify-center gap-4 mb-8">
             <div className="h-px w-16" style={{ background: "linear-gradient(90deg, transparent, rgba(212,175,55,0.3))" }} />

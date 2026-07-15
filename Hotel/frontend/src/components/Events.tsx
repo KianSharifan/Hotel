@@ -37,8 +37,6 @@ function Events() {
   return (
     <section className="bg-black text-white py-32 px-8 md:px-20">
 
-      {/* TITLE */}
-
       <div className="text-center mb-28">
 
         <p className="uppercase tracking-[10px] text-gray-400 mb-5">
@@ -59,7 +57,6 @@ function Events() {
       <div className="space-y-36">
 
         {events.map((event, index) => (
-
           <motion.div
             key={event.id}
             initial={{
@@ -84,7 +81,6 @@ function Events() {
             `}
           >
 
-            {/* IMAGE */}
 
             <div className="flex-1 overflow-hidden rounded-3xl">
 
@@ -105,7 +101,6 @@ function Events() {
 
             </div>
 
-            {/* TEXT */}
 
             <motion.div
               initial={{
@@ -153,13 +148,9 @@ function Events() {
               </button>
 
             </motion.div>
-
           </motion.div>
-
         ))}
-
       </div>
-
     </section>
   )
 }

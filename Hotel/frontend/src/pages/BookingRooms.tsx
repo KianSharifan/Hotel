@@ -3,7 +3,6 @@ import { motion } from "motion/react"
 import { useBooking } from "../context/BookingContext"
 import BookingHeader from "../components/BookingHeader"
 import { amenityIcons } from "../data/amenityIcons"
-// import rooms from "../data/rooms"
 import { useEffect, useState } from "react"
 import { getAvailableRooms } from "../api/roomApi"
 
@@ -16,13 +15,6 @@ export default function BookingRooms() {
   const [rooms, setRooms] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
-  // if (loading) {
-  //   return (
-  //     <div className="min-h-screen bg-[#080808] text-white flex items-center justify-center">
-  //       Loading rooms...
-  //     </div>
-  //   )
-  // }
 
   useEffect(() => {
   if (
@@ -43,7 +35,7 @@ export default function BookingRooms() {
         )
 
     
-console.log("ROOMS FROM API", data)
+      console.log("ROOMS FROM API", data)
         setRooms(data)
       }
       catch (err) {
@@ -66,26 +58,18 @@ console.log("ROOMS FROM API", data)
     return Math.round((new Date(booking.checkOut).getTime() - new Date(booking.checkIn).getTime()) / 86400000)
   }
 
-  // function handleSelect(room: typeof rooms[0]) {
-  //   setRoom({
-  //     id: room.roomTypeId,
-  //     name: room.name,
-  //     price: room.price
-  //   })
-  //   navigate("/reservation/payment")
-  // }
 
-function handleSelect(room: any) {
-  console.log("SELECTED ROOM", room)
+  function handleSelect(room: any) {
+    console.log("SELECTED ROOM", room)
 
-  setRoom({
-    id: room.roomTypeId,
-    name: room.name,
-    price: room.price
-  })
+    setRoom({
+      id: room.roomTypeId,
+      name: room.name,
+      price: room.price
+    })
 
-  navigate("/reservation/payment")
-}
+    navigate("/reservation/payment")
+  }
 
   return (
     <div className="min-h-screen bg-[#080808] pt-[120px]">
@@ -93,7 +77,6 @@ function handleSelect(room: any) {
 
       <div className="max-w-[1100px] mx-auto px-6 pt-16 pb-32 relative z-10">
 
-        {/* Title */}
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}
           className="text-center mb-16">
           <p className="text-[0.65rem] tracking-[0.45em] uppercase text-[#c8a84b]/60 font-sans mb-4">Step 3 of 4</p>
@@ -106,7 +89,7 @@ function handleSelect(room: any) {
           </p>
         </motion.div>
 
-        {/* Room cards */}
+  
         <div className="flex flex-col gap-8">
           {filteredRooms.map((room, index) => (
             <motion.div
@@ -120,10 +103,10 @@ function handleSelect(room: any) {
               }}
               className="grid grid-cols-1 md:grid-cols-[420px_1fr] bg-white/[0.02] border border-[#c8a84b]/10 rounded-3xl overflow-hidden transition-[border-color,box-shadow] duration-400"
             >
-              {/* Image */}
+            
               <div className="relative overflow-hidden h-[340px]">
                 <motion.img
-                  src={room.url}
+                  src={`http://localhost:5263${room.picUrl}`}
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.7 }}
                   className="w-full h-full object-cover block"
@@ -131,7 +114,7 @@ function handleSelect(room: any) {
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[#080808]/40" style={{ backgroundImage: "linear-gradient(90deg, transparent 60%, rgba(8,8,8,0.4) 100%)" }} />
               </div>
 
-              {/* Content */}
+         
               <div className="p-10 flex flex-col justify-between">
                 <div>
                   <h2 className="font-serif-lux text-3xl font-light italic text-white mb-3">{room.name}</h2>
@@ -140,7 +123,7 @@ function handleSelect(room: any) {
                     {room.description}
                   </p>
 
-                  {/* Stats */}
+
                   <div className="flex gap-3 mb-5 flex-wrap">
                     {[
                       { label: `${room.maxGuests} Guests` },
@@ -202,7 +185,7 @@ function handleSelect(room: any) {
           ))}
         </div>
 
-        {/* Reset */}
+    
         <div className="text-center mt-12">
           <button onClick={() => { resetBooking(); navigate("/") }}
             className="bg-none border-none cursor-pointer text-white/20 text-xs tracking-[0.2em] uppercase font-sans transition-colors duration-300 hover:text-red-400/60">

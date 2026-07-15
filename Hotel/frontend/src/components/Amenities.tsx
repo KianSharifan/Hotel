@@ -283,13 +283,13 @@ const amenities = [
     tag: "Exclusive",
   },
   {
-    title: "Rooftop Lounge",
-    subtitle: "Above the World",
-    description: "Sip handcrafted cocktails under open skies as the city lights unfold beneath you.",
-    image: "https://images.unsplash.com/photo-1566073771259-6a8506099945",
-    link: "/amenities/rooftop",
-    tag: "Exclusive",
-  },
+    title: "Fitness Center",
+    subtitle: "Strength Meets Serenity",
+    description: "Train with state-of-the-art equipment in a sunlit sanctuary, open around the clock for every guest.",
+    image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48",
+    link: "/amenities/gym",
+    tag: "24/7 Access",
+  }
 ]
 
 const TOTAL = amenities.length
@@ -298,7 +298,7 @@ function getSlice(index: number) {
   return [amenities[index % TOTAL], amenities[(index + 1) % TOTAL]]
 }
 
-// Arrow button — left or right edge, vertically centred on cards
+
 function ArrowBtn({
   onClick,
   direction,
@@ -317,7 +317,7 @@ function ArrowBtn({
         position: "absolute",
         top: "50%",
         transform: "translateY(-50%)",
-        [direction]: "-26px",          // half-overlap the edge of the card area
+        [direction]: "-26px",         
         zIndex: 30,
         width: "52px",
         height: "52px",
@@ -386,7 +386,7 @@ export default function Amenities() {
       className="relative py-32 overflow-hidden"
       style={{ backgroundColor: "#0a0a0a" }}
     >
-      {/* Ambient glow */}
+
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -395,7 +395,6 @@ export default function Amenities() {
         }}
       />
 
-      {/* ── HEADER ── */}
       <div className="relative text-center mb-20 px-6">
         <p
           className="uppercase text-xs tracking-[6px] mb-5"
@@ -433,20 +432,11 @@ export default function Amenities() {
         </div>
       </div>
 
-      {/* ── CAROUSEL WRAPPER ── */}
-      {/*
-        px-16 on each side gives room for the arrows to sit in the gutter.
-        The arrows are absolutely positioned, overlapping this padding zone.
-      */}
+
       <div className="relative max-w-7xl mx-auto px-16">
-
-        {/* LEFT ARROW */}
         <ArrowBtn onClick={prev} direction="left" />
-
-        {/* RIGHT ARROW */}
         <ArrowBtn onClick={next} direction="right" />
 
-        {/* Cards */}
         <div className="overflow-hidden">
           <AnimatePresence mode="wait" custom={direction}>
             <motion.div
@@ -467,14 +457,12 @@ export default function Amenities() {
                     className="group relative overflow-hidden cursor-pointer"
                     style={{ height: "580px" }}
                   >
-                    {/* Image */}
                     <img
                       src={item.image}
                       alt={item.title}
                       className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
 
-                    {/* Gradient overlay */}
                     <div
                       className="absolute inset-0"
                       style={{
@@ -483,7 +471,6 @@ export default function Amenities() {
                       }}
                     />
 
-                    {/* Tag */}
                     <div className="absolute top-6 left-6">
                       <span
                         className="text-xs uppercase tracking-[4px] px-4 py-2"
@@ -499,7 +486,6 @@ export default function Amenities() {
                       </span>
                     </div>
 
-                    {/* Bottom content */}
                     <div className="absolute bottom-0 left-0 right-0 p-8">
                       <div
                         className="h-px mb-5 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"
@@ -553,10 +539,8 @@ export default function Amenities() {
           </AnimatePresence>
         </div>
 
-        {/* ── BOTTOM BAR: dots + counter ── */}
         <div className="mt-10 flex items-center justify-between">
 
-          {/* Dots */}
           <div className="flex items-center gap-3">
             {Array.from({ length: pairCount }).map((_, i) => (
               <button
@@ -580,7 +564,6 @@ export default function Amenities() {
             ))}
           </div>
 
-          {/* Counter */}
           <span
             className="text-xs tracking-[3px]"
             style={{

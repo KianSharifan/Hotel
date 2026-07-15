@@ -15,32 +15,29 @@ function Login() {
     const returnTo = params.get("return") ?? "/"
 
     async function handleLogin(e: React.FormEvent) {
-        e.preventDefault();
+      e.preventDefault();
 
-        if (!username || !password) {
-            alert("Please enter username and password.");
-            return;
-        }
+      if (!username || !password) {
+        alert("Please enter username and password.");
+        return;
+      }
 
-        try {
+      try {
+        const data = await loginApi({
+            username,
+            password
+        });
 
-            const data = await loginApi({
-                username,
-                password
-            });
 
+        console.log(jwtDecode(data.token));
 
-console.log(jwtDecode(data.token));
-
-            login(data.token);
-            alert("Login successful!");
-            navigate(returnTo)
-        }
-        catch (err: any) {
-
-            alert(err.message);
-
-        }
+        login(data.token);
+        alert("Login successful!");
+        navigate(returnTo)
+      }
+      catch (err: any) {
+        alert(err.message);
+      }
     }
 
   return (
@@ -170,6 +167,5 @@ console.log(jwtDecode(data.token));
     </div>
   )
 }
-
 
 export default Login

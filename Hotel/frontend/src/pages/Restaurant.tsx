@@ -15,21 +15,16 @@ function Restaurant() {
       observer.observe(expRef.current)
     }, [])
 
-
-
   const dishesRef = useRef<HTMLDivElement | null>(null)
   const [dishesVisible, setDishesVisible] = useState(false)
 
   useEffect(() => {
-
     const observer = new IntersectionObserver(([entry]) => {setDishesVisible(entry.isIntersecting)}, 
     {threshold: 0.2})
 
     if (dishesRef.current) 
       observer.observe(dishesRef.current)
   }, [])
-
-
 
   const dishes = [
     {
@@ -56,7 +51,6 @@ function Restaurant() {
   return (
 
     <div className="bg-black text-white">
-{/* hero */}
       <section
         className="
           h-screen
@@ -106,14 +100,10 @@ function Restaurant() {
             </button>
         </div>
 
+      </div>
+    </section>
 
 
-        </div>
-
-      </section>
-
-
-      {/*experience*/}
       <section
         ref={expRef}
         className={`
@@ -131,7 +121,6 @@ function Restaurant() {
           />
 
           <div>
-
             <h2 className="text-5xl font-bold mb-6">
               Michelin-Level Dining
             </h2>
@@ -141,28 +130,23 @@ function Restaurant() {
             </p>
 
           </div>
-
         </div>
 
       </section>
 
 
-      {/*dishes*/}
       <section
         ref={dishesRef}
         className="bg-white text-black py-32 px-10"
       >
 
         <div className="text-center mb-20">
-
           <h2 className="text-6xl font-bold">
             Signature Dishes
           </h2>
-
         </div>
 
         <div className="grid md:grid-cols-3 gap-10">
-
           {dishes.map((dish, index) => (
 
             <div
@@ -180,7 +164,6 @@ function Restaurant() {
               />
 
               <div className="p-6">
-
                 <h3 className="text-2xl font-bold mb-2">
                   {dish.name}
                 </h3>
@@ -190,15 +173,10 @@ function Restaurant() {
                 </p>
 
               </div>
-
             </div>
-
           ))}
-
         </div>
-
       </section>
-
     </div>
   )
 }

@@ -83,7 +83,6 @@ export default function GuestsPage() {
       <div className="fixed top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(200,168,75,0.04)_0%,transparent_70%)] pointer-events-none" />
 
       <div className="max-w-[640px] mx-auto px-6 pt-20 pb-32 relative z-10">
-        {/* Title */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -99,7 +98,6 @@ export default function GuestsPage() {
           <div className="w-[60px] h-px bg-gradient-to-r from-transparent via-[#c8a84b] to-transparent mx-auto" />
         </motion.div>
 
-        {/* Counters */}
         <div className="flex flex-col gap-4 mb-12">
           <Counter
             label="Adults"
@@ -127,7 +125,6 @@ export default function GuestsPage() {
           </span>
         </motion.div>
 
-        {/* CTA */}
         <motion.button
           onClick={handleConfirm}
           disabled={!canContinue}
@@ -142,7 +139,6 @@ export default function GuestsPage() {
           {canContinue ? "Continue to Dates →" : "Select at least 1 adult"}
         </motion.button>
 
-        {/* Reset */}
         <div className="text-center mt-8">
           <button
             onClick={() => { resetBooking(); navigate("/") }}

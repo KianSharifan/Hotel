@@ -10,14 +10,14 @@ namespace Hotel.Controllers;
 [ApiController]
 public class FrontDeskManagerController : Controller
 {
-    private readonly AppDBContext  _context;
-    public FrontDeskManagerController(AppDBContext context)
+    private readonly AppDbContext  _context;
+    public FrontDeskManagerController(AppDbContext context)
     {
     _context = context;
     }
     
     //should have auth
-    [HttpPost("Reservations")]
+    [HttpGet("Reservations")]
     public async Task<ActionResult> AllReservations()
     {
         try
@@ -25,9 +25,9 @@ public class FrontDeskManagerController : Controller
             return Ok(await _context.Reservations.ToListAsync());
 
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
@@ -42,28 +42,30 @@ public class FrontDeskManagerController : Controller
                 return NotFound();
             return Ok(r);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
     //should have auth
     [HttpPost("Checkout")]
-    public async Task<IActionResult> CheckOut([FromBody]CheckOutDTO dto)
+    public async Task<IActionResult> CheckOut([FromBody]CheckOutDto dto)
     {
         try
         {
-            var r = _context.Reservations.FirstOrDefault(r => r.CheckInDate == dto.ReservationDate && r.Room.RoomNumber == dto.RoomNumber);
+            var r = _context.Reservations
+                .Include(r => r.Room)
+                .Include(r=>r.Guest)
+                .FirstOrDefault(r => r.CheckInDate == dto.ReservationDate && r.Room!.RoomNumber == dto.RoomNumber);
             if (r == null)
                 return NotFound();
             double total = 0;
-            total += (r.CheckOutDate.DayNumber - r.CheckInDate.DayNumber) * r.Room.RoomType.Price;
+            r.Room!.RoomType = _context.RoomTypes.FirstOrDefault(rt => r.Room.RoomTypeId == rt.RoomTypeId);
+            total += (r.CheckOutDate.DayNumber - r.CheckInDate.DayNumber) * r.Room.RoomType!.Price;
             var su = _context.GuestServiceUsages.Where(s => s.ReservationId == r.Id).ToList();
             foreach (var s in su)
-            {
                 total += s.Price;
-            }
             var subTotal = total;
             if(dto.Discount > 100 || dto.Discount < 0)
                 return BadRequest("Discount can't be greater than 100 or less than 0");
@@ -85,29 +87,34 @@ public class FrontDeskManagerController : Controller
                 Total = total,
                 Discount = dto.Discount.Value,
                 Tax = dto.Tax.Value,
-                IssueDate = DateTime.Now,
+                IssueDate = DateTime.UtcNow,
                 Status = "Not Payed!"
             };
+            r.Guest!.User = _context.Users.FirstOrDefault(u => u.Id == r.GuestId);
             var u = r.Guest.User;
-            u.IsActive = false;
+            u!.IsActive = false;
             await _context.Invoices.AddAsync(i);
             await _context.SaveChangesAsync();
             return Ok(i.Id);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
     //should have auth
     [HttpPost("CheckIn")]
-    public async Task<IActionResult> CheckIn([FromBody]CheckInDTO dto)
+    public async Task<IActionResult> CheckIn([FromBody]CheckInDto dto)
     {
         try
         {
-            var r = await _context.Reservations.FirstOrDefaultAsync(r =>
-                r.CheckInDate == dto.ReservationDate && r.Guest.User.Username == dto.UserName);
+            var r = await _context.Reservations
+                .Include(r => r.Room)
+                .Include(r=>r.Guest)
+                .ThenInclude(r=>r!.User)
+                .FirstOrDefaultAsync(r =>
+                r.CheckInDate == dto.ReservationDate && r.Guest!.User!.Username == dto.UserName);
             if (r == null)
                 return NotFound();
             var g = _context.Guests.FirstOrDefault(g => g.GuestId == r.GuestId);
@@ -122,17 +129,17 @@ public class FrontDeskManagerController : Controller
             u.FirstName = dto.FirstName;
             u.LastName = dto.LastName;
             await _context.SaveChangesAsync();
-            return Ok(r.Room.RoomNumber);
+            return Ok(r.Room!.RoomNumber);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
 
     //should have auth
     [HttpPost("Payment/{id}")]
-    public async Task<IActionResult> Payment(int id, [FromBody] PayDTO dto)
+    public async Task<IActionResult> Payment(int id, [FromBody] PayDto dto)
     {
         try
         {
@@ -148,16 +155,16 @@ public class FrontDeskManagerController : Controller
                 TransactionId = dto.TransactionId,
                 Amount = i.Total,
                 Status = "Paid",
-                PaymentDate = DateTime.Now
+                PaymentDate = DateTime.UtcNow
             };
             await _context.Payments.AddAsync(p);
             i.Status = "Paid";
             await _context.SaveChangesAsync();
             return Ok();
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
 }

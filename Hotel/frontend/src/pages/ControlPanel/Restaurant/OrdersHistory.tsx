@@ -1,4 +1,4 @@
-import { getOrder, getOrders } from "../../api/restaurantApi"
+import { getOrder, getOrders } from "../../../api/restaurantApi"
 import { useEffect, useState } from "react"
 
 interface Order {
@@ -41,14 +41,13 @@ export default function OrdersHistory() {
 
     return (
         <div className="min-h-screen bg-zinc-100 p-10">
-            {/* Header */}
+        
             <div className="w-full bg-blue-700 text-white px-12 py-12 mb-10 shadow-lg">
                 <h1 className="text-4xl font-bold">
                     Orders History
                 </h1>
             </div>
 
-            {/* Table */}
             <div className="bg-white rounded-xl shadow-md border p-8">
                 <h2 className="text-2xl font-semibold mb-6">
                     All Orders

@@ -30,7 +30,6 @@ export default function AdminSidebar() {
             {/* Dark overlay */}
 
             {open && (
-
                 <div
                     onClick={() => setOpen(false)}
                     className="
@@ -40,7 +39,6 @@ export default function AdminSidebar() {
                         z-40
                     "
                 />
-
             )}
 
             {/* Sidebar */}
@@ -57,13 +55,11 @@ export default function AdminSidebar() {
                     z-50
                     transition-all
                     duration-300
-
                     ${open ? "translate-x-0" : "-translate-x-full"}
                 `}
             >
 
                 <div className="flex justify-between items-center p-6">
-
                     <h2 className="text-xl font-bold">
 
                         Manage Restaurant
@@ -80,14 +76,6 @@ export default function AdminSidebar() {
                 </div>
 
                 <nav className="flex flex-col">
-
-                    {/* <Link
-                        to="/admin/dashboard"
-                        className="px-6 py-4 hover:bg-blue-800"
-                    >
-                        Dashboard
-                    </Link> */}
-
                     <Link
                         to="/admin/restaurant-panel"
                         className="px-6 py-4 hover:bg-blue-800"
@@ -115,18 +103,8 @@ export default function AdminSidebar() {
                     >
                         Orders History
                     </Link>
-{/* 
-                    <Link
-                        to="/admin/staff"
-                        className="px-6 py-4 hover:bg-blue-800"
-                    >
-                        Staff
-                    </Link>  */}
-
                 </nav>
-
             </div>
-
         </>
     )
 }

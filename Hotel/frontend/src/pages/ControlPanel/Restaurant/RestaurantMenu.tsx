@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "motion/react"
 import { useEffect, useState } from "react"
-import { createCategory, getMenu, createMenuItem, updateMenuItem, deleteMenuItem, deleteCategory} from "../../api/restaurantApi"
+import { createCategory, getMenu, createMenuItem, updateMenuItem, deleteMenuItem, deleteCategory} from "../../../api/restaurantApi"
 
 interface MenuCategory {
   menuCategoryId: number
@@ -69,14 +69,11 @@ function Menu() {
       style={{ backgroundColor: "#0a0a0a" }}
     >
 
-      {/* HERO */}
       <div className="relative overflow-hidden">
         <div className="relative pt-44 pb-24 text-center px-4">
             <h1 className="text-6xl md:text-8xl text-white">Menu</h1>
         </div>
       </div>
-
-
 
         <div className="max-w-5xl mx-auto px-6 mb-12">
         <div className="flex gap-4 flex-wrap">
@@ -107,7 +104,7 @@ function Menu() {
             </button>
         </div>
         </div>
-      {/* CATEGORY SELECTOR*/}
+
       <div
         className="sticky top-0 z-20 px-6">
         <div className="max-w-5xl mx-auto">
@@ -115,7 +112,7 @@ function Menu() {
             style={{
                     scrollbarWidth: "none",
                     msOverflowStyle: "none",}}>
-                {categories.map((category, index) => {
+                {categories.map((category) => {
                 const active = selectedCategory === category.menuCategoryId
                 return(
                     <button
@@ -170,10 +167,7 @@ function Menu() {
       </div>
 
 
-
-      {/* ITEMS GRID */}
       <div className="max-w-5xl mx-auto px-6 py-20">
-
         <AnimatePresence mode="wait">
           <motion.div
             className="mb-16 flex items-center gap-6"
@@ -192,7 +186,6 @@ function Menu() {
         </AnimatePresence>
 
 
-        {/* Items */}
         <AnimatePresence mode="wait">
           <motion.div
             key={selectedCategory}className="space-y-0">
@@ -226,7 +219,7 @@ function Menu() {
                     </p>
                   </div>
 
-                  {/* Price */}
+              
                     <div className="flex-shrink-0 flex flex-col items-end justify-start pt-1">
                         <div className="flex-shrink-0 flex flex-col items-end gap-2">
                             <span className="text-xl">
@@ -356,8 +349,6 @@ function Menu() {
                 </div>
             </div>
         )}
-
-
 
         {showEditItem && editingItem && (
         <div className="fixed inset-0 z-[9999] bg-black/60 flex justify-center items-center">

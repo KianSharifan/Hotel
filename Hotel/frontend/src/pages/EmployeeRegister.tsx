@@ -12,23 +12,13 @@ export default function EmployeeRegister() {
   const [departmentId, setDepartmentId] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
-  const [positionId, setPositionId] = useState("")
+  const [position, setPosition] = useState("")
   const [salary,setSalary]=useState("")
   const [birthDate,setBirthDate]=useState("")
-  
 
     async function handleRegister() {
-
-    if (
-        !username ||
-        !email ||
-        !roleId ||
-        !departmentId ||
-        !password ||
-        !positionId ||
-        !salary ||
-        !birthDate
-    ) {
+    if (!username || !email || !roleId || !departmentId ||!password ||  !position || !salary || !birthDate) 
+    {
       alert("Please fill all fields")
       return
     }
@@ -39,7 +29,6 @@ export default function EmployeeRegister() {
     }
 
     try {
-
         await createEmployee({
             userName: username,
             email,
@@ -47,7 +36,7 @@ export default function EmployeeRegister() {
             roleId: Number(roleId),
             departmentId: Number(departmentId),
             salary:Number(salary),
-            positionId:Number(positionId),
+            position,
             birthDate
         })
 
@@ -179,7 +168,6 @@ export default function EmployeeRegister() {
             "
           />
 
-
           <input
             type="number"
             placeholder="Department ID"
@@ -216,12 +204,11 @@ export default function EmployeeRegister() {
             "
           />
 
-
           <input
-            type="number"
-            placeholder="Position ID"
-            value={positionId}
-            onChange={(e)=>setPositionId(e.target.value)}
+            type="text"
+            placeholder="Position"
+            value={position}
+            onChange={(e)=>setPosition(e.target.value)}
             className="
             w-full
             bg-black/30
@@ -234,7 +221,6 @@ export default function EmployeeRegister() {
             outline-none
             "
           />
-
 
           <input
             type="number"
@@ -305,11 +291,9 @@ export default function EmployeeRegister() {
           >
             Create Account
           </button>
-
         </form>
 
         <p className="text-center text-gray-400 mt-8">
-
           Already have an account?{" "}
 
           <Link
@@ -318,16 +302,13 @@ export default function EmployeeRegister() {
           >
             Login
           </Link>
-
         </p>
-
 
         <Link to="/">
           <p className="text-center text-white opacity-70 underline mt-2">Go home</p>
         </Link>
 
       </div>
-
     </div>
   )
 }

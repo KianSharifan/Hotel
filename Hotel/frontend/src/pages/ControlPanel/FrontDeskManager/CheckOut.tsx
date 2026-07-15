@@ -12,18 +12,17 @@ export default function CheckOut() {
   const [invoiceId,setInvoiceId]=useState<number|null>(null);
   const [reservations, setReservations] = useState<any[]>([]);
   const [search, setSearch] = useState("");
-  
 
 
     const loadReservations = async () => {
         try {
-            const data = await getReservations();
-            console.log(data);
-            setReservations(data);
+          const data = await getReservations();
+          console.log(data);
+          setReservations(data);
         }
         catch (err) {
-            console.log(err);
-            alert("Failed to load reservations.");
+          console.log(err);
+          alert("Failed to load reservations.");
         }
     };
 
@@ -43,8 +42,6 @@ export default function CheckOut() {
 
       <div className="max-w-7xl mx-auto p-10 space-y-10">
 
-        {/* Reservations */}
-
         <div className="bg-white rounded-xl shadow border p-8">
           <div className="flex justify-between items-center mb-6">
 
@@ -53,19 +50,19 @@ export default function CheckOut() {
             </h2>
 
             <button
-                onClick={loadReservations}
-                className="bg-blue-600 text-white px-6 py-3 rounded-lg"
+              onClick={loadReservations}
+              className="bg-blue-600 text-white px-6 py-3 rounded-lg"
             >
-                Refresh Reservations
+              Refresh Reservations
             </button>
 
           </div>
 
             <input
-                placeholder="Search id..."
-                value={search}
-                onChange={(e)=>setSearch(e.target.value)}
-                className="border rounded-lg p-3 w-80 mb-6"
+              placeholder="Search id..."
+              value={search}
+              onChange={(e)=>setSearch(e.target.value)}
+              className="border rounded-lg p-3 w-80 mb-6"
             />
 
           <table className="w-full border-collapse">
@@ -82,29 +79,26 @@ export default function CheckOut() {
             </thead>
 
             <tbody>
-                {reservations.filter(r => r.id.toString().includes(search))
-                                .map((r) => (
-                                <tr
-                                    key={r.id}
-                                    className="border-b"
-                                    >
-                        <td className="p-4">{r.id}</td>
-                        <td className="p-4">{r.guest?.user?.username ?? r.guestId}</td>
-                        <td className="p-4">{r.roomId}</td>
-                        <td className="p-4">
-                            {new Date(r.checkInDate).toLocaleDateString()}
-                        </td>
-                        <td className="p-4">
-                            {new Date(r.checkOutDate).toLocaleDateString()}
-                        </td>
-                    </tr>
+                {reservations.filter(r => r.id.toString().includes(search)).map((r) => (
+                  <tr
+                    key={r.id}
+                    className="border-b"
+                  >
+                    <td className="p-4">{r.id}</td>
+                    <td className="p-4">{r.guest?.user?.username ?? r.guestId}</td>
+                    <td className="p-4">{r.roomId}</td>
+                    <td className="p-4">
+                      {new Date(r.checkInDate).toLocaleDateString()}
+                    </td>
+                    <td className="p-4">
+                      {new Date(r.checkOutDate).toLocaleDateString()}
+                    </td>
+                  </tr>
                 ))}
             </tbody>
           </table>
         </div>
 
-
-        {/* Check Out */}
 
         <div className="bg-white rounded-xl shadow border p-8">
 
@@ -143,44 +137,36 @@ export default function CheckOut() {
               placeholder="Discount (%)"
               className="border rounded-lg p-3"
             />
-
             </div>
 
             <button
                 onClick={async () => {
+                  try{
+                      if (
+                        !reservationDate ||
+                        !roomNumber ||
+                        !tax ||
+                        !discount
+                      ){
+                        alert("Please complete all fields.");
+                        return;
+                      }
+                      const id = await checkOut({
+                        reservationDate: reservationDate,
+                        roomNumber: Number(roomNumber),
+                        tax: Number(tax),
+                        discount: Number(discount)
+                      });
 
-                    try{
-                        if (
-                            !reservationDate ||
-                            !roomNumber ||
-                            !tax ||
-                            !discount
-                        ){
-                            alert("Please complete all fields.");
-                            return;
-                        }
-                        const id = await checkOut({
-                            reservationDate: reservationDate,
-                            roomNumber: Number(roomNumber),
-                            tax: Number(tax),
-                            discount: Number(discount)
-                        });
+                      setInvoiceId(id);
+                      alert("Invoice generated.");
+                      await loadReservations();
+                  }
 
-                        setInvoiceId(id);
-
-                        alert("Invoice generated.");
-
-                        await loadReservations();
-
-                    }
-
-                    catch (err) {
-
-                        console.log(err);
-                        alert("Checkout failed.");
-
-                    }
-
+                  catch (err) {
+                    console.log(err);
+                    alert("Checkout failed.");
+                  }
                 }}
                 className="mt-6 bg-orange-600 text-white px-8 py-3 rounded-lg"
             >
@@ -189,7 +175,6 @@ export default function CheckOut() {
 
         </div>
 
-        {/* Payment */}
 
         <div className="bg-white rounded-xl shadow border p-8">
 
@@ -200,10 +185,10 @@ export default function CheckOut() {
           <div className="grid grid-cols-3 gap-5">
 
             <input
-                type="number"
-                value={invoiceId ?? ""}
-                readOnly
-                className="border rounded-lg p-3 bg-gray-100"
+              type="number"
+              value={invoiceId ?? ""}
+              readOnly
+              className="border rounded-lg p-3 bg-gray-100"
             />
 
             <select
@@ -229,51 +214,47 @@ export default function CheckOut() {
 
             <button disabled={invoiceId == null}
                 onClick={async () => {
+                  if (invoiceId == null) {
+                    alert("Invoice ID required");
+                    return;
+                  }
 
-                    if (invoiceId == null) {
-                        alert("Invoice ID required");
+                  try{
+                      if(!paymentMethod){
+                        alert("Select a payment method.");
                         return;
-                    }
+                      }
 
-                    try{
-                        if(!paymentMethod){
-                            alert("Select a payment method.");
-                            return;
+                      if(!transactionId){
+                        alert("Transaction ID required.");
+                        return;
+                      }
+                      await payInvoice(
+                        invoiceId,
+                        {
+                          paymentMethod,
+                          transactionId
                         }
+                      );
 
-                        if(!transactionId){
-                            alert("Transaction ID required.");
-                            return;
-                        }
-                        await payInvoice(
-                            invoiceId,
-                            {
-                                paymentMethod,
-                                transactionId
-                            }
-                        );
+                      alert("Payment registered.");
+                      setInvoiceId(null);
+                      setReservationDate("");
+                      setRoomNumber("");
+                      setTax("");
+                      setDiscount("");
+                      setPaymentMethod("");
+                      setTransactionId("");
+                      setSearch("");
 
-                        alert("Payment registered.");
-                        setInvoiceId(null);
-                        setReservationDate("");
-                        setRoomNumber("");
-                        setTax("");
-                        setDiscount("");
-                        setPaymentMethod("");
-                        setTransactionId("");
-                        setSearch("");
+                      await loadReservations();
 
-                        await loadReservations();
+                  }
 
-                    }
-
-                    catch (err) {
-
-                        console.log(err);
-                        alert("Payment failed.");
-
-                    }
-
+                  catch (err) {
+                    console.log(err);
+                    alert("Payment failed.");
+                  }
                 }}
                 className={`mt-6 px-8 py-3 rounded-lg text-white
                             ${
@@ -286,10 +267,7 @@ export default function CheckOut() {
             </button>
 
         </div>
-
       </div>
-
     </div>
   )
-
 }
