@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Hotel.Data;
-using Hotel.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hotel.Controllers;
@@ -24,9 +23,9 @@ public class FinanceController : Controller
             var output = await _context.Payments.Where(payment => payment.OrderId != null).ToListAsync();
             return Ok(output);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
@@ -39,14 +38,14 @@ public class FinanceController : Controller
             var output = await _context.Payments.Where(payment => payment.InvoiceId != null).ToListAsync();
             return Ok(output); 
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
     //should have auth
-    [HttpDelete("DeletePayment/{id}")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> DeletePayment(int id)
     {
         try
@@ -58,9 +57,9 @@ public class FinanceController : Controller
             await _context.SaveChangesAsync();
             return NoContent();
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
@@ -73,15 +72,31 @@ public class FinanceController : Controller
             var output = await _context.Invoices.ToListAsync();
             return Ok(output);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            Console.WriteLine(e);
-            throw;
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
     //should have auth
-    [HttpDelete("DeleteInvoice/{id}")]
+    [HttpGet("Invoices/{id}")]
+    public async Task<IActionResult> GetInvoices(int id)
+    {
+        try
+        {
+            var i = await _context.Invoices.FirstOrDefaultAsync(i => i.Id == id);
+            if (i == null)
+                return NotFound();
+            return Ok(i);
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "An unexpected error occurred");
+        }
+    }
+    
+    //should have auth
+    [HttpDelete("Invoice/{id}")]
     public async Task<IActionResult> DeleteInvoice(int id)
     {
         try
@@ -93,9 +108,9 @@ public class FinanceController : Controller
             await _context.SaveChangesAsync();
             return NoContent();
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
 }

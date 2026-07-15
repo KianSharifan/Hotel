@@ -25,9 +25,9 @@ public class FrontDeskManagerController : Controller
             return Ok(await _context.Reservations.ToListAsync());
 
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
@@ -42,9 +42,9 @@ public class FrontDeskManagerController : Controller
                 return NotFound();
             return Ok(r);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
@@ -54,10 +54,16 @@ public class FrontDeskManagerController : Controller
     {
         try
         {
-            var r = _context.Reservations
+            if(dto.Discount > 100 || dto.Discount < 0)
+                return BadRequest("Discount can't be greater than 100 or less than 0");
+            if (dto.Tax > 100 || dto.Tax < 0)
+                return BadRequest("Tax can't be greater than 100 or less than 0");
+            if(dto.Tax == null || dto.Discount == null)
+                return BadRequest("Tax or Discount cannot be null");
+            var r = await _context.Reservations
                 .Include(r => r.Room)
                 .Include(r=>r.Guest)
-                .FirstOrDefault(r => r.CheckInDate == dto.ReservationDate && r.Room!.RoomNumber == dto.RoomNumber);
+                .FirstOrDefaultAsync(r => r.CheckInDate == dto.ReservationDate && r.Room!.RoomNumber == dto.RoomNumber);
             if (r == null)
                 return NotFound();
             double total = 0;
@@ -67,12 +73,6 @@ public class FrontDeskManagerController : Controller
             foreach (var s in su)
                 total += s.Price;
             var subTotal = total;
-            if(dto.Discount > 100 || dto.Discount < 0)
-                return BadRequest("Discount can't be greater than 100 or less than 0");
-            if (dto.Tax > 100 || dto.Discount < 0)
-                return BadRequest("Tax can't be greater than 100 or less than 0");
-            if(dto.Tax == null || dto.Discount == null)
-                return BadRequest("Tax or Discount cannot be null");
             if (dto.Discount == 0)
                 total = total * (dto.Tax.Value + 100)/100;
             else
@@ -93,13 +93,18 @@ public class FrontDeskManagerController : Controller
             r.Guest!.User = _context.Users.FirstOrDefault(u => u.Id == r.GuestId);
             var u = r.Guest.User;
             u!.IsActive = false;
+            r.Status = "Checked Out";
             await _context.Invoices.AddAsync(i);
             await _context.SaveChangesAsync();
-            return Ok(i.Id);
+            return CreatedAtAction(
+                nameof(FinanceController.GetInvoices)
+                ,controllerName: "Finance",
+                routeValues: new { id = i.Id },
+                i.Id);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
@@ -131,9 +136,9 @@ public class FrontDeskManagerController : Controller
             await _context.SaveChangesAsync();
             return Ok(r.Room!.RoomNumber);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
 
@@ -160,11 +165,15 @@ public class FrontDeskManagerController : Controller
             await _context.Payments.AddAsync(p);
             i.Status = "Paid";
             await _context.SaveChangesAsync();
-            return Ok();
+            return CreatedAtAction(
+                nameof(FinanceController.HotelPayments)
+                ,controllerName: "Finance"
+                ,routeValues: new { id = p.Id }
+                ,p.Id);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
 }

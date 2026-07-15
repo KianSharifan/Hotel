@@ -133,9 +133,6 @@ public class RoomsController : Controller
     {
         try
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             var output = await _roomServices.Reserve(input);
             if (output == (0,0))
                 return BadRequest("No available room");

@@ -27,9 +27,9 @@ public class HouseKeepingController : Controller
         {
             return Ok(await _context.HouseKeepings.ToListAsync());
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
@@ -46,7 +46,7 @@ public class HouseKeepingController : Controller
                 .FirstOrDefaultAsync(e => e.User!.Role!.Name == "Housekeeper" && e.User.Username == userName);
             if (houseKeeper == null)
                 return NotFound("No housekeeper with this UserName was found");
-            var keeping = _context.HouseKeepings.Where(h => h.EmployeeId == houseKeeper.Id).ToList();
+            var keeping = await _context.HouseKeepings.Where(h => h.EmployeeId == houseKeeper.Id).ToListAsync();
             var output = new List<HouseKeepingDto>();
             foreach (var k in keeping)
             {
@@ -54,9 +54,9 @@ public class HouseKeepingController : Controller
             }
             return Ok(output);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
 
@@ -66,34 +66,33 @@ public class HouseKeepingController : Controller
     {
         try
         {
-            if (houseKeeping.RoomId != null && houseKeeping.ScheduledDate != null)
+            if (houseKeeping.RoomId == null || houseKeeping.ScheduledDate == null)
+                return BadRequest("Not valid inputs");
+            var employee = await _context.Users
+                .Include(user => user.Role)
+                .Where(u => u.Role!.Name == "Housekeeper")
+                .OrderBy(u => _context.HouseKeepings.Count(h =>
+                    h.EmployeeId == u.Id &&
+                    h.ScheduledDate == houseKeeping.ScheduledDate))
+                .FirstOrDefaultAsync();
+            if (employee == null)
+                return BadRequest("No HouseKeeper Exists");
+            var hk = new HouseKeeping()
             {
-                var employee = _context.Users
-                    .Include(user => user.Role)
-                    .Where(u => u.Role!.Name == "Housekeeper")
-                    .OrderByDescending(u => _context.HouseKeepings.Count(h =>
-                        h.EmployeeId == u.Id &&
-                        h.ScheduledDate == houseKeeping.ScheduledDate))
-                    .FirstOrDefault();
-                if (employee == null)
-                    return BadRequest("No HouseKeeper Exists");
-                var hk = new HouseKeeping()
-                {
-                    Notes = houseKeeping.Notes,
-                    RoomId = houseKeeping.RoomId.Value,
-                    ScheduledDate = houseKeeping.ScheduledDate.Value,
-                    Status = false,
-                    EmployeeId = employee.Id,
-                };
-                await _context.HouseKeepings.AddAsync(hk);
-                await _context.SaveChangesAsync();
-                return Ok();
-            }
-            return BadRequest("Not valid inputs");
+                Notes = houseKeeping.Notes,
+                RoomId = houseKeeping.RoomId.Value,
+                ScheduledDate = houseKeeping.ScheduledDate.Value,
+                Status = false,
+                EmployeeId = employee.Id,
+            };
+            await _context.HouseKeepings.AddAsync(hk);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(GetEmployee),new { id = hk.Id });
+
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
@@ -119,9 +118,9 @@ public class HouseKeepingController : Controller
             await _context.SaveChangesAsync();
             return Ok();
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
@@ -136,11 +135,11 @@ public class HouseKeepingController : Controller
                 return NotFound();
             _context.HouseKeepings.Remove(hk);
             await _context.SaveChangesAsync();
-            return Ok();
+            return NoContent();
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
 }
