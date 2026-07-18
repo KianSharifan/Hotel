@@ -26,32 +26,29 @@ public class MaintenanceController : Controller
         {
             return Ok(await _context.MaintenanceRequests.ToListAsync());
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
     //should have auth
     [HttpGet("{userName}")]
-    public async Task<IActionResult> GetMaintenance(string userName)
+    public async Task<IActionResult> GetEmployeeMaintenances(string userName)
     {
         try
         {
-            var engineer = await _context.Employees.Include(employee => employee.User).FirstOrDefaultAsync(e => e.User!.Role!.Name == "Engineer" && e.User.Username == userName);
+            var engineer = await _context.Employees.Include(employee => employee.User)
+                .FirstOrDefaultAsync(e => e.User!.Role!.Name == "Engineer" && e.User.Username == userName);
             if (engineer == null)
                 return NotFound();
-            var maintenances = _context.MaintenanceRequests.Where(m => m.ReportedEmployeeId == engineer.Id);
-            var output = new List<MaintenanceRequestDto>();
-            foreach (var m in maintenances)
-            {
-                output.Add(m.ToDto());
-            }
+            var maintenances = await _context.MaintenanceRequests.Where(m => m.ReportedEmployeeId == engineer.Id).ToListAsync();
+            var output = maintenances.Select(m => m.ToDto()).ToList();
             return Ok(output);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
@@ -65,15 +62,16 @@ public class MaintenanceController : Controller
             {
                 Employee? emp;
                 if(dto.ReportedEmployeeId != null)
-                    emp = _context.Employees.FirstOrDefault(e => e.Id == dto.ReportedEmployeeId);
+                    emp = await _context.Employees.FirstOrDefaultAsync(e => e.Id == dto.ReportedEmployeeId);
                 else
                 {
-                    emp = _context.Employees
+                    emp = await _context.Employees
                         .Include(employee => employee.User)
                         .ThenInclude(employee => employee!.Role)
-                        .Where(e => e.User!.Role!.Name == "Housekeeper")
-                        .OrderByDescending(u => _context.MaintenanceRequests.Count(m => m.ReportedEmployeeId == u.Id))
-                        .FirstOrDefault();
+                        .Where(e => e.User!.Role!.Name == "Engineer")
+                        .OrderBy(u => _context.MaintenanceRequests
+                            .Count(m => m.ReportedEmployeeId == u.Id))
+                        .FirstOrDefaultAsync();
                 }
                 if (emp == null)
                     return BadRequest("No Engineer available");
@@ -86,14 +84,16 @@ public class MaintenanceController : Controller
                     Priority = dto.Priority,
                     CreatedDate = DateTime.UtcNow
                 };
+                emp.User = await _context.Users.FirstOrDefaultAsync(u => u.Id == emp.Id);
                 await _context.MaintenanceRequests.AddAsync(req);
-                return Ok();
+                await _context.SaveChangesAsync();
+                return CreatedAtAction(nameof(GetEmployeeMaintenances), new { userName = emp.User!.Username }, req);
             }
             return BadRequest("Not valid input");
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
 
@@ -103,16 +103,16 @@ public class MaintenanceController : Controller
     {
         try
         {
-            var req = _context.MaintenanceRequests.FirstOrDefault(m => m.Id == id);
+            var req = await _context.MaintenanceRequests.FirstOrDefaultAsync(m => m.Id == id);
             if (req == null)
                 return NotFound();
             _context.MaintenanceRequests.Remove(req);
             await _context.SaveChangesAsync();
-            return Ok();
+            return NoContent();
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
@@ -138,11 +138,11 @@ public class MaintenanceController : Controller
             if(dto.Status == "Done")
                 m.ModifiedDate = DateTime.UtcNow;
             await _context.SaveChangesAsync();
-            return Ok();
+            return Ok(m);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
 }

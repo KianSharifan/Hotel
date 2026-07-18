@@ -85,9 +85,11 @@ public class HouseKeepingController : Controller
                 Status = false,
                 EmployeeId = employee.Id,
             };
+            hk.Employee =  await _context.Employees.FirstOrDefaultAsync(e => e.Id == employee.Id);
+            hk.Employee!.User = await _context.Users.FirstOrDefaultAsync(u => u.Id == employee.Id);
             await _context.HouseKeepings.AddAsync(hk);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetEmployee),new { id = hk.Id });
+            return CreatedAtAction(nameof(GetEmployee),new { userNmae = hk.Employee.User!.Username });
 
         }
         catch (Exception)

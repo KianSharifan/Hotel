@@ -2,8 +2,8 @@ using Hotel.Data;
 using Hotel.DTOs;
 using Hotel.Mappers;
 using Hotel.Models;
-using Microsoft.AspNetCore.Mvc;
 using Hotel.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hotel.Controllers;
@@ -23,20 +23,21 @@ public class RestaurantController : Controller
     }
 
     [HttpGet]
-    public IActionResult Restaurant()
+    public async Task<IActionResult> Restaurant()
     {
         try
         {
-            RestaurantDto dto = _context.Restaurants.First().ToRestaurantDto();
-            return Ok(dto);
+            var restaurant = await _context.Restaurants.FirstOrDefaultAsync();
+            if (restaurant == null) return NotFound();
+            return Ok(restaurant.ToRestaurantDto());
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
-    [HttpPut("Restaurant")]
+    [HttpPut]
     public async Task<IActionResult> UpdateRestaurant(RestaurantDto dto)
     {
         try
@@ -53,11 +54,11 @@ public class RestaurantController : Controller
             if (dto.CloseTime != null)
                 r.ClosingTime = dto.CloseTime.Value;
             await _context.SaveChangesAsync();
-            return Ok();
+            return Ok(r.ToRestaurantDto());
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
@@ -75,9 +76,9 @@ public class RestaurantController : Controller
             };
             return Ok(result);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
 
@@ -89,31 +90,33 @@ public class RestaurantController : Controller
             List<MenuCategory>  menuCategories = await _restaurantServices.GetAllMenuCategories();
             return Ok(menuCategories);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
-
+    
     //should have authentication
     [HttpPost("Menu/Categories")]
     public async Task<IActionResult> CreateCategory([FromBody]CategoryDto category)
     {
         try
         {
+            if (category.Name == null)
+                return BadRequest("Category name is required");
             if(_restaurantServices.CategoryExists(category))
                 return BadRequest("Category already exists");
-            var cat = new MenuCategory()
+            var cat = new MenuCategory
             {
                 Name = category.Name,
             };
             await _context.MenuCategories.AddAsync(cat);
             await _context.SaveChangesAsync();
-            return Ok();
+            return CreatedAtAction(nameof(Categories),null,cat);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.ToString());
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
@@ -123,15 +126,16 @@ public class RestaurantController : Controller
     {
         try
         {
-            if(!_restaurantServices.CategoryExists(category))
-                return BadRequest("Category does not exists");
-            _context.MenuCategories.Remove(_context.MenuCategories.First(c => c.Name == category.Name));
+            var cat = await _context.MenuCategories.FirstOrDefaultAsync(c => c.Name == category.Name);
+            if (cat == null)
+                return NotFound("Category does not exist");
+            _context.MenuCategories.Remove(cat);
             await _context.SaveChangesAsync();
-            return Ok();
+            return NoContent();
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
@@ -141,8 +145,8 @@ public class RestaurantController : Controller
     {
         try
         {
-            var category = _context.MenuCategories
-                .FirstOrDefault(m => m.Name == menuCategory);
+            var category = await _context.MenuCategories
+                .FirstOrDefaultAsync(m => m.Name == menuCategory);
     
             if (category == null)
                 return BadRequest("Category does not exist");
@@ -150,7 +154,7 @@ public class RestaurantController : Controller
             int categoryId = category.MenuCategoryId;
             if (dto.Price != null)
             {
-                var item = new MenuItem()
+                var item = new MenuItem
                 {
                     Name = dto.Name,
                     MenuCategoryId = categoryId,
@@ -159,13 +163,13 @@ public class RestaurantController : Controller
                 };
                 await _context.MenuItems.AddAsync(item);
                 await _context.SaveChangesAsync();
-                return Ok();
+                return CreatedAtAction(nameof(CategoryMenuItems),new { menuCategory }, item);
             }
             return BadRequest("Price is not valid");
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
@@ -192,9 +196,29 @@ public class RestaurantController : Controller
             await _context.SaveChangesAsync();
             return Ok();
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
+        }
+    }
+    
+    //should have auth
+    [HttpGet("Menu/{menuCategory}/MenuItems")]
+    public async Task<IActionResult> CategoryMenuItems(string menuCategory)
+    {
+        try
+        {
+            var cat = await _context.MenuCategories.FirstOrDefaultAsync(c => c.Name!.ToLower() == menuCategory.ToLower());
+            if (cat == null)
+                return NotFound("Category does not exist");
+            var output = await _context.MenuItems.Include(m => m.MenuCategory)
+                .Where(m => m.MenuCategory!.Name!.ToLower() == cat.Name!.ToLower()).ToListAsync();
+        
+            return Ok(output);
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
@@ -213,11 +237,11 @@ public class RestaurantController : Controller
                 return BadRequest("Category does not match");
             _context.MenuItems.Remove(menuItem);
             await _context.SaveChangesAsync();
-            return Ok();
+            return NoContent();
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
@@ -229,9 +253,9 @@ public class RestaurantController : Controller
         {
             return Ok(await _context.Orders.ToListAsync());
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
@@ -261,9 +285,9 @@ public class RestaurantController : Controller
             return Ok(output);
 
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
@@ -293,9 +317,9 @@ public class RestaurantController : Controller
             };
             return Ok(r);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
@@ -306,32 +330,35 @@ public class RestaurantController : Controller
         try
         {
             double total = 0;
-            var o = new Order()
+            var o = new Order
             {
                 TableId = order.TableId,
                 Status = "Pending",
                 CreatedAt = new TimeOnly(DateTime.UtcNow.Hour, DateTime.UtcNow.Minute, DateTime.UtcNow.Second)
             };
-            _context.Orders.Add(o);
+            await _context.Orders.AddAsync(o);
             await _context.SaveChangesAsync();
             if (order.OrderItems != null)
             {
                 foreach (var oi in order.OrderItems)
                 {
+                    var menuItem = await _context.MenuItems.FindAsync(oi.ItemId);
+                    if (menuItem == null)
+                        return BadRequest($"MenuItem with id {oi.ItemId} not found");
+
                     var item = oi.ToOrderItem(o.Id);
-                    _context.OrderItems.Add(item);
-                    await _context.SaveChangesAsync();
-                    item.MenuItem = await _context.MenuItems.FindAsync(item.ItemId);
-                    total += item.Quantity*item.MenuItem!.Price;
+                    item.MenuItem = menuItem;
+                    await _context.OrderItems.AddAsync(item);
+                    total += item.Quantity * menuItem.Price;
                 }
             }
             o.TotalPrice = total;
             await _context.SaveChangesAsync();
-            return Ok(o.Id);
+            return CreatedAtAction(nameof(GetOrder), new { id = o.Id }, o);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.ToString());
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
@@ -341,18 +368,18 @@ public class RestaurantController : Controller
     {
         try
         {
-            var o = _context.Orders.FirstOrDefault(o => o.Id == id);
+            var o = await _context.Orders.FirstOrDefaultAsync(o => o.Id == id);
             if (o == null)
             {
                 return NotFound();
             }
             _context.Orders.Remove(o);
             await _context.SaveChangesAsync();
-            return Ok();
+            return NoContent();
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
 
@@ -362,7 +389,7 @@ public class RestaurantController : Controller
     {
         try
         {
-            var o = _context.Orders.FirstOrDefault(o => o.Id == orderId);
+            var o = await _context.Orders.FirstOrDefaultAsync(o => o.Id == orderId);
             if (o == null)
                 return NotFound();
             if(dto.Status != null)
@@ -371,10 +398,12 @@ public class RestaurantController : Controller
             {
                 foreach (var oi in dto.OrderItems)
                 {
-                    var temp = _context.OrderItems.FirstOrDefault(ori =>
+                    var temp = await _context.OrderItems.FirstOrDefaultAsync(ori =>
                         ori.ItemId == oi.ItemId && ori.OrderId == orderId);
                     var item = oi.ToOrderItem(o.Id);
                     item.MenuItem = await _context.MenuItems.FindAsync(item.ItemId);
+                    if(temp == null && oi.Quantity == 0)
+                        continue;
                     if (temp == null)
                     {
                         o.TotalPrice += item.Quantity * item.MenuItem!.Price;
@@ -395,9 +424,9 @@ public class RestaurantController : Controller
             await _context.SaveChangesAsync();
             return Ok();
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
 }

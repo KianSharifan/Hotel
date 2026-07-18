@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Hotel.Controllers;
 
 
-[Route("API/Service")]
+[Route("API/Services")]
 [ApiController]
 public class ServiceController : Controller
 {
@@ -26,9 +26,26 @@ public class ServiceController : Controller
         {
             return Ok(await _context.Services.ToListAsync());
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
+        }
+    }
+    
+    //should have auth
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetService(int id)
+    {
+        try
+        {
+            var s =  await _context.Services.FirstOrDefaultAsync(s  => s.Id == id);
+            if (s == null) 
+                return NotFound();
+            return Ok(s);
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
@@ -38,7 +55,7 @@ public class ServiceController : Controller
     {
         try
         {
-            if (!_context.Users.Any(u => u.Username == userName))
+            if (!await _context.Users.AnyAsync(u => u.Username == userName))
                 return NotFound();
             return Ok(await _context.GuestServiceUsages
                 .Include(usage => usage.Guest)
@@ -52,19 +69,19 @@ public class ServiceController : Controller
                     s.Service!.Name,
                 }).ToListAsync());
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
     //should have auth
-    [HttpGet("ServiceUsers/{serviceName}")]
+    [HttpGet("Users/{serviceName}")]
     public async Task<IActionResult> ServiceUsers(string serviceName)
     {
         try
         {
-            if (!_context.Services.Any(s => s.Name!.ToLower() == serviceName))
+            if (!await _context.Services.AnyAsync(s => s.Name!.ToLower() == serviceName))
                 return NotFound("No such service");
             return Ok(await _context.GuestServiceUsages
                 .Where(g => g.Service!.Name!.ToLower() == serviceName)
@@ -77,9 +94,9 @@ public class ServiceController : Controller
                     s.Guest.User.FirstName
                 }).ToListAsync());
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
@@ -99,13 +116,13 @@ public class ServiceController : Controller
                 };
                 await _context.Services.AddAsync(s);
                 await _context.SaveChangesAsync();
-                return Ok();
+                return CreatedAtAction(nameof(GetService), new { id = s.Id }, s);
             }
             return BadRequest("Not valid inputs!");
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
@@ -115,7 +132,7 @@ public class ServiceController : Controller
     {
         try
         {
-            var s = _context.Services.FirstOrDefault(s => s.Id == id);
+            var s = await _context.Services.FirstOrDefaultAsync(s => s.Id == id);
             if (s == null)
                 return NotFound();
             if(dto.Name != null)
@@ -125,11 +142,11 @@ public class ServiceController : Controller
             if (dto.Description != null)
                 s.Description = dto.Description;
             await _context.SaveChangesAsync();
-            return Ok();
+            return Ok(s);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
@@ -139,35 +156,35 @@ public class ServiceController : Controller
     {
         try
         {
-            var s = _context.Services.FirstOrDefault(s => s.Id == id);
+            var s = await _context.Services.FirstOrDefaultAsync(s => s.Id == id);
             if (s == null)
                 return NotFound();
             _context.Services.Remove(s);
             await _context.SaveChangesAsync();
-            return Ok();
+            return NoContent();
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
     //should have auth
-    [HttpGet("AllServiceUsages")]
+    [HttpGet("Usages")]
     public async Task<IActionResult> AllServiceUsages()
     {
         try
         {
             return Ok(await _context.GuestServiceUsages.ToListAsync());
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
     //should have auth
-    [HttpDelete("GuestUseService/{id}")]
+    [HttpDelete("Usages/{id}")]
     public async Task<IActionResult> DeleteServiceUsage(int id)
     {
         try
@@ -177,57 +194,62 @@ public class ServiceController : Controller
                 return NotFound();
             _context.GuestServiceUsages.Remove(sg);
             await _context.SaveChangesAsync();
-            return Ok();
+            return NoContent();
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
     //should have auth
-    [HttpPost("GuestUseService")]
+    [HttpPost("Usages")]
     public async Task<IActionResult> GuestServiceCreate([FromBody] GuestServiceUsageDto dto)
     {
-        var g = await _context.Users.FirstOrDefaultAsync(u => u.Username == dto.UserName);
-        if (g == null)
-            return NotFound("No Such Guest!");
-        if (dto.ServiceName == null)
-            return BadRequest("No Service Name!");
-        var s = await _context.Services.FirstOrDefaultAsync(s => s.Name!.ToLower() == dto.ServiceName.ToLower());
-        if (s == null)
-            return NotFound("No Such Service");
-        if (dto.UseDate == null)
-            return BadRequest("No Service Use Date!");
-        var r = _context.Reservations
-            .Include(r=> r.Room)
-            .FirstOrDefault(r => r.GuestId == g.Id 
-                                 && r.CheckInDate.DayNumber <= DateOnly.FromDateTime(dto.UseDate.Value).DayNumber 
-                                 && r.CheckOutDate.DayNumber >= DateOnly.FromDateTime(dto.UseDate.Value).DayNumber
-                                 && r.Room!.RoomNumber == dto.RoomNumber);
-        if (r == null)
-            return NotFound();
-        if(dto.UseDate == null)
-            return BadRequest("UseDate is null");
-        if (dto.Quantity == null)
-            return BadRequest("Quantity is required");
-        double price = s.Price * dto.Quantity.Value;
-        var gus = new GuestServiceUsage()
+        try
         {
-            GuestId = g.Id,
-            ServiceId = s.Id,
-            ReservationId = r.Id,
-            Quantity = dto.Quantity.Value,
-            Price = price,
-            UseDate = dto.UseDate.Value
-        };
-        await _context.GuestServiceUsages.AddAsync(gus);
-        await _context.SaveChangesAsync();
-        return Ok();
+            var g = await _context.Users.FirstOrDefaultAsync(u => u.Username == dto.UserName);
+            if (g == null)
+                return NotFound("No Such Guest!");
+            if (dto.ServiceName == null)
+                return BadRequest("No Service Name!");
+            var s = await _context.Services.FirstOrDefaultAsync(s => s.Name!.ToLower() == dto.ServiceName.ToLower());
+            if (s == null)
+                return NotFound("No Such Service");
+            if (dto.UseDate == null)
+                return BadRequest("No Service Use Date!");
+            var r = await _context.Reservations
+                .Include(r=> r.Room)
+                .FirstOrDefaultAsync(r => r.GuestId == g.Id 
+                                     && r.CheckInDate.DayNumber <= DateOnly.FromDateTime(dto.UseDate.Value).DayNumber 
+                                     && r.CheckOutDate.DayNumber >= DateOnly.FromDateTime(dto.UseDate.Value).DayNumber
+                                     && r.Room!.RoomNumber == dto.RoomNumber);
+            if (r == null)
+                return NotFound();
+            if (dto.Quantity == null)
+                return BadRequest("Quantity is required");
+            double price = s.Price * dto.Quantity.Value;
+            var gus = new GuestServiceUsage()
+            {
+                GuestId = g.Id,
+                ServiceId = s.Id,
+                ReservationId = r.Id,
+                Quantity = dto.Quantity.Value,
+                Price = price,
+                UseDate = dto.UseDate.Value
+            };
+            await _context.GuestServiceUsages.AddAsync(gus);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(ServiceUsers), new { serviceName = s.Name }, gus);
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "An unexpected error occurred");
+        }
     }
     
     //should have auth
-    [HttpPut("GuestUseService/{id}")]
+    [HttpPut("Usages/{id}")]
     public async Task<IActionResult> GuestServiceUpdate(int id, [FromBody] GuestServiceUsageDto dto)
     {
         try
@@ -242,11 +264,12 @@ public class ServiceController : Controller
             }
             if(dto.UseDate != null)
                 gu.UseDate = dto.UseDate.Value;
-            return Ok();
+            await _context.SaveChangesAsync();
+            return Ok(gu);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
 }
