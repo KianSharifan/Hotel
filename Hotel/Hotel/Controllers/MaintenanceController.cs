@@ -4,6 +4,7 @@ using Hotel.Models;
 using Microsoft.EntityFrameworkCore;
 using Hotel.DTOs;
 using Hotel.Mappers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hotel.Controllers;
 
@@ -12,14 +13,13 @@ namespace Hotel.Controllers;
 public class MaintenanceController : Controller
 {
     private readonly AppDbContext  _context;
-
     public MaintenanceController(AppDbContext context)
     {
         _context = context;
     }
     
-    //should have auth
     [HttpGet]
+    [Authorize(Roles = "HotelManager,Engineer,DirectorOfRooms")]
     public async Task<IActionResult> GetMaintenance()
     {
         try
@@ -32,8 +32,8 @@ public class MaintenanceController : Controller
         }
     }
     
-    //should have auth
     [HttpGet("{userName}")]
+    [Authorize(Roles = "HotelManager,Engineer")]
     public async Task<IActionResult> GetEmployeeMaintenances(string userName)
     {
         try
@@ -52,8 +52,8 @@ public class MaintenanceController : Controller
         }
     }
     
-    //should have auth
     [HttpPost]
+    [Authorize(Roles = "HotelManager,Engineer,DirectorOfRooms,FrontOfficeManager")]
     public async Task<IActionResult> CreateMaintenance([FromBody] MaintenanceRequestDto dto)
     {
         try
@@ -97,8 +97,8 @@ public class MaintenanceController : Controller
         }
     }
 
-    //should have auth
     [HttpDelete("{id}")]
+    [Authorize(Roles = "HotelManager,Engineer,DirectorOfRooms")]
     public async Task<IActionResult> DeleteMaintenance(int id)
     {
         try
@@ -116,8 +116,8 @@ public class MaintenanceController : Controller
         }
     }
     
-    //should have auth
     [HttpPut("{id}")]
+    [Authorize(Roles = "HotelManager,Engineer,DirectorOfRooms")]
     public async Task<IActionResult> UpdateMaintenance(int id, [FromBody] MaintenanceRequestDto dto)
     {
         try

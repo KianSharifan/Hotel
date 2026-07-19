@@ -35,7 +35,6 @@ public static class RoomMapper
                 roomType.NumberSofaBed = dto.NumberOfDoubles.Value;
                 roomType.Price = dto.Price.Value;
                 roomType.PicUrl = dto.Image;
-                return roomType; 
             }
         }
         catch (Exception e)
@@ -43,7 +42,22 @@ public static class RoomMapper
             Console.WriteLine(e);
             throw;
         }
-
         return roomType;
+    }
+
+    public static AmenityDto ToDto(this Amenity amenity)
+    {
+        var dto = new AmenityDto();
+        try
+        {
+            if (amenity.Name != null)
+                dto.Name = amenity.Name;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+        return dto;
     }
 }

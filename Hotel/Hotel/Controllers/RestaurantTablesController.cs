@@ -5,9 +5,9 @@ using Hotel.Mappers;
 using Hotel.Models;
 using Hotel.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hotel.Controllers;
-
 
 [Route("API/Restaurant/Tables")]
 [ApiController]
@@ -15,16 +15,14 @@ public class RestaurantTablesController : Controller
 {
     private readonly AppDbContext  _context;
     private readonly RestaurantServices _restaurantServices;
-
-
     public RestaurantTablesController(AppDbContext context, RestaurantServices restaurantServices)
     {
         _context = context;
         _restaurantServices = restaurantServices;
     }
     
-    //should have authentication
     [HttpPost("Reservations")]
+    [AllowAnonymous]
     public async Task<IActionResult> Reservation([FromBody]TableStatusDto reservation)
     {
         try
@@ -67,8 +65,8 @@ public class RestaurantTablesController : Controller
         }
     }
     
-    //should have auth
     [HttpGet("Reservations")]
+    [Authorize(Roles = "HotelManager,RestaurantManager,Waiter")]
     public async Task<IActionResult> AllReservations()
     {
         try
@@ -82,8 +80,8 @@ public class RestaurantTablesController : Controller
         }
     }
     
-    //should have auth
     [HttpGet("Reservations/{id}")]
+    [Authorize(Roles = "HotelManager,RestaurantManager,Waiter")]
     public async Task<IActionResult> GetReservation(int id)
     {
         try
@@ -99,8 +97,8 @@ public class RestaurantTablesController : Controller
         }
     }
     
-    //should have authorization
     [HttpGet("{id}")]
+    [Authorize(Roles = "HotelManager,RestaurantManager,Waiter")]
     public async Task<IActionResult> GetTableStatus(int id)
     {
         try
@@ -116,8 +114,8 @@ public class RestaurantTablesController : Controller
         }
     }
     
-    //should have authorization [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
+    [Authorize(Roles = "HotelManager,RestaurantManager,Waiter")]
     public async Task<IActionResult> Update(int id,[FromBody]TableStatusDto input)
     {
         try
@@ -135,8 +133,8 @@ public class RestaurantTablesController : Controller
         }
     }
     
-    //should have authentication
     [HttpDelete("{id}")]
+    [Authorize(Roles = "HotelManager,RestaurantManager,Waiter")]
     public async Task<IActionResult> DeleteTable(int id)
     {
         try
@@ -154,8 +152,8 @@ public class RestaurantTablesController : Controller
         }
     }
     
-    //should have authentication
     [HttpPost]
+    [Authorize(Roles = "HotelManager,RestaurantManager,Chef,Waiter")]
     public async Task<IActionResult> CreateTable([FromBody]TableDto input)
     {
         try

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Hotel.DTOs;
 using Hotel.Mappers;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hotel.Controllers;
 
@@ -19,6 +19,7 @@ public class HotelController : Controller
     }
     
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> GetHotels()
     {
         try
@@ -35,8 +36,8 @@ public class HotelController : Controller
         }
     }
 
-    //should have auth
     [HttpPut]
+    [Authorize(Roles = "HotelManager")]
     public async Task<IActionResult> UpdateHotels([FromBody]HotelDto dto)
     {
         try
@@ -73,8 +74,8 @@ public class HotelController : Controller
         }
     }
 
-    //should have auth
     [HttpGet("Departments")]
+    [Authorize(Roles = "HotelManager")]
     public async Task<IActionResult> GetDepartments()
     {
         try
@@ -88,8 +89,8 @@ public class HotelController : Controller
         }
     }
     
-    //should have auth
     [HttpPost("Departments")]
+    [Authorize(Roles = "HotelManager")]
     public async Task<IActionResult> CreateDepartment([FromBody]DepartmentDto department)
     {
         try
@@ -112,8 +113,8 @@ public class HotelController : Controller
         }
     }
 
-    //should have auth
     [HttpPut("Departments/{id}")]
+    [Authorize(Roles = "HotelManager")]
     public async Task<IActionResult> UpdateDepartment(int id,[FromBody]DepartmentDto department)
     {
         try
@@ -131,8 +132,8 @@ public class HotelController : Controller
         }
     }
     
-    //should have auth
     [HttpDelete("Departments/{id}")]
+    [Authorize(Roles = "HotelManager")]
     public async Task<IActionResult> DeleteDepartment(int id)
     {
         try

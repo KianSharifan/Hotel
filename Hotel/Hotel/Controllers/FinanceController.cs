@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Hotel.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hotel.Controllers;
@@ -14,8 +15,8 @@ public class FinanceController : Controller
         _context = context;
     }
     
-    //should have auth
     [HttpGet("RestaurantPayments")]
+    [Authorize(Roles = "HotelManager,RestaurantManager,DirectorOfFinance")]
     public async Task<IActionResult> RestaurantPayments()
     {
         try
@@ -29,8 +30,8 @@ public class FinanceController : Controller
         }
     }
     
-    //should have auth
     [HttpGet("HotelPayments")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager,DirectorOfFinance")]
     public async Task<IActionResult> HotelPayments()
     {
         try
@@ -44,8 +45,8 @@ public class FinanceController : Controller
         }
     }
     
-    //should have auth
     [HttpDelete("{id}")]
+    [Authorize(Roles = "HotelManager,DirectorOfFinance")]
     public async Task<IActionResult> DeletePayment(int id)
     {
         try
@@ -63,8 +64,8 @@ public class FinanceController : Controller
         }
     }
     
-    //should have auth
     [HttpGet("AllInvoices")]
+    [Authorize(Roles = "HotelManager,DirectorOfFinance,FrontOfficeManager")]
     public async Task<IActionResult> AllInvoices()
     {
         try
@@ -78,8 +79,8 @@ public class FinanceController : Controller
         }
     }
     
-    //should have auth
     [HttpGet("Invoices/{id}")]
+    [Authorize(Roles = "HotelManager,DirectorOfFinance,FrontOfficeManager")]
     public async Task<IActionResult> GetInvoices(int id)
     {
         try
@@ -95,8 +96,8 @@ public class FinanceController : Controller
         }
     }
     
-    //should have auth
     [HttpDelete("Invoice/{id}")]
+    [Authorize(Roles = "HotelManager,DirectorOfFinance")]
     public async Task<IActionResult> DeleteInvoice(int id)
     {
         try

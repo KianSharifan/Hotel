@@ -3,23 +3,22 @@ using Hotel.DTOs;
 using Hotel.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hotel.Controllers;
-
 
 [Route("API/Services")]
 [ApiController]
 public class ServiceController : Controller
 {
     private readonly AppDbContext _context;
-
     public ServiceController(AppDbContext context)
     {
         _context = context;
     }
     
-    //should have auth
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> AllServices()
     {
         try
@@ -32,8 +31,8 @@ public class ServiceController : Controller
         }
     }
     
-    //should have auth
     [HttpGet("{id}")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager")]
     public async Task<IActionResult> GetService(int id)
     {
         try
@@ -49,8 +48,8 @@ public class ServiceController : Controller
         }
     }
     
-    //should have auth
     [HttpGet("GuestUsed/{userName}")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager")]
     public async Task<IActionResult> GuestUsed(string userName)
     {
         try
@@ -75,8 +74,8 @@ public class ServiceController : Controller
         }
     }
     
-    //should have auth
     [HttpGet("Users/{serviceName}")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager")]
     public async Task<IActionResult> ServiceUsers(string serviceName)
     {
         try
@@ -100,8 +99,8 @@ public class ServiceController : Controller
         }
     }
     
-    //should have auth
     [HttpPost]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager")]
     public async Task<IActionResult> CreateService([FromBody]ServiceDto dto)
     {
         try
@@ -126,8 +125,8 @@ public class ServiceController : Controller
         }
     }
     
-    //should have auth
     [HttpPut("{id}")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager")]
     public async Task<IActionResult> UpdateService(int id, [FromBody] ServiceDto dto)
     {
         try
@@ -150,8 +149,8 @@ public class ServiceController : Controller
         }
     }
     
-    //should have auth
     [HttpDelete("{id}")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager")]
     public async Task<IActionResult> DeleteService(int id)
     {
         try
@@ -169,8 +168,8 @@ public class ServiceController : Controller
         }
     }
     
-    //should have auth
     [HttpGet("Usages")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager")]
     public async Task<IActionResult> AllServiceUsages()
     {
         try
@@ -183,8 +182,8 @@ public class ServiceController : Controller
         }
     }
     
-    //should have auth
     [HttpDelete("Usages/{id}")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager")]
     public async Task<IActionResult> DeleteServiceUsage(int id)
     {
         try
@@ -202,8 +201,8 @@ public class ServiceController : Controller
         }
     }
     
-    //should have auth
     [HttpPost("Usages")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager")]
     public async Task<IActionResult> GuestServiceCreate([FromBody] GuestServiceUsageDto dto)
     {
         try
@@ -248,8 +247,8 @@ public class ServiceController : Controller
         }
     }
     
-    //should have auth
     [HttpPut("Usages/{id}")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager")]
     public async Task<IActionResult> GuestServiceUpdate(int id, [FromBody] GuestServiceUsageDto dto)
     {
         try

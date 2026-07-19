@@ -5,9 +5,9 @@ using Hotel.Models;
 using Hotel.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hotel.Controllers;
-
 
 [Route("API/Restaurant")]
 [ApiController]
@@ -15,13 +15,13 @@ public class RestaurantController : Controller
 {
     private readonly AppDbContext  _context;
     private readonly RestaurantServices _restaurantServices;
-
     public RestaurantController(AppDbContext context, RestaurantServices restaurantServices)
     {
         _context = context;
         _restaurantServices = restaurantServices;
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async Task<IActionResult> Restaurant()
     {
@@ -38,6 +38,7 @@ public class RestaurantController : Controller
     }
     
     [HttpPut]
+    [Authorize(Roles = "HotelManager,RestaurantManager")]
     public async Task<IActionResult> UpdateRestaurant(RestaurantDto dto)
     {
         try
@@ -63,6 +64,7 @@ public class RestaurantController : Controller
     }
     
     [HttpGet("Menu")]
+    [AllowAnonymous]
     public async Task<IActionResult> Menu()
     {
         try
@@ -83,6 +85,7 @@ public class RestaurantController : Controller
     }
 
     [HttpGet("Menu/Categories")]
+    [AllowAnonymous]
     public async Task<IActionResult> Categories()
     {
         try
@@ -96,8 +99,8 @@ public class RestaurantController : Controller
         }
     }
     
-    //should have authentication
     [HttpPost("Menu/Categories")]
+    [Authorize(Roles = "HotelManager,RestaurantManager,Chef")]
     public async Task<IActionResult> CreateCategory([FromBody]CategoryDto category)
     {
         try
@@ -120,8 +123,8 @@ public class RestaurantController : Controller
         }
     }
     
-    //should have authentication
     [HttpDelete("Menu/Categories")]
+    [Authorize(Roles = "HotelManager,RestaurantManager,Chef")]
     public async Task<IActionResult> DeleteCategory([FromBody]CategoryDto category)
     {
         try
@@ -139,8 +142,8 @@ public class RestaurantController : Controller
         }
     }
     
-    //should have authentication
     [HttpPost("Menu/{menuCategory}/MenuItems")]
+    [Authorize(Roles = "HotelManager,RestaurantManager,Chef,Waiter")]
     public async Task<IActionResult> AddMenuItems(string menuCategory,[FromBody]MenuItemDto dto)
     {
         try
@@ -173,8 +176,8 @@ public class RestaurantController : Controller
         }
     }
     
-    // should have authentication
     [HttpPut("Menu/{menuCategory}/MenuItems")]
+    [Authorize(Roles = "HotelManager,RestaurantManager,Chef,Waiter")]
     public async Task<IActionResult> UpdateMenuItems(string menuCategory,[FromBody]MenuItemDto dto)
     {
         try
@@ -202,8 +205,8 @@ public class RestaurantController : Controller
         }
     }
     
-    //should have auth
     [HttpGet("Menu/{menuCategory}/MenuItems")]
+    [AllowAnonymous]
     public async Task<IActionResult> CategoryMenuItems(string menuCategory)
     {
         try
@@ -222,8 +225,8 @@ public class RestaurantController : Controller
         }
     }
     
-    // should have authentication
     [HttpDelete("Menu/{menuCategory}/MenuItems")]
+    [Authorize(Roles = "HotelManager,RestaurantManager,Chef")]
     public async Task<IActionResult> DeleteMenuItems(string menuCategory,[FromBody]MenuItemDto dto)
     {
         try
@@ -245,8 +248,8 @@ public class RestaurantController : Controller
         }
     }
     
-    //should have auth
     [HttpGet("Orders")]
+    [Authorize(Roles = "HotelManager,RestaurantManager,Chef,Waiter")]
     public async Task<IActionResult> AllOrders()
     {
         try
@@ -259,8 +262,8 @@ public class RestaurantController : Controller
         }
     }
     
-    //should have auth
     [HttpGet("Orders/NotCompleted")]
+    [Authorize(Roles = "HotelManager,RestaurantManager,Chef,Waiter")]
     public async Task<IActionResult> AllNotCompletedOrders()
     {
         try
@@ -291,8 +294,8 @@ public class RestaurantController : Controller
         }
     }
     
-    //should have auth
     [HttpGet("Orders/{id}")]
+    [Authorize(Roles = "HotelManager,RestaurantManager,Chef,Waiter")]
     public async Task<IActionResult> GetOrder(int id)
     {
         try
@@ -323,8 +326,8 @@ public class RestaurantController : Controller
         }
     }
     
-    //should have auth
     [HttpPost("Orders")]
+    [Authorize(Roles = "HotelManager,RestaurantManager,Chef,Waiter")]
     public async Task<IActionResult> CreateOrder([FromBody]OrderDto order)
     {
         try
@@ -362,8 +365,8 @@ public class RestaurantController : Controller
         }
     }
     
-    //should have auth
     [HttpDelete("Orders/{id}")]
+    [Authorize(Roles = "HotelManager,RestaurantManager,Chef,Waiter")]
     public async Task<IActionResult> DeleteOrder(int id)
     {
         try
@@ -383,8 +386,8 @@ public class RestaurantController : Controller
         }
     }
 
-    //should have auth
     [HttpPut("Orders/{orderId}")]
+    [Authorize(Roles = "HotelManager,RestaurantManager,Chef,Waiter")]
     public async Task<IActionResult> ChangeOrderItem(int orderId, [FromBody] OrderDto dto)
     {
         try

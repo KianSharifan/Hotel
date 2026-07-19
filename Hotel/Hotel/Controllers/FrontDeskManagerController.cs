@@ -3,6 +3,7 @@ using Hotel.DTOs;
 using Hotel.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hotel.Controllers;
 
@@ -16,8 +17,8 @@ public class FrontDeskManagerController : Controller
     _context = context;
     }
     
-    //should have auth
     [HttpGet("Reservations")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager")]
     public async Task<ActionResult> AllReservations()
     {
         try
@@ -31,8 +32,8 @@ public class FrontDeskManagerController : Controller
         }
     }
     
-    //should have auth
     [HttpGet("Reservations/{id}")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager")]
     public async Task<ActionResult> GetReservation(int id)
     {
         try
@@ -48,8 +49,8 @@ public class FrontDeskManagerController : Controller
         }
     }
     
-    //should have auth
     [HttpPost("Checkout")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager")]
     public async Task<IActionResult> CheckOut([FromBody]CheckOutDto dto)
     {
         try
@@ -110,6 +111,7 @@ public class FrontDeskManagerController : Controller
     
     //should have auth
     [HttpPost("CheckIn")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager")]
     public async Task<IActionResult> CheckIn([FromBody]CheckInDto dto)
     {
         try
@@ -142,8 +144,8 @@ public class FrontDeskManagerController : Controller
         }
     }
 
-    //should have auth
     [HttpPost("Payment/{id}")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager,DirectorOfFinance")]
     public async Task<IActionResult> Payment(int id, [FromBody] PayDto dto)
     {
         try

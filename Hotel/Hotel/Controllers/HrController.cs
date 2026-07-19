@@ -3,6 +3,7 @@ using Hotel.Data;
 using Hotel.DTOs;
 using Microsoft.EntityFrameworkCore;
 using Hotel.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hotel.Controllers;
 
@@ -16,8 +17,8 @@ public class HrController : Controller
         _context = context;
     }
     
-    //should have auth
     [HttpGet("EmployeeStats/{id}")]
+    [Authorize(Roles = "HotelManager,DirectorOfHR")]
     public async Task<IActionResult> EmployeeStats(int id)
     {
         try
@@ -33,8 +34,8 @@ public class HrController : Controller
         }
     }
     
-    //should have auth
     [HttpPost("EmployeeSalaryPosition/{id}")]
+    [Authorize(Roles = "HotelManager,DirectorOfHR")]
     public async Task<IActionResult> EmployeeSalaryPosition(int id,[FromBody]PositionSalaryChangeDto dto)
     {
         try
@@ -79,8 +80,8 @@ public class HrController : Controller
         }
     }
            
-    //should have auth
     [HttpGet("Roles")]
+    [Authorize(Roles = "HotelManager,DirectorOfHR")]
     public async Task<IActionResult> AllRoles()
     {
         try
@@ -93,8 +94,8 @@ public class HrController : Controller
         }
     } 
     
-    //should have auth
     [HttpPost("Roles")]
+    [Authorize(Roles = "HotelManager,DirectorOfHR")]
     public async Task<IActionResult> CreateRole([FromBody] RoleDto role)
     {
         try
@@ -117,8 +118,8 @@ public class HrController : Controller
         }
     }
     
-    //should have auth
     [HttpGet("Roles/{id}")]
+    [Authorize(Roles = "HotelManager,DirectorOfHR")]
     public async Task<IActionResult> GetRole(int id)
     {
         try
@@ -134,8 +135,8 @@ public class HrController : Controller
         }
     }
     
-    //should have auth
     [HttpPut("Roles/{id}")]
+    [Authorize(Roles = "HotelManager,DirectorOfHR")]
     public async Task<IActionResult> UpdateRole(int id, [FromBody] RoleDto role)
     {
         try
@@ -153,8 +154,8 @@ public class HrController : Controller
         }
     }
     
-    //should have auth
     [HttpDelete("Roles/{id}")]
+    [Authorize(Roles = "HotelManager,DirectorOfHR")]
     public async Task<IActionResult> DeleteRole(int id)
     {
         try
@@ -172,9 +173,8 @@ public class HrController : Controller
         }
     }
     
-    //shifts should be added
-    //should have auth
-    [HttpGet("AllShifts")]
+    [HttpGet("Shifts")]
+    [Authorize(Roles = "HotelManager,DirectorOfHR")]
     public async Task<IActionResult> AllShifts()
     {
         try
@@ -188,8 +188,8 @@ public class HrController : Controller
         }
     }
     
-    //should have auth
     [HttpGet("Shifts/{id}")]
+    [Authorize(Roles = "HotelManager,DirectorOfHR")]
     public async Task<IActionResult> GetShift(int id)
     {
         try
@@ -205,8 +205,8 @@ public class HrController : Controller
         }   
     }
     
-    //should have auth
     [HttpPost("Shifts")]
+    [Authorize(Roles = "HotelManager,DirectorOfHR")]
     public async Task<IActionResult> AddShift(ShiftDto dto)
     {
         try
@@ -233,8 +233,8 @@ public class HrController : Controller
         }
     }
     
-    //should have auth
     [HttpGet("Employee/{id}/Shifts")]
+    [Authorize(Roles = "HotelManager,DirectorOfHR")]
     public async Task<IActionResult> GetEmployeeShifts(int id)
     {
         try
@@ -248,8 +248,8 @@ public class HrController : Controller
         }
     }
     
-    //should have auth
     [HttpDelete("Shifts/{id}")]
+    [Authorize(Roles = "HotelManager,DirectorOfHR")]
     public async Task<IActionResult> DeleteShift(int id)
     {
         try
@@ -267,8 +267,8 @@ public class HrController : Controller
         }
     }
     
-    //should have auth
     [HttpGet("ShiftsAssignments")]
+    [Authorize(Roles = "HotelManager,DirectorOfHR")]
     public async Task<IActionResult> AllShiftsAssignments()
     {
         try
@@ -282,8 +282,8 @@ public class HrController : Controller
         }
     }
     
-    //should have auth
     [HttpPost("ShiftsAssignments")]
+    [Authorize(Roles = "HotelManager,DirectorOfHR")]
     public async Task<IActionResult> AddShiftAssignment([FromBody]ShiftAssignmentDto dto)
     {
         try
@@ -315,8 +315,8 @@ public class HrController : Controller
         }
     }
     
-    //should have auth
     [HttpDelete("ShiftsAssignments")]
+    [Authorize(Roles = "HotelManager,DirectorOfHR")]
     public async Task<IActionResult> DeleteShiftAssignment([FromQuery]ShiftAssignmentDto dto)
     {
         try
@@ -327,6 +327,84 @@ public class HrController : Controller
             _context.ShiftAssignments.Remove(sa);
             await _context.SaveChangesAsync();
             return NoContent();
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "An unexpected error occurred");
+        }
+    }
+
+    [HttpDelete("Positions/{id}")]
+    [Authorize(Roles = "HotelManager,DirectorOfHR")]
+    public async Task<IActionResult> DeletePosition(int id)
+    {
+        try
+        {
+            var position = await _context.Positions.FirstOrDefaultAsync(x => x.Id == id);
+            if (position == null)
+                return NotFound();
+            _context.Positions.Remove(position);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "An unexpected error occurred");
+        }
+    }
+
+    [HttpGet("Positions")]
+    [Authorize(Roles = "HotelManager,DirectorOfHR")]
+    public async Task<IActionResult> AllPositions()
+    {
+        try
+        {
+            return Ok(await _context.Positions.ToListAsync());
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "An unexpected error occurred");
+        }
+    }
+
+    [HttpGet("Positions/{id}")]
+    [Authorize(Roles = "HotelManager,DirectorOfHR")]
+    public async Task<IActionResult> PositionById(int id)
+    {
+        try
+        {
+            var position = await _context.Positions.FirstOrDefaultAsync(x => x.Id == id);
+            if (position == null)
+                return NotFound();
+            return Ok(position);
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "An unexpected error occurred");
+        }
+    }
+    
+    [HttpPost("Positions")]
+    [Authorize(Roles = "HotelManager,DirectorOfHR")]
+    public async Task<IActionResult> CreatePosition([FromBody] PositionDto dto)
+    {
+        try
+        {
+            if (dto.BaseSalary != null && dto.Title != null)
+            {
+                if(await _context.Positions.AnyAsync(s => s.Title == dto.Title))
+                    return BadRequest("Position already exists!");
+                var p = new Position()
+                {
+                    Title = dto.Title,
+                    BaseSalary = dto.BaseSalary.Value
+                };
+                await _context.Positions.AddAsync(p);
+                await _context.SaveChangesAsync();
+                return CreatedAtAction(nameof(PositionById), new { id = p.Id }, p);
+            }
+
+            return BadRequest("Not Invalid Inputs!");
         }
         catch (Exception)
         {

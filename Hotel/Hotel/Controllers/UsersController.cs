@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Hotel.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hotel.Controllers;
-
 
 [Route("API/Users")]
 [ApiController]
@@ -17,8 +17,6 @@ public class UsersController : Controller
 {
     private readonly AppDbContext _context;
     private readonly JwtService _jwtService;
-
-
     public UsersController(AppDbContext context, JwtService jwtService)
     {
         _context = context;
@@ -26,8 +24,8 @@ public class UsersController : Controller
 
     }
     
-    //should have auth
     [HttpGet]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager")]
     public async Task<IActionResult> GetAllUsers()
     {
         try
@@ -42,8 +40,8 @@ public class UsersController : Controller
         }
     }
     
-    //should have auth
     [HttpGet("{userName}")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager")]
     public async Task<IActionResult> GetUser(string userName)
     {
         try
@@ -59,8 +57,8 @@ public class UsersController : Controller
         }
     }
     
-    //should have auth
     [HttpPost("Guests")]
+    [AllowAnonymous]
     public async Task<IActionResult> CreateGuest([FromBody] GuestCreateDto guest)
     {
         try
@@ -96,8 +94,8 @@ public class UsersController : Controller
         }
     }
     
-    //should have auth
     [HttpDelete("{userName}")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager")]
     public async Task<IActionResult> DeleteUser(String userName)
     {
         try
@@ -132,8 +130,8 @@ public class UsersController : Controller
         }
     }
     
-    // should have auth
     [HttpPost("Employees")]
+    [Authorize(Roles = "HotelManager,DirectorOfHR")]
     public async Task<IActionResult> CreateEmployee(EmployeeCreateDto employee)
     {
         try

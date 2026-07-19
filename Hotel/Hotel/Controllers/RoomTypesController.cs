@@ -2,8 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using Hotel.Data;
 using Hotel.Services;
 using Hotel.DTOs;
+using Hotel.Mappers;
 using Hotel.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hotel.Controllers;
 
@@ -20,11 +22,26 @@ public class RoomTypesController : Controller
     }
     
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> GetRoomTypes()
     {
         try
         {
-            return Ok(await _context.RoomTypes.ToListAsync());
+            var roomTypes = await _context.RoomTypes.ToListAsync();
+            var roomAmenities = await _context.RoomAmenities
+                .Include(ra => ra.Amenity)
+                .ToListAsync();
+
+            var output = roomTypes.Select(rt => new
+            {
+                RoomType = rt,
+                Amenities = roomAmenities
+                    .Where(ra => ra.RoomTypeId == rt.RoomTypeId)
+                    .Select(ra => ra.Amenity!.ToDto())
+                    .ToList()
+            }).ToList();
+
+            return Ok(output);
         }
         catch (Exception)
         {
@@ -33,6 +50,7 @@ public class RoomTypesController : Controller
     }
 
     [HttpGet("AvailableRoomTypes")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetAvailableRoomTypes([FromQuery]RoomSearchDto roomSearch)
     {
         try
@@ -46,8 +64,8 @@ public class RoomTypesController : Controller
         }
     }
     
-    //should have authentication
     [HttpGet("{id}")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager,DirectorOfRooms")]
     public async Task<IActionResult> GetRoomType(int id)
     {
         try
@@ -63,8 +81,8 @@ public class RoomTypesController : Controller
         }
     }
     
-    //should have authentication
     [HttpPost]
+    [Authorize(Roles = "HotelManager,DirectorOfRooms")]
     public async Task<IActionResult> CreateRoomType([FromBody]RoomTypeDto dto)
     {
         try
@@ -95,8 +113,8 @@ public class RoomTypesController : Controller
         }
     }
             
-    //should have authentication
     [HttpPut("{id}")]
+    [Authorize(Roles = "HotelManager,DirectorOfRooms")]
     public async Task<IActionResult> UpdateRoomType(int id, [FromBody]RoomTypeDto dto)
     {
         try
@@ -132,8 +150,8 @@ public class RoomTypesController : Controller
         }
     }
     
-    //should have authentication
     [HttpDelete("{id}")]
+    [Authorize(Roles = "HotelManager,DirectorOfRooms")]
     public async Task<IActionResult> DeleteRoomType(int id)
     {
         try
@@ -151,8 +169,8 @@ public class RoomTypesController : Controller
         }
     }
     
-    //should have auth
     [HttpGet("Amenities")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetAllAmenities()
     {
         try
@@ -165,8 +183,8 @@ public class RoomTypesController : Controller
         }
     }
     
-    //should have auth
     [HttpGet("Amenities/{name}")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager,DirectorOfRooms")]
     public async Task<IActionResult> GetAmenity(string name)
     {
         try
@@ -192,8 +210,8 @@ public class RoomTypesController : Controller
     }
     
     
-    //should have auth
     [HttpPost("Amenities")]
+    [Authorize(Roles = "HotelManager,DirectorOfRooms")]
     public async Task<IActionResult> CreateAmenity([FromBody]AmenityDto dto)
     {
         try
@@ -216,8 +234,8 @@ public class RoomTypesController : Controller
         }
     }
     
-    //should have auth
     [HttpPut("Amenities/{id}")]
+    [Authorize(Roles = "HotelManager,DirectorOfRooms")]
     public async Task<IActionResult> UpdateAmenity(int id,[FromBody] AmenityDto dto)
     {
         try
@@ -237,8 +255,8 @@ public class RoomTypesController : Controller
         }
     }
     
-    //should have auth
     [HttpDelete("Amenities/{id}")]
+    [Authorize(Roles = "HotelManager,DirectorOfRooms")]
     public async Task<IActionResult> DeleteAmenity(int id)
     {
         try
@@ -256,8 +274,8 @@ public class RoomTypesController : Controller
         }
     }
     
-    //should have auth
     [HttpPost("RoomAmenity")]
+    [Authorize(Roles = "HotelManager,DirectorOfRooms")]
     public async Task<IActionResult> AddRoomAmenity([FromBody]RoomAmenities ra)
     {
         try
@@ -279,8 +297,8 @@ public class RoomTypesController : Controller
         }
     }
     
-    //should have auth
     [HttpDelete("RoomAmenity")]
+    [Authorize(Roles = "HotelManager,DirectorOfRooms")]
     public async Task<IActionResult> DeleteRoomAmenity([FromBody] RoomAmenities dto)
     {
         try

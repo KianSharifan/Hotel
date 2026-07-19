@@ -4,7 +4,7 @@ using Hotel.DTOs;
 using Hotel.Mappers;
 using Hotel.Models;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hotel.Controllers;
 
@@ -13,14 +13,13 @@ namespace Hotel.Controllers;
 public class HouseKeepingController : Controller
 {
     private readonly AppDbContext  _context;
-
     public HouseKeepingController(AppDbContext context)
     {
         _context = context;
     }
 
-    //should have auth
     [HttpGet]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager,Housekeeper")]
     public async Task<IActionResult> GetAll()
     {
         try
@@ -33,8 +32,8 @@ public class HouseKeepingController : Controller
         }
     }
     
-    //should have auth
     [HttpGet("Employee/{userName}")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager,Housekeeper")]
     public async Task<IActionResult> GetEmployee(string userName)
     {
         try
@@ -60,8 +59,8 @@ public class HouseKeepingController : Controller
         }
     }
 
-    //should have auth
     [HttpPost]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager,Housekeeper")]
     public async Task<IActionResult> Create([FromBody]HouseKeepingDto houseKeeping)
     {
         try
@@ -98,8 +97,8 @@ public class HouseKeepingController : Controller
         }
     }
     
-    //should have auth
     [HttpPut("{id}")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager,Housekeeper")]
     public async Task<IActionResult> Update(int id,[FromBody] HouseKeepingDto houseKeeping)
     {
         try
@@ -126,8 +125,8 @@ public class HouseKeepingController : Controller
         }
     }
     
-    //should have auth
     [HttpDelete("{id}")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager,Housekeeper")]
     public async Task<IActionResult> Delete(int id)
     {
         try
