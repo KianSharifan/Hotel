@@ -131,11 +131,15 @@ public class UsersController : Controller
     }
     
     [HttpPost("Employees")]
-    [Authorize(Roles = "HotelManager,DirectorOfHR")]
+    // [Authorize(Roles = "HotelManager,DirectorOfHR")]
     public async Task<IActionResult> CreateEmployee(EmployeeCreateDto employee)
     {
         try
         {
+            if (await _context.Users.AnyAsync(u => u.Email == employee.Email))
+            {
+                return BadRequest("Email already exists.");
+            }
             if (employee.Position == null)
                 return BadRequest("Position null");
             var position = await _context.Positions.FirstOrDefaultAsync(p => p.Title!.ToLower() == employee.Position.ToLower());
@@ -158,9 +162,9 @@ public class UsersController : Controller
             var e = new Employee()
             {
                 Id = u.Id,
-                BirthDate = employee.BirthDate.ToDateTime(new TimeOnly(0, 0, 0)),
+                BirthDate = employee.BirthDate.ToDateTime(new TimeOnly(0, 0, 0)).ToUniversalTime(),
                 Salary = employee.Salary,
-                HireDate = DateTime.Today,
+                HireDate = DateTime.UtcNow,
                 DepartmentId = employee.DepartmentId,
                 PositionId = position.Id
             };
@@ -168,9 +172,10 @@ public class UsersController : Controller
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetUser), new { userName = employee.UserName }, e);
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            return StatusCode(500, "An unexpected error occurred");
+            // return StatusCode(500, "An unexpected error occurred");
+            return BadRequest(e.ToString());
         }
     }
 }

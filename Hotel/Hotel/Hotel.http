@@ -8,35 +8,19 @@ GET {{root_url}}/API/Service/AllServiceUsages
 Accept: application/json
 ###
 
-GET {{root_url}}/Restaurant/Menu/Pizzas/MenuItems
-Accept: application/json
-###
-
-DELETE {{root_url}}/API/Users/Delete/kian
-Accept: application/json
-###
-
-GET {{root_url}}/API/Restaurant/Orders/NotCompleted
-Accept: application/json
-###
-
-POST {{root_url}}/API/Restaurant/Menu/Categories
+POST {{root_url}}/API/Users/Employees
 Content-Type: application/json
 Accept: application/json
 
 {
-  "name": "aba"
-}
-###
-
-POST {{root_url}}/API/Restaurant/Menu/Pizzas/MenuItems
-Content-Type: application/json
-Accept: application/json
-
-{
-  "name": "Pepperoni Pizza",
-  "description": "Classic pepperoni with mozzarella",
-  "price": 12.12
+  "userName": "john_doe",
+  "password": "P@ssw0rd123",
+  "email": "john.doe@example.com",
+  "roleId": 1,
+  "birthDate": "1998-05-14",
+  "salary": 55000,
+  "departmentId": 2,
+  "position": "intern"
 }
 ###
 
