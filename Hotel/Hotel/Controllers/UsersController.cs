@@ -153,15 +153,17 @@ public class UsersController : Controller
                 PasswordHash = Convert.ToHexString(SHA256.HashData(bytes)),
                 RoleId = employee.RoleId
             };
+            await _context.Users.AddAsync(u);
+            await _context.SaveChangesAsync();
             var e = new Employee()
             {
+                Id = u.Id,
                 BirthDate = employee.BirthDate.ToDateTime(new TimeOnly(0, 0, 0)),
                 Salary = employee.Salary,
                 HireDate = DateTime.Today,
                 DepartmentId = employee.DepartmentId,
                 PositionId = position.Id
             };
-            await _context.Users.AddAsync(u);
             await _context.Employees.AddAsync(e);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetUser), new { userName = employee.UserName }, e);
