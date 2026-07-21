@@ -2,7 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using Hotel.Data;
 using Hotel.Services;
 using Hotel.DTOs;
+using Hotel.Mappers;
 using Hotel.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hotel.Controllers;
 
@@ -19,27 +22,50 @@ public class RoomTypesController : Controller
     }
     
     [HttpGet]
-    public IActionResult GetRoomTypes()
+    [AllowAnonymous]
+    public async Task<IActionResult> GetRoomTypes()
     {
         try
         {
-            return Ok(_context.RoomTypes);
+            var roomTypes = await _context.RoomTypes.ToListAsync();
+            var roomAmenities = await _context.RoomAmenities
+                .Include(ra => ra.Amenity)
+                .ToListAsync();
+
+            var output = roomTypes.Select(rt => new
+            {
+                RoomType = rt,
+                Amenities = roomAmenities
+                    .Where(ra => ra.RoomTypeId == rt.RoomTypeId)
+                    .Select(ra => ra.Amenity!.ToDto())
+                    .ToList()
+            }).ToList();
+
+            return Ok(output);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
 
     [HttpGet("AvailableRoomTypes")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetAvailableRoomTypes([FromQuery]RoomSearchDto roomSearch)
     {
-        var output = await _roomServices.AvailableRoomTypes(roomSearch);
-        return Ok(output);
+        try
+        {
+            var output = await _roomServices.AvailableRoomTypes(roomSearch);
+            return Ok(output);
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "An unexpected error occurred");
+        }
     }
     
-    //should have authentication
     [HttpGet("{id}")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager,DirectorOfRooms")]
     public async Task<IActionResult> GetRoomType(int id)
     {
         try
@@ -49,21 +75,22 @@ public class RoomTypesController : Controller
                 return NotFound();
             return Ok(i);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
-    //should have authentication
     [HttpPost]
+    [Authorize(Roles = "HotelManager,DirectorOfRooms")]
     public async Task<IActionResult> CreateRoomType([FromBody]RoomTypeDto dto)
     {
         try
         {
             RoomType roomType = new RoomType();
-            if (dto.MaxGuests != null && dto.NumberOfSingles != null && dto.NumberOfDoubles != null && dto.NumberOfSofa != null)
+            if (dto.MaxGuests != null && dto.NumberOfSingles != null && dto.NumberOfDoubles != null && dto.NumberOfSofa != null && dto.Price != null && dto.Name != null)
             {
+                roomType.Price = dto.Price.Value;
                 roomType.Name = dto.Name;
                 roomType.MaxGuests = dto.MaxGuests.Value;
                 roomType.Description = dto.Description;
@@ -78,16 +105,16 @@ public class RoomTypesController : Controller
             }
             await _context.RoomTypes.AddAsync(roomType);
             await _context.SaveChangesAsync();
-            return Ok();
+            return CreatedAtAction(nameof(GetRoomType),new {id = roomType.RoomTypeId},roomType);
         }
-        catch(Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
             
-    //should have authentication
     [HttpPut("{id}")]
+    [Authorize(Roles = "HotelManager,DirectorOfRooms")]
     public async Task<IActionResult> UpdateRoomType(int id, [FromBody]RoomTypeDto dto)
     {
         try
@@ -95,6 +122,8 @@ public class RoomTypesController : Controller
             var roomType = await _context.RoomTypes.FindAsync(id);
             if (roomType != null)
             {
+                if (dto.Price != null)
+                    roomType.Price = dto.Price.Value;
                 if(dto.MaxGuests != null)
                     roomType.MaxGuests = dto.MaxGuests.Value;
                 if (dto.Description != null)
@@ -109,23 +138,20 @@ public class RoomTypesController : Controller
                     roomType.NumberSofaBed = dto.NumberOfSofa.Value;
                 if(dto.Image != null)
                     roomType.PicUrl = dto.Image;
-                if(dto.Price != null)
-                    roomType.Price = dto.Price.Value;
-                
                 await _context.SaveChangesAsync();
-                return Ok();
+                return Ok(roomType);
             }
             
             return NotFound();
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
-    //should have authentication
     [HttpDelete("{id}")]
+    [Authorize(Roles = "HotelManager,DirectorOfRooms")]
     public async Task<IActionResult> DeleteRoomType(int id)
     {
         try
@@ -135,37 +161,64 @@ public class RoomTypesController : Controller
                 return NotFound();
             _context.RoomTypes.Remove(roomType);
             await _context.SaveChangesAsync();
-            return Ok();
+            return NoContent();
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
-    //should have auth
-    [HttpGet("AllAmenities")]
-    public IActionResult GetAllAmenities()
+    [HttpGet("Amenities")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetAllAmenities()
     {
         try
         {
-            return Ok(_context.Amenities);
+            return Ok(await _context.Amenities.ToListAsync());
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
-    //should have auth
-    [HttpPost("CreateAmenity")]
+    [HttpGet("Amenities/{name}")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager,DirectorOfRooms")]
+    public async Task<IActionResult> GetAmenity(string name)
+    {
+        try
+        {
+            var a = await _context.Amenities.FirstOrDefaultAsync(a => a.Name == name);
+            if (a == null)
+                return NotFound();
+            var ra = await _context.RoomAmenities
+                .Include(r => r.RoomType)
+                .Include(r => r.Amenity)
+                .Where(ra => ra.Amenity!.Name == name)
+                .Select(ra => new
+                {
+                    ra.RoomType!.Name
+                })
+                .ToListAsync();
+            return Ok(new{a,ra});
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "An unexpected error occurred");
+        }
+    }
+    
+    
+    [HttpPost("Amenities")]
+    [Authorize(Roles = "HotelManager,DirectorOfRooms")]
     public async Task<IActionResult> CreateAmenity([FromBody]AmenityDto dto)
     {
         try
         {
             if (dto.Name == null)
                 return BadRequest("Invalid input");
-            if(_context.Amenities.Any(a => a.Name == dto.Name))
+            if(await _context.Amenities.AnyAsync(a => a.Name == dto.Name))
                 return BadRequest("Amenity already exists");
             var amenity = new Amenity()
             {
@@ -173,97 +226,98 @@ public class RoomTypesController : Controller
             };
             await _context.Amenities.AddAsync(amenity);
             await _context.SaveChangesAsync();
-            return Ok();
+            return CreatedAtAction(nameof(GetAmenity),new {name = amenity.Name},amenity);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
-    //should have auth
-    [HttpPut("UpdateAmenity")]
-    public async Task<IActionResult> UpdateAmenity([FromBody] AmenityDto dto)
+    [HttpPut("Amenities/{id}")]
+    [Authorize(Roles = "HotelManager,DirectorOfRooms")]
+    public async Task<IActionResult> UpdateAmenity(int id,[FromBody] AmenityDto dto)
     {
         try
         {
             if (dto.Name == null)
                 return BadRequest("Invalid input"); 
-            var a = _context.Amenities.FirstOrDefault(a => a.Name == dto.Name);
+            var a = await _context.Amenities.FirstOrDefaultAsync(a => a.Id == id);
             if (a == null)
                 return NotFound();
             a.Name = dto.Name;
             await _context.SaveChangesAsync();
-            return Ok();
+            return Ok(a);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
-    //should have auth
-    [HttpDelete("DeleteAmenity")]
+    [HttpDelete("Amenities/{id}")]
+    [Authorize(Roles = "HotelManager,DirectorOfRooms")]
     public async Task<IActionResult> DeleteAmenity(int id)
     {
         try
         {
-            var a  = _context.Amenities.FirstOrDefault(a => a.Id == id);
+            var a  = await _context.Amenities.FirstOrDefaultAsync(a => a.Id == id);
             if (a == null)
                 return NotFound();
             _context.Amenities.Remove(a);
             await _context.SaveChangesAsync();
-            return Ok();
+            return NoContent();
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
-    //should have auth
-    [HttpPost("AddRoomAmenity")]
-    public async Task<IActionResult> AddRoomAmenity([FromBody]RoomAmenities dto)
+    [HttpPost("RoomAmenity")]
+    [Authorize(Roles = "HotelManager,DirectorOfRooms")]
+    public async Task<IActionResult> AddRoomAmenity([FromBody]RoomAmenities ra)
     {
         try
         {
-            if (!_context.Amenities.Any(a => a.Id == dto.AmenityId))
+            var a = await _context.Amenities.FirstOrDefaultAsync(r => r.Id == ra.AmenityId);
+            if (a == null)
                 return NotFound();
-            if(!_context.RoomTypes.Any(r => r.RoomTypeId == dto.RoomTypeId))
+            if(! await _context.RoomTypes.AnyAsync(r => r.RoomTypeId == ra.RoomTypeId))
                 return NotFound();
-            if(_context.RoomAmenities.Any(r => r.AmenityId == dto.AmenityId && r.RoomTypeId == dto.RoomTypeId))
+            if(await _context.RoomAmenities.AnyAsync(r => r.AmenityId == ra.AmenityId && r.RoomTypeId == ra.RoomTypeId))
                 return BadRequest("Amenity already exists");
-            _context.RoomAmenities.Add(dto);
+            await _context.RoomAmenities.AddAsync(ra);
             await _context.SaveChangesAsync();
-            return Ok();
+            return CreatedAtAction(nameof(GetAmenity),new {name = a.Name},ra);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
-    //should have auth
-    [HttpDelete("DeleteRoomAmenity")]
+    [HttpDelete("RoomAmenity")]
+    [Authorize(Roles = "HotelManager,DirectorOfRooms")]
     public async Task<IActionResult> DeleteRoomAmenity([FromBody] RoomAmenities dto)
     {
         try
         {
-            if (!_context.Amenities.Any(a => a.Id == dto.AmenityId))
+            if (!await _context.Amenities.AnyAsync(a => a.Id == dto.AmenityId))
                 return NotFound();
-            if (!_context.RoomTypes.Any(r => r.RoomTypeId == dto.RoomTypeId))
+            if (!await _context.RoomTypes.AnyAsync(r => r.RoomTypeId == dto.RoomTypeId))
                 return NotFound();
         
-            var r = _context.RoomAmenities.FirstOrDefault(r => r.AmenityId == dto.AmenityId  && r.RoomTypeId == dto.RoomTypeId);
+            var r = await _context.RoomAmenities.FirstOrDefaultAsync(r => r.AmenityId == dto.AmenityId  && r.RoomTypeId == dto.RoomTypeId);
             if (r == null)
                 return NotFound();
             _context.RoomAmenities.Remove(r);
             await _context.SaveChangesAsync();
-            return Ok();
+            return NoContent();
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
 }

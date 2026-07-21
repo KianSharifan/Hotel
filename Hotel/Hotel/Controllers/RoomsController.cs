@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Hotel.Services;
 using Hotel.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hotel.Controllers;
-
 
 [Route("API/Rooms")]
 [ApiController]
@@ -20,8 +20,8 @@ public class RoomsController : Controller
         _roomServices = roomServices;
     }
     
-    //should have authentication
      [HttpGet("{id}")]
+     [Authorize(Roles = "HotelManager,FrontOfficeManager,DirectorOfRooms")]
      public async Task<IActionResult> GetRoom(int id)
      {
          try
@@ -37,8 +37,8 @@ public class RoomsController : Controller
          }
      }
      
-     // should have authentication
      [HttpGet]
+     [Authorize(Roles = "HotelManager,FrontOfficeManager,DirectorOfRooms")]
      public async Task<IActionResult> GetRooms()
      {
          try
@@ -51,8 +51,8 @@ public class RoomsController : Controller
          }
      }
 
-     //should have authentication
      [HttpPut("{id}")]
+     [Authorize(Roles = "HotelManager,DirectorOfRooms,FrontOfficeManager")]
      public async Task<IActionResult> UpdateRoom(int id, [FromBody]RoomDto dto)
      {
          try
@@ -81,8 +81,8 @@ public class RoomsController : Controller
          }
      }
      
-     //should have authentication
      [HttpDelete("{roomNumber}")]
+     [Authorize(Roles = "HotelManager,DirectorOfRooms")]
      public async Task<IActionResult> DeleteRoom(int roomNumber)
      {
          try
@@ -100,8 +100,8 @@ public class RoomsController : Controller
          }
      }
 
-     //should have authentication
      [HttpPost]
+     [Authorize(Roles = "HotelManager,DirectorOfRooms")]
      public async Task<IActionResult> CreateRoom([FromBody] RoomDto room)
      {
          try
@@ -129,13 +129,11 @@ public class RoomsController : Controller
      }
 
     [HttpPost("Reservation")]
+    [AllowAnonymous]
     public async Task<IActionResult> Reservation([FromBody] RoomReservationDto input)
     {
         try
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             var output = await _roomServices.Reserve(input);
             if (output == (0,0))
                 return BadRequest("No available room");

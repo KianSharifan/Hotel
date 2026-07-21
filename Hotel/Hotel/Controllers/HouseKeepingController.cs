@@ -4,7 +4,7 @@ using Hotel.DTOs;
 using Hotel.Mappers;
 using Hotel.Models;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hotel.Controllers;
 
@@ -13,28 +13,27 @@ namespace Hotel.Controllers;
 public class HouseKeepingController : Controller
 {
     private readonly AppDbContext  _context;
-
     public HouseKeepingController(AppDbContext context)
     {
         _context = context;
     }
 
-    //should have auth
     [HttpGet]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager,Housekeeper")]
     public async Task<IActionResult> GetAll()
     {
         try
         {
             return Ok(await _context.HouseKeepings.ToListAsync());
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
-    //should have auth
     [HttpGet("Employee/{userName}")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager,Housekeeper")]
     public async Task<IActionResult> GetEmployee(string userName)
     {
         try
@@ -46,7 +45,7 @@ public class HouseKeepingController : Controller
                 .FirstOrDefaultAsync(e => e.User!.Role!.Name == "Housekeeper" && e.User.Username == userName);
             if (houseKeeper == null)
                 return NotFound("No housekeeper with this UserName was found");
-            var keeping = _context.HouseKeepings.Where(h => h.EmployeeId == houseKeeper.Id).ToList();
+            var keeping = await _context.HouseKeepings.Where(h => h.EmployeeId == houseKeeper.Id).ToListAsync();
             var output = new List<HouseKeepingDto>();
             foreach (var k in keeping)
             {
@@ -54,51 +53,52 @@ public class HouseKeepingController : Controller
             }
             return Ok(output);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
 
-    //should have auth
     [HttpPost]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager,Housekeeper")]
     public async Task<IActionResult> Create([FromBody]HouseKeepingDto houseKeeping)
     {
         try
         {
-            if (houseKeeping.RoomId != null && houseKeeping.ScheduledDate != null)
+            if (houseKeeping.RoomId == null || houseKeeping.ScheduledDate == null)
+                return BadRequest("Not valid inputs");
+            var employee = await _context.Users
+                .Include(user => user.Role)
+                .Where(u => u.Role!.Name == "Housekeeper")
+                .OrderBy(u => _context.HouseKeepings.Count(h =>
+                    h.EmployeeId == u.Id &&
+                    h.ScheduledDate == houseKeeping.ScheduledDate))
+                .FirstOrDefaultAsync();
+            if (employee == null)
+                return BadRequest("No HouseKeeper Exists");
+            var hk = new HouseKeeping()
             {
-                var employee = _context.Users
-                    .Include(user => user.Role)
-                    .Where(u => u.Role!.Name == "Housekeeper")
-                    .OrderByDescending(u => _context.HouseKeepings.Count(h =>
-                        h.EmployeeId == u.Id &&
-                        h.ScheduledDate == houseKeeping.ScheduledDate))
-                    .FirstOrDefault();
-                if (employee == null)
-                    return BadRequest("No HouseKeeper Exists");
-                var hk = new HouseKeeping()
-                {
-                    Notes = houseKeeping.Notes,
-                    RoomId = houseKeeping.RoomId.Value,
-                    ScheduledDate = houseKeeping.ScheduledDate.Value,
-                    Status = false,
-                    EmployeeId = employee.Id,
-                };
-                await _context.HouseKeepings.AddAsync(hk);
-                await _context.SaveChangesAsync();
-                return Ok();
-            }
-            return BadRequest("Not valid inputs");
+                Notes = houseKeeping.Notes,
+                RoomId = houseKeeping.RoomId.Value,
+                ScheduledDate = houseKeeping.ScheduledDate.Value,
+                Status = false,
+                EmployeeId = employee.Id,
+            };
+            hk.Employee =  await _context.Employees.FirstOrDefaultAsync(e => e.Id == employee.Id);
+            hk.Employee!.User = await _context.Users.FirstOrDefaultAsync(u => u.Id == employee.Id);
+            await _context.HouseKeepings.AddAsync(hk);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(GetEmployee),new { userNmae = hk.Employee.User!.Username });
+
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
-    //should have auth
     [HttpPut("{id}")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager,Housekeeper")]
     public async Task<IActionResult> Update(int id,[FromBody] HouseKeepingDto houseKeeping)
     {
         try
@@ -119,14 +119,14 @@ public class HouseKeepingController : Controller
             await _context.SaveChangesAsync();
             return Ok();
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
-    //should have auth
     [HttpDelete("{id}")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager,Housekeeper")]
     public async Task<IActionResult> Delete(int id)
     {
         try
@@ -136,11 +136,11 @@ public class HouseKeepingController : Controller
                 return NotFound();
             _context.HouseKeepings.Remove(hk);
             await _context.SaveChangesAsync();
-            return Ok();
+            return NoContent();
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
 }

@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Hotel.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hotel.Controllers;
-
 
 [Route("API/Users")]
 [ApiController]
@@ -17,8 +17,6 @@ public class UsersController : Controller
 {
     private readonly AppDbContext _context;
     private readonly JwtService _jwtService;
-
-
     public UsersController(AppDbContext context, JwtService jwtService)
     {
         _context = context;
@@ -26,32 +24,46 @@ public class UsersController : Controller
 
     }
     
-    //should have auth
     [HttpGet]
-    public IActionResult GetAllUsers()
+    [Authorize(Roles = "HotelManager,FrontOfficeManager")]
+    public async Task<IActionResult> GetAllUsers()
     {
         try
         {
-            var output = new List<AdminUserDto>();
-            foreach (var user in _context.Users)
-            {
-                output.Add(user.ToAdminDto());
-            }
+            var users = await _context.Users.ToListAsync();
+            var output = users.Select(u => u.ToAdminDto()).ToList();
             return Ok(output);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
-    //should have auth
-    [HttpPost("CreateGuest")]
+    [HttpGet("{userName}")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager")]
+    public async Task<IActionResult> GetUser(string userName)
+    {
+        try
+        {
+            var u = await _context.Users.FirstOrDefaultAsync(u => u.Username == userName);
+            if (u == null)
+                return NotFound();
+            return Ok(u.ToAdminDto());
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "An unexpected error occurred");
+        }
+    }
+    
+    [HttpPost("Guests")]
+    [AllowAnonymous]
     public async Task<IActionResult> CreateGuest([FromBody] GuestCreateDto guest)
     {
         try
         {
-            var role = _context.Roles.FirstOrDefault(x => x.Name == "Guest");
+            var role = await _context.Roles.FirstOrDefaultAsync(x => x.Name == "Guest");
             if(role == null)
                 return BadRequest("Role Guest not found");
             var bytes = Encoding.UTF8.GetBytes(guest.Password);
@@ -74,51 +86,52 @@ public class UsersController : Controller
             var token = _jwtService.GenerateToken(u);
             await _context.Guests.AddAsync(g);
             await _context.SaveChangesAsync();
-            return Ok(new {Token = token});
+            return CreatedAtAction(nameof(GetUser) ,new {userName = u.Username},token);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
-    //should have auth
-    [HttpDelete("Delete/{userName}")]
+    [HttpDelete("{userName}")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager")]
     public async Task<IActionResult> DeleteUser(String userName)
     {
         try
         {
-            var user = _context.Users.Where(x => x.Username == userName)
-                .Include(x => x.Role).FirstOrDefault();
+            var user = await _context.Users.Where(x => x.Username == userName)
+                .Include(x => x.Role).FirstOrDefaultAsync();
             if (user == null)
                 return NotFound();
-            _context.Users.Remove(user);
-            if(user.Role == null)
+            if (user.Role == null)
                 return BadRequest("Role Not found");
             if (user.Role.Name == "Guest")
             {
-                var g = _context.Guests.Find(user.Id);
-                if (g == null)
+                var g = await _context.Guests.FirstOrDefaultAsync(g => g.GuestId == user.Id);
+                if (g == null) 
                     return NotFound();
                 _context.Guests.Remove(g);
-                await _context.SaveChangesAsync();
-                return Ok();
             }
-            var e = _context.Employees.Find(user.Id);
-            if (e == null)
-                return NotFound();
-            _context.Employees.Remove(e);
+            else
+            {
+                var e = await _context.Employees.FirstOrDefaultAsync(e => e.Id == user.Id);
+                if (e == null) 
+                    return NotFound();
+                _context.Employees.Remove(e);
+            }
+            _context.Users.Remove(user);
             await _context.SaveChangesAsync();
-            return Ok();
+            return NoContent();
         }
-        catch (Exception exception)
+        catch (Exception)
         {
-            return BadRequest(exception.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
-    // should have auth
-    [HttpPost("CreateEmployee")]
+    [HttpPost("Employees")]
+    [Authorize(Roles = "HotelManager,DirectorOfHR")]
     public async Task<IActionResult> CreateEmployee(EmployeeCreateDto employee)
     {
         try
@@ -148,14 +161,16 @@ public class UsersController : Controller
                 DepartmentId = employee.DepartmentId,
                 PositionId = position.Id
             };
-            _context.Users.Add(u);
-            _context.Employees.Add(e);
+            await _context.Users.AddAsync(u);
+            await _context.Employees.AddAsync(e);
             await _context.SaveChangesAsync();
-            return Ok();
+            return CreatedAtAction(nameof(GetUser), new { userName = employee.UserName }, e);
         }
-        catch (Exception exception)
+        catch (Exception)
         {
-            return BadRequest(exception.Message);
+            // return StatusCode(500, "An unexpected error occurred");
+            
+            return StatusCode(500, ex.ToString());
         }
     }
 }

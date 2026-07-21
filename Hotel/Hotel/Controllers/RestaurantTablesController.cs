@@ -4,40 +4,39 @@ using Hotel.DTOs;
 using Hotel.Mappers;
 using Hotel.Models;
 using Hotel.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hotel.Controllers;
 
-
 [Route("API/Restaurant/Tables")]
 [ApiController]
-file class RestaurantTablesController : Controller
+public class RestaurantTablesController : Controller
 {
     private readonly AppDbContext  _context;
     private readonly RestaurantServices _restaurantServices;
-
-
     public RestaurantTablesController(AppDbContext context, RestaurantServices restaurantServices)
     {
         _context = context;
         _restaurantServices = restaurantServices;
     }
     
-    //should have authentication
-    [HttpPost]
+    [HttpPost("Reservations")]
+    [AllowAnonymous]
     public async Task<IActionResult> Reservation([FromBody]TableStatusDto reservation)
     {
         try
         {
             if (reservation.Time != null && reservation.Email != null)
             {
-                var availableTables = _context.RestaurantTables.Where(t => t.Capacity >= reservation.Capacity)
+                var availableTables = await _context.RestaurantTables.Where(t => t.Capacity >= reservation.Capacity)
                     .Where(t => t.Status == "Available")
                     .OrderBy(t => t.Capacity -  reservation.Capacity)
-                    .ToList();
+                    .ToListAsync();
 
                 foreach (var table in availableTables)
                 {
-                    if (!_context.TableReservations.Any(s => s.TableId == table.Id
+                    if (!await _context.TableReservations.AnyAsync(s => s.TableId == table.Id
                                                              && s.Time.Date == reservation.Time.Value.Date
                                                              && s.Time.Hour * 60 + s.Time.Minute - 120 <
                                                              reservation.Time.Value.Hour * 60 + reservation.Time.Value.Minute
@@ -52,22 +51,54 @@ file class RestaurantTablesController : Controller
                             Description = reservation.SpecialReq,
                             Email = reservation.Email
                         };
-                        _context.TableReservations.Add(reserve);
+                        await _context.TableReservations.AddAsync(reserve);
                         await _context.SaveChangesAsync();
-                        return Ok("Reservation Successful");
+                        return CreatedAtAction(nameof(GetReservation),new { id = reserve.Id},reserve);
                     }
                 }
             }
             return BadRequest("No available tables");
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
-    //should have authorization
+    [HttpGet("Reservations")]
+    [Authorize(Roles = "HotelManager,RestaurantManager,Waiter")]
+    public async Task<IActionResult> AllReservations()
+    {
+        try
+        {
+            var allReservation = await _context.TableReservations.ToListAsync();
+            return Ok(allReservation);
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "An unexpected error occurred");
+        }
+    }
+    
+    [HttpGet("Reservations/{id}")]
+    [Authorize(Roles = "HotelManager,RestaurantManager,Waiter")]
+    public async Task<IActionResult> GetReservation(int id)
+    {
+        try
+        {
+            var r =  await _context.TableReservations.FirstOrDefaultAsync(s => s.Id == id);
+            if (r == null)
+                return NotFound();
+            return Ok(r);
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "An unexpected error occurred");
+        }
+    }
+    
     [HttpGet("{id}")]
+    [Authorize(Roles = "HotelManager,RestaurantManager,Waiter")]
     public async Task<IActionResult> GetTableStatus(int id)
     {
         try
@@ -77,15 +108,14 @@ file class RestaurantTablesController : Controller
                 return NotFound();
             return Ok(table);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
-    
-    //should have authorization [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
+    [Authorize(Roles = "HotelManager,RestaurantManager,Waiter")]
     public async Task<IActionResult> Update(int id,[FromBody]TableStatusDto input)
     {
         try
@@ -97,14 +127,14 @@ file class RestaurantTablesController : Controller
                 return BadRequest();
             return Ok();
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
-    //should have authentication
     [HttpDelete("{id}")]
+    [Authorize(Roles = "HotelManager,RestaurantManager,Waiter")]
     public async Task<IActionResult> DeleteTable(int id)
     {
         try
@@ -114,30 +144,28 @@ file class RestaurantTablesController : Controller
                 return NotFound();
             _context.RestaurantTables.Remove(table);
             await _context.SaveChangesAsync();
-            return Ok();
+            return NoContent();
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
-    //should have authentication
-    [HttpPost("{id}")]
-    public async Task<IActionResult> CreateTable(int id,[FromBody]TableDto input)
+    [HttpPost]
+    [Authorize(Roles = "HotelManager,RestaurantManager,Chef,Waiter")]
+    public async Task<IActionResult> CreateTable([FromBody]TableDto input)
     {
         try
         {
-            if(_context.RestaurantTables.Any(t => t.Id == id))
-                return BadRequest("Table with such id already exists");
             var table = input.ToTable();
-            _context.RestaurantTables.Add(table);
+            await _context.RestaurantTables.AddAsync(table);
             await _context.SaveChangesAsync();
-            return Ok();
+            return CreatedAtAction(nameof(GetTableStatus),new { id = table.Id },table);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            return BadRequest(e.Message);
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
 }

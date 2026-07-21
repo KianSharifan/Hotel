@@ -1,6 +1,8 @@
 using Hotel.Data;
 using Hotel.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace Hotel.Seeding;
 public class SeedDb
@@ -241,6 +243,58 @@ public class SeedDb
             };
             await context.MenuCategories.AddRangeAsync(menuCategories);
             await context.SaveChangesAsync();
+
+
+
+
+
+            //--------------------------------------------
+
+
+            var hotelManagerRole = roles.First(r => r.Name == "HotelManager");
+            var frontOfficeDept = departments.First(d => d.Name == "Front Office");
+            var managerPosition = positions.First(p => p.Title == "Manager");
+
+            var hotelManagerPasswordHash = Convert.ToHexString(
+                SHA256.HashData(Encoding.UTF8.GetBytes("Manager123!"))
+            );
+
+            var hotelManagerUser = new User
+            {
+                Username = "hotelmanager",
+                Email = "manager@noirhotel.com",
+                Phone = "2123089100", // digits only — CK_User_Phone_OnlyNumbers rejects dashes
+                PasswordHash = hotelManagerPasswordHash,
+                IsActive = true,
+                CreatedAt = DateTime.UtcNow,
+                FirstName = "Alex",
+                LastName = "Morgan",
+                RoleId = hotelManagerRole.RoleId
+            };
+            await context.Users.AddAsync(hotelManagerUser);
+            await context.SaveChangesAsync(); // populates hotelManagerUser.Id
+
+            var hotelManagerEmployee = new Employee
+            {
+                Id = hotelManagerUser.Id, // shared PK — must equal the User's Id
+                PositionId = managerPosition.Id,
+                DepartmentId = frontOfficeDept.Id,
+                HireDate = DateTime.UtcNow,
+                Salary = managerPosition.BaseSalary,
+                BirthDate = new DateTime(1985, 1, 1)
+            };
+            await context.Employees.AddAsync(hotelManagerEmployee);
+            await context.SaveChangesAsync();
+
+            hotelManagerUser.EmployeeId = hotelManagerEmployee.Id;
+            await context.SaveChangesAsync();
+
+            //--------------------------------------------
+
+
+
+
+
             var menuItems = new List<MenuItem>
             { 
             // BREAKFAST (1)

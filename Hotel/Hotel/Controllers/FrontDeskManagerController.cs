@@ -3,6 +3,7 @@ using Hotel.DTOs;
 using Hotel.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hotel.Controllers;
 
@@ -16,8 +17,8 @@ public class FrontDeskManagerController : Controller
     _context = context;
     }
     
-    //should have auth
     [HttpGet("Reservations")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager")]
     public async Task<ActionResult> AllReservations()
     {
         try
@@ -31,8 +32,8 @@ public class FrontDeskManagerController : Controller
         }
     }
     
-    //should have auth
     [HttpGet("Reservations/{id}")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager")]
     public async Task<ActionResult> GetReservation(int id)
     {
         try
@@ -48,16 +49,22 @@ public class FrontDeskManagerController : Controller
         }
     }
     
-    //should have auth
     [HttpPost("Checkout")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager")]
     public async Task<IActionResult> CheckOut([FromBody]CheckOutDto dto)
     {
         try
         {
-            var r = _context.Reservations
+            if(dto.Discount > 100 || dto.Discount < 0)
+                return BadRequest("Discount can't be greater than 100 or less than 0");
+            if (dto.Tax > 100 || dto.Tax < 0)
+                return BadRequest("Tax can't be greater than 100 or less than 0");
+            if(dto.Tax == null || dto.Discount == null)
+                return BadRequest("Tax or Discount cannot be null");
+            var r = await _context.Reservations
                 .Include(r => r.Room)
                 .Include(r=>r.Guest)
-                .FirstOrDefault(r => r.CheckInDate == dto.ReservationDate && r.Room!.RoomNumber == dto.RoomNumber);
+                .FirstOrDefaultAsync(r => r.CheckInDate == dto.ReservationDate && r.Room!.RoomNumber == dto.RoomNumber);
             if (r == null)
                 return NotFound();
             double total = 0;
@@ -67,12 +74,6 @@ public class FrontDeskManagerController : Controller
             foreach (var s in su)
                 total += s.Price;
             var subTotal = total;
-            if(dto.Discount > 100 || dto.Discount < 0)
-                return BadRequest("Discount can't be greater than 100 or less than 0");
-            if (dto.Tax > 100 || dto.Discount < 0)
-                return BadRequest("Tax can't be greater than 100 or less than 0");
-            if(dto.Tax == null || dto.Discount == null)
-                return BadRequest("Tax or Discount cannot be null");
             if (dto.Discount == 0)
                 total = total * (dto.Tax.Value + 100)/100;
             else
@@ -93,9 +94,14 @@ public class FrontDeskManagerController : Controller
             r.Guest!.User = _context.Users.FirstOrDefault(u => u.Id == r.GuestId);
             var u = r.Guest.User;
             u!.IsActive = false;
+            r.Status = "Checked Out";
             await _context.Invoices.AddAsync(i);
             await _context.SaveChangesAsync();
-            return Ok(i.Id);
+            return CreatedAtAction(
+                nameof(FinanceController.GetInvoices)
+                ,controllerName: "Finance",
+                routeValues: new { id = i.Id },
+                i.Id);
         }
         catch (Exception)
         {
@@ -105,6 +111,7 @@ public class FrontDeskManagerController : Controller
     
     //should have auth
     [HttpPost("CheckIn")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager")]
     public async Task<IActionResult> CheckIn([FromBody]CheckInDto dto)
     {
         try
@@ -137,8 +144,8 @@ public class FrontDeskManagerController : Controller
         }
     }
 
-    //should have auth
     [HttpPost("Payment/{id}")]
+    [Authorize(Roles = "HotelManager,FrontOfficeManager,DirectorOfFinance")]
     public async Task<IActionResult> Payment(int id, [FromBody] PayDto dto)
     {
         try
@@ -160,7 +167,11 @@ public class FrontDeskManagerController : Controller
             await _context.Payments.AddAsync(p);
             i.Status = "Paid";
             await _context.SaveChangesAsync();
-            return Ok();
+            return CreatedAtAction(
+                nameof(FinanceController.HotelPayments)
+                ,controllerName: "Finance"
+                ,routeValues: new { id = p.Id }
+                ,p.Id);
         }
         catch (Exception)
         {
