@@ -28,13 +28,13 @@ export default function Register() {
     }
 
     try {
-          const result = await createGuest({
+          const token = await createGuest({
               username,
               email,
               password
           })
 
-          login(result.token)
+          login(token)
           alert("Account created successfully!")
           const params = new URLSearchParams(location.search)
           const returnTo = params.get("return") ?? "/"

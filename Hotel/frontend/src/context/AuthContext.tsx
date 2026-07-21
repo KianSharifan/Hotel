@@ -12,6 +12,7 @@ type AuthContextType = {
   user: User | null;
   token: string | null;
   isAuthenticated: boolean;
+  loading: boolean;
   login: (token: string) => void;
   logout: () => void;
 };
@@ -25,17 +26,22 @@ export function AuthProvider({
 }) {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const savedToken = localStorage.getItem("token");
 
-    if (!savedToken) return;
+    if (!savedToken){
+      setLoading(false);
+      return;
+    }
 
     try {
       const decoded = jwtDecode<Record<string, any>>(savedToken);
 
       if (decoded.exp * 1000 < Date.now()) {
         localStorage.removeItem("token");
+        setLoading(false);
         return;
       }
 
@@ -56,8 +62,12 @@ export function AuthProvider({
             "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
           ],
       });
-    } catch {
+    } 
+    catch {
       localStorage.removeItem("token");
+    }
+    finally {
+      setLoading(false); // NEW
     }
   }, []);
 
@@ -95,6 +105,7 @@ export function AuthProvider({
     <AuthContext.Provider
       value={{
         user,
+        loading,
         token,
         isAuthenticated: !!user,
         login,

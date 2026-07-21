@@ -34,6 +34,9 @@ import MaintenanceManager from "./pages/ControlPanel/Maintenance/MaintenanceMana
 import EngineerMaintenance from "./pages/ControlPanel/Maintenance/EngineerMaintenance"
 import Finance from "./pages/ControlPanel/Finance"
 import Services from "./pages/ControlPanel/Services"
+import Departments from "./pages/ControlPanel/HotelManager/Departments"
+import HotelSettings from "./pages/ControlPanel/HotelManager/Hotel"
+
 
 
 
@@ -56,7 +59,9 @@ const HIDDEN_NAVBAR_PATHS = [
   "/employee/maintenance/maintenanceManager",
   "/employee/maintenance/engineerMaintenance",
   "/employee/finance",
-  "/employee/services"
+  "/employee/services",
+  "/hotelmanagement/departments",
+  "/hotelmanagement/hotelsettings"
 ]
 
 function AppInner() {
@@ -90,6 +95,9 @@ function AppInner() {
         <Route path="/employee/maintenance/engineerMaintenance" element={<EngineerMaintenance />}/>
         <Route path="/employee/finance" element={<Finance />}/>
         <Route path="/employee/services" element={<Services />}/>
+        <Route path="/hotelmanagement/departments" element={<Departments />}/>
+        <Route path="/hotelmanagement/hotelsettings" element={<HotelSettings />}/>
+        
         
         
 

@@ -1,6 +1,13 @@
 export async function getUsers() {
+    const token = localStorage.getItem("token");
+
     const response = await fetch(
-        "http://localhost:5263/API/Users"
+        "http://localhost:5263/API/Users",
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
     );
 
     if (!response.ok) {
@@ -17,7 +24,7 @@ export async function createGuest(guest: {
     password: string;
 }) {
     const response = await fetch(
-        "http://localhost:5263/API/Users/CreateGuest",
+        "http://localhost:5263/API/Users/Guests",
         {
             method: "POST",
             headers: {
@@ -32,15 +39,20 @@ export async function createGuest(guest: {
         throw new Error(error || "Failed to create guest.");
     }
 
-    return await response.json();
+    // Backend returns ONLY the JWT string
+    return await response.text();
 }
 
 export async function deleteUser(username: string) {
+    const token = localStorage.getItem("token");
 
     const response = await fetch(
-        `http://localhost:5263/API/Users/Delete/${username}`,
+        `http://localhost:5263/API/Users/${username}`,
         {
-            method: "DELETE"
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
         }
     );
 
@@ -62,13 +74,15 @@ export async function createEmployee(employee: {
     roleId: number;
     birthDate: string;
 }) {
+    const token = localStorage.getItem("token");
 
     const response = await fetch(
-        "http://localhost:5263/API/Users/CreateEmployee",
+        "http://localhost:5263/API/Users/Employees",
         {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
             },
             body: JSON.stringify(employee)
         }
@@ -79,16 +93,13 @@ export async function createEmployee(employee: {
         throw new Error(error || "Failed to create employee.");
     }
 
-    // Controller currently returns Ok() with no JSON body.
     return;
 }
-
 
 export async function login(credentials: {
     username: string;
     password: string;
 }) {
-
     const response = await fetch(
         "http://localhost:5263/API/Login",
         {
@@ -102,7 +113,7 @@ export async function login(credentials: {
 
     if (!response.ok) {
         const error = await response.text();
-        throw new Error(error);
+        throw new Error(error || "Login failed.");
     }
 
     return await response.json();

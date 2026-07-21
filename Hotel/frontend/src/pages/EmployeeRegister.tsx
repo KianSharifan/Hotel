@@ -1,10 +1,12 @@
 import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, Navigate } from "react-router-dom"
 import { createEmployee} from "../api/loginApi"
+import { useAuth } from "../context/AuthContext"
 
 export default function EmployeeRegister() {
 
   const navigate = useNavigate()
+  const { user, loading } = useAuth();
 
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
@@ -16,38 +18,48 @@ export default function EmployeeRegister() {
   const [salary,setSalary]=useState("")
   const [birthDate,setBirthDate]=useState("")
 
-    async function handleRegister() {
-    if (!username || !email || !roleId || !departmentId ||!password ||  !position || !salary || !birthDate) 
-    {
-      alert("Please fill all fields")
-      return
-    }
+  if (loading) {
+    return null; 
+  }
+  if(
+    user?.role !== "HotelManager" && user?.role !== "DirectorOfHR"
+  ){
+    return <Navigate to="/" replace />;
+  }
 
-    if (password !== confirmPassword) {
-      alert("Passwords do not match")
-      return
-    }
+  async function handleRegister() {
+  if (!username || !email || !roleId || !departmentId ||!password ||  !position || !salary || !birthDate) 
+  {
+    alert("Please fill all fields")
+    return
+  }
 
-    try {
-        await createEmployee({
-            userName: username,
-            email,
-            password,
-            roleId: Number(roleId),
-            departmentId: Number(departmentId),
-            salary:Number(salary),
-            position,
-            birthDate
-        })
+  if (password !== confirmPassword) {
+    alert("Passwords do not match")
+    return
+  }
 
-        alert("Employee account created successfully!")
-        navigate("/login")
-    }
-    catch (err) {
-        if (err instanceof Error)
-            alert(err.message)
-        else
-            alert("Failed to create account.")
+  try {
+    await createEmployee({
+        userName: username,
+        email,
+        password,
+        roleId: Number(roleId),
+        departmentId: Number(departmentId),
+        salary:Number(salary),
+        position,
+        birthDate
+    })
+
+    alert("Employee account created successfully.")
+    navigate("/dashboard/employees")
+    //!!!!!
+  }
+  catch (err) {
+    if (err instanceof Error)
+      alert(err.message)
+    else
+      alert("Failed to create account.")
     }
   }
 
