@@ -170,9 +170,7 @@ public class UsersController : Controller
         }
         catch (Exception)
         {
-            // return StatusCode(500, "An unexpected error occurred");
-            
-            return StatusCode(500, ex.ToString());
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
 }
