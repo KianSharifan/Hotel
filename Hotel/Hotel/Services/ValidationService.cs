@@ -2,11 +2,12 @@ using System.Security.Cryptography;
 using System.Text;
 using Hotel.Data;
 using Hotel.DTOs;
+using Hotel.Interfaces;
 using Hotel.Models;
 
 namespace Hotel.Services;
 
-public class ValidationService
+public class ValidationService : IValidationServices
 {
     private readonly AppDbContext _context;
     
@@ -31,15 +32,15 @@ public class ValidationService
     public bool AddGuest(PaymentDto paymentDto)
     {
         if (GuestExists(paymentDto))
-        {
             return false;
-        }
         var r = _context.Roles.FirstOrDefault(u => u.Name == "Guest");
         if (r == null)
-            return false;
+            throw new Exception("Guest Role Doesn't Exist");
         if (paymentDto.Password == null || paymentDto.Username == null)
-            return false;
+            throw new Exception("Password and Username are required");
         byte[] bytes = Encoding.UTF8.GetBytes(paymentDto.Password);
+        if (_context.Users.Any(u => u.Username == paymentDto.Username))
+            throw new Exception("Username already exists");
         User user = new User()
         {
             Username = paymentDto.Username,

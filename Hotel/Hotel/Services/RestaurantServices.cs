@@ -1,11 +1,12 @@
 using Hotel.Data;
 using Microsoft.EntityFrameworkCore;
 using Hotel.DTOs;
+using Hotel.Interfaces;
 using Hotel.Models;
 
 namespace Hotel.Services;
 
-public class RestaurantServices
+public class RestaurantServices : IRestaurantServices
 {
     private readonly AppDbContext  _context;
     
@@ -31,7 +32,6 @@ public class RestaurantServices
         return false;
     }
 
-    //this should have authentication
     public async Task<string> TableUpdate(int id, TableStatusDto input)
     {
         var table = await _context.RestaurantTables.FindAsync(id);

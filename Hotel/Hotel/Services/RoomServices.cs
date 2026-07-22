@@ -1,17 +1,20 @@
 using Hotel.Data;
 using Hotel.DTOs;
+using Hotel.Interfaces;
 using Hotel.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hotel.Services;
 
-public class RoomServices
+public class RoomServices : IRoomServices
 {
     private readonly AppDbContext _context;
+    private readonly ValidationService _validationService;
 
-    public RoomServices(AppDbContext context)
+    public RoomServices(AppDbContext context, ValidationService validationService)
     {
         _context = context;
+        _validationService = validationService;
     }
 
     public async Task<List<RoomType?>> AvailableRoomTypes(RoomSearchDto input)
@@ -31,7 +34,7 @@ public class RoomServices
         return roomTypes;
     }
 
-    private async Task<Room?> FindAvailableRoom(RoomReservationDto input)
+    public async Task<Room?> FindAvailableRoom(RoomReservationDto input)
     {
         return await _context.Rooms.Include(r => r.RoomType)
             .Where(room => room.Status == "Available" && room.RoomType!.RoomTypeId == input.RoomTypeId)
@@ -48,6 +51,9 @@ public class RoomServices
         var room = await FindAvailableRoom(input);
         if (room == null)
             return output;
+        if (input.PaymentDto != null)
+            return output;
+        _validationService.AddGuest(input.PaymentDto!);
         output.Item1 = (int)room.RoomNumber;
         Reservation reservation = new Reservation()
         {
