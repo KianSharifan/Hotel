@@ -39,8 +39,6 @@ public class ValidationService : IValidationServices
         if (paymentDto.Password == null || paymentDto.Username == null)
             throw new Exception("Password and Username are required");
         byte[] bytes = Encoding.UTF8.GetBytes(paymentDto.Password);
-        if (_context.Users.Any(u => u.Username == paymentDto.Username))
-            throw new Exception("Username already exists");
         User user = new User()
         {
             Username = paymentDto.Username,

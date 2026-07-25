@@ -53,7 +53,7 @@ public class RoomServices : IRoomServices
             return output;
         if (input.PaymentDto != null)
             return output;
-        _validationService.AddGuest(input.PaymentDto!);
+        // _validationService.AddGuest(input.PaymentDto!);
         output.Item1 = (int)room.RoomNumber;
         Reservation reservation = new Reservation()
         {
