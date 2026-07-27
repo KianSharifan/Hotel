@@ -9,12 +9,10 @@ namespace Hotel.Services;
 public class RoomServices : IRoomServices
 {
     private readonly AppDbContext _context;
-    private readonly ValidationService _validationService;
 
-    public RoomServices(AppDbContext context, ValidationService validationService)
+    public RoomServices(AppDbContext context)
     {
         _context = context;
-        _validationService = validationService;
     }
 
     public async Task<List<RoomType?>> AvailableRoomTypes(RoomSearchDto input)
