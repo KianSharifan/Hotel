@@ -61,6 +61,7 @@ public class UsersController : Controller
     [AllowAnonymous]
     public async Task<IActionResult> CreateGuest([FromBody] GuestCreateDto guest)
     {
+        await using var transaction = await _context.Database.BeginTransactionAsync();
         try
         {
             var role = await _context.Roles.FirstOrDefaultAsync(x => x.Name == "Guest");
@@ -86,10 +87,12 @@ public class UsersController : Controller
             var token = _jwtService.GenerateToken(u);
             await _context.Guests.AddAsync(g);
             await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
             return CreatedAtAction(nameof(GetUser) ,new {userName = u.Username},token);
         }
         catch (Exception)
         {
+            await transaction.RollbackAsync();
             return StatusCode(500, "An unexpected error occurred");
         }
     }
@@ -134,6 +137,7 @@ public class UsersController : Controller
     [Authorize(Roles = "HotelManager,DirectorOfHR")]
     public async Task<IActionResult> CreateEmployee(EmployeeCreateDto employee)
     {
+        await using var transaction = await _context.Database.BeginTransactionAsync();
         try
         {
             if (await _context.Users.AnyAsync(u => u.Email == employee.Email))
@@ -170,12 +174,13 @@ public class UsersController : Controller
             };
             await _context.Employees.AddAsync(e);
             await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
             return CreatedAtAction(nameof(GetUser), new { userName = employee.UserName }, e);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            // return StatusCode(500, "An unexpected error occurred");
-            return BadRequest(e.ToString());
+            await transaction.RollbackAsync();
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
 }

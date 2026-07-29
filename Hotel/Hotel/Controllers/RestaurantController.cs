@@ -330,6 +330,7 @@ public class RestaurantController : Controller
     [Authorize(Roles = "HotelManager,RestaurantManager,Chef,Waiter")]
     public async Task<IActionResult> CreateOrder([FromBody]OrderDto order)
     {
+        await using var transaction = await _context.Database.BeginTransactionAsync();
         try
         {
             double total = 0;
@@ -357,10 +358,12 @@ public class RestaurantController : Controller
             }
             o.TotalPrice = total;
             await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
             return CreatedAtAction(nameof(GetOrder), new { id = o.Id }, o);
         }
         catch (Exception)
         {
+            await transaction.RollbackAsync();
             return StatusCode(500, "An unexpected error occurred");
         }
     }

@@ -102,7 +102,7 @@ public class HrController : Controller
         {
             if (role.Name == null)
                 return BadRequest();
-            if ( await _context.Roles.AnyAsync(x => x.Name == role.Name))
+            if (await _context.Roles.AnyAsync(x => x.Name == role.Name))
                 return BadRequest("Role with the same name already exists");
             var r = new Role()
             {
@@ -403,7 +403,6 @@ public class HrController : Controller
                 await _context.SaveChangesAsync();
                 return CreatedAtAction(nameof(PositionById), new { id = p.Id }, p);
             }
-
             return BadRequest("Not Invalid Inputs!");
         }
         catch (Exception)
