@@ -141,14 +141,12 @@ public class UsersController : Controller
         try
         {
             if (await _context.Users.AnyAsync(u => u.Email == employee.Email))
-            {
                 return BadRequest("Email already exists.");
-            }
             if (employee.Position == null)
                 return BadRequest("Position null");
             var position = await _context.Positions.FirstOrDefaultAsync(p => p.Title!.ToLower() == employee.Position.ToLower());
             if(position == null)
-                return BadRequest("Position not found");
+                return NotFound("Position not found");
             if (employee.Salary < position.BaseSalary)
                 return BadRequest("Salary is too low");
             byte[] bytes = Encoding.UTF8.GetBytes(employee.Password);
@@ -163,13 +161,17 @@ public class UsersController : Controller
             };
             await _context.Users.AddAsync(u);
             await _context.SaveChangesAsync();
+            var dep = await _context.Departments.FirstOrDefaultAsync(d =>
+                d.Name!.ToLower() == employee.DepartmentName.ToLower());
+            if(dep == null)
+                return NotFound("Department not found");
             var e = new Employee()
             {
                 Id = u.Id,
                 BirthDate = employee.BirthDate.ToDateTime(new TimeOnly(0, 0, 0)).ToUniversalTime(),
                 Salary = employee.Salary,
                 HireDate = DateTime.UtcNow,
-                DepartmentId = employee.DepartmentId,
+                DepartmentId = dep.Id,
                 PositionId = position.Id
             };
             await _context.Employees.AddAsync(e);
