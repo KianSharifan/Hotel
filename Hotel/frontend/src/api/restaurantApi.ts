@@ -1,18 +1,13 @@
 const MENU_API = "http://localhost:5263/API/Restaurant/Menu"
-// export interface OrderItemDTO {
-//     itemId: number
-//     quantity: number
-// }
-
-// export interface OrderDTO {
-//     tableId: number
-//     status: string
-//     orderItems: OrderItemDTO[]
-// }
 
 export async function getMenu() {
 
-    const response = await fetch(MENU_API)
+    const token = localStorage.getItem("token")
+    const response = await fetch(MENU_API, {
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
 
     if (!response.ok)
         throw new Error("Could not load menu.")
@@ -22,8 +17,13 @@ export async function getMenu() {
 
 export async function getCategories() {
 
-    const response = await fetch("http://localhost:5263/API/Restaurant/Menu/Categories");
-
+    const token = localStorage.getItem("token")
+    const response = await fetch("http://localhost:5263/API/Restaurant/Menu/Categories", {
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
+    
     if (!response.ok)
         throw new Error("Failed to load categories.");
 
@@ -34,12 +34,14 @@ export async function getCategories() {
 
 export async function createCategory(name: string) {
 
+    const token = localStorage.getItem("token")
     const response = await fetch("http://localhost:5263/API/Restaurant/Menu/Categories", {
 
         method: "POST",
 
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
         },
 
         body: JSON.stringify({
@@ -56,12 +58,14 @@ export async function createCategory(name: string) {
 
 export async function deleteCategory(name: string) {
 
+    const token = localStorage.getItem("token")
     const response = await fetch("http://localhost:5263/API/Restaurant/Menu/Categories", {
 
         method: "DELETE",
 
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
         },
 
         body: JSON.stringify({
@@ -84,12 +88,15 @@ export async function createMenuItem(
         description: string;
         price: number;}
 ) {
+    const token = localStorage.getItem("token")
     const response = await fetch(
         `http://localhost:5263/API/Restaurant/Menu/${category}/MenuItems`,
         {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"},
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
             body: JSON.stringify(item)
         }
     );
@@ -111,12 +118,14 @@ export async function updateMenuItem(
         price?: number;
     }
 ) {
+    const token = localStorage.getItem("token")
     const response = await fetch(
         `http://localhost:5263/API/Restaurant/Menu/${category}/MenuItems`,
         {
             method: "PUT",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
             },
             body: JSON.stringify(item)
         }
@@ -130,12 +139,14 @@ export async function deleteMenuItem(
     category: string,
     name: string
 ) {
+    const token = localStorage.getItem("token")
     const response = await fetch(
         `http://localhost:5263/API/Restaurant/Menu/${category}/MenuItems`,
         {
             method: "DELETE",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
             },
             body: JSON.stringify({name})}
     );
@@ -149,9 +160,13 @@ export async function deleteMenuItem(
 
 
 export async function getOrders() {
+    const token = localStorage.getItem("token")
     const response = await fetch(
-        "http://localhost:5263/API/Restaurant/Orders"
-    );
+        "http://localhost:5263/API/Restaurant/Orders", {
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
 
     if (!response.ok)
         throw new Error("Failed to load orders.");
@@ -163,9 +178,13 @@ export async function getOrders() {
 
 
 export async function getOrder(id: number) {
+    const token = localStorage.getItem("token")
     const response = await fetch(
-        `http://localhost:5263/API/Restaurant/Orders/${id}`
-    );
+        `http://localhost:5263/API/Restaurant/Orders/${id}`, {
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
 
     if (!response.ok)
         throw new Error("Failed to load order.");
@@ -177,10 +196,13 @@ export async function getOrder(id: number) {
 
 
 export async function getActiveOrders(): Promise<ActiveOrderResponse[]> {
+    const token = localStorage.getItem("token")
     const response = await fetch(
-        "http://localhost:5263/API/Restaurant/Orders/NotCompleted"
-    );
-
+        "http://localhost:5263/API/Restaurant/Orders/NotCompleted", {
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
     if (!response.ok)
         throw new Error("Failed to load current orders.");
 
@@ -195,13 +217,15 @@ export async function createOrder(order: {
         quantity: number;
     }[];
 }) {
-
+    
+    const token = localStorage.getItem("token")
     const response = await fetch(
         "http://localhost:5263/API/Restaurant/Orders",
         {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
             },
             body: JSON.stringify(order)
         }
@@ -216,10 +240,14 @@ export async function createOrder(order: {
 
 export async function deleteOrder(id: number) {
 
+    const token = localStorage.getItem("token")
     const response = await fetch(
         `http://localhost:5263/API/Restaurant/Orders/${id}`,
         {
-            method: "DELETE"
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
         }
     );
 
@@ -239,12 +267,14 @@ export async function updateOrder(
     }
 ) {
 
+    const token = localStorage.getItem("token")
     const response = await fetch(
         `http://localhost:5263/API/Restaurant/Orders/${orderId}`,
         {
             method: "PUT",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
             },
             body: JSON.stringify(dto)
         }

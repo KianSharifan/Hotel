@@ -215,7 +215,7 @@ export default function Register() {
 
         </p>
 
-        <p className="text-center text-gray-400 mt-3">
+        {/* <p className="text-center text-gray-400 mt-3">
 
           Are you an employee?{" "}
 
@@ -226,7 +226,7 @@ export default function Register() {
             Click here
           </Link>
 
-        </p>
+        </p> */}
 
         <Link to="/">
           <p className="text-center text-white opacity-70 underline mt-2">Go home</p>

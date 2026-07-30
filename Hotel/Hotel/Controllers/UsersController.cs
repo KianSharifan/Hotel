@@ -131,7 +131,7 @@ public class UsersController : Controller
     }
     
     [HttpPost("Employees")]
-    // [Authorize(Roles = "HotelManager,DirectorOfHR")]
+    [Authorize(Roles = "HotelManager,DirectorOfHR")]
     public async Task<IActionResult> CreateEmployee(EmployeeCreateDto employee)
     {
         try

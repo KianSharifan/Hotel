@@ -1,10 +1,15 @@
 const BASE_URL = "http://localhost:5263/API/FrontDeskManager";
 
 export async function getReservations() {
+
+    const token = localStorage.getItem("token");
     const response = await fetch(
         "http://localhost:5263/API/FrontDeskManager/Reservations",
         {
-            method: "GET"
+            method: "GET",
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
         }
     );
 
@@ -25,12 +30,14 @@ export async function checkIn(data: {
     lastName: string;
 }) {
 
+    const token = localStorage.getItem("token");
     const response = await fetch(
         `${BASE_URL}/CheckIn`,
         {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
             },
             body: JSON.stringify(data)
         }
@@ -53,25 +60,27 @@ export async function checkOut(data: {
     tax: number;
 }) {
 
+    const token = localStorage.getItem("token");
     const response = await fetch(
         `${BASE_URL}/Checkout`,
         {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
             },
             body: JSON.stringify(data)
         }
     );
 
-if (!response.ok) {
-    console.log("STATUS:", response.status);
+    if (!response.ok) {
+        console.log("STATUS:", response.status);
 
-    const text = await response.text();
-    console.log("BODY:", text);
+        const text = await response.text();
+        console.log("BODY:", text);
 
-    throw new Error(text);
-}
+        throw new Error(text);
+    }
 
     return await response.json();
 }
@@ -86,12 +95,14 @@ export async function payInvoice(
     }
 ) {
 
+    const token = localStorage.getItem("token");
     const response = await fetch(
         `${BASE_URL}/Payment/${invoiceId}`,
         {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
             },
             body: JSON.stringify(data)
         }

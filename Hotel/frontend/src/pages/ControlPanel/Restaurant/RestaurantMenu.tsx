@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from "motion/react"
 import { useEffect, useState } from "react"
+import { useAuth } from "../../../context/AuthContext"
 import { createCategory, getMenu, createMenuItem, updateMenuItem, deleteMenuItem, deleteCategory} from "../../../api/restaurantApi"
 
 interface MenuCategory {
@@ -30,6 +31,19 @@ function Menu() {
     const [editingItem, setEditingItem] = useState<MenuItem | null>(null);
     const [editDescription, setEditDescription] = useState("");
     const [editPrice, setEditPrice] = useState("");
+
+    const { user, loading: authLoading  } = useAuth();
+
+    if (authLoading) {
+        return null; 
+    }
+    if (user?.role !== "HotelManager" && user?.role !== "Chef" && user?.role !== "RestaurantManager") {
+    return (
+            <div className="mx-auto mt-4 max-w-3xl rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700">
+            You don't have permission to access this page.
+            </div>
+        );
+    }
 
     const refreshMenu = async () => {
         try {

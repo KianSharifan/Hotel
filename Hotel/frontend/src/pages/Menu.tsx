@@ -30,6 +30,8 @@ function Menu() {
         }
       })
       .catch(error => console.log(error))
+
+    
   }, [])
 
   const filteredItems = items.filter(

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import {getEngineerMaintenance, updateMaintenanceRequest} from "../../../api/maintenanceApi"; 
+import { useAuth } from "../../../context/AuthContext"
 
 interface MaintenanceRequest {
     id: number;
@@ -26,6 +27,19 @@ export default function EngineerMaintenance() {
     const [detailStatus, setDetailStatus] = useState("Pending");
     const [detailDescription, setDetailDescription] = useState("");
     const [saving, setSaving] = useState(false);
+
+    const { user, loading: authLoading  } = useAuth();
+
+    if (authLoading) {
+        return null; 
+    }
+    if (user?.role !== "HotelManager" && user?.role !== "DirectorOfHR" && user?.role !== "Engineer") {
+    return (
+            <div className="mx-auto mt-4 max-w-3xl rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700">
+            You don't have permission to access this page.
+            </div>
+        );
+    }
 
     async function loadJobs() {
         if (!userName) return;

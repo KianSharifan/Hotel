@@ -1,6 +1,6 @@
 export async function getUsers() {
-    const token = localStorage.getItem("token");
 
+    const token = localStorage.getItem("token");
     const response = await fetch(
         "http://localhost:5263/API/Users",
         {
@@ -23,6 +23,7 @@ export async function createGuest(guest: {
     email: string;
     password: string;
 }) {
+    
     const response = await fetch(
         "http://localhost:5263/API/Users/Guests",
         {
@@ -39,13 +40,12 @@ export async function createGuest(guest: {
         throw new Error(error || "Failed to create guest.");
     }
 
-    // Backend returns ONLY the JWT string
     return await response.text();
 }
 
 export async function deleteUser(username: string) {
+    
     const token = localStorage.getItem("token");
-
     const response = await fetch(
         `http://localhost:5263/API/Users/${username}`,
         {

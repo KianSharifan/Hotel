@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import {getMenu, createOrder, updateOrder, deleteOrder, getActiveOrders, getOrder} from "../../../api/restaurantApi"
+import { useAuth } from "../../../context/AuthContext"
 
 interface MenuCategory {
   menuCategoryId: number
@@ -38,20 +39,32 @@ interface RestaurantOrder {
 
 
 export default function RestaurantOrders() {
-    const [categories, setCategories] = useState<MenuCategory[]>([])
-    const [menuItems, setMenuItems] = useState<MenuItem[]>([])
-    const [orders, setOrders] = useState<RestaurantOrder[]>([])
+  const [categories, setCategories] = useState<MenuCategory[]>([])
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([])
+  const [orders, setOrders] = useState<RestaurantOrder[]>([])
 
-    const [tableId, setTableId] = useState("")
-    const [selectedMenuItem, setSelectedMenuItem] = useState<MenuItem | null>(null)
-    const [selectedCategory, setSelectedCategory] = useState<number | null>(null)
+  const [tableId, setTableId] = useState("")
+  const [selectedMenuItem, setSelectedMenuItem] = useState<MenuItem | null>(null)
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null)
 
-    const [quantity, setQuantity] = useState(1)
-    const [selectedItems, setSelectedItems] = useState<SelectedItem[]>([])
-    const [filteredItems, setFilteredItems] = useState<MenuItem[]>([])
+  const [quantity, setQuantity] = useState(1)
+  const [selectedItems, setSelectedItems] = useState<SelectedItem[]>([])
+  const [filteredItems, setFilteredItems] = useState<MenuItem[]>([])
 
-const loadOrders = async () => {
+  const { user, loading: authLoading  } = useAuth();
 
+  if (authLoading) {
+      return null; 
+  }
+  if (user?.role !== "HotelManager" && user?.role !== "Chef" && user?.role !== "Waiter" && user?.role !== "RestaurantManager") {
+  return (
+          <div className="mx-auto mt-4 max-w-3xl rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700">
+          You don't have permission to access this page.
+          </div>
+      );
+  }
+
+  const loadOrders = async () => {
     try {
         const orders = await getActiveOrders();
         const completedOrders = await Promise.all(

@@ -3,9 +3,13 @@ const BASE_URL = "http://localhost:5263/API/HR";
 
 export async function getEmployeeStats(employeeId: number) {
 
+    const token = localStorage.getItem("token");
     const response = await fetch(
-        `${BASE_URL}/EmployeeStats/${employeeId}`
-    );
+        `${BASE_URL}/EmployeeStats/${employeeId}`, {
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
 
     if (!response.ok) {
         throw new Error(await response.text());
@@ -23,12 +27,14 @@ export async function updateEmployeeSalaryPosition(
     }
 ) {
 
+    const token = localStorage.getItem("token");
     const response = await fetch(
         `${BASE_URL}/EmployeeSalaryPosition/${employeeId}`,
         {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
             },
             body: JSON.stringify(data)
         }
@@ -44,9 +50,13 @@ export async function updateEmployeeSalaryPosition(
 
 export async function getRoles() {
 
+    const token = localStorage.getItem("token");
     const response = await fetch(
-        `${BASE_URL}/Roles`
-    );
+        `${BASE_URL}/Roles`, {
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
 
     if (!response.ok) {
         throw new Error(await response.text());
@@ -60,12 +70,14 @@ export async function createRole(data: {
     name: string;
 }) {
 
+    const token = localStorage.getItem("token");
     const response = await fetch(
         `${BASE_URL}/Roles`,
         {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
             },
             body: JSON.stringify(data)
         }
@@ -86,12 +98,14 @@ export async function updateRole(
     }
 ) {
 
+    const token = localStorage.getItem("token");
     const response = await fetch(
         `${BASE_URL}/Roles/${roleId}`,
         {
             method: "PUT",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
             },
             body: JSON.stringify(data)
         }
@@ -107,10 +121,14 @@ export async function updateRole(
 
 export async function deleteRole(roleId: number) {
 
+    const token = localStorage.getItem("token");
     const response = await fetch(
         `${BASE_URL}/Roles/${roleId}`,
         {
-            method: "DELETE"
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`
+            },           
         }
     );
 
@@ -125,10 +143,13 @@ export async function deleteRole(roleId: number) {
 
 export async function getAllShifts() {
 
+    const token = localStorage.getItem("token");
     const response = await fetch(
-        `${BASE_URL}/AllShifts`
-    );
-
+        `${BASE_URL}/Shifts`, {
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
     if (!response.ok) {
         throw new Error(await response.text());
     }
@@ -143,12 +164,14 @@ export async function createShift(data: {
     end: string;
 }) {
 
+    const token = localStorage.getItem("token");
     const response = await fetch(
         `${BASE_URL}/Shifts`,
         {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
             },
             body: JSON.stringify(data)
         }
@@ -164,10 +187,14 @@ export async function createShift(data: {
 
 export async function deleteShift(shiftId: number) {
 
+    const token = localStorage.getItem("token");
     const response = await fetch(
         `${BASE_URL}/Shifts/${shiftId}`,
         {
-            method: "DELETE"
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`
+            },  
         }
     );
 
@@ -182,9 +209,13 @@ export async function deleteShift(shiftId: number) {
 
 export async function getAllShiftAssignments() {
 
+    const token = localStorage.getItem("token");
     const response = await fetch(
-        `${BASE_URL}/ShiftsAssignments`
-    );
+        `${BASE_URL}/ShiftsAssignments`, {
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
 
     if (!response.ok) {
         throw new Error(await response.text());
@@ -199,12 +230,14 @@ export async function createShiftAssignment(data: {
     shiftId: number;
 }) {
 
+    const token = localStorage.getItem("token");
     const response = await fetch(
         `${BASE_URL}/ShiftsAssignments`,
         {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
             },
             body: JSON.stringify(data)
         }
@@ -223,12 +256,15 @@ export async function deleteShiftAssignment(data: {
     shiftId: number;
 }) {
 
+    const token = localStorage.getItem("token");
     const response = await fetch(
         `${BASE_URL}/ShiftsAssignments`,
         {
             method: "DELETE",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+                
             },
             body: JSON.stringify(data)
         }

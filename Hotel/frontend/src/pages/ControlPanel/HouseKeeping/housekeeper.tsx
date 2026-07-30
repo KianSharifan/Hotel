@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {getHouseKeeperTasks,updateHouseKeepingTask} from "../../../api/houseKeepingApi"; 
+import { useAuth } from "../../../context/AuthContext"
 
 interface HouseKeepingTask {
     id: number;
@@ -18,6 +19,19 @@ export default function HousekeeperTasks() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [completingId, setCompletingId] = useState<number | null>(null);
+
+    const { user, loading: authLoading  } = useAuth();
+
+    if (authLoading) {
+        return null; 
+    }
+    if (user?.role !== "HotelManager" && user?.role !== "DirectorOfHR" && user?.role !== "Housekeeper") {
+    return (
+            <div className="mx-auto mt-4 max-w-3xl rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700">
+            You don't have permission to access this page.
+            </div>
+        );
+    }
 
     async function loadTasks() {
         if (!userName) return;

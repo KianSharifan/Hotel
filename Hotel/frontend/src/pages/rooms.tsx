@@ -12,8 +12,17 @@ interface RoomType {
   price: number
 }
 
+interface Amenity {
+  name: string
+}
+
+interface RoomTypeResponse{
+  roomType: RoomType
+  amenities: Amenity[]
+}
+
 function Rooms() {
-  const [rooms, setRooms] = useState<RoomType[]>([])
+  const [rooms, setRooms] = useState<RoomTypeResponse[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -107,7 +116,11 @@ function Rooms() {
  
       <div className="py-28 px-8 md:px-20 space-y-32">
 
-        {rooms.map((room, index) => (
+        {rooms.map((roomData, index) => {
+            const room = roomData.roomType
+            const amenities = roomData.amenities
+        
+          return(
           <div
             key={room.roomTypeId}
 
@@ -201,6 +214,32 @@ function Rooms() {
                 <p>Sofa Beds: {room.numberSofaBed}</p>
               </div>
 
+              <div className="mb-8">
+                  <h3 className="text-white font-semibold mb-3">
+                      Amenities
+                  </h3>
+
+                  <div className="flex flex-wrap gap-3">
+                      {amenities.map((amenity) => (
+                          <span
+                              key={amenity.name}
+                              className="
+                              px-4
+                              py-2
+                              rounded-full
+                              bg-zinc-900
+                              border
+                              border-zinc-700
+                              text-sm
+                              text-gray-300
+                              "
+                          >
+                              {amenity.name}
+                          </span>
+                      ))}
+                  </div>
+              </div>
+
               <div className="flex gap-6">
 
                 <button
@@ -222,8 +261,10 @@ function Rooms() {
 
               </div>
             </div>
+            
           </div>
-        ))}
+          )
+        })}
       </div>
     </div>
   )

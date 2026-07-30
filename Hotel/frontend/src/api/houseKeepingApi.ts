@@ -1,7 +1,13 @@
 const BASE_URL = "http://localhost:5263/API/HouseKeeping";
 
 export async function getAllHouseKeepingTasks() {
-    const response = await fetch(BASE_URL);
+
+    const token = localStorage.getItem("token");
+    const response = await fetch(BASE_URL, {
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
 
     if (!response.ok) {
         throw new Error(await response.text());
@@ -13,9 +19,13 @@ export async function getAllHouseKeepingTasks() {
 
 export async function getHouseKeeperTasks(userName: string) {
 
+    const token = localStorage.getItem("token");
     const response = await fetch(
-        `${BASE_URL}/Employee/${encodeURIComponent(userName)}`
-    );
+        `${BASE_URL}/Employee/${encodeURIComponent(userName)}`, {
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
 
     if (!response.ok) {
         throw new Error(await response.text());
@@ -31,12 +41,14 @@ export async function createHouseKeepingTask(data: {
     notes?: string;
 }) {
 
+    const token = localStorage.getItem("token");
     const response = await fetch(
         BASE_URL,
         {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
             },
             body: JSON.stringify(data)
         }
@@ -61,12 +73,14 @@ export async function updateHouseKeepingTask(
     }
 ) {
 
+    const token = localStorage.getItem("token");
     const response = await fetch(
         `${BASE_URL}/${id}`,
         {
             method: "PUT",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
             },
             body: JSON.stringify(data)
         }
@@ -82,10 +96,14 @@ export async function updateHouseKeepingTask(
 
 export async function deleteHouseKeepingTask(id: number) {
 
+    const token = localStorage.getItem("token");
     const response = await fetch(
         `${BASE_URL}/${id}`,
         {
-            method: "DELETE"
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
         }
     );
 

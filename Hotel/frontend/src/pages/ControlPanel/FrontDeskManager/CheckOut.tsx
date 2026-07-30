@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import {getReservations, checkOut, payInvoice} from "../../../api/fdManagerApi";
+import { useAuth } from "../../../context/AuthContext"
 
 export default function CheckOut() {
 
@@ -13,6 +14,18 @@ export default function CheckOut() {
   const [reservations, setReservations] = useState<any[]>([]);
   const [search, setSearch] = useState("");
 
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return null; 
+  }
+  if (user?.role !== "HotelManager" && user?.role !== "FrontOfficeManager") {
+    return (
+      <div className="mx-auto mt-4 max-w-3xl rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700">
+        You don't have permission to access this page.
+      </div>
+    );
+  }
 
     const loadReservations = async () => {
         try {

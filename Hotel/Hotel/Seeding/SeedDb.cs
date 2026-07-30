@@ -244,56 +244,33 @@ public class SeedDb
             await context.MenuCategories.AddRangeAsync(menuCategories);
             await context.SaveChangesAsync();
 
-
-
-
-
-            //--------------------------------------------
-
-
-            var hotelManagerRole = roles.First(r => r.Name == "HotelManager");
-            var frontOfficeDept = departments.First(d => d.Name == "Front Office");
-            var managerPosition = positions.First(p => p.Title == "Manager");
-
             var hotelManagerPasswordHash = Convert.ToHexString(
                 SHA256.HashData(Encoding.UTF8.GetBytes("Manager123!"))
             );
-
-            var hotelManagerUser = new User
+            var hotelManager = new User
             {
                 Username = "hotelmanager",
                 Email = "manager@noirhotel.com",
-                Phone = "2123089100", // digits only — CK_User_Phone_OnlyNumbers rejects dashes
+                Phone = "2123089100",
                 PasswordHash = hotelManagerPasswordHash,
                 IsActive = true,
                 CreatedAt = DateTime.UtcNow,
                 FirstName = "Alex",
                 LastName = "Morgan",
-                RoleId = hotelManagerRole.RoleId
+                RoleId = 1
             };
-            await context.Users.AddAsync(hotelManagerUser);
-            await context.SaveChangesAsync(); // populates hotelManagerUser.Id
-
+            await context.Users.AddAsync(hotelManager);
+            await context.SaveChangesAsync();
             var hotelManagerEmployee = new Employee
             {
-                Id = hotelManagerUser.Id, // shared PK — must equal the User's Id
-                PositionId = managerPosition.Id,
-                DepartmentId = frontOfficeDept.Id,
+                Id = hotelManager.Id,
+                PositionId = 4,
+                DepartmentId = 1,
                 HireDate = DateTime.UtcNow,
-                Salary = managerPosition.BaseSalary,
-                BirthDate = new DateTime(1985, 1, 1)
+                Salary = 100000,
+                BirthDate = new DateTime(1985, 1, 1).ToUniversalTime()
             };
             await context.Employees.AddAsync(hotelManagerEmployee);
-            await context.SaveChangesAsync();
-
-            hotelManagerUser.EmployeeId = hotelManagerEmployee.Id;
-            await context.SaveChangesAsync();
-
-            //--------------------------------------------
-
-
-
-
 
             var menuItems = new List<MenuItem>
             { 
@@ -392,7 +369,7 @@ public class SeedDb
     },
     new Service
     {
-        Name = "In‑Room Dining",
+        Name = "In_Room Dining",
         Description = "Food and beverages delivered directly to the guest's room.",
         Price = 15.00
     },
@@ -405,7 +382,7 @@ public class SeedDb
     new Service
     {
         Name = "Spa Massage",
-        Description = "Relaxing full‑body massage performed by professional therapists.",
+        Description = "Relaxing full-body massage performed by professional therapists.",
         Price = 60.00
     },
     new Service
@@ -440,7 +417,7 @@ public class SeedDb
     },
     new Service
     {
-        Name = "Early Check‑In",
+        Name = "Early CheckIn",
         Description = "Check in as early as 9 AM.",
         Price = 60.00
     },
@@ -464,8 +441,8 @@ public class SeedDb
     },
     new Service
     {
-        Name = "Mini‑Bar Refill",
-        Description = "Restocking of in‑room mini‑bar items.",
+        Name = "Mini-Bar Refill",
+        Description = "Restocking of in-room mini-bar items.",
         Price = 40.00
     },
     new Service

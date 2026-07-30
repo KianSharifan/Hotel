@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useAuth } from "../../context/AuthContext"
 import {
     getEmployeeStats,
     updateEmployeeSalaryPosition,
@@ -60,6 +61,19 @@ const DAYS = [
 
 export default function HRManagement() {
     const [tab, setTab] = useState<Tab>("employees");
+
+    const { user, loading } = useAuth();
+
+    if (loading) {
+        return null; 
+    }
+    if (user?.role !== "HotelManager" && user?.role !== "DirectorOfHR") {
+        return (
+            <div className="mx-auto mt-4 max-w-3xl rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700">
+                You don't have permission to access this page.
+            </div>
+        );
+    }
 
     const tabs: { key: Tab; label: string }[] = [
         { key: "employees", label: "Employees" },
@@ -475,6 +489,7 @@ function ShiftsTab() {
         setError(null);
         try {
             const data = await getAllShifts();
+            console.log("SHIFTS FROM API:", data);
             setShifts(data);
         } catch (err) {
             setError(err instanceof Error ? err.message : "Failed to load shifts");

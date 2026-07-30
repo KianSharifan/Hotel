@@ -1,7 +1,13 @@
 const BASE_URL = "http://localhost:5263/API/Service";
 
 export async function getAllServices() {
-  const res = await fetch(BASE_URL);
+
+  const token = localStorage.getItem("token");
+  const res = await fetch(BASE_URL, {
+        headers:{
+          Authorization: `Bearer ${token}`
+        }
+    })
 
   if (!res.ok)
     throw new Error(await res.text());
@@ -15,10 +21,13 @@ export async function createService(dto: {
   description?: string;
   price: number;
 }) {
+
+  const token = localStorage.getItem("token");
   const res = await fetch(BASE_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
     },
     body: JSON.stringify(dto),
   });
@@ -37,10 +46,13 @@ export async function updateService(
     price?: number;
   }
 ) {
+
+  const token = localStorage.getItem("token");
   const res = await fetch(`${BASE_URL}/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
     },
     body: JSON.stringify(dto),
   });
@@ -52,8 +64,13 @@ export async function updateService(
 
 
 export async function deleteService(id: number) {
+
+  const token = localStorage.getItem("token");
   const res = await fetch(`${BASE_URL}/${id}`, {
     method: "DELETE",
+        headers:{
+          Authorization: `Bearer ${token}`
+        }
   });
 
   if (!res.ok)
@@ -63,7 +80,13 @@ export async function deleteService(id: number) {
 
 
 export async function getAllServiceUsages() {
-  const res = await fetch(`${BASE_URL}/AllServiceUsages`);
+
+  const token = localStorage.getItem("token");
+  const res = await fetch(`${BASE_URL}/AllServiceUsages`, {
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
 
   if (!res.ok)
     throw new Error(await res.text());
@@ -74,7 +97,13 @@ export async function getAllServiceUsages() {
 
 
 export async function getGuestServiceUsages(username: string) {
-  const res = await fetch(`${BASE_URL}/GuestUsed/${username}`);
+
+  const token = localStorage.getItem("token");
+  const res = await fetch(`${BASE_URL}/GuestUsed/${username}`, {
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
 
   if (!res.ok)
     throw new Error(await res.text());
@@ -85,9 +114,14 @@ export async function getGuestServiceUsages(username: string) {
 
 
 export async function getUsersOfService(serviceName: string) {
+
+  const token = localStorage.getItem("token");
   const res = await fetch(
-    `${BASE_URL}/ServiceUsers/${encodeURIComponent(serviceName)}`
-  );
+    `${BASE_URL}/ServiceUsers/${encodeURIComponent(serviceName)}`, {
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
 
   if (!res.ok)
     throw new Error(await res.text());
@@ -104,10 +138,13 @@ export async function createGuestServiceUsage(dto: {
   quantity: number;
   useDate: string;
 }) {
+
+  const token = localStorage.getItem("token");
   const res = await fetch(`${BASE_URL}/GuestUseService`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
     },
     body: JSON.stringify(dto),
   });
@@ -128,10 +165,13 @@ export async function updateGuestServiceUsage(
     useDate?: string;
   }
 ) {
+
+  const token = localStorage.getItem("token");
   const res = await fetch(`${BASE_URL}/GuestUseService/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
     },
     body: JSON.stringify(dto),
   });
@@ -143,8 +183,13 @@ export async function updateGuestServiceUsage(
 
 
 export async function deleteGuestServiceUsage(id: number) {
+
+  const token = localStorage.getItem("token");
   const res = await fetch(`${BASE_URL}/GuestUseService/${id}`, {
     method: "DELETE",
+        headers:{
+          Authorization: `Bearer ${token}`
+        }
   });
 
   if (!res.ok)

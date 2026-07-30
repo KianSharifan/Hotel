@@ -1,5 +1,6 @@
 import { getOrder, getOrders } from "../../../api/restaurantApi"
 import { useEffect, useState } from "react"
+import { useAuth } from "../../../context/AuthContext"
 
 interface Order {
     id: number
@@ -21,6 +22,19 @@ export default function OrdersHistory() {
     const [orders, setOrders] = useState<Order[]>([])
     const [selectedOrder, setSelectedOrder] = useState<number | null>(null)
     const [orderItems, setOrderItems] = useState<OrderItem[]>([])
+
+    const { user, loading: authLoading  } = useAuth();
+
+    if (authLoading) {
+        return null; 
+    }
+    if (user?.role !== "HotelManager" && user?.role !== "Chef" && user?.role !== "Waiter" && user?.role !== "RestaurantManager") {
+    return (
+            <div className="mx-auto mt-4 max-w-3xl rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700">
+            You don't have permission to access this page.
+            </div>
+        );
+    }
 
     const loadOrders = async () => {
         try {

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useAuth } from "../../../context/AuthContext"
 import {
     getMaintenanceRequests,
     createMaintenanceRequest,
@@ -62,6 +63,21 @@ export default function MaintenanceManager() {
     const [editForm, setEditForm] = useState<EditFormState | null>(null);
     const [savingEdit, setSavingEdit] = useState(false);
     const [deletingId, setDeletingId] = useState<number | null>(null);
+
+
+    const { user, loading: authLoading  } = useAuth();
+
+    if (authLoading) {
+        return null; 
+    }
+    if (user?.role !== "HotelManager" && user?.role !== "DirectorOfHR") {
+    return (
+            <div className="mx-auto mt-4 max-w-3xl rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700">
+            You don't have permission to access this page.
+            </div>
+        );
+    }
+
 
     async function loadRequests() {
         setLoading(true);
