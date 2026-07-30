@@ -8,6 +8,6 @@ public class EmployeeCreateDto
     public int RoleId { get; set; }
     public DateOnly BirthDate { get; set; }
     public double Salary { get; set; }
-    public int DepartmentId { get; set; }
+    public required string DepartmentName { get; set; }
     public string? Position { get; set; }
 }
