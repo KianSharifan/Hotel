@@ -6,8 +6,8 @@ import type { SidebarNavItem } from "../components/AdminSidebar";
 const HumanResourcesNavItems: SidebarNavItem[] = [
     { label: "Directoring", path: "/dashboard/human-resources/director" },
     { label: "Employees", path: "/dashboard/human-resources/create-employees" },
-    { label: "maintenance", path: "/dashboard/human-resources/maintenance/manager" },
-    { label: "housekeeping", path: "/dashboard/human-resources/housekeeping/manager" },
+    // { label: "maintenance", path: "/dashboard/human-resources/maintenance/manager" },
+    // { label: "housekeeping", path: "/dashboard/human-resources/housekeeping/manager" },
 ];
 
 export default function HumanResourcesLayout() {

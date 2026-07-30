@@ -4,7 +4,7 @@ import type { SidebarNavItem } from "../components/AdminSidebar";
 
 
 const maintenanceNavItems: SidebarNavItem[] = [
-    // { label: "Manager", path: "/dashboard/maintenance/manager" },
+    { label: "Manager", path: "/dashboard/maintenance/manager" },
     { label: "Engineers", path: "/dashboard/maintenance/engineers" }
 ];
 

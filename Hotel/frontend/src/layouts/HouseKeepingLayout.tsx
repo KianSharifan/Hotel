@@ -4,7 +4,7 @@ import type { SidebarNavItem } from "../components/AdminSidebar";
 
 
 const houseKeepingNavItems: SidebarNavItem[] = [
-    // { label: "Manager", path: "/dashboard/housekeeping/manager" },
+    { label: "Manager", path: "/dashboard/housekeeping/manager" },
     { label: "House keeper", path: "/dashboard/housekeeping/housekeeper" }
 ];
 

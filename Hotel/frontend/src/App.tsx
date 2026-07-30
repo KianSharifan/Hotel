@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom"
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-router-dom"
 import Home from "./pages/home"
 import Rooms from "./pages/rooms"
 import Navbar from "./components/navbar"
@@ -65,11 +65,11 @@ const HIDDEN_NAVBAR_PATHS = [
   "/dashboard/frontdesk/checkin",
   "/dashboard/frontdesk/checkout",
   "/dashboard/frontdesk/services",
+  "/dashboard/housekeeping/manager",
   "/dashboard/housekeeping/housekeeper",
   "/dashboard/human-resources/director",
   "/dashboard/human-resources/create-employees",
-  "/dashboard/human-resources/housekeeping/manager",
-  "/dashboard/human-resources/maintenance/manager",
+  "/dashboard/maintenance/manager",
   "/dashboard/maintenance/engineers"
 ]
 
@@ -132,6 +132,7 @@ function AppInner() {
 
 
         <Route path="/dashboard/housekeeping" element={<HouseKeepingLayout />}>
+          <Route path="manager" element={<HousekeepingManager />}/>
           <Route path="housekeeper" element={<HousekeeperTasks />}/>
         </Route>
 
@@ -139,13 +140,13 @@ function AppInner() {
         <Route path="/dashboard/human-resources" element={<HrLayout />}>
           <Route path="director" element={<HRManagement />}/>
           <Route path="create-employees" element={<EmployeeRegister />}/>
-          <Route path="housekeeping/manager" element={<HousekeepingManager />}/>
-          <Route path="maintenance/manager" element={<MaintenanceManager />}/>
         </Route>
 
 
         <Route path="/dashboard/maintenance" element={<Maintenance />}>
+          <Route path="manager" element={<MaintenanceManager />}/>
           <Route path="engineers" element={<EngineerMaintenance />}/>
+          
         </Route>
 
 
