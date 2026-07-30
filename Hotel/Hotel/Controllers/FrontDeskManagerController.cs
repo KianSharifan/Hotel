@@ -24,7 +24,6 @@ public class FrontDeskManagerController : Controller
         try
         {
             return Ok(await _context.Reservations.ToListAsync());
-
         }
         catch (Exception)
         {
@@ -53,6 +52,7 @@ public class FrontDeskManagerController : Controller
     [Authorize(Roles = "HotelManager,FrontOfficeManager")]
     public async Task<IActionResult> CheckOut([FromBody]CheckOutDto dto)
     {
+        await using var transaction = await _context.Database.BeginTransactionAsync();
         try
         {
             if(dto.Discount > 100 || dto.Discount < 0)
@@ -97,6 +97,7 @@ public class FrontDeskManagerController : Controller
             r.Status = "Checked Out";
             await _context.Invoices.AddAsync(i);
             await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
             return CreatedAtAction(
                 nameof(FinanceController.GetInvoices)
                 ,controllerName: "Finance",
@@ -105,6 +106,7 @@ public class FrontDeskManagerController : Controller
         }
         catch (Exception)
         {
+            await transaction.RollbackAsync();
             return StatusCode(500, "An unexpected error occurred");
         }
     }

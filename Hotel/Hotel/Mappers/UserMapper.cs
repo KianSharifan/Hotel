@@ -15,7 +15,6 @@ public static class UserMapper
             RoleId = user.RoleId,
             Phone = user.Phone,
             Username = user.Username,
-            EmployeeId = user.EmployeeId,
             CreatedAt = user.CreatedAt
         };
         return output;
