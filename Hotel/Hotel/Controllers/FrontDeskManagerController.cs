@@ -98,11 +98,7 @@ public class FrontDeskManagerController : Controller
             await _context.Invoices.AddAsync(i);
             await _context.SaveChangesAsync();
             await transaction.CommitAsync();
-            return CreatedAtAction(
-                nameof(FinanceController.GetInvoices)
-                ,controllerName: "Finance",
-                routeValues: new { id = i.Id },
-                i.Id);
+            return CreatedAtAction(nameof(FinanceController.GetInvoices),controllerName: "Finance", routeValues: new { id = i.Id }, i);
         }
         catch (Exception)
         {

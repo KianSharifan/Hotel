@@ -88,8 +88,7 @@ public class HouseKeepingController : Controller
             hk.Employee!.User = await _context.Users.FirstOrDefaultAsync(u => u.Id == employee.Id);
             await _context.HouseKeepings.AddAsync(hk);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetEmployee),new { userNmae = hk.Employee.User!.Username });
-
+            return CreatedAtAction(nameof(GetEmployee), new { userName = hk.Employee.User!.Username },null);
         }
         catch (Exception)
         {

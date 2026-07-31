@@ -5,6 +5,7 @@ using Hotel.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Hotel.Interfaces;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -47,7 +48,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<RoomServices>();
-builder.Services.AddScoped<RestaurantServices>();
+builder.Services.AddScoped<IRestaurantServices, RestaurantServices>();
 
 
 builder.Services.AddCors(options =>
