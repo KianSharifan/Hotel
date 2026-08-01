@@ -96,7 +96,7 @@ export const sidebarConfig: Record<string, SidebarRoleConfig> = {
         ],
     },
 
-    FinanceManager: {
+    DirectorOfFinance: {
         title: "Finance",
         items: [
             { label: "Finance", path: "/dashboard/finance" },
