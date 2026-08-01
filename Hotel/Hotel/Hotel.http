@@ -16,41 +16,30 @@ Accept: application/json
   "userName": "john_doe",
   "password": "P@ssw0rd123",
   "email": "john.doe@example.com",
-  "roleId": 1,
+  "roleId": 3,
   "birthDate": "1998-05-14",
   "salary": 55000,
-  "departmentId": 2,
+  "DepartmentName": "Maintenance",
   "position": "intern"
 }
 ###
 
-POST {{root_url}}/API/Restaurant/Orders
+POST {{root_url}}/API/Maintenance
 Content-Type: application/json
 Accept: application/json
 
 {
-  "tableId": 1,
-  "status": "Pending",
-  "orderItems": [
-    {
-      "itemId": 1,
-      "quantity": 2
-    },
-    {
-      "itemId": 2,
-      "quantity": 1
-    },
-    {
-      "itemId": 3,
-      "quantity": 3
-    },
-    {
-      "itemId": 4,
-      "quantity": 1
-    },
-    {
-      "itemId": 5,
-      "quantity": 2
-    }
-  ]
+  "RoomId": 1,
+  "CreatedDate": "2026-08-01T14:30:00Z"
+}
+###
+
+POST {{root_url}}/Api/Restaurant/Tables/Reservations
+Content-Type: application/json
+Accept: application/json
+
+{
+    "Email": "Kian@gmail.com",
+    "Capacity": 4,
+    "Time": "2026-08-01T14:30:00Z"
 }

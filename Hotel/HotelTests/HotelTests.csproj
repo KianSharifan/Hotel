@@ -21,10 +21,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="ControllersTests\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Hotel\Hotel.csproj" />
     </ItemGroup>
 
