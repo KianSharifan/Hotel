@@ -1,4 +1,5 @@
 namespace HotelTests.ServicesTests;
+
 using System;
 using System.Threading.Tasks;
 using Xunit;
@@ -9,7 +10,7 @@ using Hotel.Models;
 using Hotel.DTOs;
 
 
-public class RoomReservationTest
+public class RoomReservationTests
 {
     private AppDbContext GetInMemoryContext()
     {

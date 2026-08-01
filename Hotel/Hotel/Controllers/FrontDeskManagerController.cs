@@ -4,6 +4,7 @@ using Hotel.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Hotel.Interfaces;
 
 namespace Hotel.Controllers;
 
@@ -12,9 +13,11 @@ namespace Hotel.Controllers;
 public class FrontDeskManagerController : Controller
 {
     private readonly AppDbContext  _context;
-    public FrontDeskManagerController(AppDbContext context)
+    private readonly IHouseKeepingServices _houseKeepingServices;
+    public FrontDeskManagerController(AppDbContext context, IHouseKeepingServices houseKeepingServices)
     {
     _context = context;
+    _houseKeepingServices = houseKeepingServices;
     }
     
     [HttpGet("Reservations")]
@@ -78,7 +81,7 @@ public class FrontDeskManagerController : Controller
                 total = total * (dto.Tax.Value + 100)/100;
             else
             {
-                total = total / ((dto.Discount.Value + 100) / 100) * ((dto.Tax.Value + 100) / 100);
+                total = total * ((100 - dto.Discount.Value) / 100) * ((dto.Tax.Value + 100) / 100);
             }
             Invoice i = new Invoice()
             {
@@ -97,6 +100,12 @@ public class FrontDeskManagerController : Controller
             r.Status = "Checked Out";
             await _context.Invoices.AddAsync(i);
             await _context.SaveChangesAsync();
+            var input = new HouseKeepingDto
+            {
+                RoomId = r.Room.RoomId,
+                ScheduledDate = DateTime.UtcNow
+            };
+            await _houseKeepingServices.AssignHouseKeeping(input);
             await transaction.CommitAsync();
             return CreatedAtAction(nameof(FinanceController.GetInvoices),controllerName: "Finance", routeValues: new { id = i.Id }, i);
         }

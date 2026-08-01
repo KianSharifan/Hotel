@@ -1,17 +1,25 @@
+using Hotel.Interfaces;
+
 namespace HotelTests.ControllersTests;
 
-using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using Xunit;
 using Microsoft.EntityFrameworkCore;
 using Hotel.Data;
+using Hotel.Services;
 using Hotel.Models;
 using Hotel.DTOs;
-using Hotel.Controllers;
+using Moq;
 
-public class FronDeskTests
+public class HouseKeepingControllerTests
 {
+    private readonly Mock<IHouseKeepingServices> _mockHouseKeepingServices;
+    public HouseKeepingControllerTests()
+    {
+        _mockHouseKeepingServices = new Mock<IHouseKeepingServices>();
+    }
+    
     private AppDbContext GetInMemoryContext()
     {
         var options = new DbContextOptionsBuilder<AppDbContext>()
@@ -21,12 +29,7 @@ public class FronDeskTests
             .Options;
 
         return new AppDbContext(options);
-    }
+    } 
     
-    //test to see if a person checkout works correctly
-    [Fact]
-    public async Task CheckOut_Successfully()
-    {
-        
-    }
+    //test
 }

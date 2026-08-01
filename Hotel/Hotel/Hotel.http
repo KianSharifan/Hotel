@@ -16,21 +16,21 @@ Accept: application/json
   "userName": "john_doe",
   "password": "P@ssw0rd123",
   "email": "john.doe@example.com",
-  "roleId": 3,
+  "roleId": 4,
   "birthDate": "1998-05-14",
   "salary": 55000,
-  "DepartmentName": "Maintenance",
+  "DepartmentName": "Housekeeping",
   "position": "intern"
 }
 ###
 
-POST {{root_url}}/API/Maintenance
+POST {{root_url}}/API/HouseKeeping
 Content-Type: application/json
 Accept: application/json
 
 {
   "RoomId": 1,
-  "CreatedDate": "2026-08-01T14:30:00Z"
+  "ScheduledDate": "2026-08-01T14:30:00Z"
 }
 ###
 
