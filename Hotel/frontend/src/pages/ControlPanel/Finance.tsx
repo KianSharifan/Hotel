@@ -84,7 +84,7 @@ function HotelTab(){
     if (authLoading) {
         return null; 
     }
-    if (user?.role !== "HotelManager" && user?.role !== "DirectorOfHR") {
+    if (user?.role !== "HotelManager" && user?.role !== "DirectorOfHR" && user?.role !== "DirectorOfFinance") {
     return (
             <div className="mx-auto mt-4 max-w-3xl rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700">
             You don't have permission to access this page.

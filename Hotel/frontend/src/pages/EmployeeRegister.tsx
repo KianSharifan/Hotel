@@ -11,7 +11,7 @@ export default function EmployeeRegister() {
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [roleId, setRoleId] = useState("")
-  const [departmentId, setDepartmentId] = useState("")
+  const [departmentName, setDepartmentName] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [position, setPosition] = useState("")
@@ -30,7 +30,7 @@ export default function EmployeeRegister() {
   }
 
   async function handleRegister() {
-  if (!username || !email || !roleId || !departmentId ||!password ||  !position || !salary || !birthDate) 
+  if (!username || !email || !roleId || !departmentName ||!password ||  !position || !salary || !birthDate) 
   {
     alert("Please fill all fields")
     return
@@ -47,7 +47,7 @@ export default function EmployeeRegister() {
         email,
         password,
         roleId: Number(roleId),
-        departmentId: Number(departmentId),
+        departmentName:departmentName,
         salary:Number(salary),
         position,
         birthDate
@@ -55,7 +55,6 @@ export default function EmployeeRegister() {
 
     alert("Employee account created successfully.")
     // navigate("/dashboard/employees")
-    navigate("/")
     //!!!!!
   }
   catch (err) {
@@ -184,10 +183,10 @@ export default function EmployeeRegister() {
           />
 
           <input
-            type="number"
-            placeholder="Department ID"
-            value={departmentId}
-            onChange={(e) => setDepartmentId(e.target.value)}
+            type="text"
+            placeholder="Department Name"
+            value={departmentName}
+            onChange={(e) => setDepartmentName(e.target.value)}
             className="
             w-full
             bg-black/30

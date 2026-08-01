@@ -102,7 +102,7 @@ public class FrontDeskManagerController : Controller
                 nameof(FinanceController.GetInvoices)
                 ,controllerName: "Finance",
                 routeValues: new { id = i.Id },
-                i.Id);
+                i);
         }
         catch (Exception)
         {

@@ -22,6 +22,12 @@ export default function HousekeeperTasks() {
 
     const { user, loading: authLoading  } = useAuth();
 
+
+    useEffect(() => {
+        loadTasks();
+    }, [userName]);
+
+    
     if (authLoading) {
         return null; 
     }
@@ -47,9 +53,6 @@ export default function HousekeeperTasks() {
         }
     }
 
-    useEffect(() => {
-        loadTasks();
-    }, [userName]);
 
     async function handleMarkCompleted(task: HouseKeepingTask) {
         setError(null);

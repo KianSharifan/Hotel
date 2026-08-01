@@ -3,13 +3,13 @@
 const roleRoutes: Record<string, string> = {
     Guest: "/",
 
-    HotelManager: "/dashboard/hotel-management/hotel-settings",
+    HotelManager: "/dashboard/hotel-settings",
 
-    DirectorOfHR: "/dashboard/human-resources/director",
+    DirectorOfHR: "/dashboard/human-resources",
 
-    FrontOfficeManager: "/dashboard/frontdesk/checkin",
+    FrontOfficeManager: "/dashboard/checkin",
 
-    HouseKeeper: "/dashboard/housekeeping/housekeeper",
+    Housekeeper: "/dashboard/housekeeper",
 
     RestaurantManager: "/dashboard/restaurant/orders-history",
 
@@ -17,13 +17,13 @@ const roleRoutes: Record<string, string> = {
 
     Waiter: "/dashboard/restaurant/orders",
 
-    Engineer: "/dashboard/maintenance/engineers",
+    Engineer: "/dashboard/engineer-maintenance",
 
-    MaintenanceEngineer: "/dashboard/maintenance/engineers",
+    MaintenanceEngineer: "/dashboard/maintenance-management",
 
     DirectorOfFinance: "/dashboard/finance",
 
-    DirectorOfRooms: "/dashboard/rooms"
+    DirectorOfRooms: "/dashboard/rooms-management"
 };
 
 export default roleRoutes;

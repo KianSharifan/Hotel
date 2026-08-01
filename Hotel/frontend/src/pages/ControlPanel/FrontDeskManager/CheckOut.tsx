@@ -10,7 +10,7 @@ export default function CheckOut() {
   const [discount, setDiscount] = useState("")
   const [paymentMethod, setPaymentMethod] = useState("")
   const [transactionId, setTransactionId] = useState("")
-  const [invoiceId,setInvoiceId]=useState<number|null>(null);
+  const [invoice,setInvoice]=useState<number|null>(null);
   const [reservations, setReservations] = useState<any[]>([]);
   const [search, setSearch] = useState("");
 
@@ -164,14 +164,14 @@ export default function CheckOut() {
                         alert("Please complete all fields.");
                         return;
                       }
-                      const id = await checkOut({
+                      const invoice = await checkOut({
                         reservationDate: reservationDate,
                         roomNumber: Number(roomNumber),
                         tax: Number(tax),
                         discount: Number(discount)
                       });
 
-                      setInvoiceId(id);
+                      setInvoice(invoice);
                       alert("Invoice generated.");
                       await loadReservations();
                   }
@@ -199,8 +199,9 @@ export default function CheckOut() {
 
             <input
               type="number"
-              value={invoiceId ?? ""}
-              readOnly
+              value={invoice ?? ""}
+              // onChange={(e)=>setInvoice(e.target.value)}
+              // readOnly
               className="border rounded-lg p-3 bg-gray-100"
             />
 
@@ -225,9 +226,9 @@ export default function CheckOut() {
 
           </div>
 
-            <button disabled={invoiceId == null}
+            <button disabled={invoice == null}
                 onClick={async () => {
-                  if (invoiceId == null) {
+                  if (invoice == null) {
                     alert("Invoice ID required");
                     return;
                   }
@@ -243,7 +244,7 @@ export default function CheckOut() {
                         return;
                       }
                       await payInvoice(
-                        invoiceId,
+                        invoice,
                         {
                           paymentMethod,
                           transactionId
@@ -251,7 +252,7 @@ export default function CheckOut() {
                       );
 
                       alert("Payment registered.");
-                      setInvoiceId(null);
+                      setInvoice(null);
                       setReservationDate("");
                       setRoomNumber("");
                       setTax("");
@@ -271,7 +272,7 @@ export default function CheckOut() {
                 }}
                 className={`mt-6 px-8 py-3 rounded-lg text-white
                             ${
-                            invoiceId!= null
+                            invoice!= null
                             ? "bg-blue-600 hover:bg-blue-700"
                             : "bg-gray-400 cursor-not-allowed"
                             }`}

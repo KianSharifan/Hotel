@@ -70,7 +70,7 @@ export async function createEmployee(employee: {
     password: string;
     salary: number;
     position: string;
-    departmentId: number;
+    departmentName: string;
     roleId: number;
     birthDate: string;
 }) {
