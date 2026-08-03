@@ -221,7 +221,6 @@ public class ServiceController : Controller
                 .Include(r=> r.Room)
                 .FirstOrDefaultAsync(r => r.GuestId == g.Id 
                                      && r.CheckInDate.DayNumber <= DateOnly.FromDateTime(dto.UseDate.Value).DayNumber 
-                                     && r.CheckOutDate.DayNumber >= DateOnly.FromDateTime(dto.UseDate.Value).DayNumber
                                      && r.Room!.RoomNumber == dto.RoomNumber);
             if (r == null)
                 return NotFound();

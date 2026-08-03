@@ -53,7 +53,6 @@ builder.Services.AddScoped<IHouseKeepingServices, HouseKeepingServices>();
 builder.Services.AddScoped<HouseKeepingServices>();
 
 
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",

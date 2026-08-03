@@ -4,7 +4,7 @@ GET {{root_url}}/Home
 Accept: application/json
 ###
 
-GET {{root_url}}/API/Service/AllServiceUsages
+GET {{root_url}}/API/Restaurant/Menu
 Accept: application/json
 ###
 
@@ -34,12 +34,14 @@ Accept: application/json
 }
 ###
 
-POST {{root_url}}/Api/Restaurant/Tables/Reservations
+POST {{root_url}}/Api/Services/Usages
 Content-Type: application/json
 Accept: application/json
 
 {
-    "Email": "Kian@gmail.com",
-    "Capacity": 4,
-    "Time": "2026-08-01T14:30:00Z"
+    "UserName": "kian",
+    "ServiceName": "Room Cleaning",
+    "Quantity": 1,
+    "RoomNumber": 101,
+    "UseDate": "2026-08-01T14:30:00Z"
 }
