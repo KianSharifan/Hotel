@@ -2,10 +2,10 @@ using Hotel.Data;
 using Hotel.DTOs;
 using Hotel.Mappers;
 using Hotel.Models;
-using Hotel.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Hotel.Interfaces;
 
 namespace Hotel.Controllers;
 
@@ -14,8 +14,8 @@ namespace Hotel.Controllers;
 public class RestaurantController : Controller
 {
     private readonly AppDbContext  _context;
-    private readonly RestaurantServices _restaurantServices;
-    public RestaurantController(AppDbContext context, RestaurantServices restaurantServices)
+    private readonly IRestaurantServices _restaurantServices;
+    public RestaurantController(AppDbContext context, IRestaurantServices restaurantServices)
     {
         _context = context;
         _restaurantServices = restaurantServices;

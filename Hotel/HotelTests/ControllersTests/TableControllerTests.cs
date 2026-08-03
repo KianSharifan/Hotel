@@ -12,11 +12,11 @@ using Hotel.DTOs;
 using Hotel.Controllers;
 using Moq;
 
-public class TableControllerTest
+public class TableControllerTests
 {
     private readonly Mock<IRestaurantServices> _mockRestaurantServices;
 
-    public TableControllerTest()
+    public TableControllerTests()
     {
         _mockRestaurantServices = new Mock<IRestaurantServices>();
     }

@@ -47,8 +47,10 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<JwtService>();
-builder.Services.AddScoped<RoomServices>();
+builder.Services.AddScoped<IRoomServices,RoomServices>();
 builder.Services.AddScoped<IRestaurantServices, RestaurantServices>();
+builder.Services.AddScoped<IHouseKeepingServices, HouseKeepingServices>();
+builder.Services.AddScoped<HouseKeepingServices>();
 
 
 builder.Services.AddCors(options =>

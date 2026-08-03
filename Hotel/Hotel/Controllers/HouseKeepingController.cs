@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Hotel.Data;
 using Hotel.DTOs;
 using Hotel.Mappers;
-using Hotel.Models;
+using Hotel.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 
@@ -13,9 +13,11 @@ namespace Hotel.Controllers;
 public class HouseKeepingController : Controller
 {
     private readonly AppDbContext  _context;
-    public HouseKeepingController(AppDbContext context)
+    private readonly HouseKeepingServices _houseKeepingServices;
+    public HouseKeepingController(AppDbContext context, HouseKeepingServices houseKeepingServices)
     {
         _context = context;
+        _houseKeepingServices = houseKeepingServices;
     }
 
     [HttpGet]
@@ -67,33 +69,14 @@ public class HouseKeepingController : Controller
         {
             if (houseKeeping.RoomId == null || houseKeeping.ScheduledDate == null)
                 return BadRequest("Not valid inputs");
-            var employee = await _context.Users
-                .Include(user => user.Role)
-                .Where(u => u.Role!.Name == "Housekeeper")
-                .OrderBy(u => _context.HouseKeepings.Count(h =>
-                    h.EmployeeId == u.Id &&
-                    h.ScheduledDate == houseKeeping.ScheduledDate))
-                .FirstOrDefaultAsync();
-            if (employee == null)
+            var output = await _houseKeepingServices.AssignHouseKeeping(houseKeeping);
+            if (output == null)
                 return BadRequest("No HouseKeeper Exists");
-            var hk = new HouseKeeping()
-            {
-                Notes = houseKeeping.Notes,
-                RoomId = houseKeeping.RoomId.Value,
-                ScheduledDate = houseKeeping.ScheduledDate.Value.ToUniversalTime(),
-                Status = false,
-                EmployeeId = employee.Id,
-            };
-            hk.Employee =  await _context.Employees.FirstOrDefaultAsync(e => e.Id == employee.Id);
-            hk.Employee!.User = await _context.Users.FirstOrDefaultAsync(u => u.Id == employee.Id);
-            await _context.HouseKeepings.AddAsync(hk);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetEmployee), new { userName = hk.Employee.User!.Username },null);
+            return CreatedAtAction(nameof(GetEmployee), new { userName = output.Employee!.User!.Username }, null);
         }
         catch (Exception ex)
         {
-            // return StatusCode(500, "An unexpected error occurred");
-            return StatusCode(500, ex.ToString());
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     

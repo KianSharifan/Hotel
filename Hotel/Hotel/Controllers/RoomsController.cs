@@ -1,10 +1,10 @@
 using Hotel.Data;
 using Hotel.DTOs;
 using Microsoft.AspNetCore.Mvc;
-using Hotel.Services;
 using Hotel.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Hotel.Interfaces;
 
 namespace Hotel.Controllers;
 
@@ -13,8 +13,8 @@ namespace Hotel.Controllers;
 public class RoomsController : Controller
 {
     private readonly AppDbContext  _context;
-    private readonly RoomServices _roomServices;
-    public RoomsController(AppDbContext context, RoomServices roomServices)
+    private readonly IRoomServices _roomServices;
+    public RoomsController(AppDbContext context, IRoomServices roomServices)
     {
         _context = context;
         _roomServices = roomServices;
@@ -105,10 +105,10 @@ public class RoomsController : Controller
      public async Task<IActionResult> CreateRoom([FromBody] RoomDto room)
      {
          try
-         {
+         { 
              if (room.RoomTypeId == null || room.HotelId == null || room.Floor == null || room.RoomNumber == null)
                  return BadRequest("Missing required fields");
-
+             
              var r = new Room
              {
                  HotelId = room.HotelId.Value,

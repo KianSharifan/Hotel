@@ -4,7 +4,7 @@ GET {{root_url}}/Home
 Accept: application/json
 ###
 
-GET {{root_url}}/API/Service/AllServiceUsages
+GET {{root_url}}/API/Restaurant/Menu
 Accept: application/json
 ###
 
@@ -16,30 +16,32 @@ Accept: application/json
   "userName": "john_doe",
   "password": "P@ssw0rd123",
   "email": "john.doe@example.com",
-  "roleId": 3,
+  "roleId": 4,
   "birthDate": "1998-05-14",
   "salary": 55000,
-  "DepartmentName": "Maintenance",
+  "DepartmentName": "Housekeeping",
   "position": "intern"
 }
 ###
 
-POST {{root_url}}/API/Maintenance
+POST {{root_url}}/API/HouseKeeping
 Content-Type: application/json
 Accept: application/json
 
 {
   "RoomId": 1,
-  "CreatedDate": "2026-08-01T14:30:00Z"
+  "ScheduledDate": "2026-08-01T14:30:00Z"
 }
 ###
 
-POST {{root_url}}/Api/Restaurant/Tables/Reservations
+POST {{root_url}}/Api/Services/Usages
 Content-Type: application/json
 Accept: application/json
 
 {
-    "Email": "Kian@gmail.com",
-    "Capacity": 4,
-    "Time": "2026-08-01T14:30:00Z"
+    "UserName": "kian",
+    "ServiceName": "Room Cleaning",
+    "Quantity": 1,
+    "RoomNumber": 101,
+    "UseDate": "2026-08-01T14:30:00Z"
 }
