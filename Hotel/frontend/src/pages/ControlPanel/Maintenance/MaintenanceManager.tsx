@@ -50,7 +50,6 @@ export default function MaintenanceManager() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    // filters
     const [searchRoom, setSearchRoom] = useState("");
     const [filterStatus, setFilterStatus] = useState("");
     const [filterPriority, setFilterPriority] = useState("");
@@ -66,6 +65,31 @@ export default function MaintenanceManager() {
 
 
     const { user, loading: authLoading  } = useAuth();
+
+    useEffect(() => {
+        loadRequests();
+    }, []);
+
+    const stats = useMemo(() => {
+        return {
+            pending: requests.filter((r) => r.status === "Pending").length,
+            inProgress: requests.filter((r) => r.status === "In Progress").length,
+            completed: requests.filter((r) => r.status === "Done").length,
+            highPriority: requests.filter((r) => r.priority === "High").length,
+        };
+    }, [requests]);
+
+    const filteredRequests = useMemo(() => {
+        return requests.filter((r) => {
+            if (searchRoom && !String(r.roomId).includes(searchRoom.trim())) return false;
+            if (filterStatus && r.status !== filterStatus) return false;
+            if (filterPriority && r.priority !== filterPriority) return false;
+            if (filterEngineer && String(r.reportedEmployeeId) !== filterEngineer.trim())
+                return false;
+            return true;
+        });
+    }, [requests, searchRoom, filterStatus, filterPriority, filterEngineer]);
+
 
     if (authLoading) {
         return null; 
@@ -92,29 +116,7 @@ export default function MaintenanceManager() {
         }
     }
 
-    useEffect(() => {
-        loadRequests();
-    }, []);
 
-    const stats = useMemo(() => {
-        return {
-            pending: requests.filter((r) => r.status === "Pending").length,
-            inProgress: requests.filter((r) => r.status === "In Progress").length,
-            completed: requests.filter((r) => r.status === "Done").length,
-            highPriority: requests.filter((r) => r.priority === "High").length,
-        };
-    }, [requests]);
-
-    const filteredRequests = useMemo(() => {
-        return requests.filter((r) => {
-            if (searchRoom && !String(r.roomId).includes(searchRoom.trim())) return false;
-            if (filterStatus && r.status !== filterStatus) return false;
-            if (filterPriority && r.priority !== filterPriority) return false;
-            if (filterEngineer && String(r.reportedEmployeeId) !== filterEngineer.trim())
-                return false;
-            return true;
-        });
-    }, [requests, searchRoom, filterStatus, filterPriority, filterEngineer]);
 
     async function handleCreate(e: React.FormEvent) {
         e.preventDefault();

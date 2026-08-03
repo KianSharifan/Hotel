@@ -23,7 +23,9 @@ import EmployeeRegister from "./pages/EmployeeRegister"
 import RestaurantOrders from "./pages/ControlPanel/Restaurant/RestaurantOrders"
 import RestaurantMenu from "./pages/ControlPanel/Restaurant/RestaurantMenu"
 import OrdersHistory from "./pages/ControlPanel/Restaurant/OrdersHistory"
+import RestaurantTables from "./pages/ControlPanel/Restaurant/RestaurantTables"
 import RestaurantSettings from "./pages/ControlPanel/Restaurant/RestaurantSettings"
+import RestaurantReservations from "./pages/ControlPanel/Restaurant/RestaurantReservations"
 import CheckIn from "./pages/ControlPanel/FrontDeskManager/CheckIn"
 import CheckOut from "./pages/ControlPanel/FrontDeskManager/CheckOut"
 import HousekeepingManager from "./pages/ControlPanel/HouseKeeping/hkManager"
@@ -56,6 +58,8 @@ const HIDDEN_NAVBAR_PATHS = [
   "/dashboard/restaurant/orders",
   "/dashboard/restaurant/orders-history",
   "/dashboard/restaurant/restaurant-settings",
+  "/dashboard/restaurant/restaurant-tables",
+  "/dashboard/restaurant/restaurant-reservations",
   "/dashboard/restaurant/menu",
   "/dashboard/checkin",
   "/dashboard/checkout",
@@ -108,6 +112,8 @@ function AppInner() {
           <Route path="restaurant/menu" element={<RestaurantMenu />} />
           <Route path="restaurant/orders-history" element={<OrdersHistory />} />
           <Route path="restaurant/restaurant-settings" element={<RestaurantSettings />} />
+          <Route path="restaurant/restaurant-tables" element={<RestaurantTables />} />
+          <Route path="restaurant/restaurant-reservations" element={<RestaurantReservations />} />
         </Route>
 
 

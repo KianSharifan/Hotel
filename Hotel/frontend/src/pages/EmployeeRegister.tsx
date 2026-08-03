@@ -1,11 +1,11 @@
 import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { createEmployee} from "../api/loginApi"
 import { useAuth } from "../context/AuthContext"
 
 export default function EmployeeRegister() {
 
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const { user, loading } = useAuth();
 
   const [username, setUsername] = useState("")
@@ -70,7 +70,7 @@ export default function EmployeeRegister() {
     <div
       className="
       min-h-screen
-      bg-[#080808]
+     
       flex
       items-center
       justify-center
@@ -83,9 +83,9 @@ export default function EmployeeRegister() {
         className="
         w-full
         max-w-2xl
-        bg-white/[0.03]
+        bg-white
         border
-        border-[#c8a84b]/20
+        border-black
         rounded-3xl
         p-8
         md:p-12
@@ -99,7 +99,8 @@ export default function EmployeeRegister() {
             className="
             uppercase
             tracking-[8px]
-            text-[#c8a84b]
+            // text-[#c8a84b]
+            text-black
             text-sm
             mb-4
             "
@@ -112,7 +113,7 @@ export default function EmployeeRegister() {
             text-4xl
             md:text-5xl
             font-bold
-            text-white
+            text-black
             "
           >
             Create Account
@@ -296,8 +297,9 @@ export default function EmployeeRegister() {
             w-full
             py-4
             rounded-xl
-            bg-[#c8a84b]
-            text-black
+            // bg-[#c8a84b]
+            bg-black
+            text-white
             font-semibold
             hover:scale-[1.02]
             transition
@@ -306,17 +308,6 @@ export default function EmployeeRegister() {
             Create Account
           </button>
         </form>
-
-        <p className="text-center text-gray-400 mt-8">
-          Already have an account?{" "}
-
-          <Link
-            to="/login"
-            className="text-[#c8a84b]"
-          >
-            Login
-          </Link>
-        </p>
 
         <Link to="/">
           <p className="text-center text-white opacity-70 underline mt-2">Go home</p>

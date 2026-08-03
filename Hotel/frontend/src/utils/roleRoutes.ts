@@ -1,5 +1,3 @@
-// src/utils/roleRoutes.ts
-
 const roleRoutes: Record<string, string> = {
     Guest: "/",
 

@@ -184,8 +184,6 @@ function EmployeesTab() {
 
     return (
         <div>
-            {/* TODO: backend has no GET /API/HR/Employees list endpoint yet,
-                so the HR manager must know the employee ID in advance. */}
             <form onSubmit={handleSearch} className="flex items-end gap-2 mb-6">
                 <div>
                     <label className="block text-xs text-gray-600 mb-1">Employee ID</label>
@@ -196,6 +194,7 @@ function EmployeesTab() {
                         onChange={(e) => setSearchId(e.target.value)}
                     />
                 </div>
+                
                 <button
                     type="submit"
                     disabled={loading}
@@ -238,9 +237,6 @@ function EmployeesTab() {
                             <label className="block text-xs text-gray-600 mb-1">
                                 New position
                             </label>
-                            {/* TODO: backend has no GET /API/HR/Positions endpoint,
-                                so this is a free-text field instead of a dropdown.
-                                Must match an existing Position.Title exactly (case-insensitive). */}
                             <input
                                 type="text"
                                 className="border rounded px-2 py-1"
@@ -697,9 +693,6 @@ function AssignmentsTab() {
 
     return (
         <div>
-            {/* TODO: GET ShiftsAssignments only returns employeeId/shiftId right now.
-                Once the backend includes employee names and shift details (day/time),
-                swap the raw IDs below for readable labels. */}
             {error && (
                 <div className="mb-4 rounded border border-red-400 bg-red-50 text-red-700 px-4 py-2 text-sm">
                     {error}

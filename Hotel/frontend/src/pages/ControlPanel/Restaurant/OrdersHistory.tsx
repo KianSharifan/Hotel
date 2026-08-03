@@ -56,7 +56,7 @@ export default function OrdersHistory() {
     return (
         <div className="min-h-screen bg-zinc-100 p-10">
         
-            <div className="w-full bg-blue-700 text-white px-12 py-12 mb-10 shadow-lg">
+            <div className="w-full text-black px-12 py-12 mb-10 shadow-lg">
                 <h1 className="text-4xl font-bold">
                     Orders History
                 </h1>

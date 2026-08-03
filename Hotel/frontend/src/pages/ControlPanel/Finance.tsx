@@ -1,4 +1,4 @@
-import { deleteInvoice,getAllInvoices, deletePayment,getHotelPayments,getRestaurantPayments } from "../../api/Finance";
+import { deleteInvoice,getAllInvoices, deletePayment,getHotelPayments,getRestaurantPayments } from "../../api/financeApi";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext"
 
@@ -81,6 +81,10 @@ function HotelTab(){
 
     const { user, loading: authLoading  } = useAuth();
 
+    useEffect(()=>{
+        loadPayments();
+    }, []);
+
     if (authLoading) {
         return null; 
     }
@@ -108,9 +112,6 @@ function HotelTab(){
         }
     }
 
-    useEffect(()=>{
-        loadPayments();
-    }, []);
 
 
     async function handleDelete(paymentId:number) {

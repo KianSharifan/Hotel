@@ -77,7 +77,7 @@ function RestaurantReservation() {
       console.log("ISO:", dt);
 
       const res = await fetch(
-        "http://localhost:5263/API/Restaurant/Tables",
+        "http://localhost:5263/API/Restaurant/Tables/Reservations",
         {
           method: "POST",
           headers: {
@@ -111,56 +111,68 @@ function RestaurantReservation() {
   return (
     <div className="bg-black min-h-screen text-white">
 
+      {/* Hero — kept as-is structurally, restyled for a richer luxury feel */}
       <section
         className="h-[70vh] relative flex items-center justify-center text-center bg-cover bg-center"
         style={{ backgroundImage: `url(${restImg})` }}
       >
-        <div className="absolute inset-0 bg-black/60"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black"></div>
 
         <div className="relative z-10 max-w-4xl px-6">
-          <p className="uppercase tracking-[12px] text-gray-300 mb-6">
+          <p className="uppercase tracking-[12px] text-[#c8a84b] mb-6 text-sm font-medium">
             Fine Dining Experience
           </p>
 
-          <h1 className="text-6xl md:text-8xl font-bold mb-8">
+          <h1 className="text-6xl md:text-8xl font-bold mb-8 tracking-tight">
             Reserve Your Table
           </h1>
 
-          <p className="text-xl text-gray-200">
+          <div className="mx-auto mb-8 h-px w-24 bg-[#c8a84b]/60" />
+
+          <p className="text-xl text-gray-300 font-light">
             Indulge in world-class dining at Noire Palace.
           </p>
         </div>
       </section>
 
       <section className="max-w-6xl mx-auto px-8 py-24">
-        <div className="bg-stone-900 rounded-3xl p-10 border border-amber-700/30">
+        <div className="bg-gradient-to-b from-[#141110] to-black rounded-3xl p-10 md:p-14 border border-[#c8a84b]/25 shadow-[0_0_60px_-15px_rgba(200,168,75,0.15)]">
 
-          <h2 className="text-4xl font-bold mb-10 text-center">
-            Table Reservation
-          </h2>
+          <div className="text-center mb-12">
+            <p className="uppercase tracking-[6px] text-[#c8a84b] text-xs mb-3">
+              Noire Palace
+            </p>
+            <h2 className="text-4xl font-bold">
+              Table Reservation
+            </h2>
+          </div>
 
-          <div className="grid md:grid-cols-2 gap-10">
+          <div className="grid md:grid-cols-2 gap-8">
 
             <div>
-              <label className="block mb-3 text-lg">Date</label>
+              <label className="block mb-3 text-sm uppercase tracking-widest text-gray-400">
+                Date
+              </label>
               <input
                 type="date"
                 min={new Date().toISOString().split("T")[0]}
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="w-full bg-stone-700 rounded-xl px-5 py-4"
+                className="w-full bg-black/40 border border-[#c8a84b]/20 rounded-xl px-5 py-4 text-white outline-none focus:border-[#c8a84b] transition-colors"
               />
             </div>
 
             <div>
-              <label className="block mb-3 text-lg">Guests</label>
+              <label className="block mb-3 text-sm uppercase tracking-widest text-gray-400">
+                Guests
+              </label>
               <select
                 value={guests}
                 onChange={(e) => setGuests(Number(e.target.value))}
-                className="w-full bg-stone-700 rounded-xl px-5 py-4"
+                className="w-full bg-black/40 border border-[#c8a84b]/20 rounded-xl px-5 py-4 text-white outline-none focus:border-[#c8a84b] transition-colors"
               >
                 {[1,2,3,4,5,6,7,8].map(n => (
-                  <option key={n} value={n}>
+                  <option key={n} value={n} className="bg-stone-900">
                     {n} Guest{n > 1 ? "s" : ""}
                   </option>
                 ))}
@@ -168,42 +180,48 @@ function RestaurantReservation() {
             </div>
 
             <div>
-              <label className="block mb-3 text-lg">Email</label>
+              <label className="block mb-3 text-sm uppercase tracking-widest text-gray-400">
+                Email
+              </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-stone-700 rounded-xl px-5 py-4"
+                className="w-full bg-black/40 border border-[#c8a84b]/20 rounded-xl px-5 py-4 text-white outline-none focus:border-[#c8a84b] transition-colors"
               />
               {email && !isValidEmail(email) && (
-                <p className="text-red-400 mt-2">Invalid email format</p>
+                <p className="text-red-400 mt-2 text-sm">Invalid email format</p>
               )}
             </div>
 
             {/* SPECIAL REQUEST */}
             <div>
-              <label className="block mb-3 text-lg">Special Request</label>
+              <label className="block mb-3 text-sm uppercase tracking-widest text-gray-400">
+                Special Request
+              </label>
               <input
                 type="text"
                 value={specialRequest}
                 onChange={(e) => setSpecialRequest(e.target.value)}
-                className="w-full bg-stone-700 rounded-xl px-5 py-4"
+                className="w-full bg-black/40 border border-[#c8a84b]/20 rounded-xl px-5 py-4 text-white outline-none focus:border-[#c8a84b] transition-colors"
               />
             </div>
           </div>
 
-          <div className="mt-12">
-            <h3 className="text-2xl font-bold mb-6">Select Time</h3>
+          <div className="mt-14">
+            <h3 className="text-sm uppercase tracking-widest text-gray-400 mb-6 text-center">
+              Select Time
+            </h3>
 
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap justify-center gap-3">
               {availableTimes.map((slot) => (
                 <button
                   key={slot}
                   onClick={() => setTime(slot)}
-                  className={`px-6 py-3 rounded-xl transition-all ${
+                  className={`px-6 py-3 rounded-xl border transition-all duration-200 ${
                     time === slot
-                      ? "bg-amber-600 text-black"
-                      : "bg-stone-700"
+                      ? "bg-[#c8a84b] border-[#c8a84b] text-black font-semibold scale-105"
+                      : "bg-black/30 border-[#c8a84b]/15 text-gray-300 hover:border-[#c8a84b]/60 hover:text-white"
                   }`}
                 >
                   {slot}
@@ -212,11 +230,11 @@ function RestaurantReservation() {
             </div>
           </div>
 
-          <div className="mt-14 text-center">
+          <div className="mt-16 text-center">
             <button
               disabled={loading}
               onClick={handleReservation}
-              className="bg-amber-600 text-black px-12 py-5 rounded-2xl text-xl font-semibold"
+              className="bg-[#c8a84b] text-black px-12 py-5 rounded-2xl text-xl font-semibold tracking-wide hover:bg-[#d8ba62] hover:scale-[1.02] transition-all disabled:opacity-50 disabled:hover:scale-100"
             >
               {loading ? "Processing..." : "Reserve Table"}
             </button>
@@ -224,7 +242,7 @@ function RestaurantReservation() {
 
           {message && (
             <div className="mt-10 text-center">
-              <p className={isSuccess ? "text-green-400" : "text-red-400"}>
+              <p className={isSuccess ? "text-emerald-400" : "text-red-400"}>
                 {message}
               </p>
             </div>

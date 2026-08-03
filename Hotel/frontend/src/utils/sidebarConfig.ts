@@ -9,8 +9,8 @@ export const sidebarConfig: Record<string, SidebarRoleConfig> = {
     HotelManager: {
         title: "Hotel Manager",
         items: [
-            { label: "Departments", path: "/dashboard/hotel-management/departments" },
-            { label: "Hotel Settings", path: "/dashboard/hotel-management/hotel-settings" },
+            { label: "Departments", path: "/dashboard/departments" },
+            { label: "Hotel Settings", path: "/dashboard/hotel-settings" },
             { label: "Create Employees", path: "/dashboard/create-employees" },
             { label: "Housekeeping", path: "/dashboard/housekeeping-management" },
             { label: "Maintenance", path: "/dashboard/maintenance-management" },
@@ -18,7 +18,11 @@ export const sidebarConfig: Record<string, SidebarRoleConfig> = {
             { label: "HR", path: "/dashboard/human-resources" },
             { label: "Finance", path: "/dashboard/finance" },
             { label: "Restaurant", path: "/dashboard/restaurant/orders" },
+            { label: "Restaurant Tables", path:"/dashboard/restaurant/restaurant-tables"},
+            { label: "Restaurant Reservations", path:"/dashboard/restaurant/restaurant-reservations"},
             { label: "Services", path: "/dashboard/services" },
+            { label: "Check In", path: "/dashboard/checkin" },
+            { label: "Check Out", path: "/dashboard/checkout" },
         ],
     },
 
@@ -69,30 +73,35 @@ export const sidebarConfig: Record<string, SidebarRoleConfig> = {
     },
 
     RestaurantManager: {
-        title: "Restaurant",
+        title: "Restaurant Manager",
         items: [
             { label: "Orders", path: "/dashboard/restaurant/orders" },
             { label: "Menu", path: "/dashboard/restaurant/menu" },
             { label: "Order History", path: "/dashboard/restaurant/orders-history" },
             { label: "restaurant-settings", path: "/dashboard/restaurant-settings" },
             { label: "Finance", path: "/dashboard/finance" },
+            { label: "Restaurant Tables", path:"/dashboard/restaurant/restaurant-tables"},
+            { label: "Restaurant Reservations", path:"/dashboard/restaurant/restaurant-reservations"},
         ],
     },
 
     Chef: {
-        title: "Restaurant",
+        title: "Chef",
         items: [
             { label: "Orders", path: "/dashboard/restaurant/orders" },
             { label: "Menu", path: "/dashboard/restaurant/menu" },
-            { label: "Order History", path: "/dashboard/restaurant/orders-history" }
+            { label: "Order History", path: "/dashboard/restaurant/orders-history" },
+            { label: "Restaurant Tables", path:"/dashboard/restaurant/restaurant-tables"},
         ],
     },
 
     Waiter: {
-        title: "Restaurant",
+        title: "Waiter",
         items: [
             { label: "Orders", path: "/dashboard/restaurant/orders" },
-            { label: "Order History", path: "/dashboard/restaurant/orders-history" }
+            { label: "Order History", path: "/dashboard/restaurant/orders-history" },
+            { label: "Restaurant Tables", path:"/dashboard/restaurant/restaurant-tables"},
+            { label: "Restaurant Reservations", path:"/dashboard/restaurant/restaurant-reservations"},
         ],
     },
 

@@ -6,6 +6,7 @@ interface HouseKeepingTask {
     id: number;
     roomId: number;
     scheduledDate: string;
+    scheduledTime: string;
     employeeId: number;
     notes?: string;
     status: boolean;
@@ -14,12 +15,14 @@ interface HouseKeepingTask {
 interface CreateFormState {
     roomId: string;
     scheduledDate: string;
+    scheduledTime: string;
     notes: string;
 }
 
 interface EditFormState {
     roomId: string;
     scheduledDate: string;
+    scheduledTime: string;
     employeeId: string;
     notes: string;
     status: boolean;
@@ -28,6 +31,7 @@ interface EditFormState {
 const emptyCreateForm: CreateFormState = {
     roomId: "",
     scheduledDate: "",
+    scheduledTime: "",
     notes: "",
 };
 
@@ -43,6 +47,11 @@ export default function HousekeepingManager() {
     const [deletingId, setDeletingId] = useState<number | null>(null);
 
     const { user, loading: authLoading  } = useAuth();
+
+    useEffect(() => {
+        loadTasks();
+    }, []);
+
 
     if (authLoading) {
         return null; 
@@ -68,9 +77,6 @@ export default function HousekeepingManager() {
         }
     }
 
-    useEffect(() => {
-        loadTasks();
-    }, []);
 
     async function handleCreate(e: React.FormEvent) {
         e.preventDefault();
@@ -88,11 +94,16 @@ export default function HousekeepingManager() {
 
         setCreating(true);
         try{
+            const dateTime = new Date(
+                `${createForm.scheduledDate}T${createForm.scheduledTime}`
+            );
+
             await createHouseKeepingTask({
                 roomId,
-                scheduledDate: createForm.scheduledDate,
+                scheduledDate: dateTime.toISOString(),
                 notes: createForm.notes || undefined,
             });
+            
             setCreateForm(emptyCreateForm);
             await loadTasks();
         } 
@@ -106,9 +117,12 @@ export default function HousekeepingManager() {
 
     function startEdit(task: HouseKeepingTask) {
         setEditingId(task.id);
+        console.log(task.scheduledDate);
+        const date = new Date(task.scheduledDate);
         setEditForm({
             roomId: String(task.roomId),
-            scheduledDate: task.scheduledDate.slice(0, 10), // trim to yyyy-mm-dd for the date input
+            scheduledDate: date.toISOString().slice(0, 10), 
+            scheduledTime: date.toISOString().slice(11, 16),
             employeeId: String(task.employeeId),
             notes: task.notes ?? "",
             status: task.status,
@@ -133,9 +147,14 @@ export default function HousekeepingManager() {
 
         setSavingEdit(true);
         try {
+
+            const dateTime = new Date(
+                `${editForm.scheduledDate}T${editForm.scheduledTime}`
+            );
+
             await updateHouseKeepingTask(id, {
                 roomId,
-                scheduledDate: editForm.scheduledDate,
+                scheduledDate: dateTime.toISOString(),
                 employeeId,
                 notes: editForm.notes,
                 status: editForm.status,
@@ -192,6 +211,7 @@ export default function HousekeepingManager() {
                             }
                         />
                     </div>
+
                     <div>
                         <label className="block text-xs text-gray-600 mb-1">Scheduled date</label>
                         <input
@@ -203,6 +223,22 @@ export default function HousekeepingManager() {
                             }
                         />
                     </div>
+
+                    <div>
+                        <label className="block text-xs text-gray-600 mb-1">
+                            Time
+                        </label>
+
+                        <input
+                            type="time"
+                            className="border rounded px-2 py-1"
+                            value={createForm.scheduledTime}
+                            onChange={(e) =>
+                                setCreateForm({ ...createForm, scheduledTime: e.target.value })
+                            }
+                        />
+                    </div>
+
                     <div className="flex-1 min-w-[200px]">
                         <label className="block text-xs text-gray-600 mb-1">Notes</label>
                         <input
@@ -235,6 +271,7 @@ export default function HousekeepingManager() {
                             <th className="p-2">ID</th>
                             <th className="p-2">Room</th>
                             <th className="p-2">Scheduled date</th>
+                            <th className="p-2">Scheduled time</th>
                             <th className="p-2">Employee ID</th>
                             <th className="p-2">Notes</th>
                             <th className="p-2">Status</th>
@@ -273,6 +310,21 @@ export default function HousekeepingManager() {
                                                     }
                                                 />
                                             </td>
+
+                                            <td className="p-2">
+                                                <input
+                                                    type="time"
+                                                    className="border rounded px-1 py-0.5"
+                                                    value={editForm.scheduledTime}
+                                                    onChange={(e) =>
+                                                        setEditForm({
+                                                            ...editForm,
+                                                            scheduledTime: e.target.value,
+                                                        })
+                                                    }
+                                                />
+                                            </td>
+
                                             <td className="p-2">
                                                 <input
                                                     type="number"
@@ -327,10 +379,17 @@ export default function HousekeepingManager() {
                                         </>
                                     ) : (
                                         <>
-                                            <td className="p-2">{task.roomId}</td>
-                                            <td className="p-2">{task.scheduledDate.slice(0, 10)}</td>
+                                            <td className="p-2 ">{task.roomId}</td>
+                                            <td className="p-2">{new Date(task.scheduledDate).toLocaleDateString()}</td>
+                                            <td className="p-2">
+                                                {new Date(task.scheduledDate).toLocaleTimeString([], {
+                                                    hour: "2-digit",
+                                                    minute: "2-digit",
+                                                })}
+                                            </td>
                                             <td className="p-2">{task.employeeId}</td>
                                             <td className="p-2">{task.notes || "—"}</td>
+
                                             <td className="p-2">
                                                 {task.status ? (
                                                     <span className="text-green-700">Completed</span>
