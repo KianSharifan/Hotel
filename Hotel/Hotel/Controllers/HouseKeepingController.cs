@@ -80,7 +80,7 @@ public class HouseKeepingController : Controller
             {
                 Notes = houseKeeping.Notes,
                 RoomId = houseKeeping.RoomId.Value,
-                ScheduledDate = houseKeeping.ScheduledDate.Value,
+                ScheduledDate = houseKeeping.ScheduledDate.Value.ToUniversalTime(),
                 Status = false,
                 EmployeeId = employee.Id,
             };
@@ -90,9 +90,10 @@ public class HouseKeepingController : Controller
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetEmployee), new { userName = hk.Employee.User!.Username },null);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            return StatusCode(500, "An unexpected error occurred");
+            // return StatusCode(500, "An unexpected error occurred");
+            return StatusCode(500, ex.ToString());
         }
     }
     
@@ -118,9 +119,10 @@ public class HouseKeepingController : Controller
             await _context.SaveChangesAsync();
             return Ok();
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            return StatusCode(500, "An unexpected error occurred");
+            // return StatusCode(500, "An unexpected error occurred");
+            return StatusCode(500, ex.ToString());
         }
     }
     

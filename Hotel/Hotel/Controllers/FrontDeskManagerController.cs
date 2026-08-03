@@ -107,7 +107,6 @@ public class FrontDeskManagerController : Controller
         }
     }
     
-    //should have auth
     [HttpPost("CheckIn")]
     [Authorize(Roles = "HotelManager,FrontOfficeManager")]
     public async Task<IActionResult> CheckIn([FromBody]CheckInDto dto)
