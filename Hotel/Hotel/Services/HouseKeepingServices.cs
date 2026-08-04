@@ -1,9 +1,9 @@
 namespace Hotel.Services;
 using Microsoft.EntityFrameworkCore;
-using Hotel.DTOs;
-using Hotel.Interfaces;
-using Hotel.Models;
-using Hotel.Data;
+using DTOs;
+using Interfaces;
+using Models;
+using Data;
 
 public class HouseKeepingServices : IHouseKeepingServices
 {

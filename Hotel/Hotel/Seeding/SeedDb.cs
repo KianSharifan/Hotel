@@ -249,7 +249,7 @@ public class SeedDb
             );
             var hotelManager = new User
             {
-                Username = "hotelmanager",
+                Username = "HotelManager",
                 Email = "manager@noirhotel.com",
                 Phone = "2123089100",
                 PasswordHash = hotelManagerPasswordHash,
