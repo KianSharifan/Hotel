@@ -397,7 +397,22 @@ public class RestaurantController : Controller
         {
             var o = await _context.Orders.FirstOrDefaultAsync(o => o.Id == orderId);
             if (o == null)
-                return NotFound();
+                return NotFound("Order not found");
+            if (dto.Status == "Completed")
+            {
+                o.Status = dto.Status;
+                var p = new Payment
+                {
+                    OrderId = orderId,
+                    Amount = o.TotalPrice,
+                    Status = "Payed",
+                    PaymentDate = DateTime.UtcNow,
+                    TransactionId = dto.TransactionId,
+                    PaymentMethod = dto.PaymentMethod
+                };
+                await _context.Payments.AddAsync(p);
+                await _context.SaveChangesAsync();
+            }
             if(dto.Status != null)
                 o.Status = dto.Status;
             if (dto.OrderItems != null)

@@ -7,4 +7,6 @@ public class OrderDto
     public int TableId { get; set; }
     public string? Status { get; set; }
     public List<OrderItemDto>?  OrderItems { get; set; }
+    public string? TransactionId { get; set; }
+    public string? PaymentMethod { get; set; }
 }

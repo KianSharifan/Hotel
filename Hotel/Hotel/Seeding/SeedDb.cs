@@ -245,7 +245,7 @@ public class SeedDb
             await context.SaveChangesAsync();
 
             var hotelManagerPasswordHash = Convert.ToHexString(
-                SHA256.HashData(Encoding.UTF8.GetBytes("Manager123!"))
+                SHA256.HashData(Encoding.UTF8.GetBytes("123"))
             );
             var hotelManager = new User
             {

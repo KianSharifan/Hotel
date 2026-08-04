@@ -67,6 +67,9 @@ public class UsersController : Controller
             var role = await _context.Roles.FirstOrDefaultAsync(x => x.Name == "Guest");
             if(role == null)
                 return BadRequest("Role Guest not found");
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == guest.Username || u.Email == guest.Email);
+            if(user != null)
+                return BadRequest("User already exists");
             var bytes = Encoding.UTF8.GetBytes(guest.Password);
             var u = new User()
             {

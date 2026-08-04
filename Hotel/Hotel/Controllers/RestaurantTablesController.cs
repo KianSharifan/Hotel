@@ -29,6 +29,8 @@ public class RestaurantTablesController : Controller
         {
             if (reservation.Time != null && reservation.Email != null)
             {
+                if(reservation.Time!.Value < DateTime.UtcNow)
+                    return BadRequest("Invalid time");
                 var availableTables = await _context.RestaurantTables.Where(t => t.Capacity >= reservation.Capacity)
                     .Where(t => t.Status == "Available")
                     .OrderBy(t => t.Capacity -  reservation.Capacity)
@@ -47,7 +49,7 @@ public class RestaurantTablesController : Controller
                         var reserve = new TableReservation()
                         {
                             TableId = table.Id,
-                            Time = reservation.Time.Value,
+                            Time = reservation.Time.Value.ToUniversalTime(),
                             Description = reservation.SpecialReq,
                             Email = reservation.Email
                         };

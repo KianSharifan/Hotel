@@ -33,7 +33,7 @@ public class AuthController : ControllerBase
 
         var bytes = Encoding.UTF8.GetBytes(dto.Password);
         if (user.PasswordHash != Convert.ToHexString(SHA256.HashData(bytes)))
-            return Unauthorized();
+            return Unauthorized("Invalid password");
 
         var token = _jwtService.GenerateToken(user);
 
