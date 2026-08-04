@@ -74,7 +74,7 @@ public class HouseKeepingController : Controller
                 return BadRequest("No HouseKeeper Exists");
             return CreatedAtAction(nameof(GetEmployee), new { userName = output.Employee!.User!.Username }, null);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return StatusCode(500, "An unexpected error occurred");
         }
@@ -102,10 +102,9 @@ public class HouseKeepingController : Controller
             await _context.SaveChangesAsync();
             return Ok();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            // return StatusCode(500, "An unexpected error occurred");
-            return StatusCode(500, ex.ToString());
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
     
