@@ -12,7 +12,6 @@ interface HouseKeepingTask {
 }
 
 export default function HousekeeperTasks() {
-    // TEMP: manually typed username instead of pulling from auth context
     const [userName, setUserName] = useState("");
 
     const [tasks, setTasks] = useState<HouseKeepingTask[]>([]);
@@ -74,7 +73,6 @@ export default function HousekeeperTasks() {
         <div className="max-w-3xl mx-auto p-6">
             <h1 className="text-2xl font-bold mb-4">My Housekeeping Tasks</h1>
 
-            {/* TEMP: manual username input, remove once auth is wired back in */}
             <div className="mb-6 flex items-center gap-2">
                 <label className="text-sm text-gray-600">Username:</label>
                 <input

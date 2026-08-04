@@ -46,6 +46,7 @@ interface ServiceUserRow {
 
 type Tab = "services" | "usage";
 
+
 export default function ServiceManagement() {
     const [tab, setTab] = useState<Tab>("services");
 
@@ -377,6 +378,7 @@ interface RegisterFormState {
     serviceName: string;
     quantity: string;
     useDate: string;
+    useTime: string;
 }
 
 const emptyRegisterForm: RegisterFormState = {
@@ -385,11 +387,13 @@ const emptyRegisterForm: RegisterFormState = {
     serviceName: "",
     quantity: "",
     useDate: "",
+    useTime: "",
 };
 
 interface EditUsageFormState {
     quantity: string;
     useDate: string;
+    useTime: string;
 }
 
 function UsageTab() {
@@ -469,15 +473,23 @@ function UsageTab() {
             setError("Date is required");
             return;
         }
+        if (!registerForm.useTime) {
+            setError("Time is required");
+            return;
+        }
 
         setRegistering(true);
         try {
+            const dateTime = new Date(
+                `${registerForm.useDate}T${registerForm.useTime}`
+            );
+
             await createGuestServiceUsage({
                 userName: registerForm.userName.trim(),
                 serviceName: registerForm.serviceName,
                 roomNumber,
                 quantity,
-                useDate: registerForm.useDate,
+                useDate: dateTime.toISOString(),
             });
             setRegisterForm(emptyRegisterForm);
             await loadUsages();
@@ -490,9 +502,11 @@ function UsageTab() {
 
     function startEdit(usage: GuestServiceUsage) {
         setEditingId(usage.id);
+        const date = new Date(usage.useDate);
         setEditForm({
             quantity: String(usage.quantity),
-            useDate: usage.useDate.slice(0, 10),
+            useDate: date.toISOString().slice(0, 10),
+            useTime: date.toISOString().slice(11, 16),
         });
     }
 
@@ -513,9 +527,13 @@ function UsageTab() {
 
         setSavingEdit(true);
         try {
+            const dateTime = new Date(
+                `${editForm.useDate}T${editForm.useTime}`
+            );
+
             await updateGuestServiceUsage(id, {
                 quantity,
-                useDate: editForm.useDate,
+                useDate: dateTime.toISOString(),
             });
             cancelEdit();
             await loadUsages();
@@ -601,6 +619,7 @@ function UsageTab() {
                             <th className="p-2">Quantity</th>
                             <th className="p-2">Price</th>
                             <th className="p-2">Date</th>
+                            <th className="p-2">Time</th>
                             <th className="p-2">Actions</th>
                         </tr>
                     </thead>
@@ -641,6 +660,19 @@ function UsageTab() {
                                                     }
                                                 />
                                             </td>
+                                            <td className="p-2">
+                                                <input
+                                                    type="time"
+                                                    className="border rounded px-1 py-0.5"
+                                                    value={editForm.useTime}
+                                                    onChange={(e) =>
+                                                        setEditForm({
+                                                            ...editForm,
+                                                            useTime: e.target.value,
+                                                        })
+                                                    }
+                                                />
+                                            </td>
                                             <td className="p-2 space-x-2 whitespace-nowrap">
                                                 <button
                                                     onClick={() => handleSaveEdit(usage.id)}
@@ -662,6 +694,12 @@ function UsageTab() {
                                             <td className="p-2">{usage.quantity}</td>
                                             <td className="p-2">{usage.price}</td>
                                             <td className="p-2">{usage.useDate.slice(0, 10)}</td>
+                                            <td className="p-2">
+                                                {new Date(usage.useDate).toLocaleTimeString([], {
+                                                    hour: "2-digit",
+                                                    minute: "2-digit",
+                                                })}
+                                            </td>
                                             <td className="p-2 space-x-2 whitespace-nowrap">
                                                 <button
                                                     onClick={() => startEdit(usage)}
@@ -753,6 +791,17 @@ function UsageTab() {
                             value={registerForm.useDate}
                             onChange={(e) =>
                                 setRegisterForm({ ...registerForm, useDate: e.target.value })
+                            }
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-xs text-gray-600 mb-1">Time</label>
+                        <input
+                            type="time"
+                            className="border rounded px-2 py-1"
+                            value={registerForm.useTime}
+                            onChange={(e) =>
+                                setRegisterForm({ ...registerForm, useTime: e.target.value })
                             }
                         />
                     </div>

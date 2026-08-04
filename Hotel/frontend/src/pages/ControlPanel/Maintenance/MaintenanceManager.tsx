@@ -94,7 +94,7 @@ export default function MaintenanceManager() {
     if (authLoading) {
         return null; 
     }
-    if (user?.role !== "HotelManager" && user?.role !== "DirectorOfHR") {
+    if (user?.role !== "HotelManager" && user?.role !== "Engineer" && user?.role !== "DirectorOfRooms") {
     return (
             <div className="mx-auto mt-4 max-w-3xl rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700">
             You don't have permission to access this page.
@@ -464,7 +464,7 @@ export default function MaintenanceManager() {
                 <h2 className="font-semibold mb-3">Create maintenance request</h2>
                 <div className="flex flex-wrap gap-3 items-end">
                     <div>
-                        <label className="block text-xs text-gray-600 mb-1">Room number</label>
+                        <label className="block text-xs text-gray-600 mb-1">Room Id</label>
                         <input
                             type="number"
                             className="border rounded px-2 py-1 w-28"

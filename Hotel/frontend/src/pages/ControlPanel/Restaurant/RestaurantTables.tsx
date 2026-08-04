@@ -1,5 +1,5 @@
 import { useState } from "react"
-import {getRestaurantReservation, createRestaurantTable, deleteRestaurantTable, getRestaurantReservations,
+import {createRestaurantTable, deleteRestaurantTable,
     getRestaurantTable, updateRestaurantTable
 } from "../../../api/restaurantTablesApi"
 import { useAuth } from "../../../context/AuthContext"

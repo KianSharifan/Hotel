@@ -77,7 +77,6 @@ const ROOM_STATUSES = ["Available", "Occupied", "Maintenance", "OutOfService"];
 type Tab = "rooms" | "roomTypes";
 
 export default function RoomsManagement() {
-    // ---------- role guard ----------
     const { user, loading: authLoading } = useAuth();
 
     const [tab, setTab] = useState<Tab>("rooms");
@@ -96,7 +95,6 @@ export default function RoomsManagement() {
             </div>
         );
     }
-    // ---------- end role guard ----------
 
     const tabs: { key: Tab; label: string }[] = [
         { key: "rooms", label: "Rooms" },
@@ -129,9 +127,7 @@ export default function RoomsManagement() {
     );
 }
 
-// ============================================================
-// ROOMS TAB
-// ============================================================
+
 
 interface RoomFormState {
     hotelId: string;
@@ -568,9 +564,7 @@ function RoomsTab() {
     );
 }
 
-// ============================================================
-// ROOM TYPES TAB
-// ============================================================
+
 
 interface RoomTypeFormState {
     name: string;
@@ -818,7 +812,6 @@ function RoomTypesTab() {
                 </div>
             )}
 
-            {/* Global amenities */}
             <div className="mb-8 rounded border border-gray-300 p-4 bg-gray-50">
                 <h2 className="font-semibold mb-3">Amenities</h2>
                 <div className="flex flex-wrap gap-2 mb-3">
@@ -864,7 +857,7 @@ function RoomTypesTab() {
                 </form>
             </div>
 
-            {/* Create room type */}
+         
             <form
                 onSubmit={handleCreate}
                 className="mb-8 rounded border border-gray-300 p-4 bg-gray-50"
@@ -975,7 +968,7 @@ function RoomTypesTab() {
                 </div>
             </form>
 
-            {/* Room type cards */}
+         
             {loading ? (
                 <p>Loading room types...</p>
             ) : roomTypes.length === 0 ? (
@@ -1174,7 +1167,7 @@ function RoomTypesTab() {
                                     </div>
                                 )}
 
-                                {/* Amenities for this room type */}
+                               
                                 <div className="border-t pt-3">
                                     <div className="flex flex-wrap gap-2 mb-2">
                                         {rtAmenities.map((a) => (

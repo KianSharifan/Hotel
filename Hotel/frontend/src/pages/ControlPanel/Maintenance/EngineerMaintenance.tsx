@@ -16,9 +16,6 @@ interface MaintenanceRequest {
 const STATUS_OPTIONS = ["Pending", "In Progress", "Done"];
 
 export default function EngineerMaintenance() {
-    // TEMP: manually typed username instead of pulling from auth context
-    const [userName, setUserName] = useState("");
-
     const [jobs, setJobs] = useState<MaintenanceRequest[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -29,6 +26,8 @@ export default function EngineerMaintenance() {
     const [saving, setSaving] = useState(false);
 
     const { user, loading: authLoading  } = useAuth();
+
+    const userName = user?.username ?? "";
 
     if (authLoading) {
         return null; 
@@ -101,18 +100,6 @@ export default function EngineerMaintenance() {
         <div className="max-w-3xl mx-auto p-6">
             <h1 className="text-2xl font-bold mb-4">My Maintenance Jobs</h1>
 
-            {/* TEMP: manual username input, remove once auth is wired back in */}
-            <div className="mb-6 flex items-center gap-2">
-                <label className="text-sm text-gray-600">Username:</label>
-                <input
-                    type="text"
-                    className="border rounded px-2 py-1 text-sm"
-                    value={userName}
-                    onChange={(e) => setUserName(e.target.value)}
-                    placeholder="e.g. jengineer"
-                />
-            </div>
-
             {error && (
                 <div className="mb-4 rounded border border-red-400 bg-red-50 text-red-700 px-4 py-2 text-sm">
                     {error}
@@ -120,7 +107,7 @@ export default function EngineerMaintenance() {
             )}
 
             {!userName ? (
-                <p className="text-gray-500">Type a username above to load jobs.</p>
+                <p className="text-gray-500">Unable to determine your username.</p>
             ) : loading ? (
                 <p>Loading jobs...</p>
             ) : (

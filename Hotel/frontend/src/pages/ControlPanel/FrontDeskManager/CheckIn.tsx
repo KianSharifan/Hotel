@@ -55,8 +55,6 @@ export default function CheckIn() {
 
       <div className="max-w-7xl mx-auto p-10 space-y-10">
 
-        {/* Reservations */}
-
         <div className="bg-white rounded-xl shadow border p-8">
           <div className="flex justify-between items-center mb-6">
 
@@ -115,7 +113,6 @@ export default function CheckIn() {
           </table>
         </div>
 
-        {/* Check In */}
 
         <div className="bg-white rounded-xl shadow border p-8">
           <h2 className="text-2xl font-semibold mb-6">
@@ -199,7 +196,6 @@ export default function CheckIn() {
                         setLastName("");
                         setPassport("");
                         setNationality("");
-                        // setAssignedRoom(null);
                         await loadReservations();
                     }
 
