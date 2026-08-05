@@ -20,6 +20,8 @@ export const sidebarConfig: Record<string, SidebarRoleConfig> = {
             { label: "Restaurant", path: "/dashboard/restaurant/orders" },
             { label: "Restaurant Tables", path:"/dashboard/restaurant/restaurant-tables"},
             { label: "Restaurant Reservations", path:"/dashboard/restaurant/restaurant-reservations"},
+            { label: "Menu", path: "/dashboard/restaurant/menu" },
+            { label: "Order History", path: "/dashboard/restaurant/orders-history" },
             { label: "Services", path: "/dashboard/services" },
             { label: "Check In", path: "/dashboard/checkin" },
             { label: "Check Out", path: "/dashboard/checkout" },

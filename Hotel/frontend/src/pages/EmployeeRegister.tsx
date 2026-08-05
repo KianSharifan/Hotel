@@ -166,8 +166,8 @@ export default function EmployeeRegister() {
           />
 
           <input
-            type="number"
-            placeholder="Role ID"
+            type="text"
+            placeholder="Role Name"
             value={role}
             onChange={(e) => setRole(e.target.value)}
             className="
