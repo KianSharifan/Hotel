@@ -71,7 +71,7 @@ export async function createEmployee(employee: {
     salary: number;
     position: string;
     departmentName: string;
-    role: string;
+    roleName: string;
     birthDate: string;
 }) {
     const token = localStorage.getItem("token");

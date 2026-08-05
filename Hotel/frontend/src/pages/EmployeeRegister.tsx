@@ -46,7 +46,7 @@ export default function EmployeeRegister() {
         userName: username,
         email,
         password,
-        role: role,
+        roleName: role,
         departmentName:departmentName,
         salary:Number(salary),
         position,
