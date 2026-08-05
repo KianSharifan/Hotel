@@ -21,6 +21,7 @@ public static class RestaurantMapper
     {
         Table table = new Table()
         {
+            Id = dto.Id,
             Capacity = dto.Capacity,
             Status = "Available",
             RestaurantId = 1
@@ -32,6 +33,7 @@ public static class RestaurantMapper
     {
         TableDto tableDto = new TableDto()
         {
+            Id = table.Id,
             Capacity = table.Capacity,
         };
         return tableDto;

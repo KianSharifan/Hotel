@@ -90,6 +90,10 @@ public class RoomTypesController : Controller
             RoomType roomType = new RoomType();
             if (dto.MaxGuests != null && dto.NumberOfSingles != null && dto.NumberOfDoubles != null && dto.NumberOfSofa != null && dto.Price != null && dto.Name != null)
             {
+                if (await _context.RoomTypes.AnyAsync(rt => rt.Name!.ToLower() == dto.Name.ToLower()))
+                {
+                    return BadRequest("Room type already exists");
+                }
                 roomType.Price = dto.Price.Value;
                 roomType.Name = dto.Name;
                 roomType.MaxGuests = dto.MaxGuests.Value;
@@ -128,8 +132,12 @@ public class RoomTypesController : Controller
                     roomType.MaxGuests = dto.MaxGuests.Value;
                 if (dto.Description != null)
                     roomType.Description = dto.Description;
-                if(dto.Name != null)
+                if (dto.Name != null)
+                {
+                    if (await _context.RoomTypes.AnyAsync(rt => rt.Name!.ToLower() == dto.Name.ToLower()))
+                        return BadRequest("Room type already exists");
                     roomType.Name = dto.Name;
+                }
                 if(dto.NumberOfSingles != null)
                     roomType.NumberSingleBed = dto.NumberOfSingles.Value;
                 if(dto.NumberOfDoubles != null)

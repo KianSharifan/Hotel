@@ -161,6 +161,8 @@ public class RestaurantTablesController : Controller
         try
         {
             var table = input.ToTable();
+            if (await _context.RestaurantTables.AnyAsync(t => t.Id == table.Id))
+                return BadRequest("Table with this id already exists");
             await _context.RestaurantTables.AddAsync(table);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetTableStatus),new { id = table.Id },table);

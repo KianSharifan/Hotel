@@ -107,6 +107,8 @@ public class ServiceController : Controller
         {
             if (dto.Name != null && dto.Price != null)
             {
+                if(await _context.Services.AnyAsync(ser => ser.Name!.ToLower() == dto.Name.ToLower()))
+                    return BadRequest("Service already exists"); 
                 var s = new Service()
                 {
                     Name = dto.Name,
@@ -134,8 +136,12 @@ public class ServiceController : Controller
             var s = await _context.Services.FirstOrDefaultAsync(s => s.Id == id);
             if (s == null)
                 return NotFound();
-            if(dto.Name != null)
+            if (dto.Name != null)
+            {
+                if(_context.Services.Any(ser => ser.Name!.ToLower() == dto.Name.ToLower()))
+                    return BadRequest("Service already exists");
                 s.Name = dto.Name;
+            }
             if (dto.Price != null)
                 s.Price = dto.Price.Value;
             if (dto.Description != null)

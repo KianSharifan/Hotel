@@ -66,8 +66,12 @@ public class RoomsController : Controller
                  room.Floor = dto.Floor.Value;
              if(dto.HotelId != null)
                  room.HotelId = dto.HotelId.Value;
-             if(dto.RoomNumber != null)
+             if (dto.RoomNumber != null)
+             {
+                 if (await _context.Rooms.AnyAsync(r => r.RoomNumber == dto.RoomNumber))
+                     return BadRequest("Room number already exists");
                  room.RoomNumber = dto.RoomNumber.Value;
+             }
              if(dto.RoomTypeId != null)
                  room.RoomTypeId = dto.RoomTypeId.Value;
              if(dto.Note != null)
@@ -108,7 +112,8 @@ public class RoomsController : Controller
          { 
              if (room.RoomTypeId == null || room.HotelId == null || room.Floor == null || room.RoomNumber == null)
                  return BadRequest("Missing required fields");
-             
+             if (await _context.Rooms.AnyAsync(r => r.RoomNumber == room.RoomNumber))
+                 return BadRequest("Room number already exists");
              var r = new Room
              {
                  HotelId = room.HotelId.Value,
