@@ -188,7 +188,7 @@ export default function CheckIn() {
 
                         setAssignedRoom(roomNumber);
 
-                        alert("Guest checked in!");
+                        // alert("Guest checked in!");
                         
                         setReservationDate("");
                         setUsername("");

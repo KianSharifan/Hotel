@@ -1,4 +1,4 @@
-import LuxurySection from "../components/Amenitiesformat";
+import LuxurySection from "../layouts/AmenitiesLayout";
 
 export default function PrivateBeach() {
   return (

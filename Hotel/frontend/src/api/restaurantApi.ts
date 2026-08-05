@@ -260,6 +260,8 @@ export async function updateOrder(
     orderId: number,
     dto: {
         status?: string;
+        paymentMethod?: string;
+        transactionId?: string;
         orderItems?: {
             itemId: number;
             quantity: number;

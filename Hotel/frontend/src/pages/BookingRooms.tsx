@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom"
 import { motion } from "motion/react"
 import { useBooking } from "../context/BookingContext"
 import BookingHeader from "../components/BookingHeader"
-import { amenityIcons } from "../data/amenityIcons"
 import { useEffect, useState } from "react"
 import { getAvailableRooms } from "../api/roomApi"
 
@@ -10,7 +9,7 @@ import { getAvailableRooms } from "../api/roomApi"
 
 
 export default function BookingRooms() {
-  const { booking, setRoom, resetBooking } = useBooking()
+  const { booking, setRoom } = useBooking()
   const navigate = useNavigate()
   const [rooms, setRooms] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -153,7 +152,7 @@ export default function BookingRooms() {
                   </div> */}
                 </div>
 
-                {/* Price + CTA */}
+              
                 <div className="flex items-end justify-between">
                   <div>
                     <p className="text-[0.6rem] tracking-[0.2em] uppercase text-white/25 font-sans mb-1.5">
@@ -183,14 +182,6 @@ export default function BookingRooms() {
               </div>
             </motion.div>
           ))}
-        </div>
-
-    
-        <div className="text-center mt-12">
-          <button onClick={() => { resetBooking(); navigate("/") }}
-            className="bg-none border-none cursor-pointer text-white/20 text-xs tracking-[0.2em] uppercase font-sans transition-colors duration-300 hover:text-red-400/60">
-            Cancel Reservation
-          </button>
         </div>
       </div>
     </div>

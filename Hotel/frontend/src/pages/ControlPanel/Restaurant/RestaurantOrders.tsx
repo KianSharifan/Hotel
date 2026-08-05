@@ -24,17 +24,20 @@ interface SelectedItem {
 }
 
 interface OrderItem {
-    name:string;
-    quantity:number;
-    price:number;
+  name:string;
+  quantity:number;
+  price:number;
 }
 
 interface RestaurantOrder {
-    id: number
-    tableId: number
-    status: string
-    createdAt: string
-    items: OrderItem[]
+  id: number
+  tableId: number
+  status: string
+  createdAt: string
+  items: OrderItem[]
+  transactionId: string
+  paymentMethod: string
+
 }
 
 
@@ -51,39 +54,14 @@ export default function RestaurantOrders() {
   const [selectedItems, setSelectedItems] = useState<SelectedItem[]>([])
   const [filteredItems, setFilteredItems] = useState<MenuItem[]>([])
 
+  const [paymentData, setPaymentData] = useState<{
+    [orderId: number]: {
+      paymentMethod: string;
+      transactionId: string;
+    };
+  }>({});
+
   const { user, loading: authLoading  } = useAuth();
-
-  if (authLoading) {
-      return null; 
-  }
-  if (user?.role !== "HotelManager" && user?.role !== "Chef" && user?.role !== "Waiter" && user?.role !== "RestaurantManager") {
-  return (
-          <div className="mx-auto mt-4 max-w-3xl rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700">
-          You don't have permission to access this page.
-          </div>
-      );
-  }
-
-  const loadOrders = async () => {
-    try {
-        const orders = await getActiveOrders();
-        const completedOrders = await Promise.all(
-            orders.map(async (o) => {
-                const details = await getOrder(o.order.id);
-                return {
-                    id: details.o.id,
-                    tableId: details.o.tableId,
-                    status: details.o.status,
-                    createdAt: details.o.createdAt,
-                    items: details.orderItems
-                };
-            })
-        );
-        setOrders(completedOrders);
-    }
-
-    catch(err){
-      console.log(err);}}
 
     useEffect(() => {
     async function loadMenu() {
@@ -101,6 +79,46 @@ export default function RestaurantOrders() {
     loadMenu()
     loadOrders()
   }, [])
+
+
+  const loadOrders = async () => {
+    try {
+        const orders = await getActiveOrders();
+        const completedOrders = await Promise.all(
+            orders.map(async (o) => {
+                const details = await getOrder(o.order.id);
+                return {
+                    id: details.o.id,
+                    tableId: details.o.tableId,
+                    status: details.o.status,
+                    createdAt: details.o.createdAt,
+                    items: details.orderItems,
+                    paymentMethod: details.paymentMethod,
+                    transactionId: details.transactionId,
+                };
+            })
+        );
+        setOrders(completedOrders);
+    }
+
+    catch(err){
+      console.log(err);}}
+
+      
+
+  if (authLoading) {
+      return null; 
+  }
+  if (user?.role !== "HotelManager" && user?.role !== "Chef" && user?.role !== "Waiter" && user?.role !== "RestaurantManager") {
+  return (
+          <div className="mx-auto mt-4 max-w-3xl rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700">
+          You don't have permission to access this page.
+          </div>
+      );
+  }
+
+
+
 
   return (
     <div className="min-h-screen bg-zinc-100 p-10">
@@ -369,13 +387,15 @@ export default function RestaurantOrders() {
 
                     <table className="w-full border-collapse">
                         <thead>
-                        <tr className="bg-gray-100">
+                          <tr className="bg-gray-100">
                             <th className="text-left p-4">Table</th>
                             <th className="text-left p-4">Items</th>
                             <th className="text-center p-4">Total</th>
                             <th className="text-center p-4">Status</th>
+                            <th className="text-center p-4">Payment Method</th>
+                            <th className="text-center p-4">Transaction Id</th>
                             <th className="text-center p-4">Actions</th>
-                        </tr>
+                          </tr>
                         </thead>
 
                         <tbody>
@@ -417,16 +437,19 @@ export default function RestaurantOrders() {
                     <select
                     value={order.status}
                     onChange={async (e) => {
+                        const newStatus = e.target.value;
 
                         await updateOrder(order.id, {
-                            status: e.target.value})
+                            status: newStatus,
+                            paymentMethod: paymentData[order.id]?.paymentMethod ?? "",
+                            transactionId: paymentData[order.id]?.transactionId ?? ""
+                        });
 
                         await loadOrders();
                     }}
 
                     className="border rounded px-3 py-2"
                     >
-
                     <option>Pending</option>
                     <option>Preparing</option>
                     <option>Ready</option>
@@ -437,10 +460,57 @@ export default function RestaurantOrders() {
                 </td>
 
                 <td className="text-center p-4">
+
+                    <select
+                      value={paymentData[order.id]?.paymentMethod ?? ""}
+                      onChange={(e) => {
+                          setPaymentData(prev => ({
+                              ...prev,
+                              [order.id]: {
+                                  paymentMethod: e.target.value,
+                                  transactionId:
+                                      prev[order.id]?.transactionId ?? ""
+                              }
+                          }));
+                      }}
+
+                      className="border rounded px-3 py-2"
+                    >
+
+                    <option value="">Select payment</option>
+                    <option value="Cash">Cash</option>
+                    <option value="Card">Card</option>
+                    <option value="Bank Transfer">Bank Transfer</option>
+
+                    </select>
+
+                </td>
+
+                <td className="text-center p-4">
+
+                  <input
+                  className="border-1 border-black"
+                    type="text"
+                    value={paymentData[order.id]?.transactionId ?? ""}
+                    onChange={(e) => {
+                        setPaymentData(prev => ({
+                            ...prev,
+                            [order.id]: {
+                                paymentMethod:
+                                    prev[order.id]?.paymentMethod ?? "",
+                                transactionId: e.target.value
+                            }
+                        }));
+                    }}
+                  />
+
+                </td>
+
+                <td className="text-center p-4">
                     <button
                     onClick={async () => {
-                        await deleteOrder(order.id)
-                        await loadOrders();
+                      await deleteOrder(order.id)
+                      await loadOrders();
                     }}
                     className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
                     >

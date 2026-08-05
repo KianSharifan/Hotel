@@ -188,7 +188,7 @@ export default function RestaurantTables(){
             <form onSubmit={handleCreate}
                 className="mb-8 rounded border border-gray-300 p-4 bg-gray-50">
 
-                <h2 className="font-semibold mb-3">Create new task</h2>
+                <h2 className="font-semibold mb-3">Create new table</h2>
                 <div className="flex flex-wrap gap-3 items-end">
                     <div>
                         <label className="block text-xs text-gray-600 mb-1">Capacity</label>

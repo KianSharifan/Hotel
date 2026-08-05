@@ -168,12 +168,12 @@ function Reservation() {
               py-4
             "
           >
-            <option value={1}>1 Guest</option>
-            <option value={2}>2 Guests</option>
-            <option value={3}>3 Guests</option>
-            <option value={4}>4 Guests</option>
-            <option value={5}>5 Guests</option>
-            <option value={6}>6 Guests</option>
+            <option value={1}>1 </option>
+            <option value={2}>2 </option>
+            <option value={3}>3 </option>
+            <option value={4}>4 </option>
+            <option value={5}>5 </option>
+            <option value={6}>6 </option>
           </select>
         </div>
 
@@ -199,13 +199,13 @@ function Reservation() {
               py-4
             "
           >
-
-            <option value={1}>1 Guest</option>
-            <option value={2}>2 Guests</option>
-            <option value={3}>3 Guests</option>
-            <option value={4}>4 Guests</option>
-            <option value={5}>5 Guests</option>
-            <option value={6}>6 Guests</option>
+            <option value={0}>0 </option>
+            <option value={1}>1 </option>
+            <option value={2}>2 </option>
+            <option value={3}>3 </option>
+            <option value={4}>4 </option>
+            <option value={5}>5 </option>
+            <option value={6}>6 </option>
           </select>
         </div>
 

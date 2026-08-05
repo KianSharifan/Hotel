@@ -214,7 +214,6 @@ function RestaurantTab(){
     const [Rpayments, setRpayments] = useState<Payment[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError]= useState<string| null>(null);
-    const [deletingId, setDeletingId] = useState<number | null>(null);
 
     async function loadPayments() {
         setLoading(true);
@@ -237,21 +236,7 @@ function RestaurantTab(){
     }, []);
 
 
-    async function handleDelete(paymentId:number) {
-        if (!window.confirm("Delete this payment?")) return;
-        setError(null);
-        setDeletingId(paymentId);
-        try{
-            await deletePayment(paymentId);
-            await loadPayments();
-        }
-        catch(err){
-            setError(err instanceof Error ? err.message : "Failed to delete payment");
-        }    
-        finally{
-            setDeletingId(null);
-        }
-    }
+
     
     return(
         <div>
@@ -276,7 +261,6 @@ function RestaurantTab(){
                             <th className="p-2">Transaction ID</th>
                             <th className="p-2">Payment Date</th>
                             <th className="p-2">Status</th>
-                            <th className="p-2">Actions</th>
                         </tr>
                     </thead>
 
@@ -310,17 +294,6 @@ function RestaurantTab(){
                                         {payment.status ?? "-"}
                                     </td>
 
-                                    <td className="p-2">
-                                        <button
-                                            onClick={() => handleDelete(payment.id)}
-                                            disabled={deletingId === payment.id}
-                                            className="bg-red-600 text-white px-2 py-1 rounded text-xs disabled:opacity-50"
-                                        >
-                                            {deletingId === payment.id
-                                                ? "Deleting..."
-                                                : "Delete"}
-                                        </button>
-                                    </td>
                                 </tr>
                             );
                         })}
@@ -365,7 +338,7 @@ function InvoicesTab(){
         setError(null);
         setDeletingId(invoiceId);
         try{
-            await deletePayment(invoiceId);
+            await deleteInvoice(invoiceId);
             await loadInvoices();
         }
         catch(err){

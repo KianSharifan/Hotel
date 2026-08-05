@@ -239,27 +239,6 @@ function Rooms() {
                       ))}
                   </div>
               </div>
-
-              <div className="flex gap-6">
-
-                <button
-                  className="
-                  bg-white
-                  text-black
-                  px-8
-                  py-4
-                  rounded-2xl
-                  text-lg
-                  transition-all
-                  duration-500
-                  hover:bg-gray-300
-                  hover:scale-105
-                  "
-                >
-                  Explore
-                </button>
-
-              </div>
             </div>
             
           </div>

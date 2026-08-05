@@ -35,7 +35,7 @@ export default function Register() {
           })
 
           login(token)
-          alert("Account created successfully!")
+          // alert("Account created successfully!")
           const params = new URLSearchParams(location.search)
           const returnTo = params.get("return") ?? "/"
           navigate(returnTo)
@@ -214,19 +214,6 @@ export default function Register() {
           </Link>
 
         </p>
-
-        {/* <p className="text-center text-gray-400 mt-3">
-
-          Are you an employee?{" "}
-
-          <Link
-            to="/employeeRegister"
-            className="text-[#c8a84b]"
-          >
-            Click here
-          </Link>
-
-        </p> */}
 
         <Link to="/">
           <p className="text-center text-white opacity-70 underline mt-2">Go home</p>

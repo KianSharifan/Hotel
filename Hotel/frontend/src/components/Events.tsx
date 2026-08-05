@@ -1,6 +1,5 @@
 import { motion } from "framer-motion"
 import djimg from "../assets/djset.png";
-import { image } from "motion/react-client";
 
 const events = [
   {
@@ -129,23 +128,6 @@ function Events() {
               <p className="text-gray-300 text-xl leading-relaxed mb-10">
                 {event.description}
               </p>
-
-              <button
-                className="
-                  px-8
-                  py-4
-                  rounded-2xl
-                  border
-                  border-white
-                  transition-all
-                  duration-500
-                  hover:bg-white
-                  hover:text-black
-                  hover:scale-105
-                "
-              >
-                Learn More
-              </button>
 
             </motion.div>
           </motion.div>

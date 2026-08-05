@@ -1,9 +1,9 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { motion, AnimatePresence } from "motion/react"
 import { useBooking } from "../context/BookingContext"
 import BookingHeader from "../components/BookingHeader"
-import { CreditCard, Lock, CheckCircle } from "lucide-react"
+import { CreditCard, CheckCircle } from "lucide-react"
 import { reserveRoom } from "../api/reservationApi"
 import { useAuth } from "../context/AuthContext"
 
@@ -40,6 +40,8 @@ export default function PaymentPage() {
   const [cvv, setCvv] = useState("")
   const [confirmed, setConfirmed] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [authError, setAuthError] = useState("")
+  const guestSectionRef = useRef<HTMLDivElement | null>(null)
 
   const nights = booking.checkIn && booking.checkOut
     ? Math.round((new Date(booking.checkOut).getTime() - new Date(booking.checkIn).getTime()) / 86400000)
@@ -61,38 +63,42 @@ export default function PaymentPage() {
 
   const canPay = cardName && cardNumber.replace(/\s/g, "").length === 16 && expiry.length === 5 && cvv.length >= 3
 
-  async function handlePay() {
+  function scrollToGuestSection() {
+    guestSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" })
+  }
 
-      if (!canPay) return;
-      if (!user) {
-          navigate("/login?return=/reservation/payment");
-          return;
-      }
-      setLoading(true);
-      try {
-        console.log(user);
-        console.log(typeof user?.id);
-        console.log(user?.id);
-          await reserveRoom({
-            nAdults: booking.adults,
-            nKids: booking.children,
-            checkIn: booking.checkIn,
-            checkOut: booking.checkOut,
-            roomTypeId: booking.selectedRoom?.id,
-            meals: 0,
-            totalPrice: grandTotal,
-            guestId: user.id,
-            specialRequest: ""
-          });
-          setConfirmed(true);
-      } 
-      catch (err) {
-        console.error(err);
-        alert("Reservation failed.");
-      } 
-      finally {
-        setLoading(false);
-      }
+  async function handlePay() {
+    if (!user) {
+      setAuthError("Please log in or create an account to complete your reservation.")
+      scrollToGuestSection()
+      return
+    }
+
+    if (!canPay) return
+
+    setAuthError("")
+    setLoading(true)
+    try {
+      await reserveRoom({
+        nAdults: booking.adults,
+        nKids: booking.children,
+        checkIn: booking.checkIn,
+        checkOut: booking.checkOut,
+        roomTypeId: booking.selectedRoom?.id,
+        meals: 0,
+        totalPrice: grandTotal,
+        guestId: user.id,
+        specialRequest: ""
+      })
+      setConfirmed(true)
+    }
+    catch (err) {
+      console.error(err)
+      alert("Reservation failed.")
+    }
+    finally {
+      setLoading(false)
+    }
   }
 
   if (confirmed) return (
@@ -182,12 +188,6 @@ export default function PaymentPage() {
               </div>
             </div>
 
-            <div className="flex items-center gap-2 mt-6 px-4.5 py-3.5 bg-white/[0.02] rounded-[10px] border border-white/[0.05]">
-              <Lock size={12} className="text-[#c8a84b]/50" />
-              <span className="text-[0.68rem] text-white/25 font-sans tracking-wide">
-                Secured with 256-bit SSL encryption
-              </span>
-            </div>
           </motion.div>
 
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4, duration: 0.7 }}>
@@ -235,11 +235,11 @@ export default function PaymentPage() {
 
             <motion.button
               onClick={handlePay}
-              disabled={!canPay || loading || !user}
-              whileHover={canPay && !loading ? { scale: 1.02 } : {}}
-              whileTap={canPay && !loading ? { scale: 0.97 } : {}}
+              disabled={loading || (user ? !canPay : false)}
+              whileHover={!loading ? { scale: 1.02 } : {}}
+              whileTap={!loading ? { scale: 0.97 } : {}}
               className={`w-full p-5 rounded-2xl font-serif-lux text-lg italic transition-all duration-400 border-none flex items-center justify-center gap-2.5 ${
-                canPay
+                user && canPay
                   ? "bg-gradient-to-br from-[#c8a84b] to-[#a07830] text-black cursor-pointer"
                   : "bg-white/5 text-white/20 cursor-not-allowed"
               } ${loading ? "cursor-not-allowed" : ""}`}
@@ -258,24 +258,36 @@ export default function PaymentPage() {
                   </motion.div>
                 ) : (
                   <motion.span key="pay" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                    {canPay ? `Confirm & Pay $${grandTotal.toLocaleString()}` : "Enter payment details"}
+                    {!user
+                      ? "Log in to reserve"
+                      : canPay
+                        ? `Confirm & Pay $${grandTotal.toLocaleString()}`
+                        : "Enter payment details"}
                   </motion.span>
                 )}
               </AnimatePresence>
             </motion.button>
+
+            <AnimatePresence>
+              {authError && (
+                <motion.p
+                  initial={{ opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  className="text-red-500 text-xs font-sans mt-3 text-center"
+                >
+                  {authError}
+                </motion.p>
+              )}
+            </AnimatePresence>
           </motion.div>
         </div>
 
-        <div className="text-center mt-10">
-          <button onClick={() => { resetBooking(); navigate("/") }}
-            className="bg-none border-none cursor-pointer text-white/20 text-xs tracking-[0.2em] uppercase font-sans transition-colors duration-300 hover:text-red-400/60">
-            Cancel Reservation
-          </button>
-        </div>
       </div>
 
       {!user && (
         <motion.div
+          ref={guestSectionRef}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
@@ -341,4 +353,3 @@ export default function PaymentPage() {
     </div>
   )
 }
-

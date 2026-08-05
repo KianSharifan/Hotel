@@ -12,6 +12,7 @@ function RestaurantReservation() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [isSuccess, setIsSuccess] = useState<boolean | null>(null);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const availableTimes = [
     "08:00",
@@ -91,8 +92,15 @@ function RestaurantReservation() {
 
       if (res.ok) {
         setIsSuccess(true);
-        setMessage(text || "Reservation successful!");
-      } 
+        setMessage(null);
+        setShowSuccessModal(true);
+
+        setDate("");
+        setGuests(1);
+        setTime("");
+        setEmail("");
+        setSpecialRequest("");
+      }
       else {
         setIsSuccess(false);
         setMessage(text || "No available tables.");
@@ -240,9 +248,9 @@ function RestaurantReservation() {
             </button>
           </div>
 
-          {message && (
+          {message && !isSuccess &&  (
             <div className="mt-10 text-center">
-              <p className={isSuccess ? "text-emerald-400" : "text-red-400"}>
+              <p className="text-red-400">
                 {message}
               </p>
             </div>
@@ -250,6 +258,43 @@ function RestaurantReservation() {
 
         </div>
       </section>
+
+      {showSuccessModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+
+          <div className="w-[420px] rounded-3xl border border-[#c8a84b]/40 bg-gradient-to-b from-[#171311] to-black p-10 text-center shadow-[0_0_60px_rgba(200,168,75,0.25)] animate-[fadeIn_.25s_ease]">
+
+            <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-[#c8a84b]/15 border border-[#c8a84b]">
+              <span className="text-4xl text-[#c8a84b]">
+                ✓
+              </span>
+            </div>
+
+            <p className="uppercase tracking-[6px] text-[#c8a84b] text-xs mb-3">
+              Noire Palace
+            </p>
+
+            <h2 className="text-3xl font-bold text-white mb-4">
+              Reservation Successful
+            </h2>
+
+            <p className="text-gray-300 mb-8 leading-relaxed">
+              Your table has been successfully reserved.
+              <br />
+              We look forward to welcoming you.
+            </p>
+
+            <button
+              onClick={() => setShowSuccessModal(false)}
+              className="rounded-xl bg-[#c8a84b] px-8 py-3 font-semibold text-black transition hover:bg-[#d8ba62]"
+            >
+              Continue
+            </button>
+
+          </div>
+
+        </div>
+      )}
     </div>
   );
 }
