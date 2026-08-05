@@ -145,6 +145,8 @@ public class UsersController : Controller
         {
             if (await _context.Users.AnyAsync(u => u.Email == employee.Email))
                 return BadRequest("Email already exists.");
+            if(await _context.Users.AnyAsync(u => u.Username == employee.UserName))
+                return BadRequest("Username already exists.");
             if (employee.Position == null)
                 return BadRequest("Position null");
             var position = await _context.Positions.FirstOrDefaultAsync(p => p.Title!.ToLower() == employee.Position.ToLower());
@@ -153,6 +155,9 @@ public class UsersController : Controller
             if (employee.Salary < position.BaseSalary)
                 return BadRequest("Salary is too low");
             byte[] bytes = Encoding.UTF8.GetBytes(employee.Password);
+            var r = await _context.Roles.FirstOrDefaultAsync(r => r.Name!.ToLower() == employee.RoleName.ToLower());
+            if (r == null)
+                return NotFound("Role not found");
             var u = new User()
             {
                 Username = employee.UserName,
@@ -160,7 +165,7 @@ public class UsersController : Controller
                 IsActive = true,
                 CreatedAt = DateTime.UtcNow,
                 PasswordHash = Convert.ToHexString(SHA256.HashData(bytes)),
-                RoleId = employee.RoleId
+                RoleId = r.RoleId
             };
             await _context.Users.AddAsync(u);
             await _context.SaveChangesAsync();

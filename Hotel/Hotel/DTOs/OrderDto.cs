@@ -1,5 +1,3 @@
-using Hotel.Models;
-
 namespace Hotel.DTOs;
 
 public class OrderDto
