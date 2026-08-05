@@ -10,7 +10,7 @@ export default function EmployeeRegister() {
 
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
-  const [roleId, setRoleId] = useState("")
+  const [role, setRole] = useState("")
   const [departmentName, setDepartmentName] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
@@ -30,7 +30,7 @@ export default function EmployeeRegister() {
   }
 
   async function handleRegister() {
-  if (!username || !email || !roleId || !departmentName ||!password ||  !position || !salary || !birthDate) 
+  if (!username || !email || !role || !departmentName ||!password ||  !position || !salary || !birthDate) 
   {
     alert("Please fill all fields")
     return
@@ -46,7 +46,7 @@ export default function EmployeeRegister() {
         userName: username,
         email,
         password,
-        roleId: Number(roleId),
+        role: role,
         departmentName:departmentName,
         salary:Number(salary),
         position,
@@ -168,8 +168,8 @@ export default function EmployeeRegister() {
           <input
             type="number"
             placeholder="Role ID"
-            value={roleId}
-            onChange={(e) => setRoleId(e.target.value)}
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
             className="
             w-full
             bg-black/30
