@@ -22,7 +22,6 @@ interface Employee {
     id: number;
     salary?: number;
     hireDate?: string;
-    status?: string;
     positionId?: number;
     position?: {
         id: number;
@@ -238,9 +237,6 @@ function EmployeesTab() {
 
                         <dt className="text-gray-500">Hire date</dt>
                         <dd>{employee.hireDate ? employee.hireDate.slice(0, 10) : "N/A"}</dd>
-
-                        <dt className="text-gray-500">Status</dt>
-                        <dd>{employee.status ?? "N/A"}</dd>
                     </dl>
 
                     <form onSubmit={handleUpdate} className="flex flex-wrap items-end gap-3">
