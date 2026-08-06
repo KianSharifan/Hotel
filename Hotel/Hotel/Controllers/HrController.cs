@@ -102,7 +102,7 @@ public class HrController : Controller
         {
             if (role.Name == null)
                 return BadRequest();
-            if (await _context.Roles.AnyAsync(x => x.Name == role.Name))
+            if (await _context.Roles.AnyAsync(x => x.Name!.ToLower() == role.Name.ToLower()))
                 return BadRequest("Role with the same name already exists");
             var r = new Role()
             {
@@ -144,6 +144,8 @@ public class HrController : Controller
             var r = await _context.Roles.FirstOrDefaultAsync(x => x.RoleId == id);
             if (r == null)
                 return NotFound();
+            if(await _context.Roles.AnyAsync(ro => ro.Name!.ToLower() == role.Name!.ToLower()))
+                return BadRequest("Role with the same name already exists");
             r.Name = role.Name;
             await _context.SaveChangesAsync();
             return Ok();

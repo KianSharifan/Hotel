@@ -97,7 +97,7 @@ public class HotelController : Controller
         {
             if (department.Name == null)
                 return BadRequest();
-            if(await _context.Departments.AnyAsync(x => x.Name == department.Name))
+            if(await _context.Departments.AnyAsync(x => x.Name!.ToLower() == department.Name.ToLower()))
                 return BadRequest("Department with the same name already exists");
             var d = new Department()
             {
@@ -122,6 +122,8 @@ public class HotelController : Controller
             var d = await _context.Departments.FirstOrDefaultAsync(x => x.Id == id);
             if (d == null)
                 return NotFound();
+            if(await _context.Departments.AnyAsync(x => x.Name!.ToLower() == department.Name!.ToLower()))
+                return BadRequest("Department with the same name already exists");
             d.Name = department.Name;
             await _context.SaveChangesAsync();
             return Ok();

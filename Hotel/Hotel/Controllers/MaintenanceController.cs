@@ -60,6 +60,9 @@ public class MaintenanceController : Controller
         {
             if (dto.RoomId != null)
             {
+                var r = await _context.Rooms.FirstOrDefaultAsync(r => r.RoomId == dto.RoomId);
+                if (r == null)
+                    return BadRequest("Room not found");
                 Employee? emp;
                 if(dto.ReportedEmployeeId != null)
                     emp = await _context.Employees.FirstOrDefaultAsync(e => e.Id == dto.ReportedEmployeeId);
@@ -86,15 +89,15 @@ public class MaintenanceController : Controller
                 };
                 emp.User = await _context.Users.FirstOrDefaultAsync(u => u.Id == emp.Id);
                 await _context.MaintenanceRequests.AddAsync(req);
+                r.Status = "Maintenance";
                 await _context.SaveChangesAsync();
-                return Ok();
+                return CreatedAtAction(nameof(GetMaintenance),null,req);
             }
             return BadRequest("Not valid input");
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            // return StatusCode(500, "An unexpected error occurred");
-            return StatusCode(500, ex.ToString());
+            return StatusCode(500, "An unexpected error occurred");
         }
     }
 

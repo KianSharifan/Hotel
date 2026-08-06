@@ -94,7 +94,13 @@ public class HouseKeepingController : Controller
             if (houseKeeping.ScheduledDate != null)
                 h.ScheduledDate = houseKeeping.ScheduledDate.Value;
             if (houseKeeping.EmployeeId != null)
+            {
+                if (!await _context.Employees.AnyAsync(e => e.Id == houseKeeping.EmployeeId))
+                {
+                    return BadRequest("Employee not found");
+                }
                 h.EmployeeId = houseKeeping.EmployeeId.Value;
+            }
             if(houseKeeping.Notes != null)
                 h.Notes = houseKeeping.Notes;
             if(houseKeeping.Status != null)

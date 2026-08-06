@@ -87,14 +87,14 @@ public class RoomServices : IRoomServices
                 var service = _context.Services.FirstOrDefault(s => s.Name == "Breakfast");
                 if (service == null)
                     return (0,0);
-                GuestServiceUsage gsu = new GuestServiceUsage()
+                GuestServiceUsage gsu = new GuestServiceUsage
                 {
                     GuestId = input.GuestId,
                     Quantity = (uint)((input.NAdults + input.NKids) * (input.CheckOut.DayNumber - input.CheckIn.DayNumber)),
-                    Price = ((input.NAdults + input.NKids) * (input.CheckOut.DayNumber - input.CheckIn.DayNumber)) *
+                    Price = (input.NAdults + input.NKids) * (input.CheckOut.DayNumber - input.CheckIn.DayNumber) *
                             service.Price,
                     ServiceId = service.Id,
-                    UseDate = input.CheckIn.ToDateTime(new TimeOnly(08, 00, 00)),
+                    UseDate = input.CheckIn.ToDateTime(new TimeOnly(08, 00, 00)).ToUniversalTime(),
                     ReservationId = reservation.Id
                 };
                 await _context.GuestServiceUsages.AddAsync(gsu);
@@ -104,17 +104,17 @@ public class RoomServices : IRoomServices
                 var service = _context.Services.FirstOrDefault(s => s.Name == "AllMeals");
                 if (service == null)
                      return (0,0);
-                GuestServiceUsage gsu = new GuestServiceUsage()
+                GuestServiceUsage gsu = new GuestServiceUsage
                 {
                     GuestId = input.GuestId,
                     Quantity = (uint)((input.NAdults + input.NKids) * (input.CheckOut.DayNumber - input.CheckIn.DayNumber)),
-                    Price = ((input.NAdults + input.NKids) * (input.CheckOut.DayNumber - input.CheckIn.DayNumber)) *
+                    Price = (input.NAdults + input.NKids) * (input.CheckOut.DayNumber - input.CheckIn.DayNumber) *
                         service.Price,
                     ServiceId = service.Id,
-                    UseDate = input.CheckIn.ToDateTime(new TimeOnly(08, 00, 00)),
+                    UseDate = input.CheckIn.ToDateTime(new TimeOnly(08, 00, 00)).ToUniversalTime(),
                     ReservationId = reservation.Id
                 };
-            await _context.GuestServiceUsages.AddAsync(gsu);
+                await _context.GuestServiceUsages.AddAsync(gsu);
             }
             await _context.SaveChangesAsync();
             await transaction.CommitAsync();
