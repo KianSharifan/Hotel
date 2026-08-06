@@ -23,7 +23,7 @@ public class HrController : Controller
     {
         try
         {
-            var e = await _context.Employees.FirstOrDefaultAsync(e => e.Id == id);
+            var e = await _context.Employees.Include(e => e.Position).FirstOrDefaultAsync(e => e.Id == id);
             if (e == null)
                 return NotFound();
             return Ok(e);
