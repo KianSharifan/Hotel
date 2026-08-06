@@ -3,7 +3,7 @@ import {getHouseKeeperTasks,updateHouseKeepingTask} from "../../../api/houseKeep
 import { useAuth } from "../../../context/AuthContext"
 
 interface HouseKeepingTask {
-    id: number;
+    houseKeepingId: number;
     roomId: number;
     scheduledDate: string;
     employeeId: number;
@@ -55,9 +55,9 @@ export default function HousekeeperTasks() {
 
     async function handleMarkCompleted(task: HouseKeepingTask) {
         setError(null);
-        setCompletingId(task.id);
+        setCompletingId(task.houseKeepingId);
         try {
-            await updateHouseKeepingTask(task.id, { status: true });
+            await updateHouseKeepingTask(task.houseKeepingId, { status: true });
             await loadTasks();
         } catch (err) {
             setError(err instanceof Error ? err.message : "Failed to update task");
@@ -105,7 +105,7 @@ export default function HousekeeperTasks() {
                         <ul className="mb-6 space-y-2">
                             {pending.map((task) => (
                                 <li
-                                    key={task.id}
+                                    key={task.houseKeepingId}
                                     className="border rounded p-3 flex items-center justify-between gap-4"
                                 >
                                     <div>
@@ -121,10 +121,10 @@ export default function HousekeeperTasks() {
                                     </div>
                                     <button
                                         onClick={() => handleMarkCompleted(task)}
-                                        disabled={completingId === task.id}
+                                        disabled={completingId === task.houseKeepingId}
                                         className="bg-green-600 text-white px-3 py-1.5 rounded text-sm disabled:opacity-50 whitespace-nowrap"
                                     >
-                                        {completingId === task.id ? "Saving..." : "Mark completed"}
+                                        {completingId === task.houseKeepingId ? "Saving..." : "Mark completed"}
                                     </button>
                                 </li>
                             ))}
@@ -138,7 +138,7 @@ export default function HousekeeperTasks() {
                         <ul className="space-y-2">
                             {completed.map((task) => (
                                 <li
-                                    key={task.id}
+                                    key={task.houseKeepingId}
                                     className="border rounded p-3 bg-gray-50 text-gray-500"
                                 >
                                     <div className="font-medium">Room {task.roomId}</div>

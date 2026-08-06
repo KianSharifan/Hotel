@@ -23,7 +23,8 @@ export async function getRestaurantTable(id: number) {
 
 
 export async function createRestaurantTable(data: {
-    capacity: number;
+    id:number
+    capacity: number
 }) {
     const response = await fetch(BASE_URL, {
         method: "POST",
@@ -46,10 +47,9 @@ export async function createRestaurantTable(data: {
 export async function updateRestaurantTable(
     id: number,
     data: {
-        email?: string;
-        specialReq?: string;
+        id?: number;
         capacity?: number;
-        time?: string;
+        specialReq?: string;
     }
 ) {
     const response = await fetch(`${BASE_URL}/${id}`, {

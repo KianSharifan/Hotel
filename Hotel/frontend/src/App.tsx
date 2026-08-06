@@ -39,6 +39,8 @@ import Departments from "./pages/ControlPanel/HotelManager/Departments"
 import HotelSettings from "./pages/ControlPanel/HotelManager/Hotel"
 import RoomsManagement from "./pages/ControlPanel/RoomsManagement"
 import DashboardLayout from "./layouts/DashboardLayout"
+import UsersManagement from "./pages/ControlPanel/HotelManager/Users"
+
 
 
 
@@ -63,6 +65,7 @@ const HIDDEN_NAVBAR_PATHS = [
   "/dashboard/restaurant/menu",
   "/dashboard/checkin",
   "/dashboard/checkout",
+  "/dashboard/users",
   "/dashboard/services",
   "/dashboard/housekeeping-management",
   "/dashboard/housekeeper",
@@ -114,6 +117,9 @@ function AppInner() {
           <Route path="restaurant/restaurant-settings" element={<RestaurantSettings />} />
           <Route path="restaurant/restaurant-tables" element={<RestaurantTables />} />
           <Route path="restaurant/restaurant-reservations" element={<RestaurantReservations />} />
+          <Route path="users" element={<UsersManagement />} />
+          
+          
         </Route>
 
 

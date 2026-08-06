@@ -30,6 +30,8 @@ function LuxInput({ label, placeholder, value, onChange, type = "text", maxLengt
   )
 }
 
+const MEAL_LABEL: Record<number, string> = { 0: "No meals", 1: "Breakfast", 2: "All Meals" }
+
 export default function PaymentPage() {
   const { booking, resetBooking } = useBooking()
   const navigate = useNavigate()
@@ -47,7 +49,13 @@ export default function PaymentPage() {
     ? Math.round((new Date(booking.checkOut).getTime() - new Date(booking.checkIn).getTime()) / 86400000)
     : 0
 
-  const total = booking.selectedRoom ? booking.selectedRoom.price * nights : 0
+  const totalGuests = booking.adults + booking.children
+
+  const roomSubtotal = booking.selectedRoom ? booking.selectedRoom.price * nights : 0
+  const mealTotal = booking.selectedRoom
+    ? booking.selectedRoom.mealPricePerGuestPerNight * totalGuests * nights
+    : 0
+  const total = roomSubtotal + mealTotal
   const taxes = Math.round(total * 0.12)
   const grandTotal = total + taxes
 
@@ -85,7 +93,7 @@ export default function PaymentPage() {
         checkIn: booking.checkIn,
         checkOut: booking.checkOut,
         roomTypeId: booking.selectedRoom?.id,
-        meals: 0,
+        meals: booking.selectedRoom?.meals ?? 0,
         totalPrice: grandTotal,
         guestId: user.id,
         specialRequest: ""
@@ -204,8 +212,9 @@ export default function PaymentPage() {
                 {[
                   { label: "Check-in", value: fmt(booking.checkIn) },
                   { label: "Check-out", value: fmt(booking.checkOut) },
-                  { label: "Guests", value: `${booking.adults + booking.children} guests` },
+                  { label: "Guests", value: `${totalGuests} guests` },
                   { label: "Duration", value: `${nights} nights` },
+                  { label: "Meal Plan", value: MEAL_LABEL[booking.selectedRoom?.meals ?? 0] },
                 ].map(row => (
                   <div key={row.label} className="flex justify-between items-center">
                     <span className="text-xs text-white/35 font-sans">{row.label}</span>
@@ -216,9 +225,15 @@ export default function PaymentPage() {
 
               <div className="flex flex-col gap-2.5 mb-5">
                 <div className="flex justify-between">
-                  <span className="text-xs text-white/35 font-sans">Subtotal</span>
-                  <span className="text-sm text-white/55 font-sans">${total.toLocaleString()}</span>
+                  <span className="text-xs text-white/35 font-sans">Room subtotal</span>
+                  <span className="text-sm text-white/55 font-sans">${roomSubtotal.toLocaleString()}</span>
                 </div>
+                {mealTotal > 0 && (
+                  <div className="flex justify-between">
+                    <span className="text-xs text-white/35 font-sans">Meals</span>
+                    <span className="text-sm text-white/55 font-sans">${mealTotal.toLocaleString()}</span>
+                  </div>
+                )}
                 <div className="flex justify-between">
                   <span className="text-xs text-white/35 font-sans">Taxes &amp; fees (12%)</span>
                   <span className="text-sm text-white/55 font-sans">${taxes.toLocaleString()}</span>

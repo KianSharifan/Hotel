@@ -47,7 +47,7 @@ export default function CheckIn() {
 
     <div className="min-h-screen bg-zinc-100">
 
-      <div className="bg-blue-700 text-white px-10 py-8 shadow-lg">
+      <div className="text-black px-10 py-8 shadow-lg">
         <h1 className="text-4xl font-bold">
           Front Desk Manager
         </h1>

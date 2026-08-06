@@ -278,7 +278,6 @@ export default function MaintenanceManager() {
                     </select>
                 </div>
                 <div>
-                    {/* TODO: no GET Engineers endpoint yet, so this filters by raw employee ID */}
                     <label className="block text-xs text-gray-600 mb-1">Engineer ID</label>
                     <input
                         type="text"
@@ -420,9 +419,7 @@ export default function MaintenanceManager() {
                                         </>
                                     ) : (
                                         <>
-                                            {/* TODO: no GET Rooms endpoint — showing raw roomId */}
                                             <td className="p-2">Room {req.roomId}</td>
-                                            {/* TODO: no GET Engineers endpoint — showing raw employee id */}
                                             <td className="p-2">Engineer #{req.reportedEmployeeId}</td>
                                             <td className="p-2">{req.priority ?? "-"}</td>
                                             <td className="p-2">{req.status ?? "-"}</td>
@@ -459,12 +456,12 @@ export default function MaintenanceManager() {
                 </table>
             )}
 
-            {/* Create form */}
+            
             <form onSubmit={handleCreate} className="rounded border border-gray-300 p-4 bg-gray-50">
                 <h2 className="font-semibold mb-3">Create maintenance request</h2>
                 <div className="flex flex-wrap gap-3 items-end">
                     <div>
-                        <label className="block text-xs text-gray-600 mb-1">Room Id</label>
+                        <label className="block text-xs text-gray-600 mb-1">Room Number</label>
                         <input
                             type="number"
                             className="border rounded px-2 py-1 w-28"

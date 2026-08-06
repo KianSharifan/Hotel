@@ -301,3 +301,45 @@ interface ActiveOrderResponse {
     };
 }
 
+
+const BASE_URL = "http://localhost:5263/API/Restaurant";
+
+function getToken() {
+    return localStorage.getItem("token");
+}
+
+
+export async function getRestaurantSettings() {
+    const response = await fetch(BASE_URL, {
+        method: "GET"
+    });
+
+    if (!response.ok) {
+        throw new Error(await response.text());
+    }
+
+    return await response.json();
+}
+
+
+export async function updateRestaurantSettings(data: {
+    name?: string;
+    address?: string;
+    openTime?: string;
+    closeTime?: string;
+}) {
+    const response = await fetch(BASE_URL, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getToken()}`
+        },
+        body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+        throw new Error(await response.text());
+    }
+
+    return await response.json();
+}

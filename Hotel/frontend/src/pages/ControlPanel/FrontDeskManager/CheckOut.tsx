@@ -10,22 +10,15 @@ export default function CheckOut() {
   const [discount, setDiscount] = useState("")
   const [paymentMethod, setPaymentMethod] = useState("")
   const [transactionId, setTransactionId] = useState("")
-  const [invoice,setInvoice]=useState<number|null>(null);
+  const [invoiceId, setInvoiceId] = useState("");
   const [reservations, setReservations] = useState<any[]>([]);
   const [search, setSearch] = useState("");
 
   const { user, loading } = useAuth();
 
-  if (loading) {
-    return null; 
-  }
-  if (user?.role !== "HotelManager" && user?.role !== "FrontOfficeManager") {
-    return (
-      <div className="mx-auto mt-4 max-w-3xl rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700">
-        You don't have permission to access this page.
-      </div>
-    );
-  }
+    useEffect(() => {
+        loadReservations();
+    }, []);
 
     const loadReservations = async () => {
         try {
@@ -39,15 +32,25 @@ export default function CheckOut() {
         }
     };
 
-    useEffect(() => {
-        loadReservations();
-    }, []);
+
+  if (loading) {
+    return null; 
+  }
+  if (user?.role !== "HotelManager" && user?.role !== "FrontOfficeManager") {
+    return (
+      <div className="mx-auto mt-4 max-w-3xl rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-700">
+        You don't have permission to access this page.
+      </div>
+    );
+  }
+
+
 
   return (
 
     <div className="min-h-screen bg-zinc-100">
 
-      <div className="bg-blue-700 text-white px-10 py-8 shadow-lg">
+      <div className="text-black px-10 py-8 shadow-lg">
         <h1 className="text-4xl font-bold">
           Front Desk Manager
         </h1>
@@ -164,14 +167,17 @@ export default function CheckOut() {
                         alert("Please complete all fields.");
                         return;
                       }
-                      const invoice = await checkOut({
-                        reservationDate: reservationDate,
+
+                      const result = await checkOut({
+                        reservationDate,
                         roomNumber: Number(roomNumber),
                         tax: Number(tax),
                         discount: Number(discount)
                       });
 
-                      setInvoice(invoice);
+                      console.log("Checkout returned:", result);
+
+                      setInvoiceId(String(result.id));
                       alert("Invoice generated.");
                       await loadReservations();
                   }
@@ -197,13 +203,13 @@ export default function CheckOut() {
 
           <div className="grid grid-cols-3 gap-5">
 
-            <input
-              type="number"
-              value={invoice ?? ""}
-              // onChange={(e)=>setInvoice(e.target.value)}
-              // readOnly
-              className="border rounded-lg p-3 bg-gray-100"
-            />
+          <input
+            type="number"
+            value={invoiceId}
+            onChange={(e) => setInvoiceId(e.target.value)}
+            placeholder="Invoice ID"
+            className="border rounded-lg p-3"
+          />
 
             <select
               value={paymentMethod}
@@ -226,9 +232,9 @@ export default function CheckOut() {
 
           </div>
 
-            <button disabled={invoice == null}
+            <button disabled={!invoiceId}
                 onClick={async () => {
-                  if (invoice == null) {
+                  if (!invoiceId) {
                     alert("Invoice ID required");
                     return;
                   }
@@ -244,7 +250,7 @@ export default function CheckOut() {
                         return;
                       }
                       await payInvoice(
-                        invoice,
+                        Number(invoiceId),
                         {
                           paymentMethod,
                           transactionId
@@ -252,7 +258,7 @@ export default function CheckOut() {
                       );
 
                       alert("Payment registered.");
-                      setInvoice(null);
+                      setInvoiceId("");
                       setReservationDate("");
                       setRoomNumber("");
                       setTax("");
@@ -272,7 +278,7 @@ export default function CheckOut() {
                 }}
                 className={`mt-6 px-8 py-3 rounded-lg text-white
                             ${
-                            invoice!= null
+                            invoiceId!= ""
                             ? "bg-blue-600 hover:bg-blue-700"
                             : "bg-gray-400 cursor-not-allowed"
                             }`}

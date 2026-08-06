@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react"
 import { motion, useAnimation } from "motion/react"
 
-// Generate rays around a circle: alternating tall/short, random twinkle delays
+
 const RAYS = Array.from({ length: 36 }, (_, i) => {
   const angle = (i / 36) * 360
   const isTall = i % 2 === 0
@@ -41,7 +41,6 @@ function GoldenHalo() {
       }}
     >
       <defs>
-        {/* Shimmer gradient for the ring */}
         <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor="#6b4f1a" stopOpacity="0.6" />
           <stop offset="35%" stopColor="#c8a84b" stopOpacity="0.9" />
@@ -49,7 +48,7 @@ function GoldenHalo() {
           <stop offset="65%" stopColor="#c8a84b" stopOpacity="0.9" />
           <stop offset="100%" stopColor="#6b4f1a" stopOpacity="0.6" />
         </linearGradient>
-        {/* Ray gradient: bright base → transparent tip */}
+        
         <linearGradient id="rayGrad" x1="0%" y1="0%" x2="0%" y2="100%">
           <stop offset="0%" stopColor="#f5e09a" stopOpacity="1" />
           <stop offset="100%" stopColor="#c8a84b" stopOpacity="0" />
@@ -70,7 +69,7 @@ function GoldenHalo() {
         </filter>
       </defs>
 
-      {/* Soft outer glow ring */}
+
       <circle
         cx={cx} cy={cy} r={ringR + 8}
         fill="none"
@@ -79,7 +78,7 @@ function GoldenHalo() {
         filter="url(#softglow)"
       />
 
-      {/* Main ring */}
+
       <circle
         cx={cx} cy={cy} r={ringR}
         fill="none"
@@ -88,7 +87,7 @@ function GoldenHalo() {
         filter="url(#glow)"
       />
 
-      {/* Rays */}
+
       {RAYS.map((ray, i) => {
         const rad = (ray.angle * Math.PI) / 180
         const x1 = cx + Math.cos(rad) * (ringR - 2)
@@ -120,7 +119,7 @@ function GoldenHalo() {
         )
       })}
 
-      {/* Sparkle dots orbiting outside the rays */}
+
       {SPARKLES.map((sp, i) => {
         const rad = (sp.angle * Math.PI) / 180
         const x = cx + Math.cos(rad) * sp.radius
@@ -146,7 +145,7 @@ function GoldenHalo() {
         )
       })}
 
-      {/* Inner shimmer arc (rotating) */}
+
       <motion.circle
         cx={cx} cy={cy} r={ringR}
         fill="none"
@@ -193,7 +192,7 @@ function IntroScreen({ onDone }: { onDone: () => void }) {
   }
 
   useEffect(() => {
-    // Lock body scroll while intro is visible
+    
     document.body.style.overflow = "hidden"
     return () => {
       document.body.style.overflow = ""
@@ -245,7 +244,7 @@ function IntroScreen({ onDone }: { onDone: () => void }) {
         overflow: "hidden",
       }}
     >
-      {/* Deep ambient glow behind halo */}
+      
       <div style={{
         position: "absolute",
         width: "520px",
@@ -258,10 +257,10 @@ function IntroScreen({ onDone }: { onDone: () => void }) {
         animation: "ambientPulse 4s ease-in-out infinite",
       }} />
 
-      {/* Golden Halo SVG */}
+
       <GoldenHalo />
 
-      {/* Text content — sits above the SVG halo */}
+
       <div style={{
         position: "relative",
         zIndex: 2,
@@ -270,7 +269,7 @@ function IntroScreen({ onDone }: { onDone: () => void }) {
         alignItems: "center",
         textAlign: "center",
       }}>
-        {/* Top rule */}
+        
         <motion.div
           initial={{ scaleX: 0, opacity: 0 }}
           animate={{ scaleX: 1, opacity: 1 }}
@@ -283,7 +282,7 @@ function IntroScreen({ onDone }: { onDone: () => void }) {
           }}
         />
 
-        {/* Welcome to */}
+
         <motion.p
           initial={{ opacity: 0, letterSpacing: "0.2em" }}
           animate={{ opacity: 1, letterSpacing: "0.5em" }}
@@ -299,7 +298,7 @@ function IntroScreen({ onDone }: { onDone: () => void }) {
           Welcome to
         </motion.p>
 
-        {/* Main title */}
+
         <motion.h1
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
@@ -323,7 +322,7 @@ function IntroScreen({ onDone }: { onDone: () => void }) {
           Noire Palace
         </motion.h1>
 
-        {/* Subtitle */}
+
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -340,7 +339,7 @@ function IntroScreen({ onDone }: { onDone: () => void }) {
           Luxury Resort &amp; Spa
         </motion.p>
 
-        {/* Bottom rule */}
+
         <motion.div
           initial={{ scaleX: 0, opacity: 0 }}
           animate={{ scaleX: 1, opacity: 1 }}
@@ -354,7 +353,7 @@ function IntroScreen({ onDone }: { onDone: () => void }) {
         />
       </div>
 
-      {/* Scroll hint */}
+
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: [0, 0.6, 0] }}

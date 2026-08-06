@@ -6,12 +6,17 @@ import { useEffect, useState } from "react"
 import { getAvailableRooms } from "../api/roomApi"
 
 
-
+const MEAL_OPTIONS = [
+  { code: 0, name: "No Meals", price: 0 },
+  { code: 1, name: "Breakfast", price: 30 },  
+  { code: 2, name: "AllMeals", price: 50 },    
+]
 
 export default function BookingRooms() {
   const { booking, setRoom } = useBooking()
   const navigate = useNavigate()
   const [rooms, setRooms] = useState<any[]>([])
+  const [selectedMeals, setSelectedMeals] = useState<Record<number, number>>({})
   const [loading, setLoading] = useState(true)
 
 
@@ -57,14 +62,32 @@ export default function BookingRooms() {
     return Math.round((new Date(booking.checkOut).getTime() - new Date(booking.checkIn).getTime()) / 86400000)
   }
 
+  function selectedMealFor(roomTypeId: number) {
+    const code = selectedMeals[roomTypeId] ?? 0
+    return MEAL_OPTIONS.find(m => m.code === code)!
+  }
+
+  function mealCostFor(roomTypeId: number) {
+    const meal = selectedMealFor(roomTypeId)
+    return meal.price * totalGuests * nights()
+  }
+
+  function roomTotal(room: any) {
+    return room.price * nights() + mealCostFor(room.roomTypeId)
+  }
+
 
   function handleSelect(room: any) {
-    console.log("SELECTED ROOM", room)
+    const meal = selectedMealFor(room.roomTypeId)
+
+    console.log("SELECTED ROOM", room, "MEAL", meal)
 
     setRoom({
       id: room.roomTypeId,
       name: room.name,
-      price: room.price
+      price: room.price,
+      meals: meal.code,
+      mealPricePerGuestPerNight: meal.price
     })
 
     navigate("/reservation/payment")
@@ -129,7 +152,6 @@ export default function BookingRooms() {
                       { label: `${room.numberDoubleBed +
                                 room.numberSingleBed +
                                 room.numberSofaBed} Beds` },
-                      // { label: room.size },
                     ].map(tag => (
                       <span key={tag.label} className="px-4 py-1.5 rounded-full border border-[#c8a84b]/20 text-xs text-[#c8a84b]/75 font-sans tracking-wide">
                         {tag.label}
@@ -137,37 +159,47 @@ export default function BookingRooms() {
                     ))}
                   </div>
 
-                  {/* Amenities */}
-                  {/* <div className="flex gap-2.5 flex-wrap mb-8">
-                    {room.amenities.slice(0, 5).map((amenity: string) => {
-                      const Icon = amenityIcons[amenity]
-                      return (
-                        <div key={amenity} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full 
-                        bg-white/[0.04] border border-white/[0.07] text-xs text-white/45 font-sans">
-                          {Icon && <Icon size={12} className="text-[#c8a84b]/60" />}
-                          {amenity}
-                        </div>
-                      )
-                    })}
-                  </div> */}
+                  <div className="flex flex-col gap-2 mb-6 max-w-[280px]">
+                    <label className="text-[0.6rem] tracking-[0.2em] uppercase text-white/25 font-sans">
+                      Meal Plan
+                    </label>
+                    <select
+                      value={selectedMeals[room.roomTypeId] ?? 0}
+                      onChange={e =>
+                        setSelectedMeals(prev => ({
+                          ...prev,
+                          [room.roomTypeId]: Number(e.target.value)
+                        }))
+                      }
+                      className="bg-white/[0.03] border border-white/[0.08] focus:border-[#c8a84b]/50 rounded-xl px-4 py-3 text-sm text-white font-sans outline-none transition-colors duration-300"
+                    >
+                      {MEAL_OPTIONS.map(m => (
+                        <option key={m.code} value={m.code} className="bg-[#080808]">
+                          {m.code === 0 ? m.name : `${m.name} (+$${m.price.toLocaleString()}/guest/night)`}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
                 </div>
 
               
                 <div className="flex items-end justify-between">
                   <div>
                     <p className="text-[0.6rem] tracking-[0.2em] uppercase text-white/25 font-sans mb-1.5">
-                      Per Night
+                      Total for Stay
                     </p>
                     <div className="flex items-baseline gap-1.5">
                       <span className="font-serif-lux text-4xl font-light text-[#c8a84b] leading-none">
-                        ${room.price.toLocaleString()}
+                        ${roomTotal(room).toLocaleString()}
                       </span>
                     </div>
-                    {nights() > 1 && (
-                      <p className="text-xs text-white/25 font-sans mt-1">
-                        ${(room.price * nights()).toLocaleString()} for {nights()} nights
-                      </p>
-                    )}
+                    <p className="text-xs text-white/25 font-sans mt-1">
+                      ${room.price.toLocaleString()}/night · {nights()} night{nights() !== 1 ? "s" : ""}
+                      {mealCostFor(room.roomTypeId) > 0 && (
+                        <> · +${mealCostFor(room.roomTypeId).toLocaleString()} meals</>
+                      )}
+                    </p>
                   </div>
 
                   <motion.button
@@ -187,26 +219,3 @@ export default function BookingRooms() {
     </div>
   )
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

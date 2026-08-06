@@ -1,8 +1,9 @@
-import { motion } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import logo from "../assets/logosmall.png";
+import { Menu, X } from "lucide-react";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ export default function Navbar() {
   const { user, logout } = useAuth();
 
   const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     function handleScroll() {
@@ -24,6 +26,11 @@ export default function Navbar() {
     };
   }, []);
 
+  // Close the mobile menu whenever the route changes
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
+
   const isHome = location.pathname === "/";
   const floatingNavbar = isHome && !scrolled;
 
@@ -33,6 +40,11 @@ export default function Navbar() {
     { title: "Dining", path: "/restaurant" },
     { title: "Spa", path: "/amenities/spa" },
   ];
+
+  function go(path: string) {
+    navigate(path);
+    setMobileOpen(false);
+  }
 
   return (
     <motion.header
@@ -58,12 +70,12 @@ export default function Navbar() {
         }
       `}
     >
-      <div className="flex items-center justify-between px-8 py-2.5">
+      <div className="flex items-center justify-between px-5 sm:px-8 py-2.5">
           <motion.img
             src={logo}
             alt="Noire Palace"
             whileHover={{ scale: 1.05 }}
-            onClick={() => navigate("/")}
+            onClick={() => go("/")}
             className="
               cursor-pointer
               select-none
@@ -97,7 +109,7 @@ export default function Navbar() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-5">
+        <div className="hidden lg:flex items-center gap-5">
           {user ? (
             <>
               <span
@@ -143,7 +155,109 @@ export default function Navbar() {
             </button>
           )}
         </div>
+
+        <button
+          type="button"
+          onClick={() => setMobileOpen((v) => !v)}
+          aria-label={mobileOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileOpen}
+          className={`
+            lg:hidden
+            p-2
+            -mr-2
+            rounded-md
+            transition-colors duration-300
+            ${floatingNavbar ? "text-white" : "text-black"}
+          `}
+        >
+          {mobileOpen ? <X size={26} /> : <Menu size={26} />}
+        </button>
       </div>
+
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="lg:hidden overflow-hidden border-t border-white/10"
+          >
+            <nav className="flex flex-col px-5 sm:px-8 py-4 gap-1">
+              {navLinks.map((link) => (
+                <button
+                  key={link.title}
+                  onClick={() => go(link.path)}
+                  className={`
+                    text-left
+                    text-sm
+                    uppercase
+                    tracking-[4px]
+                    py-3
+                    border-b border-white/10 last:border-b-0
+                    transition-colors duration-300
+                    hover:text-[#D4AF37]
+                    ${floatingNavbar ? "text-white" : "text-black"}
+                  `}
+                >
+                  {link.title}
+                </button>
+              ))}
+
+              <div className="pt-4 flex flex-col gap-3">
+                {user ? (
+                  <>
+                    <span
+                      className={`text-sm ${
+                        floatingNavbar ? "text-stone-200" : "text-stone-700"
+                      }`}
+                    >
+                      {user.username}
+                    </span>
+                    <button
+                      onClick={() => {
+                        logout();
+                        setMobileOpen(false);
+                      }}
+                      className="
+                        w-full
+                        px-4 py-2
+                        uppercase
+                        tracking-[3px]
+                        text-sm
+                        border border-[#D4AF37]
+                        text-[#D4AF37]
+                        transition-all duration-500
+                        hover:bg-[#D4AF37]
+                        hover:text-black
+                      "
+                    >
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    onClick={() => go("/login")}
+                    className="
+                      w-full
+                      px-4 py-2
+                      uppercase
+                      tracking-[3px]
+                      text-sm
+                      bg-[#D4AF37]
+                      text-black
+                      transition-all duration-500
+                      hover:bg-[#EBCB6C]
+                    "
+                  >
+                    Login
+                  </button>
+                )}
+              </div>
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.header>
   );
 }

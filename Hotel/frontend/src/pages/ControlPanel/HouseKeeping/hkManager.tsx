@@ -201,7 +201,7 @@ export default function HousekeepingManager() {
                 <h2 className="font-semibold mb-3">Create new task</h2>
                 <div className="flex flex-wrap gap-3 items-end">
                     <div>
-                        <label className="block text-xs text-gray-600 mb-1">Room ID</label>
+                        <label className="block text-xs text-gray-600 mb-1">Room Number</label>
                         <input
                             type="number"
                             className="border rounded px-2 py-1 w-28"

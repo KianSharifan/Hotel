@@ -1,12 +1,20 @@
 import { createContext, useContext, useState } from "react"
 import type { ReactNode } from "react"
 
+export type SelectedRoom = {
+  id: number
+  name: string
+  price: number
+  meals: number
+  mealPricePerGuestPerNight: number
+}
+
 export type BookingState = {
   adults: number
   children: number
   checkIn: string
   checkOut: string
-  selectedRoom: { id: number; name: string; price: number } | null
+  selectedRoom: SelectedRoom | null
   step: 1 | 2 | 3 | 4
 }
 
@@ -14,7 +22,7 @@ type BookingContextType = {
   booking: BookingState
   setGuests: (adults: number, children: number) => void
   setDates: (checkIn: string, checkOut: string) => void
-  setRoom: (room: { id: number; name: string; price: number }) => void
+  setRoom: (room: SelectedRoom) => void
   resetBooking: () => void
   goToStep: (step: 1 | 2 | 3 | 4) => void
 }
@@ -41,7 +49,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
     setBooking((b) => ({ ...b, checkIn, checkOut, step: Math.max(b.step, 3) as 1|2|3|4 }))
   }
 
-  const setRoom = (room: { id: number; name: string; price: number }) => {
+  const setRoom = (room: SelectedRoom) => {
     setBooking((b) => ({ ...b, selectedRoom: room, step: 4 }))
   }
 

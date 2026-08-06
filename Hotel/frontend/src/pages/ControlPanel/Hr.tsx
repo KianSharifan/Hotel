@@ -13,6 +13,9 @@ import {
     getAllShiftAssignments,
     createShiftAssignment,
     deleteShiftAssignment,
+    createPositions,
+    deletePositions,
+    getPositions
 } from "../../api/HrApi"; 
 
 interface Employee {
@@ -34,6 +37,12 @@ interface Role {
     name: string;
 }
 
+interface Position {
+    id: number;
+    title: string;
+    baseSalary: number;
+}
+
 interface Shift {
     id: number;
     day: string;
@@ -46,7 +55,7 @@ interface ShiftAssignment {
     shiftId: number;
 }
 
-type Tab = "employees" | "roles" | "shifts" | "assignments";
+type Tab = "employees" | "roles" | "positions" | "shifts" | "assignments";
 
 const DAYS = [
     "Monday",
@@ -78,6 +87,7 @@ export default function HRManagement() {
     const tabs: { key: Tab; label: string }[] = [
         { key: "employees", label: "Employees" },
         { key: "roles", label: "Roles" },
+        { key: "positions", label: "Positions" },
         { key: "shifts", label: "Shifts" },
         { key: "assignments", label: "Assignments" },
     ];
@@ -104,6 +114,7 @@ export default function HRManagement() {
 
             {tab === "employees" && <EmployeesTab />}
             {tab === "roles" && <RolesTab />}
+            {tab === "positions" && <PositionsTab />}
             {tab === "shifts" && <ShiftsTab />}
             {tab === "assignments" && <AssignmentsTab />}
         </div>
@@ -467,6 +478,157 @@ function RolesTab() {
         </div>
     );
 }
+
+
+function PositionsTab() {
+    const [positions, setPositions] = useState<Position[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    const [newPositionTitle, setNewPositionTitle] = useState("");
+    const [newBaseSalary, setNewBaseSalary] = useState<number>(0);
+    const [creating, setCreating] = useState(false);
+
+    const [deletingId, setDeletingId] = useState<number | null>(null);
+
+    async function loadPositions() {
+        setLoading(true);
+        setError(null);
+        try {
+            const data = await getPositions();
+            setPositions(data);
+        } catch (err) {
+            setError(err instanceof Error ? err.message : "Failed to load roles");
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        loadPositions();
+    }, []);
+
+    async function handleCreate(e: React.FormEvent) {
+        e.preventDefault();
+        setError(null);
+        if (!newPositionTitle.trim()) {
+            setError("Position name is required");
+            return;
+        }
+        if (newBaseSalary <= 0) {
+            setError("Base salary must be greater than 0");
+            return;
+        }
+        setCreating(true);
+        try {
+            await createPositions({
+                title: newPositionTitle.trim(),
+                baseSalary: newBaseSalary,
+            });
+            setNewPositionTitle("");
+            setNewBaseSalary(0);
+            await loadPositions();
+        } catch (err) {
+            setError(err instanceof Error ? err.message : "Failed to create position");
+        } finally {
+            setCreating(false);
+        }
+    }
+
+    async function handleDelete(positionId: number) {
+        if (!window.confirm("Delete this position?")) return;
+        setError(null);
+        setDeletingId(positionId);
+        try {
+            await deletePositions(positionId);
+            await loadPositions();
+        } catch (err) {
+            setError(err instanceof Error ? err.message : "Failed to delete position");
+        } finally {
+            setDeletingId(null);
+        }
+    }
+
+    return (
+        <div>
+            {error && (
+                <div className="mb-4 rounded border border-red-400 bg-red-50 text-red-700 px-4 py-2 text-sm">
+                    {error}
+                </div>
+            )}
+
+            {loading ? (
+                <p>Loading positions...</p>
+            ) : positions.length === 0 ? (
+                <p className="text-gray-500 mb-6">No positions yet.</p>
+            ) : (
+                <table className="w-full border-collapse text-sm mb-6">
+                    <thead>
+                        <tr className="border-b bg-gray-100 text-left">
+                            <th className="p-2">ID</th>
+                            <th className="p-2">Name</th>
+                            <th className="p-2">Base Salary</th>
+                            <th className="p-2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {positions.map((position) => (
+                            <tr key={position.id} className="border-b">
+                                <td className="p-2">{position.id}</td>
+                                <td className="p-2">{position.title}</td>
+                                <td className="p-2">
+                                    ${position.baseSalary.toLocaleString()}
+                                </td>
+                                <td className="p-2 space-x-2 whitespace-nowrap">
+                                    <button
+                                        onClick={() => handleDelete(position.id)}
+                                        disabled={deletingId === position.id}
+                                        className="bg-red-600 text-white px-2 py-1 rounded text-xs disabled:opacity-50"
+                                    >
+                                        {deletingId === position.id
+                                            ? "Deleting..."
+                                            : "Delete"}
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )}
+
+            <form onSubmit={handleCreate} className="flex items-end gap-2">
+                <div>
+                    <label className="block text-xs text-gray-600 mb-1">Position name</label>
+                    <input
+                        type="text"
+                        className="border rounded px-2 py-1"
+                        value={newPositionTitle}
+                        onChange={(e) => setNewPositionTitle(e.target.value)}
+                    />
+                </div>
+                <div>
+                    <label className="block text-xs text-gray-600 mb-1">Base salary</label>
+                    <input
+                        type="number"
+                        min={0}
+                        step={100}
+                        className="border rounded px-2 py-1 w-32"
+                        value={newBaseSalary}
+                        onChange={(e) => setNewBaseSalary(Number(e.target.value))}
+                    />
+                </div>
+                <button
+                    type="submit"
+                    disabled={creating}
+                    className="bg-blue-600 text-white px-4 py-1.5 rounded disabled:opacity-50"
+                >
+                    {creating ? "Creating..." : "Create position"}
+                </button>
+            </form>
+        </div>
+    );
+}
+
 
 function ShiftsTab() {
     const [shifts, setShifts] = useState<Shift[]>([]);

@@ -11,19 +11,23 @@ interface RestaurantTable{
 }
 
 interface CreateFormState {
-    capacity: string;
+    capacity: string
+    id: string
 }
 
 const emptyCreateForm: CreateFormState = {
     capacity: "",
+    id: "",
 };
 
 interface EditFormState {
-    capacity: string;
-    status: "Available" | "Maintenance";
+    id:string
+    capacity: string
+    status: "Available" | "Maintenance"
 }
 
 const emptyEditForm: EditFormState = {
+    id:"",
     capacity: "",
     status: "Available",
 };
@@ -64,16 +68,23 @@ export default function RestaurantTables(){
         setError(null);
 
         const capacity = Number(createForm.capacity);
+        const id = Number(createForm.id);
 
-        if (!createForm.capacity || Number.isNaN(capacity)) {
-            setError("Capacity must be a number");
+
+        if (
+            !createForm.id ||
+            Number.isNaN(id) ||
+            !createForm.capacity ||
+            Number.isNaN(capacity)
+        ) {
+            setError("ID and Capacity must be numbers");
             return;
         }
 
         setCreating(true);
 
         try{
-            await createRestaurantTable({capacity});
+            await createRestaurantTable({id, capacity});
             setCreateForm(emptyCreateForm);
 
         }
@@ -102,6 +113,7 @@ export default function RestaurantTables(){
             const data = await getRestaurantTable(id);
             setSearchedTable(data);
             setEditForm({
+                id: String(data.id),
                 capacity: String(data.capacity),
                 status: data.status === "Maintenance" ? "Maintenance" : "Available",
             });
@@ -118,6 +130,7 @@ export default function RestaurantTables(){
     function startEdit() {
         if (!searchedTable) return;
         setEditForm({
+            id: String(searchedTable.id),
             capacity: String(searchedTable.capacity),
             status: searchedTable.status === "Maintenance" ? "Maintenance" : "Available",
         });
@@ -133,14 +146,21 @@ export default function RestaurantTables(){
         setError(null);
 
         const capacity = Number(editForm.capacity);
-        if (!editForm.capacity || Number.isNaN(capacity)) {
-            setError("Capacity must be a number");
+        const id = Number(editForm.id);
+        if (
+            !editForm.id ||
+            Number.isNaN(id) ||
+            !editForm.capacity ||
+            Number.isNaN(capacity)
+        ) {
+            setError("ID and Capacity must be numbers");
             return;
         }
 
         setSaving(true);
         try {
             await updateRestaurantTable(searchedTable.id, {
+                id,
                 capacity,
                 specialReq: editForm.status,
             });
@@ -190,6 +210,25 @@ export default function RestaurantTables(){
 
                 <h2 className="font-semibold mb-3">Create new table</h2>
                 <div className="flex flex-wrap gap-3 items-end">
+
+                    <div>
+                        <label className="block text-xs text-gray-600 mb-1">
+                            Table ID
+                        </label>
+
+                        <input
+                            type="number"
+                            className="border rounded px-2 py-1 w-28"
+                            value={createForm.id}
+                            onChange={(e) =>
+                                setCreateForm({
+                                    ...createForm,
+                                    id: e.target.value,
+                                })
+                            }
+                        />
+                    </div>
+
                     <div>
                         <label className="block text-xs text-gray-600 mb-1">Capacity</label>
                         <input
@@ -241,6 +280,25 @@ export default function RestaurantTables(){
                     {editing ? (
                         <div className="flex items-end gap-3">
                             <div>
+
+                            <div>
+                                <label className="block text-xs text-gray-600 mb-1">
+                                    Table ID
+                                </label>
+
+                                <input
+                                    type="number"
+                                    className="border rounded px-2 py-1 w-28"
+                                    value={editForm.id}
+                                    onChange={(e) =>
+                                        setEditForm({
+                                            ...editForm,
+                                            id: e.target.value,
+                                        })
+                                    }
+                                />
+                            </div>
+
                                 <label className="block text-xs text-gray-600 mb-1">
                                     Capacity
                                 </label>
