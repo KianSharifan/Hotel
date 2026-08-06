@@ -47,7 +47,7 @@ public class TableControllerTests
         var input = new TableStatusDto
         {
             Capacity = 2,
-            Time = new DateTime(2026, 8, 1, 19, 0, 0),
+            Time = new DateTime(2030, 8, 1, 19, 0, 0),
             Email = "guest@example.com",
             SpecialReq = null
         };
