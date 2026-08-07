@@ -202,7 +202,7 @@ Allows hotel staff to report and manage maintenance tasks.
 
 The project follows a layered architecture.
 
-![Architecture Diagram](hotel/architecturediagram.jpg)
+![Architecture Diagram](hotel/architecture diagram.jpg)
 
 The system is divided into several independent layers:
 
