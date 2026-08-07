@@ -24,7 +24,7 @@ The backend is consumed by a React frontend and communicates through REST APIs s
 - [Maintenance Requests](#maintenance-requests)
 - [Architecture](#architecture)
 - [System Design](#system-design)
-- [XunitTests](#xunit-tests)
+- [XunitTests](#xunittests)
 - [Frontend](#frontend)
 
 ---
@@ -260,8 +260,23 @@ The authentication workflow demonstrates the login process, credential validatio
 
 # XunitTests
 
+Tests that were written to see if the project Back-End runs Completely Ok and without any Error or unexpected behavior.
 
+The XunitTests Contains:
 
+- CheckOut Successfully
+- CheckOut With Service Usages Successfully
+- Create Room Successfully
+- Not Creating a Room Successfully dou to invalid input
+- Reservation of a table in restaurant
+- Not reserving a table dou to capacity exeeding all the tables
+- Not reserving a table dou to violating the usetime of another reservations
+- Assigning HouseKeeping
+- Not Reservating a room dou to violation of usetime of another reservation to that exact room
+- Reserving a Room successfully
+- Reserving a Room with the meals successfully
+
+![XunitTests](Hotel/TestsResult.png)
 
 ---
 
