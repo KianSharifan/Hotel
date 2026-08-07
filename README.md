@@ -24,6 +24,7 @@ The backend is consumed by a React frontend and communicates through REST APIs s
 - [Maintenance Requests](#maintenance-requests)
 - [Architecture](#architecture)
 - [System Design](#system-design)
+- [XunitTests](#xunit-tests)
 - [Frontend](#frontend)
 
 ---
@@ -46,7 +47,7 @@ The backend is developed using **ASP.NET Core 9** and follows a layered architec
 
 Business logic is implemented inside service classes while controllers remain lightweight and responsible only for handling HTTP requests and responses.
 
-Entity Framework Core is used as the ORM for interacting with PostgreSQL, providing strongly typed database access and migration support.
+Entity Framework Core is used as the ORM for interacting with PostgreSQL, providing strongly typed database access and Migration support and Configuration files to determine the exact behavior of the database.
 
 Authentication is implemented using JSON Web Tokens (JWT), allowing authenticated users to securely access protected resources based on their assigned roles.
 
@@ -57,6 +58,7 @@ The backend exposes RESTful APIs consumed by a React frontend.
 # Features
 
 - [Authentication & Authorization](#authentication--authorization)
+- [Configuration](#configuration)
 - [Hotel Management](#hotel-management)
 - [Reservation Management](#reservation-management)
 - [Guest Management](#guest-management)
@@ -83,19 +85,29 @@ The authentication module provides secure access to the system.
 
 ---
 
+# Configuration
+
+This will make the DataBase have specific behavior that we expect from each entity
+
+### Features
+
+- Create PK
+- Create FK
+- Create On Delete behavior
+- Create Constraints
+
+---
+
 # Hotel Management
 
 This module manages hotels and their available rooms.
 
 ### Features
 
-- Create Hotels
 - Update Hotel Information
-- Delete Hotels
-- Room Management
-- Room Types
-- Room Availability
+- Position Update & Creating
 - Hotel Information
+- Every Other Option
 
 ---
 
@@ -243,6 +255,13 @@ The following sequence diagram illustrates the complete reservation workflow fro
 The authentication workflow demonstrates the login process, credential validation, JWT generation, and token delivery to the frontend.
 
 ![Authentication Sequence](Hotel/LoginSequenceDiagram.jpg)
+
+---
+
+# XunitTests
+
+
+
 
 ---
 
