@@ -202,7 +202,7 @@ Allows hotel staff to report and manage maintenance tasks.
 
 The project follows a layered architecture.
 
-![Architecture Diagram](hotel/architecture\diagram.jpg)
+![Architecture Diagram](Hotel/ArchitectureDiagram.jpg)
 
 The system is divided into several independent layers:
 
@@ -226,7 +226,7 @@ The project documentation includes several diagrams describing both the database
 
 The ERD illustrates the relationships between the database entities used throughout the application.
 
-![ERD](hotel/ERD.png)
+![ERD](Hotel/ERD.png)
 
 ---
 
@@ -234,7 +234,7 @@ The ERD illustrates the relationships between the database entities used through
 
 The following sequence diagram illustrates the complete reservation workflow from the React frontend to the database transaction.
 
-![Reservation Sequence](docs/RoomReservationSequenceDiagram.jpg)
+![Reservation Sequence](Hotel/RoomReservationSequenceDiagram.jpg)
 
 ---
 
@@ -242,7 +242,7 @@ The following sequence diagram illustrates the complete reservation workflow fro
 
 The authentication workflow demonstrates the login process, credential validation, JWT generation, and token delivery to the frontend.
 
-![Authentication Sequence](docs/LoginSequenceDiagram.jpg)
+![Authentication Sequence](Hotel/LoginSequenceDiagram.jpg)
 
 ---
 
