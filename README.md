@@ -1,6 +1,6 @@
 # 🏨 Hotel Management System
 
-A comprehensive Hotel Management backend built with **ASP.NET Core 9**, **Entity Framework Core**, and **PostgreSQL**, and **React**.
+A comprehensive Hotel Management backend built with **ASP.NET Core 9**, **Entity Framework Core**, and **PostgreSQL**, and frontend built with **React**.
 
 This WebAPI project provides a complete RESTful API for managing hotels, reservations, guests, employees, restaurants, payments, housekeeping, and maintenance. It is designed using a layered architecture that separates business logic from data access while providing a scalable and maintainable codebase.
 
