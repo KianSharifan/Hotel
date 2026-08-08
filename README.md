@@ -26,6 +26,7 @@ The backend is consumed by a React frontend and communicates through REST APIs s
 - [System Design](#system-design)
 - [XunitTests](#xunittests)
 - [Frontend](#frontend)
+- [Running with Docker](#running-with-docker)
 
 ---
 
@@ -301,3 +302,49 @@ The frontend includes:
 Repository:
 
 https://github.com/yourusername/hotel-management-frontend
+
+---
+
+# Running with Docker
+
+The entire project (backend, frontend, and database) is fully containerized and can be run with a single command using Docker Compose.
+
+### Prerequisites
+
+- Docker Desktop installed and running
+
+### Services
+
+- ASP.NET Core Backend (Web API)
+- React Frontend
+- PostgreSQL Database
+
+### Run the Project
+
+```bash
+docker compose up --build
+```
+
+This will build the backend and frontend images, start a PostgreSQL container, apply database migrations, and seed the database automatically on first run.
+
+### Access the Application
+
+| Service  | URL                     |
+|----------|-------------------------|
+| Frontend | http://localhost:3000   |
+| Backend  | http://localhost:5263   |
+| Postgres | localhost:5432          |
+
+Default development database credentials: `postgres` / `postgres`
+
+### Stopping the Project
+
+```bash
+docker compose down
+```
+
+### Resetting the Database
+
+```bash
+docker compose down -v
+```
