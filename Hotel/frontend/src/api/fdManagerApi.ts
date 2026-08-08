@@ -4,7 +4,7 @@ export async function getReservations() {
 
     const token = localStorage.getItem("token");
     const response = await fetch(
-        "http://localhost:5263/API/FrontDeskManager/Reservations",
+        `${BASE_URL}/Reservations`,
         {
             method: "GET",
             headers:{
