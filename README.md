@@ -298,6 +298,7 @@ The entire project (backend, frontend, and database) is fully containerized and 
 ### Run the Project
 
 Clone the project on your own device
+Open Docker Desktop app
 with:
 ```bash
 git clone https://github.com/KianSharifan/Hotel
