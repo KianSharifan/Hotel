@@ -1,252 +1,20 @@
-// import { Link } from "react-router-dom"
-// // import { useNavigate } from "react-router-dom"
-// import { useState } from "react"
-// import { motion, AnimatePresence } from "motion/react"
-
-
-
-// const amenities = [
-//   {
-//     title: "Restaurant",
-//     description: "Fine dining experience with world-class chefs.",
-//     image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0",
-//     link: "/restaurant"
-//   },
-//   {
-//     title: "Spa",
-//     description: "Relax and rejuvenate in our luxury spa.",
-//     image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874",
-//     link: "/amenities/spa"
-//   },
-//   {
-//     title: "Golf",
-//     description: "Championship golf courses surrounded by breathtaking scenery.",
-//     image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b",
-//     link: "/amenities/golf"
-//   },
-//   {
-//     title: "Pool",
-//     description: "Infinity pools overlooking stunning landscapes.",
-//     image: "https://images.unsplash.com/photo-1572331165267-854da2b10ccc",
-//     link: "/amenities/pool"
-//   },
-//   {
-//     title: "Private Beach",
-//     description: "Exclusive beach access with luxury cabanas.",
-//     image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
-//     link: "/amenities/privatebeach"
-//   },
-//   // {
-//   //   title: "Luxury Suites",
-//   //   description: "Elegant suites crafted for unforgettable stays.",
-//   //   image: "https://images.unsplash.com/photo-1566073771259-6a8506099945",
-//   //   link: "/rooms"
-//   // }
-// ]
-
-
-
-
-// function Amenities() {
-//   // const navigate = useNavigate()
-
-//   const [current, setcurrent] = useState(0);
-
-//   function nextSlide(){
-//       if (current<amenities.length-2) {
-//         setcurrent(current+1)
-//       }
-//   }
-
-//   function prevSlide(){
-//     if (current>0) {
-//       setcurrent(current-1)
-//     }
-//   }
-
-//   return (
-
-//     <section className="bg-gray-100 py-28 px-10">
-
-//       <div className="text-center mb-20">
-
-//         <h2 className="text-6xl font-bold mb-6">
-
-//           Resort Experiences
-
-//         </h2>
-
-//       </div>
-
-//      <div className="relative max-w-7xl mx-auto overflow-hidden">
-
-//       {/* LEFT BUTTON */}
-
-//       <button
-//         onClick={prevSlide}
-//         className="
-//           absolute
-//           left-4
-//           top-1/2
-//           -translate-y-1/2
-//           z-30
-
-//           w-14
-//           h-14
-
-//           rounded-full
-
-//           bg-black
-//           text-white
-
-//           hover:scale-110
-//           transition
-//         "
-//       >
-//         ←
-//       </button>
-
-//       {/* RIGHT BUTTON */}
-
-//       <button
-//         onClick={nextSlide}
-//         className="
-//           absolute
-//           right-4
-//           top-1/2
-//           -translate-y-1/2
-//           z-30
-
-//           w-14
-//           h-14
-
-//           rounded-full
-
-//           bg-black
-//           text-white
-
-//           hover:scale-110
-//           transition
-//         "
-//       >
-//         →
-//       </button>
-
-//       <AnimatePresence mode="wait">
-
-//         <motion.div
-
-//           key={current}
-
-//           className="
-//             grid
-//             md:grid-cols-2
-//             gap-8
-//           "
-
-//           initial={{
-//             opacity: 0,
-//             x: 100
-//           }}
-
-//           animate={{
-//             opacity: 1,
-//             x: 0
-//           }}
-
-//           exit={{
-//             opacity: 0,
-//             x: -100
-//           }}
-
-//           transition={{
-//             duration: 0.8
-//           }}
-
-//         >
-
-//           {amenities
-//             .slice(current, current + 2)
-//             .map((item) => (
-
-//               <Link
-//                 key={item.title}
-//                 to={item.link}
-//               >
-
-//                 <motion.div
-
-//                   whileHover={{
-//                     y: -10,
-//                     scale: 1.02
-//                   }}
-
-//                   transition={{
-//                     duration: 0.3
-//                   }}
-
-//                   className="
-//                     bg-white
-//                     rounded-3xl
-//                     overflow-hidden
-//                     shadow-xl
-//                   "
-//                 >
-
-//                   <img
-//                     src={item.image}
-//                     className="
-//                       h-[500px]
-//                       w-full
-//                       object-cover
-//                     "
-//                   />
-
-//                   <div className="p-8">
-
-//                     <h3 className="text-4xl font-bold mb-4">
-
-//                       {item.title}
-
-//                     </h3>
-
-//                     <p className="text-gray-600">
-
-//                       {item.description}
-
-//                     </p>
-
-//                   </div>
-
-//                 </motion.div>
-
-//               </Link>
-
-//           ))}
-
-//         </motion.div>
-
-//       </AnimatePresence>
-
-//     </div>
-
-//     </section>
-//   )
-// }
-
-// export default Amenities
-
-
 import { Link } from "react-router-dom"
 import { useState } from "react"
 import { motion, AnimatePresence } from "motion/react"
+import restaurantImg from "../assets/restaurant.png";
+import spaImg from "../assets/spa.png";
+import golfImg from "../assets/golf.png";
+import poolImg from "../assets/pool.png";
+import privateBeachImg from "../assets/privateBeach.png";
+import gymImg from "../assets/gym.png";
+
 
 const amenities = [
   {
     title: "Restaurant",
     subtitle: "Culinary Artistry",
     description: "Fine dining experience with world-class chefs crafting seasonal menus from the finest ingredients.",
-    image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0",
+    image: restaurantImg,
     link: "/restaurant",
     tag: "Fine Dining",
   },
@@ -254,7 +22,7 @@ const amenities = [
     title: "Spa",
     subtitle: "Pure Serenity",
     description: "Relax and rejuvenate in our luxury spa with treatments inspired by ancient healing traditions.",
-    image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874",
+    image: spaImg,
     link: "/amenities/spa",
     tag: "Wellness",
   },
@@ -262,7 +30,7 @@ const amenities = [
     title: "Golf",
     subtitle: "Championship Greens",
     description: "Championship golf courses surrounded by breathtaking scenery, designed by world-renowned architects.",
-    image: "https://images.unsplash.com/photo-1535131749006-b7f58c99034b",
+    image: golfImg,
     link: "/amenities/golf",
     tag: "Sport",
   },
@@ -270,7 +38,7 @@ const amenities = [
     title: "Pool",
     subtitle: "Infinite Horizons",
     description: "Infinity pools dissolving into stunning landscapes, where sky and water become one.",
-    image: "https://images.unsplash.com/photo-1572331165267-854da2b10ccc",
+    image: poolImg,
     link: "/amenities/pool",
     tag: "Leisure",
   },
@@ -278,7 +46,7 @@ const amenities = [
     title: "Private Beach",
     subtitle: "Exclusive Shores",
     description: "Exclusive beach access with luxury cabanas, curated cocktails, and your own stretch of paradise.",
-    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
+    image: privateBeachImg,
     link: "/amenities/privatebeach",
     tag: "Exclusive",
   },
@@ -286,7 +54,7 @@ const amenities = [
     title: "Fitness Center",
     subtitle: "Strength Meets Serenity",
     description: "Train with state-of-the-art equipment in a sunlit sanctuary, open around the clock for every guest.",
-    image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48",
+    image: gymImg,
     link: "/amenities/gym",
     tag: "24/7 Access",
   }

@@ -79,7 +79,7 @@ export default function GuestsPage() {
     <div className="min-h-screen bg-[#080808] pt-[120px]">
       <BookingHeader />
 
-      {/* Background glow */}
+
       <div className="fixed top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(200,168,75,0.04)_0%,transparent_70%)] pointer-events-none" />
 
       <div className="max-w-[640px] mx-auto px-6 pt-20 pb-32 relative z-10">
@@ -115,7 +115,7 @@ export default function GuestsPage() {
           />
         </div>
 
-        {/* Total summary */}
+
         <motion.div
           animate={{ opacity: canContinue ? 1 : 0.3 }}
           className="text-center mb-10 p-5 bg-[#c8a84b]/5 border border-[#c8a84b]/10 rounded-2xl"

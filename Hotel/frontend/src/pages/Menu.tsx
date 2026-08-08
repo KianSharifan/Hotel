@@ -49,7 +49,7 @@ function Menu() {
     >
 
       <div className="relative overflow-hidden">
-        {/* Ambient gold glow */}
+        
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -58,7 +58,7 @@ function Menu() {
           }}
         />
 
-        {/* Top thin gold rule */}
+
         <div
           className="absolute top-0 left-0 right-0 h-px"
           style={{ background: "linear-gradient(90deg, transparent, #D4AF37 30%, #D4AF37 70%, transparent)" }}
@@ -66,7 +66,6 @@ function Menu() {
 
         <div className="relative pt-44 pb-24 text-center px-4">
 
-          {/* Eyebrow */}
           <motion.p
             initial={{ opacity: 0, letterSpacing: "0.2em" }}
             animate={{ opacity: 1, letterSpacing: "0.4em" }}
@@ -88,7 +87,6 @@ function Menu() {
             <span style={{ fontStyle: "italic", color: "#D4AF37" }}>Menu</span>
           </motion.h1>
 
-          {/* Ornamental divider */}
           <motion.div
             initial={{ scaleX: 0, opacity: 0 }}
             animate={{ scaleX: 1, opacity: 1 }}

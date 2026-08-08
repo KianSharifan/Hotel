@@ -67,7 +67,7 @@ export function AuthProvider({
       localStorage.removeItem("token");
     }
     finally {
-      setLoading(false); // NEW
+      setLoading(false); 
     }
   }, []);
 

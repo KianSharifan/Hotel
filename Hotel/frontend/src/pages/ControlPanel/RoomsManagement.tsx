@@ -13,10 +13,9 @@ import {
     deleteAmenity,
     addRoomAmenity,
     deleteRoomAmenity,
-} from "../../api/roomApi"; // adjust path to wherever roomApi.ts actually lives
-import { useAuth } from "../../context/AuthContext"; // adjust path to your real AuthContext
+} from "../../api/roomApi"; 
+import { useAuth } from "../../context/AuthContext";
 
-// ---------- types matching the backend DTOs ----------
 
 interface RoomItem {
     roomId: number;
@@ -28,7 +27,7 @@ interface RoomItem {
     notes?: string;
 }
 
-// RoomsController's RoomDto uses "note" (not "notes") on the way in
+
 interface RoomInput {
     hotelId?: number;
     floor?: number;
@@ -60,7 +59,7 @@ interface RoomTypeWithAmenities {
     amenities: Amenity[];
 }
 
-// RoomTypesController's RoomTypeDto field names
+
 interface RoomTypeInput {
     name?: string;
     maxGuests?: number;

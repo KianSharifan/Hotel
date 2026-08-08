@@ -504,7 +504,7 @@ export default function MaintenanceManager() {
                         </select>
                     </div>
                     <div>
-                        {/* TODO: no GET Engineers endpoint — free ID input instead of dropdown */}
+                        
                         <label className="block text-xs text-gray-600 mb-1">
                             Assign engineer (optional)
                         </label>

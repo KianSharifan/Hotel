@@ -117,13 +117,10 @@ function AppInner() {
           <Route path="restaurant/restaurant-settings" element={<RestaurantSettings />} />
           <Route path="restaurant/restaurant-tables" element={<RestaurantTables />} />
           <Route path="restaurant/restaurant-reservations" element={<RestaurantReservations />} />
-          <Route path="users" element={<UsersManagement />} />
-          
-          
+          <Route path="users" element={<UsersManagement />} />  
         </Route>
 
 
-        {/*4-step booking flow */}
         <Route path="/reservation/guests" element={<GuestsPage />} />
         <Route path="/reservation/dates" element={<DatesPage />} />
         <Route path="/reservation/rooms" element={<BookingRooms />} />

@@ -586,7 +586,6 @@ function UsageTab() {
         }
         setServiceSearchLoading(true);
         try {
-            //backend compares Service.Name.ToLower() against the raw route, we lowercase here 
             const data = await getUsersOfService(serviceSearch.trim().toLowerCase());
             setServiceResults(data);
         } catch (err) {

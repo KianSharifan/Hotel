@@ -60,7 +60,6 @@ export function Sidebar() {
                             `${linkBaseClasses} ${isActive ? linkActiveClasses : linkInactiveClasses}`
                         }
                     >
-                        {/* {item.icon && <span className="text-base">{item.icon}</span>} */}
                         <span>{item.label}</span>
                     </NavLink>
                 ))}
@@ -81,7 +80,6 @@ export function Sidebar() {
 
     return (
         <>
-            {/* Mobile top bar */}
             <div className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 text-slate-900 md:hidden">
                 <span className="text-sm font-semibold">{config.title}</span>
                 <button
@@ -94,7 +92,7 @@ export function Sidebar() {
                 </button>
             </div>
 
-            {/* Mobile overlay + drawer */}
+
             {mobileOpen && (
                 <div className="fixed inset-0 z-50 md:hidden">
                     <div
@@ -117,7 +115,7 @@ export function Sidebar() {
                 </div>
             )}
 
-            {/* Desktop sidebar */}
+
             <aside className="hidden w-64 shrink-0 border-r border-slate-200 md:block">
                 {sidebarContent}
             </aside>

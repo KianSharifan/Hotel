@@ -56,8 +56,10 @@ export const sidebarConfig: Record<string, SidebarRoleConfig> = {
             { label: "Users", path: "/dashboard/users" },
             { label: "Services", path: "/dashboard/services" },
             { label: "Housekeeping", path: "/dashboard/housekeeping-management" },
+            { label: "Housekeeper Tasks", path: "/dashboard/housekeeper" },
             { label: "Finance", path: "/dashboard/finance" },
             { label: "Maintenance", path: "/dashboard/maintenance-management" },
+            { label: "Engineer Tasks", path: "/dashboard/engineer-maintenance" },
             { label: "Rooms", path: "/dashboard/rooms-management" },
         ],
     },
@@ -98,7 +100,6 @@ export const sidebarConfig: Record<string, SidebarRoleConfig> = {
             { label: "Orders", path: "/dashboard/restaurant/orders" },
             { label: "Menu", path: "/dashboard/restaurant/menu" },
             { label: "Order History", path: "/dashboard/restaurant/orders-history" },
-            { label: "Restaurant Tables", path:"/dashboard/restaurant/restaurant-tables"},
         ],
     },
 
@@ -107,7 +108,6 @@ export const sidebarConfig: Record<string, SidebarRoleConfig> = {
         items: [
             { label: "Orders", path: "/dashboard/restaurant/orders" },
             { label: "Order History", path: "/dashboard/restaurant/orders-history" },
-            { label: "Restaurant Tables", path:"/dashboard/restaurant/restaurant-tables"},
             { label: "Restaurant Reservations", path:"/dashboard/restaurant/restaurant-reservations"},
         ],
     },

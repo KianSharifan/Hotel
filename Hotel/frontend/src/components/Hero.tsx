@@ -27,14 +27,13 @@ export default function Hero() {
         />
       </motion.div>
 
-      {/* Cinematic Overlays */}
+
       <div className="absolute inset-0 bg-black/40" />
 
       <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/45 to-transparent" />
 
       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-black/20" />
 
-      {/* Golden Glow */}
       <div className="absolute left-[-250px] top-1/2 h-[600px] w-[600px] -translate-y-1/2 rounded-full bg-amber-500/10 blur-[180px]" />
 
       <motion.div
@@ -54,7 +53,6 @@ export default function Hero() {
       >
         <div className="max-w-3xl flex flex-col items-center pt-13">
 
-          {/* Logo */}
           <motion.img
             src={logo}
             alt="Noire Palace"

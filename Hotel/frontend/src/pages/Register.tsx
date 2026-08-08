@@ -35,7 +35,6 @@ export default function Register() {
           })
 
           login(token)
-          // alert("Account created successfully!")
           const params = new URLSearchParams(location.search)
           const returnTo = params.get("return") ?? "/"
           navigate(returnTo)

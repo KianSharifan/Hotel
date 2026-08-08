@@ -70,7 +70,7 @@ const emptyForm: FormState = {
     closeTime: "22:00",
 };
 
-// The backend may send "15:00:00" — <input type="time"> needs "HH:MM"
+
 function toTimeInputValue(value: string | undefined): string {
     if (!value) return "";
     return value.slice(0, 5);

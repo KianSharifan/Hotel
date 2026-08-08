@@ -169,8 +169,6 @@ function Departments() {
 
         setAddError(null);
 
-        // Optimistic insert with a temporary negative id, replaced once the
-        // backend confirms and returns the real record.
         const tempId = -Date.now();
         const optimisticDept: Department = { id: tempId, name: trimmed };
         setDepartments((prev) => [...prev, optimisticDept]);
@@ -263,7 +261,6 @@ function Departments() {
                 <p className="mt-1 text-sm text-slate-500">Manage hotel departments.</p>
             </header>
 
-            {/* Add department */}
             <section className="mb-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
                 <h2 className="mb-3 text-base font-semibold text-slate-900">New Department</h2>
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-start">
@@ -292,7 +289,7 @@ function Departments() {
                 </div>
             </section>
 
-            {/* Existing departments */}
+
             {loading && (
                 <div className="py-10 text-center text-sm text-slate-500">Loading departments…</div>
             )}

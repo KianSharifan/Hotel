@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
+import { motion } from "framer-motion"
 import img from "../assets/img3.png"
 import { useBooking } from "../context/BookingContext"
 
@@ -22,7 +23,7 @@ function Reservation() {
   }
 
   return (
-    <div className="bg-black min-h-screen text-white ">
+    <div className="bg-[#080808] min-h-screen text-white">
       <section
         className="
           min-h-screen
@@ -51,32 +52,38 @@ function Reservation() {
             w-full
             h-[45%]
             bg-gradient-to-t
-            from-black
-            via-black/80
+            from-[#080808]
+            via-[#080808]/80
             to-transparent
           "
         ></div>
 
 
-        <div className="relative z-10 max-w-5xl -mt-40">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="relative z-10 max-w-5xl -mt-40"
+        >
 
-          <p className="animate-pulse uppercase tracking-[12px] text-gray-300 mb-6">
-            Welcome To Noire Palace
-          </p>
-
-          <h1 className="text-6xl md:text-8xl font-bold mb-8 leading-tight">
+          <h1 className="font-cormorant text-6xl md:text-8xl font-light italic mb-8 leading-tight text-white">
             Begin Your Extraordinary Escape
           </h1>
 
-          <p className="text-xl text-gray-200 leading-relaxed">
+          <div className="w-[60px] h-px bg-gradient-to-r from-transparent via-[#c8a84b] to-transparent mx-auto mb-8" />
+
+          <p className="text-lg text-white/50 leading-relaxed font-sans font-light max-w-2xl mx-auto">
             Indulge in world-class luxury,
             unforgettable elegance,
             and timeless hospitality crafted exclusively for you.
           </p>
-        </div>
+        </motion.div>
 
 
-        <div
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.3 }}
           className="
             absolute
             bottom-10
@@ -90,8 +97,10 @@ function Reservation() {
 
           <div
             className="
-              bg-white
-              text-black
+              bg-white/[0.03]
+              backdrop-blur-xl
+              border
+              border-[#c8a84b]/15
               rounded-3xl
               shadow-2xl
               p-10
@@ -101,7 +110,7 @@ function Reservation() {
       <div className="grid md:grid-cols-5 gap-6">
 
         <div>
-          <label className="block mb-3 font-semibold text-left pl-5">
+          <label className="block text-[0.6rem] tracking-[0.3em] uppercase text-[#c8a84b]/60 font-sans mb-3 text-left pl-1">
             Check In
           </label>
 
@@ -114,18 +123,25 @@ function Reservation() {
             }
             className="
               w-full
+              bg-white/[0.03]
               border
-              border-gray-300
+              border-white/[0.08]
+              focus:border-[#c8a84b]/50
               rounded-xl
               px-4
               py-4
+              text-white
+              outline-none
+              transition-colors
+              duration-300
+              [color-scheme:dark]
             "
           />
         </div>
 
 
         <div>
-          <label className="text-2px block mb-3 font-semibold text-left pl-5">
+          <label className="block text-[0.6rem] tracking-[0.3em] uppercase text-[#c8a84b]/60 font-sans mb-3 text-left pl-1">
             Check Out
           </label>
 
@@ -136,21 +152,27 @@ function Reservation() {
             onChange={(e) =>
               setCheckOut(e.target.value)
             }
-
             className="
               w-full
+              bg-white/[0.03]
               border
-              border-gray-300
+              border-white/[0.08]
+              focus:border-[#c8a84b]/50
               rounded-xl
               px-4
               py-4
+              text-white
+              outline-none
+              transition-colors
+              duration-300
+              [color-scheme:dark]
             "
           />
         </div>
 
 
         <div>
-          <label className="block mb-3 font-semibold text-left pl-5">
+          <label className="block text-[0.6rem] tracking-[0.3em] uppercase text-[#c8a84b]/60 font-sans mb-3 text-left pl-1">
             Adult Guests
           </label>
 
@@ -161,19 +183,25 @@ function Reservation() {
             }
             className="
               w-full
+              bg-white/[0.03]
               border
-              border-gray-300
+              border-white/[0.08]
+              focus:border-[#c8a84b]/50
               rounded-xl
               px-4
               py-4
+              text-white
+              outline-none
+              transition-colors
+              duration-300
+              [color-scheme:dark]
             "
           >
-            <option value={1}>1 </option>
-            <option value={2}>2 </option>
-            <option value={3}>3 </option>
-            <option value={4}>4 </option>
-            <option value={5}>5 </option>
-            <option value={6}>6 </option>
+            {[1, 2, 3, 4, 5, 6].map((n) => (
+              <option key={n} value={n} className="bg-[#080808]">
+                {n}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -181,7 +209,7 @@ function Reservation() {
 
         <div>
 
-          <label className="block mb-3 font-semibold text-left pl-5">
+          <label className="block text-[0.6rem] tracking-[0.3em] uppercase text-[#c8a84b]/60 font-sans mb-3 text-left pl-1">
             Children Guests
           </label>
 
@@ -192,20 +220,25 @@ function Reservation() {
             }
             className="
               w-full
+              bg-white/[0.03]
               border
-              border-gray-300
+              border-white/[0.08]
+              focus:border-[#c8a84b]/50
               rounded-xl
               px-4
               py-4
+              text-white
+              outline-none
+              transition-colors
+              duration-300
+              [color-scheme:dark]
             "
           >
-            <option value={0}>0 </option>
-            <option value={1}>1 </option>
-            <option value={2}>2 </option>
-            <option value={3}>3 </option>
-            <option value={4}>4 </option>
-            <option value={5}>5 </option>
-            <option value={6}>6 </option>
+            {[0, 1, 2, 3, 4, 5, 6].map((n) => (
+              <option key={n} value={n} className="bg-[#080808]">
+                {n}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -214,14 +247,20 @@ function Reservation() {
             onClick={handleContinue}
             className="
               w-full
-              bg-black
-              text-white
+              bg-gradient-to-br
+              from-[#c8a84b]
+              to-[#a07830]
+              text-black
+              font-serif-lux
+              italic
+              text-lg
               py-4
               rounded-xl
-              hover:bg-gray-800
-              hover:scale-105
-              transition
-              duration-500
+              shadow-[0_8px_24px_rgba(200,168,75,0.2)]
+              hover:shadow-[0_12px_36px_rgba(200,168,75,0.4)]
+              hover:scale-[1.02]
+              transition-all
+              duration-300
             "
           >
             Search Rooms
@@ -230,7 +269,7 @@ function Reservation() {
         </div>
       </div>
     </div>
-  </div>
+  </motion.div>
 </section>
 
     </div>

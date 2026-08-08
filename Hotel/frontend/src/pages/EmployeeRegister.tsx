@@ -54,8 +54,6 @@ export default function EmployeeRegister() {
     })
 
     alert("Employee account created successfully.")
-    // navigate("/dashboard/employees")
-    //!!!!!
   }
   catch (err) {
     if (err instanceof Error)

@@ -17,7 +17,7 @@ export default function BookingRooms() {
   const navigate = useNavigate()
   const [rooms, setRooms] = useState<any[]>([])
   const [selectedMeals, setSelectedMeals] = useState<Record<number, number>>({})
-  const [loading, setLoading] = useState(true)
+  const [,setLoading] = useState(true)
 
 
   useEffect(() => {

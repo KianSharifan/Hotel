@@ -119,7 +119,6 @@ function RestaurantReservation() {
   return (
     <div className="bg-black min-h-screen text-white">
 
-      {/* Hero — kept as-is structurally, restyled for a richer luxury feel */}
       <section
         className="h-[70vh] relative flex items-center justify-center text-center bg-cover bg-center"
         style={{ backgroundImage: `url(${restImg})` }}
@@ -202,7 +201,6 @@ function RestaurantReservation() {
               )}
             </div>
 
-            {/* SPECIAL REQUEST */}
             <div>
               <label className="block mb-3 text-sm uppercase tracking-widest text-gray-400">
                 Special Request
