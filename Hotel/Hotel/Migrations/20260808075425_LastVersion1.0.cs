@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Hotel.Migrations
 {
     /// <inheritdoc />
-    public partial class lastversion : Migration
+    public partial class LastVersion10 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -111,7 +111,7 @@ namespace Hotel.Migrations
                     NumberSofaBed = table.Column<int>(type: "integer", nullable: false),
                     NumberSingleBed = table.Column<int>(type: "integer", nullable: false),
                     Description = table.Column<string>(type: "character varying(600)", maxLength: 600, nullable: true),
-                    URL = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
+                    PicUrl = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: true),
                     Price = table.Column<double>(type: "double precision", nullable: false)
                 },
                 constraints: table =>
@@ -203,10 +203,9 @@ namespace Hotel.Migrations
                     Username = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Email = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: true),
                     Phone = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: true),
-                    PasswordHash = table.Column<string>(type: "character varying(60)", maxLength: 60, nullable: false),
+                    PasswordHash = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    EmployeeId = table.Column<int>(type: "integer", nullable: true),
                     FirstName = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
                     LastName = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
                     RoleId = table.Column<int>(type: "integer", nullable: false)
@@ -640,14 +639,12 @@ namespace Hotel.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_DepartmentId",
                 table: "Employees",
-                column: "DepartmentId",
-                unique: true);
+                column: "DepartmentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_PositionId",
                 table: "Employees",
-                column: "PositionId",
-                unique: true);
+                column: "PositionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GuestServiceUsages_GuestId",
@@ -689,8 +686,7 @@ namespace Hotel.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Invoices_GuestId",
                 table: "Invoices",
-                column: "GuestId",
-                unique: true);
+                column: "GuestId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Invoices_ReservationId",
@@ -737,14 +733,12 @@ namespace Hotel.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Payments_InvoiceId",
                 table: "Payments",
-                column: "InvoiceId",
-                unique: true);
+                column: "InvoiceId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Payments_OrderId",
                 table: "Payments",
-                column: "OrderId",
-                unique: true);
+                column: "OrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Positions_Title",

@@ -3,7 +3,6 @@ using System;
 using Hotel.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,11 +11,9 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Hotel.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260710145241_lastversion1.0")]
-    partial class lastversion10
+    partial class AppDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -83,11 +80,9 @@ namespace Hotel.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DepartmentId")
-                        .IsUnique();
+                    b.HasIndex("DepartmentId");
 
-                    b.HasIndex("PositionId")
-                        .IsUnique();
+                    b.HasIndex("PositionId");
 
                     b.ToTable("Employees");
                 });
@@ -274,8 +269,7 @@ namespace Hotel.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GuestId")
-                        .IsUnique();
+                    b.HasIndex("GuestId");
 
                     b.HasIndex("ReservationId")
                         .IsUnique();
@@ -463,11 +457,9 @@ namespace Hotel.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("InvoiceId")
-                        .IsUnique();
+                    b.HasIndex("InvoiceId");
 
-                    b.HasIndex("OrderId")
-                        .IsUnique();
+                    b.HasIndex("OrderId");
 
                     b.ToTable("Payments");
                 });
@@ -812,9 +804,6 @@ namespace Hotel.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("character varying(150)");
 
-                    b.Property<int?>("EmployeeId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("FirstName")
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
@@ -861,8 +850,8 @@ namespace Hotel.Migrations
             modelBuilder.Entity("Hotel.Models.Employee", b =>
                 {
                     b.HasOne("Hotel.Models.Department", "Department")
-                        .WithOne()
-                        .HasForeignKey("Hotel.Models.Employee", "DepartmentId")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -873,8 +862,8 @@ namespace Hotel.Migrations
                         .IsRequired();
 
                     b.HasOne("Hotel.Models.Position", "Position")
-                        .WithOne()
-                        .HasForeignKey("Hotel.Models.Employee", "PositionId")
+                        .WithMany()
+                        .HasForeignKey("PositionId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -945,8 +934,8 @@ namespace Hotel.Migrations
             modelBuilder.Entity("Hotel.Models.Invoice", b =>
                 {
                     b.HasOne("Hotel.Models.Guest", "Guest")
-                        .WithOne()
-                        .HasForeignKey("Hotel.Models.Invoice", "GuestId")
+                        .WithMany()
+                        .HasForeignKey("GuestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1023,13 +1012,13 @@ namespace Hotel.Migrations
             modelBuilder.Entity("Hotel.Models.Payment", b =>
                 {
                     b.HasOne("Hotel.Models.Invoice", "Invoice")
-                        .WithOne()
-                        .HasForeignKey("Hotel.Models.Payment", "InvoiceId")
+                        .WithMany()
+                        .HasForeignKey("InvoiceId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Hotel.Models.Order", "Order")
-                        .WithOne()
-                        .HasForeignKey("Hotel.Models.Payment", "OrderId")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Invoice");
