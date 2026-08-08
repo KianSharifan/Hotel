@@ -25,8 +25,8 @@ The backend is consumed by a React frontend and communicates through REST APIs s
 - [Architecture](#architecture)
 - [System Design](#system-design)
 - [XunitTests](#xunittests)
-- [Frontend](#frontend)
 - [Running with Docker](#running-with-docker)
+- [Frontend](#frontend)
 
 ---
 
@@ -281,30 +281,6 @@ The XunitTests Contains:
 
 ---
 
-# Frontend
-
-The frontend of this project is implemented as a separate React application.
-
-It provides a modern and responsive user interface that communicates with this backend exclusively through REST APIs.
-
-The frontend includes:
-
-- Authentication
-- Dashboard
-- Hotel Management
-- Reservation Management
-- Guest Management
-- Restaurant Management
-- Employee Management
-- Payment Management
-- Reports
-
-Repository:
-
-https://github.com/yourusername/hotel-management-frontend
-
----
-
 # Running with Docker
 
 The entire project (backend, frontend, and database) is fully containerized and can be run with a single command using Docker Compose.
@@ -348,3 +324,27 @@ docker compose down
 ```bash
 docker compose down -v
 ```
+
+---
+
+# Frontend
+
+The frontend of this project is implemented as a separate React application.
+
+It provides a modern and responsive user interface that communicates with this backend exclusively through REST APIs.
+
+The frontend includes:
+
+- Authentication
+- Dashboard
+- Hotel Management
+- Reservation Management
+- Guest Management
+- Restaurant Management
+- Employee Management
+- Payment Management
+- Reports
+
+Repository:
+
+https://github.com/yourusername/hotel-management-frontend
