@@ -297,6 +297,16 @@ The entire project (backend, frontend, and database) is fully containerized and 
 
 ### Run the Project
 
+Clone the project on your own device
+with:
+```bash
+git clone https://github.com/KianSharifan/Hotel
+```
+then
+```bash
+ cd hotel
+```
+at the end:
 ```bash
 docker compose up --build
 ```
