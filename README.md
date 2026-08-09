@@ -340,22 +340,14 @@ docker compose down -v
 
 # Frontend
 
-The frontend of this project is implemented as a separate React application.
+The frontend is a **React + TypeScript** application built with **Vite, Tailwind CSS, Framer Motion, and React Router**.
 
-It provides a modern and responsive user interface that communicates with this backend exclusively through REST APIs.
+It provides the complete customer-facing hotel experience as well as authenticated user functionality and management/control panels. The frontend handles **authentication flows, protected routes, REST API integration, dynamic data, room and restaurant reservations, forms and validation, error handling, state management, and responsive UI/UX**.
 
-The frontend includes:
+The application is designed around reusable React components and API-driven workflows, with a strong focus on both **functional frontend engineering and polished hospitality UI/UX**.
 
-- Authentication
-- Dashboard
-- Hotel Management
-- Reservation Management
-- Guest Management
-- Restaurant Management
-- Employee Management
-- Payment Management
-- Reports
+For a detailed overview of the frontend architecture, functionality, workflows, and design:
 
-Repository:
+**Frontend Repository:**
+https://github.com/setayesh66/Hotel
 
-https://github.com/yourusername/hotel-management-frontend
