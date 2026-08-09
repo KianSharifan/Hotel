@@ -24,7 +24,7 @@ public class SeedDb
                     CheckOutTime = new TimeOnly(11, 0),
                     City = "New York",
                     Country = "United States",
-                    Email = "info@veloria.com",
+                    Email = "info@noir.com",
                     StarRating = 5.0
                 }
             );
